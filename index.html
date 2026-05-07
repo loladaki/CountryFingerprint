@@ -551,7 +551,7 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
 // Live data from backend
 async function loadLiveData() {
   try {
-    const res  = await fetch('/api/combustiveis', { signal: AbortSignal.timeout(5000) });
+    const res  = await fetch('https://eu-stats-production.up.railway.app/api/combustiveis', { signal: AbortSignal.timeout(5000) });
     const data = await res.json();
     if (!data.ok) return;
     const g95 = data.combustiveis?.gasolina95?.atual;
