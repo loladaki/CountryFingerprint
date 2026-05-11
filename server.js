@@ -43,6 +43,17 @@ app.get('/portugal', (req, res) => {
   res.send('<h2>Place <code>portugal-v4.html</code> in the dashboard folder and restart.</h2>');
 });
 
+app.get('/spain', (req, res) => {
+  const candidates = [
+    path.join(__dirname, 'spain-v4.html'),
+    path.join(__dirname, '..', 'spain-v4.html'),
+  ];
+  for (const p of candidates) {
+    if (fs.existsSync(p)) return res.sendFile(p);
+  }
+  res.send('spain-v4.html not found');
+});
+
 // ── Serve bibliotecas JS locais ──────────────
 app.get('/libs/d3.min.js',        (req,res) => res.sendFile(path.join(__dirname,'node_modules','d3','dist','d3.min.js')));
 app.get('/libs/chart.umd.js',     (req,res) => res.sendFile(path.join(__dirname,'node_modules','chart.js','dist','chart.umd.min.js')));
