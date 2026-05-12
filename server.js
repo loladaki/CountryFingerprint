@@ -29,11 +29,30 @@ app.get('/',        (req, res) => serveFile(res, path.join(__dirname, 'index.htm
 app.get('/portugal', (req, res) => serveFile(res, path.join(__dirname, 'portugal-v4.html')));
 app.get('/spain',    (req, res) => serveFile(res, path.join(__dirname, 'spain-v4.html')));
 
+<<<<<<< HEAD
 // ── Bibliotecas JS locais ─────────────────────
 app.get('/libs/d3.min.js',       (req, res) => res.sendFile(path.join(__dirname,'node_modules','d3','dist','d3.min.js')));
 app.get('/libs/chart.umd.js',    (req, res) => res.sendFile(path.join(__dirname,'node_modules','chart.js','dist','chart.umd.min.js')));
 app.get('/libs/topojson.min.js', (req, res) => res.sendFile(path.join(__dirname,'node_modules','topojson-client','dist','topojson-client.min.js')));
 app.get('/libs/prt.topo.json',   (req, res) => res.sendFile(path.join(__dirname,'node_modules','datamaps','src','js','data','prt.topo.json')));
+=======
+app.get('/spain', (req, res) => {
+  const candidates = [
+    path.join(__dirname, 'spain-v4.html'),
+    path.join(__dirname, '..', 'spain-v4.html'),
+  ];
+  for (const p of candidates) {
+    if (fs.existsSync(p)) return res.sendFile(p);
+  }
+  res.send('spain-v4.html not found');
+});
+
+// ── Serve bibliotecas JS locais ──────────────
+app.get('/libs/d3.min.js',        (req,res) => res.sendFile(path.join(__dirname,'node_modules','d3','dist','d3.min.js')));
+app.get('/libs/chart.umd.js',     (req,res) => res.sendFile(path.join(__dirname,'node_modules','chart.js','dist','chart.umd.min.js')));
+app.get('/libs/topojson.min.js',  (req,res) => res.sendFile(path.join(__dirname,'node_modules','topojson-client','dist','topojson-client.min.js')));
+app.get('/libs/prt.topo.json',    (req,res) => res.sendFile(path.join(__dirname,'node_modules','datamaps','src','js','data','prt.topo.json')));
+>>>>>>> f037be1057ac46a915cd74ca39c4f183ca0d8675
 
 // ── Cache ─────────────────────────────────────
 const CACHE = {};
