@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EU Stats — Europe by the Numbers</title>
+<meta name="description" content="Real economic and social data for EU member states — fuel prices, housing, wages, unemployment and GDP. Official sources, updated weekly.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇪🇺</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -204,20 +206,28 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
     <span class="topbar-item"><span class="lbl">Brent</span><span class="v" id="t-brent">108.17 $/bbl</span></span>
     <span class="topbar-item"><span class="lbl">PT Gasoline 95</span><span class="v" id="t-g95">1.927 €/L</span></span>
     <span class="topbar-item"><span class="lbl">PT Diesel</span><span class="v" id="t-gsl">1.958 €/L</span></span>
-    <span class="topbar-item"><span class="lbl">PT Unemployment</span><span class="v">5.8%</span></span>
-    <span class="topbar-item"><span class="lbl">PT Min. Wage 2026</span><span class="v">920 €</span></span>
+    <span class="topbar-item"><span class="lbl">PT Unemployment</span><span class="v" id="t-pt-unemp">5.8%</span></span>
+    <span class="topbar-item"><span class="lbl">PT Min. Wage</span><span class="v" id="t-pt-wage">920 €</span></span>
     <span class="topbar-item"><span class="lbl">PT Housing</span><span class="v">2,076 €/m²</span></span>
-    <span class="topbar-item"><span class="lbl">PT GDP Growth</span><span class="v">+2.4%</span></span>
-    <span class="topbar-item"><span class="lbl">ECB Rate</span><span class="v">2.25%</span></span>
+    <span class="topbar-item"><span class="lbl">PT GDP Growth</span><span class="v" id="t-pt-gdp">+2.4%</span></span>
+    <span class="topbar-item"><span class="lbl">ECB Rate</span><span class="v" id="t-ecb">2.25%</span></span>
+    <span class="topbar-item"><span class="lbl">ES Gasoline 95</span><span class="v" id="t-es-g95">1.905 €/L</span></span>
+    <span class="topbar-item"><span class="lbl">ES Unemployment</span><span class="v" id="t-es-unemp">10.3%</span></span>
+    <span class="topbar-item"><span class="lbl">ES Min. Wage</span><span class="v" id="t-es-wage">1,221 €</span></span>
+    <span class="topbar-item"><span class="lbl">ES Housing</span><span class="v">2,230 €/m²</span></span>
     <!-- duplicate for seamless loop -->
     <span class="topbar-item"><span class="lbl">Brent</span><span class="v" id="t-brent2">108.17 $/bbl</span></span>
     <span class="topbar-item"><span class="lbl">PT Gasoline 95</span><span class="v" id="t-g95b">1.927 €/L</span></span>
     <span class="topbar-item"><span class="lbl">PT Diesel</span><span class="v" id="t-gslb">1.958 €/L</span></span>
-    <span class="topbar-item"><span class="lbl">PT Unemployment</span><span class="v">5.8%</span></span>
-    <span class="topbar-item"><span class="lbl">PT Min. Wage 2026</span><span class="v">920 €</span></span>
+    <span class="topbar-item"><span class="lbl">PT Unemployment</span><span class="v" id="t-pt-unempb">5.8%</span></span>
+    <span class="topbar-item"><span class="lbl">PT Min. Wage</span><span class="v" id="t-pt-wageb">920 €</span></span>
     <span class="topbar-item"><span class="lbl">PT Housing</span><span class="v">2,076 €/m²</span></span>
-    <span class="topbar-item"><span class="lbl">PT GDP Growth</span><span class="v">+2.4%</span></span>
-    <span class="topbar-item"><span class="lbl">ECB Rate</span><span class="v">2.25%</span></span>
+    <span class="topbar-item"><span class="lbl">PT GDP Growth</span><span class="v" id="t-pt-gdpb">+2.4%</span></span>
+    <span class="topbar-item"><span class="lbl">ECB Rate</span><span class="v" id="t-ecbb">2.25%</span></span>
+    <span class="topbar-item"><span class="lbl">ES Gasoline 95</span><span class="v" id="t-es-g95b">1.905 €/L</span></span>
+    <span class="topbar-item"><span class="lbl">ES Unemployment</span><span class="v" id="t-es-unempb">10.3%</span></span>
+    <span class="topbar-item"><span class="lbl">ES Min. Wage</span><span class="v" id="t-es-wageb">1,221 €</span></span>
+    <span class="topbar-item"><span class="lbl">ES Housing</span><span class="v">2,230 €/m²</span></span>
   </div>
 </div>
 
@@ -230,7 +240,7 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
     </a>
     <nav class="site-nav">
       <a href="/" class="nav-link active">Home</a>
-      <a href="/portugal" class="nav-link">Countries</a>
+      <a href="#countries" class="nav-link">Countries</a>
       <a href="#about" class="nav-link">About</a>
       <a href="/portugal" class="nav-cta">Explore Portugal →</a>
     </nav>
@@ -246,6 +256,7 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
       <p class="hero-body">Real numbers, real sources. EU Stats aggregates official economic, social and energy data from EU member states — so you can see what's actually happening across Europe, without the spin.</p>
       <div class="hero-actions">
         <a href="/portugal" class="btn-primary">🇵🇹 Explore Portugal</a>
+        <a href="/spain" class="btn-primary" style="background:var(--navy-mid);border:1px solid rgba(255,255,255,.15);color:#fff">🇪🇸 Explore Spain</a>
         <a href="#countries" class="btn-ghost">Browse all countries →</a>
       </div>
     </div>
@@ -262,9 +273,9 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
           <span class="hs-chg chg-bad">↑ Near historic high</span>
         </div>
         <div class="hero-stat">
-          <div class="hs-val">5.8<span class="hs-unit">%</span></div>
+          <div class="hs-val"><span id="h-pt-unemp">5.8</span><span class="hs-unit">%</span></div>
           <div class="hs-lbl">🇵🇹 Unemployment</div>
-          <span class="hs-chg chg-good">↓ Lowest since 2002</span>
+          <span class="hs-chg chg-good" id="h-pt-unemp-lbl">↓ Lowest since 2002</span>
         </div>
         <div class="hero-stat">
           <div class="hs-val">2,076<span class="hs-unit">€/m²</span></div>
@@ -272,18 +283,18 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
           <span class="hs-chg chg-bad">↑ +16.8% in 2025</span>
         </div>
         <div class="hero-stat">
-          <div class="hs-val">920<span class="hs-unit">€</span></div>
-          <div class="hs-lbl">🇵🇹 Min. Wage 2026</div>
+          <div class="hs-val"><span id="h-pt-wage">920</span><span class="hs-unit">€</span></div>
+          <div class="hs-lbl">🇵🇹 Min. Wage</div>
           <span class="hs-chg chg-good">↑ +5.7% vs 2025</span>
         </div>
         <div class="hero-stat">
-          <div class="hs-val">+2.4<span class="hs-unit">%</span></div>
+          <div class="hs-val"><span id="h-pt-gdp">+2.4</span><span class="hs-unit">%</span></div>
           <div class="hs-lbl">🇵🇹 GDP Growth</div>
           <span class="hs-chg chg-good">↑ Above EU avg</span>
         </div>
         <div class="hero-stat" style="grid-column:span 2">
-          <div class="hs-val">2.25<span class="hs-unit">%</span></div>
-          <div class="hs-lbl">ECB Interest Rate · Apr 2026</div>
+          <div class="hs-val"><span id="h-ecb">2.25</span><span class="hs-unit">%</span></div>
+          <div class="hs-lbl">ECB Interest Rate</div>
           <span class="hs-chg chg-good">↓ Down from 4.0% in 2024 — mortgage relief incoming</span>
         </div>
       </div>
@@ -300,12 +311,12 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
         <h2 class="sec-title">Explore by country</h2>
         <p class="sec-body">Each country page goes deep — fuel, housing, salaries, healthcare, safety and 10 years of trends. More countries added regularly.</p>
       </div>
-      <span class="version">v0.4 · 1 country live</span>
+      <span class="version">v0.5 · 2 countries live</span>
     </div>
     <div class="country-grid">
 
       <!-- PORTUGAL LIVE -->
-      <a href="portugal-v4.html" class="country-card available reveal">
+      <a href="/portugal" class="country-card available reveal">
         <div class="cc-header live-bg">
           <span class="cc-flag">🇵🇹</span>
           <div class="cc-name">Portugal</div>
@@ -315,8 +326,8 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
         </div>
         <div class="cc-body">
           <div class="cc-metrics">
-            <div class="cc-metric"><span class="val">1.927€</span><span class="lbl">Gasoline</span></div>
-            <div class="cc-metric"><span class="val">5.8%</span><span class="lbl">Unemploy.</span></div>
+            <div class="cc-metric"><span class="val" id="cc-pt-g95">1.927€</span><span class="lbl">Gasoline</span></div>
+            <div class="cc-metric"><span class="val" id="cc-pt-unemp">5.8%</span><span class="lbl">Unemploy.</span></div>
             <div class="cc-metric"><span class="val">2,076€</span><span class="lbl">Housing/m²</span></div>
           </div>
           <div class="cc-footer">
@@ -331,27 +342,32 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
         </div>
       </a>
 
-      <!-- SPAIN -->
-      <div class="country-card coming reveal reveal-d1">
-        <div class="cc-header soon-bg">
+      <!-- SPAIN LIVE -->
+      <a href="/spain" class="country-card available reveal reveal-d1">
+        <div class="cc-header live-bg">
           <span class="cc-flag">🇪🇸</span>
           <div class="cc-name">Spain</div>
           <div class="cc-sub">Southern Europe · Iberian Peninsula</div>
-          <span class="cc-badge badge-soon">Coming soon</span>
+          <span class="cc-badge badge-live"><span class="live-dot"></span>&nbsp;Live data</span>
           <div class="cc-wm">ES</div>
         </div>
         <div class="cc-body">
           <div class="cc-metrics">
-            <div class="cc-metric"><span class="val">—</span><span class="lbl">Gasoline</span></div>
-            <div class="cc-metric"><span class="val">—</span><span class="lbl">Unemploy.</span></div>
-            <div class="cc-metric"><span class="val">—</span><span class="lbl">Housing/m²</span></div>
+            <div class="cc-metric"><span class="val" id="cc-es-g95">1.905€</span><span class="lbl">Gasoline</span></div>
+            <div class="cc-metric"><span class="val" id="cc-es-unemp">10.3%</span><span class="lbl">Unemploy.</span></div>
+            <div class="cc-metric"><span class="val">2,230€</span><span class="lbl">Housing/m²</span></div>
           </div>
           <div class="cc-footer">
-            <div class="cc-cats"><span class="cc-cat">⛽ Energy</span><span class="cc-cat">🏠 Housing</span><span class="cc-cat">💶 Wages</span></div>
-            <span style="color:var(--dim);font-size:.75rem">In progress</span>
+            <div class="cc-cats">
+              <span class="cc-cat">⛽ Energy</span>
+              <span class="cc-cat">🏠 Housing</span>
+              <span class="cc-cat">💶 Wages</span>
+              <span class="cc-cat">🏥 Health</span>
+            </div>
+            <span class="cc-explore">Explore</span>
           </div>
         </div>
-      </div>
+      </a>
 
       <!-- FRANCE -->
       <div class="country-card coming reveal reveal-d2">
@@ -528,7 +544,7 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
       <div class="footer-col">
         <h4>Countries</h4>
         <a href="/portugal">🇵🇹 Portugal</a>
-        <a href="#" style="opacity:.35;pointer-events:none">🇪🇸 Spain</a>
+        <a href="/spain">🇪🇸 Spain</a>
         <a href="#" style="opacity:.35;pointer-events:none">🇫🇷 France</a>
         <a href="#" style="opacity:.35;pointer-events:none">🇩🇪 Germany</a>
       </div>
@@ -549,23 +565,63 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
 
 <script>
 // Live data from backend
+const set = (id, txt) => { const e = document.getElementById(id); if (e) e.textContent = txt; };
+const setAll = (ids, txt) => ids.forEach(id => set(id, txt));
+
 async function loadLiveData() {
   try {
-    const res  = await fetch('https://eu-stats-production.up.railway.app/api/combustiveis', { signal: AbortSignal.timeout(5000) });
-    const data = await res.json();
+    const data = await fetch('/api/combustiveis', { signal: AbortSignal.timeout(5000) }).then(r => r.json());
     if (!data.ok) return;
-    const g95 = data.combustiveis?.gasolina95?.atual;
-    const gsl = data.combustiveis?.gasoleo?.atual;
-    const br  = data.brent?.preco;
-    const f3  = v => v?.toFixed(3);
-    const f2  = v => v?.toFixed(2);
-    if (g95) { ['t-g95','t-g95b'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=f3(g95)+' €/L';}); const e=document.getElementById('h-g95');if(e)e.textContent=f3(g95); }
-    if (gsl) { ['t-gsl','t-gslb'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=f3(gsl)+' €/L';}); }
-    if (br)  { ['t-brent','t-brent2'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=f2(br)+' $/bbl';}); const e=document.getElementById('h-brent');if(e)e.textContent=f2(br); }
+    const g95   = data.combustiveis?.gasolina95?.atual;
+    const gsl   = data.combustiveis?.gasoleo?.atual;
+    const br    = data.brent?.preco;
+    const esG95 = data.combustiveis?.es_gasolina95?.atual;
+    if (g95)   { setAll(['t-g95','t-g95b'], g95.toFixed(3)+' €/L'); set('h-g95', g95.toFixed(3)); set('cc-pt-g95', g95.toFixed(3)+'€'); }
+    if (gsl)     setAll(['t-gsl','t-gslb'], gsl.toFixed(3)+' €/L');
+    if (br)    { setAll(['t-brent','t-brent2'], br.toFixed(2)+' $/bbl'); set('h-brent', br.toFixed(2)); }
+    if (esG95) { setAll(['t-es-g95','t-es-g95b'], esG95.toFixed(3)+' €/L'); set('cc-es-g95', esG95.toFixed(3)+'€'); }
   } catch(e) { /* backend offline — static values shown */ }
 }
+
+async function loadStats() {
+  try {
+    const data = await fetch('/api/stats', { signal: AbortSignal.timeout(8000) }).then(r => r.json());
+    if (!data.ok) return;
+    const pt  = data.eurostat?.pt;
+    const es  = data.eurostat?.es;
+    const ecb = data.ecb?.rate;
+
+    if (pt?.unemp?.value != null) {
+      const v = pt.unemp.value;
+      setAll(['t-pt-unemp','t-pt-unempb'], v+'%');
+      set('h-pt-unemp', v); set('cc-pt-unemp', v+'%');
+    }
+    if (pt?.gdp?.value != null) {
+      const v = pt.gdp.value; const s = v >= 0 ? '+' : '';
+      setAll(['t-pt-gdp','t-pt-gdpb'], s+v+'%'); set('h-pt-gdp', s+v);
+    }
+    if (pt?.min_wage?.value != null) {
+      const v = pt.min_wage.value;
+      setAll(['t-pt-wage','t-pt-wageb'], v+' €'); set('h-pt-wage', v);
+    }
+    if (es?.unemp?.value != null) {
+      const v = es.unemp.value;
+      setAll(['t-es-unemp','t-es-unempb'], v+'%'); set('cc-es-unemp', v+'%');
+    }
+    if (es?.min_wage?.value != null) {
+      const v = es.min_wage.value;
+      setAll(['t-es-wage','t-es-wageb'], v+' €');
+    }
+    if (ecb != null) {
+      setAll(['t-ecb','t-ecbb'], ecb+'%'); set('h-ecb', ecb);
+    }
+  } catch(e) { /* stats offline */ }
+}
+
 loadLiveData();
+loadStats();
 setInterval(loadLiveData, 10 * 60 * 1000);
+setInterval(loadStats, 30 * 60 * 1000);
 
 // Scroll reveal
 const obs = new IntersectionObserver(
