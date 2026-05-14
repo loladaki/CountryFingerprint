@@ -1,5 +1,5 @@
 /**
- * EU Stats — Backend v0.6
+ * EU Stats — Backend v0.7
  * APIs: combustíveis (EU Oil Bulletin), Brent (Yahoo Finance),
  *       Eurostat (desemprego, PIB, inflação, salário mínimo),
  *       ECB (taxa directora, Euribor 12M)
@@ -28,6 +28,7 @@ function serveFile(res, ...candidates) {
 app.get('/',        (req, res) => serveFile(res, path.join(__dirname, 'index.html')));
 app.get('/portugal', (req, res) => serveFile(res, path.join(__dirname, 'portugal-v4.html')));
 app.get('/spain',    (req, res) => serveFile(res, path.join(__dirname, 'spain-v4.html')));
+app.get('/france',   (req, res) => serveFile(res, path.join(__dirname, 'france-v1.html')));
 
 // ── Bibliotecas JS locais ─────────────────────
 app.get('/libs/d3.min.js',        (req, res) => res.sendFile(path.join(__dirname,'node_modules','d3','dist','d3.min.js')));
@@ -62,6 +63,7 @@ const FB_FUEL = {
 const FB_STATS = {
   pt: { unemp: 5.8, youth_unemp: 18.1, gdp: 2.4, inflation: 2.1, min_wage: 920 },
   es: { unemp: 10.3, youth_unemp: 24.3, gdp: 2.9, inflation: 2.6, min_wage: 1221 },
+  fr: { unemp: 7.3, youth_unemp: 17.5, gdp: 0.7, inflation: 1.3, min_wage: 1802 },
 };
 
 // ── HTTP fetch com redirects ──────────────────
@@ -187,11 +189,11 @@ async function fetchEurostatStats() {
   console.log('[Eurostat] A buscar dados...');
 
   const [unemp, youthUnemp, gdp, infl, minWage] = await Promise.allSettled([
-    fetchEurostatJSON('une_rt_m',    { s_adj: 'SA', age: 'TOTAL',  sex: 'T', unit: 'PC_ACT', geo: ['PT','ES'], lastTimePeriod: 3 }),
-    fetchEurostatJSON('une_rt_m',    { s_adj: 'SA', age: 'Y15-24', sex: 'T', unit: 'PC_ACT', geo: ['PT','ES'], lastTimePeriod: 3 }),
-    fetchEurostatJSON('namq_10_gdp', { unit: 'CLV_PCH_A', na_item: 'B1GQ', s_adj: 'SCA', geo: ['PT','ES'], lastTimePeriod: 2 }),
-    fetchEurostatJSON('prc_hicp_manr', { unit: 'RCH_A', coicop: 'CP00', geo: ['PT','ES'], lastTimePeriod: 3 }),
-    fetchEurostatJSON('earn_mw_cur', { currency: 'EUR', geo: ['PT','ES'], lastTimePeriod: 2 }),
+    fetchEurostatJSON('une_rt_m',    { s_adj: 'SA', age: 'TOTAL',  sex: 'T', unit: 'PC_ACT', geo: ['PT','ES','FR'], lastTimePeriod: 3 }),
+    fetchEurostatJSON('une_rt_m',    { s_adj: 'SA', age: 'Y15-24', sex: 'T', unit: 'PC_ACT', geo: ['PT','ES','FR'], lastTimePeriod: 3 }),
+    fetchEurostatJSON('namq_10_gdp', { unit: 'CLV_PCH_A', na_item: 'B1GQ', s_adj: 'SCA', geo: ['PT','ES','FR'], lastTimePeriod: 2 }),
+    fetchEurostatJSON('prc_hicp_manr', { unit: 'RCH_A', coicop: 'CP00', geo: ['PT','ES','FR'], lastTimePeriod: 3 }),
+    fetchEurostatJSON('earn_mw_cur', { currency: 'EUR', geo: ['PT','ES','FR'], lastTimePeriod: 2 }),
   ]);
 
   const ok  = r => r.status === 'fulfilled' ? r.value : null;
@@ -218,12 +220,20 @@ async function fetchEurostatStats() {
       inflation:   ext(inflD, 'ES', FB_STATS.es.inflation),
       min_wage:    ext(wageD, 'ES', FB_STATS.es.min_wage),
     },
+    fr: {
+      unemp:       ext(unD,   'FR', FB_STATS.fr.unemp),
+      youth_unemp: ext(yuD,   'FR', FB_STATS.fr.youth_unemp),
+      gdp:         ext(gdpD,  'FR', FB_STATS.fr.gdp),
+      inflation:   ext(inflD, 'FR', FB_STATS.fr.inflation),
+      min_wage:    ext(wageD, 'FR', FB_STATS.fr.min_wage),
+    },
     fonte: 'eurostat',
     data:  new Date().toISOString(),
   };
 
   console.log(`[Eurostat] ✅ PT: unemp=${result.pt.unemp.value}% gdp=${result.pt.gdp.value}% infl=${result.pt.inflation.value}%`);
   console.log(`[Eurostat] ✅ ES: unemp=${result.es.unemp.value}% gdp=${result.es.gdp.value}% infl=${result.es.inflation.value}%`);
+  console.log(`[Eurostat] ✅ FR: unemp=${result.fr.unemp.value}% gdp=${result.fr.gdp.value}% infl=${result.fr.inflation.value}%`);
   cacheSet('eurostat', result);
   return result;
 }
@@ -239,6 +249,7 @@ function parseWeeklyTable(text) {
     if (cols.length >= 3) {
       if (cols[0] === 'Portugal') result.pt = { petrol: n(cols[1]), diesel: n(cols[2]) };
       if (cols[0] === 'Spain')    result.es = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'France')   result.fr = { petrol: n(cols[1]), diesel: n(cols[2]) };
     }
   }
   if (!result.pt?.petrol) throw new Error('Portugal não encontrado na tabela');
@@ -266,6 +277,8 @@ async function fetchCombustiveis() {
       gasolina98:    { ...FB_FUEL.gasolina98,  dataActual: parsed.date, serie: [] },
       es_gasolina95: parsed.es ? mkFuel(parsed.es.petrol, 1.905) : { atual: 1.905, serie: [] },
       es_gasoleo:    parsed.es ? mkFuel(parsed.es.diesel, 1.952) : { atual: 1.952, serie: [] },
+      fr_gasolina95: parsed.fr ? mkFuel(parsed.fr.petrol, 1.740) : { atual: 1.740, serie: [] },
+      fr_gasoleo:    parsed.fr ? mkFuel(parsed.fr.diesel, 1.720) : { atual: 1.720, serie: [] },
       fonte: 'eu_oil_bulletin', data: new Date().toISOString(),
     };
     cacheSet('combustiveis', r);
@@ -276,6 +289,8 @@ async function fetchCombustiveis() {
       ...Object.fromEntries(Object.entries(FB_FUEL).map(([k, v]) => [k, { ...v, dataActual: '2026-05-05', serie: [] }])),
       es_gasolina95: { atual: 1.905, serie: [] },
       es_gasoleo:    { atual: 1.952, serie: [] },
+      fr_gasolina95: { atual: 1.740, serie: [] },
+      fr_gasoleo:    { atual: 1.720, serie: [] },
       fonte: 'fallback', erro: err.message, data: new Date().toISOString(),
     };
   }
@@ -319,7 +334,7 @@ app.get('/api/stats', async (req, res) => {
 app.get('/api/status', (req, res) => {
   const age = k => CACHE[k] ? Math.round((Date.now() - CACHE[k].ts) / 60000) : null;
   res.json({
-    ok: true, versao: '0.6',
+    ok: true, versao: '0.7',
     cache: {
       combustiveis: { idade_min: age('combustiveis') },
       brent:        { idade_min: age('brent') },
@@ -341,7 +356,7 @@ app.get('/api/refresh', async (req, res) => {
 
 // ── Arranque ──────────────────────────────────
 app.listen(PORT, () => {
-  console.log(`\n🇪🇺  EU Stats — Backend v0.6`);
+  console.log(`\n🇪🇺  EU Stats — Backend v0.7`);
   console.log(`\n     🌐  http://localhost:${PORT}`);
   console.log(`     📡  /api/combustiveis  /api/stats  /api/status  /api/refresh\n`);
   fetchCombustiveis();

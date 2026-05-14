@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>France by the Numbers — EU Stats</title>
+<meta name="description" content="France dashboard — fuel prices, housing, wages, unemployment, GDP, tourism and more. Official sources, updated automatically.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇫🇷</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#001a75;--blue-mid:#002395;--blue-light:#e6eaf8;--blue-dim:#3355cc;
+  --red:#ED2939;--red-light:#fef0f0;
+  --gold:#c9a84c;--gold-light:#fff8e0;
+  --green:#1a6b40;--green-light:#eef6f2;
+  --cream:#faf8f4;--surface:#fff;
+  --border:#e2ddd5;--border2:#cdc8be;
+  --text:#1a1a18;--muted:#6b6860;--dim:#9e9b96;
+  --font-d:'Cormorant Garamond',Georgia,serif;
+  --font-u:'DM Sans',sans-serif;
+  --font-m:'DM Mono',monospace;
+  --radius:12px;
+}
+body{font-family:var(--font-u);background:var(--cream);color:var(--text);font-size:15px;line-height:1.6;scroll-behavior:smooth}
+
+/* HEADER */
+.hdr{background:var(--blue);color:#fff}
+.hdr-stripe{height:6px;background:linear-gradient(90deg,#002395 0%,#002395 33.3%,#fff 33.3%,#fff 66.6%,#ED2939 66.6%)}
+.hdr-inner{max-width:1120px;margin:0 auto;padding:2.5rem 2rem 2rem;display:flex;align-items:flex-end;justify-content:space-between;gap:2rem}
+.hdr-flag{font-size:2.8rem;line-height:1;margin-bottom:.4rem}
+.hdr-title{font-family:var(--font-d);font-weight:600;font-size:clamp(2rem,4vw,2.8rem);letter-spacing:-.02em;color:#fff;line-height:1.1}
+.hdr-title em{font-style:italic;font-weight:300;color:var(--gold)}
+.hdr-sub{color:rgba(255,255,255,.5);font-size:.82rem;margin-top:.4rem;text-transform:uppercase;letter-spacing:.06em}
+.hdr-meta{text-align:right;flex-shrink:0}
+.hdr-meta .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.35);display:block}
+.hdr-meta .dt{font-family:var(--font-m);font-size:.88rem;color:var(--gold);margin-top:.2rem}
+
+/* LIVE BADGE */
+.live-badge{display:inline-flex;align-items:center;gap:.35rem;font-size:.7rem;font-weight:500;padding:3px 10px;border-radius:20px;margin-top:.5rem;cursor:default}
+.live-badge.live{background:rgba(0,35,149,.5);color:#aabbff}
+.live-badge.live::before{content:'';width:7px;height:7px;background:#4ade80;border-radius:50%;animation:pulse 1.8s infinite}
+.live-badge.cached{background:rgba(201,168,76,.2);color:var(--gold)}
+.live-badge.offline{background:rgba(255,255,255,.1);color:rgba(255,255,255,.4)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* TICKER */
+.ticker-wrap{background:var(--blue-mid);overflow:hidden;height:36px;display:flex;align-items:center}
+.ticker{display:flex;animation:tick 38s linear infinite;white-space:nowrap}
+.ticker-item{font-family:var(--font-m);font-size:.78rem;color:rgba(255,255,255,.8);padding:0 2.5rem;border-right:1px solid rgba(255,255,255,.15);display:flex;align-items:center;gap:.5rem}
+.ticker-item .val{color:var(--gold);font-weight:500}
+.ticker-item .chg{font-size:.7rem;padding:1px 5px;border-radius:10px}
+.chg-up{background:rgba(237,41,57,.3);color:#ffaaaa}
+.chg-dn{background:rgba(0,100,60,.4);color:#7aeba4}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* NAV */
+.nav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1120px;margin:0 auto;padding:0 2rem;display:flex;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-link{padding:.85rem 1rem;font-size:.82rem;font-weight:500;color:var(--muted);text-decoration:none;border-bottom:2.5px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s}
+.nav-link:hover{color:var(--text)}
+.nav-link.active{color:var(--blue-mid);border-bottom-color:var(--blue-mid)}
+
+/* MAIN */
+.main{max-width:1120px;margin:0 auto;padding:2.5rem 2rem}
+.section{margin-bottom:4rem;scroll-margin-top:52px}
+.sec-hdr{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:1.5px solid var(--border)}
+.sec-title{font-family:var(--font-d);font-size:1.3rem;font-weight:600;color:var(--blue-mid);letter-spacing:-.01em}
+.sec-tag{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--dim)}
+
+/* CARDS */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:1rem;margin-bottom:1.25rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem 1.4rem;transition:border-color .2s,box-shadow .2s,transform .15s;position:relative}
+.card:hover{border-color:var(--border2);box-shadow:0 3px 14px rgba(0,23,117,.08);transform:translateY(-1px)}
+.card.gold{border-color:var(--gold);background:var(--gold-light)}
+.card.red{border-color:#e8b4b8;background:var(--red-light)}
+.card.green{border-color:#9ecdb0;background:var(--green-light)}
+.card.blue{border-color:#9bbde8;background:var(--blue-light)}
+.card .live-dot{position:absolute;top:.75rem;right:.75rem;width:7px;height:7px;background:#4ade80;border-radius:50%;animation:pulse 1.8s infinite}
+.c-lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500;margin-bottom:.55rem}
+.c-val{font-family:var(--font-m);font-size:1.6rem;font-weight:500;color:var(--text);line-height:1.1;letter-spacing:-.02em}
+.c-val .u{font-size:.9rem;color:var(--muted);font-weight:400;margin-left:1px}
+.c-sub{font-size:.78rem;color:var(--muted);margin-top:.35rem}
+.c-badge{display:inline-flex;align-items:center;gap:3px;font-size:.72rem;font-weight:500;padding:2px 8px;border-radius:20px;margin-top:.45rem}
+.badge-up{background:#fef0f0;color:var(--red)}
+.badge-dn{background:#eef6f2;color:#1a6b40}
+.badge-ne{background:#f2f0ec;color:var(--muted)}
+.badge-blue{background:var(--blue-light);color:var(--blue-mid)}
+.c-src{font-size:.65rem;color:var(--dim);margin-top:.65rem;padding-top:.55rem;border-top:1px solid var(--border)}
+
+/* CHART CARD */
+.chart-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1rem}
+.chart-lbl{font-size:.78rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:1.1rem}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:10px;font-size:12px;color:var(--muted)}
+.leg-item{display:flex;align-items:center;gap:5px}
+.leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+
+/* REGIONS */
+.regions-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-bottom:1.25rem}
+.region-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.25rem;transition:border-color .2s,box-shadow .2s}
+.region-card:hover{border-color:var(--blue-mid);box-shadow:0 2px 10px rgba(0,35,149,.07)}
+.rc-name{font-family:var(--font-d);font-size:1rem;font-weight:600;color:var(--blue-mid);margin-bottom:.5rem}
+.rc-capital{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.6rem}
+.rc-row{display:flex;justify-content:space-between;font-size:.8rem;padding:.2rem 0;border-top:1px solid var(--border)}
+.rc-row:first-of-type{border-top:none}
+.rc-key{color:var(--muted)}
+.rc-val{font-family:var(--font-m);font-weight:500}
+
+/* NOTICES */
+.notice{border-radius:8px;padding:.7rem 1rem;font-size:.8rem;display:flex;align-items:flex-start;gap:.55rem;margin-bottom:1rem;line-height:1.5}
+.n-warn{background:var(--gold-light);border:1px solid #dcc87a;color:#6a4f14}
+.n-info{background:var(--blue-light);border:1px solid #9bbde8;color:#2c4f80}
+.n-alert{background:var(--red-light);border:1px solid #e8b4b8;color:#7a2030}
+.n-ok{background:var(--green-light);border:1px solid #9ecdb0;color:#1a4f2b}
+
+/* EVO TABS */
+.evo-tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+.evo-tab{padding:.5rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:.82rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;font-family:var(--font-u)}
+.evo-tab:hover{background:var(--blue-light);border-color:#9bbde8;color:var(--blue-mid)}
+.evo-tab.active{background:var(--blue-mid);border-color:var(--blue-mid);color:#fff}
+.evo-panel{display:none}
+.evo-panel.active{display:block}
+.evo-insight{background:var(--gold-light);border:1px solid #dcc87a;border-radius:8px;padding:.85rem 1.1rem;font-size:.82rem;color:#6a4f14;margin-bottom:1rem;line-height:1.55}
+.evo-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:680px){.evo-grid{grid-template-columns:1fr}}
+
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.3rem;text-align:center}
+.kpi-val{font-family:var(--font-m);font-size:2rem;font-weight:500;letter-spacing:-.03em;color:var(--text)}
+.kpi-lbl{font-size:.75rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-top:.3rem}
+.kpi-chg{font-size:.75rem;font-weight:500;padding:2px 8px;border-radius:20px;margin-top:.4rem;display:inline-block}
+
+/* CLIMA GRID */
+.clima-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.75rem;margin-bottom:1.25rem}
+.clima-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;text-align:center}
+.clima-icon{font-size:1.8rem;margin-bottom:.35rem}
+.clima-city{font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.clima-temp{font-family:var(--font-m);font-size:1.5rem;font-weight:500;color:var(--text);margin:.2rem 0}
+.clima-sub{font-size:.72rem;color:var(--dim)}
+
+/* HEALTH GRID */
+.health-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.25rem}
+@media(max-width:640px){.health-grid{grid-template-columns:1fr}}
+
+/* SAFETY RANK */
+.safety-rank{background:var(--blue);color:#fff;border-radius:var(--radius);padding:1.5rem 2rem;display:flex;align-items:center;gap:2rem;margin-bottom:1.25rem}
+.sr-num{font-family:var(--font-d);font-size:4rem;font-weight:700;color:var(--gold);line-height:1}
+.sr-txt .sr-title{font-size:1.1rem;font-weight:500}
+.sr-txt .sr-sub{font-size:.82rem;color:rgba(255,255,255,.55);margin-top:.25rem}
+
+/* TOUR HERO */
+.tour-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.25rem}
+.tour-big{border-radius:var(--radius);padding:1.5rem;display:flex;flex-direction:column;justify-content:space-between}
+.tb-lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;opacity:.55}
+.tb-val{font-family:var(--font-m);font-size:2rem;font-weight:500;line-height:1;margin:.5rem 0}
+.tb-sub{font-size:.78rem;opacity:.6}
+.tb-badge{font-size:.72rem;font-weight:500;padding:3px 10px;border-radius:20px;align-self:flex-start;margin-top:.5rem}
+
+/* COMPARE TABLE */
+.ctable{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem}
+.ctable table{width:100%;border-collapse:collapse;font-size:.875rem}
+.ctable th{background:var(--blue-light);color:var(--blue-mid);font-weight:500;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;padding:.7rem 1.25rem;text-align:left}
+.ctable td{padding:.7rem 1.25rem;border-top:1px solid var(--border)}
+.ctable td:nth-child(2),.ctable td:nth-child(3){font-family:var(--font-m);font-size:.85rem;text-align:center}
+.ctable td:last-child{font-size:.78rem;text-align:right}
+.ctable tr:hover td{background:var(--cream)}
+.rank-bad{color:var(--red)}.rank-ok{color:#7a5e20}.rank-good{color:#1a6b40}
+
+/* PROGRESS */
+.prog-row{display:flex;align-items:center;gap:1rem;padding:.55rem 0;border-top:1px solid var(--border)}
+.prog-row:first-child{border-top:none}
+.prog-lbl{font-size:.82rem;color:var(--text);min-width:160px}
+.prog-bar{flex:1;background:var(--blue-light);border-radius:4px;height:9px;overflow:hidden}
+.prog-fill{height:100%;border-radius:4px;background:var(--blue-mid)}
+.prog-val{font-family:var(--font-m);font-size:.8rem;color:var(--text);min-width:60px;text-align:right}
+
+/* FADE */
+.fade{opacity:1;transform:none}
+.fade.anim{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+.fade.anim.visible{opacity:1;transform:none}
+
+/* FOOTER */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:2rem}
+.foot-inner{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:start}
+footer h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.5rem;font-weight:500}
+footer ul{list-style:none;font-size:.78rem;color:var(--dim);line-height:2.1;columns:2;gap:2rem}
+footer a{color:var(--blue-mid);text-decoration:none}
+footer a:hover{text-decoration:underline}
+.foot-badge{background:var(--blue-mid);color:rgba(255,255,255,.65);border-radius:10px;padding:1rem 1.25rem;font-size:.78rem;text-align:center;white-space:nowrap}
+.foot-badge strong{display:block;color:var(--gold);font-family:var(--font-m);font-size:1.1rem;margin-bottom:.2rem}
+.foot-disc{max-width:1120px;margin:.75rem auto 0;padding-top:.75rem;border-top:1px solid var(--border);font-size:.7rem;color:var(--dim)}
+
+@media(max-width:640px){
+  .hdr-inner,.foot-inner{flex-direction:column;align-items:flex-start;grid-template-columns:1fr}
+  .cards,.kpi-row{grid-template-columns:repeat(2,1fr)}
+  .tour-hero{grid-template-columns:1fr 1fr}
+  .tour-hero .tour-big:first-child{grid-column:span 2}
+}
+</style>
+</head>
+<body>
+
+<div id="offline-banner" style="display:none;background:#001255;color:#fff;font-size:.75rem;text-align:center;padding:.45rem 1rem;letter-spacing:.03em">
+  ⚠ Live data unavailable — showing last known values. <a href="javascript:location.reload()" style="color:#f0d080;text-decoration:underline;margin-left:.5rem">Retry</a>
+</div>
+
+<header class="hdr">
+  <div class="hdr-stripe"></div>
+  <div class="hdr-inner">
+    <div>
+      <div class="hdr-flag">🇫🇷</div>
+      <h1 class="hdr-title">France <em>by the Numbers</em></h1>
+      <p class="hdr-sub">Economic, social and territorial indicators dashboard</p>
+    </div>
+    <div class="hdr-meta">
+      <span class="lbl">Last updated</span>
+      <div class="dt" id="upd-date">—</div>
+      <div id="live-badge" class="live-badge cached">📌 Static data · May 2026</div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker" id="ticker-inner">
+    <span class="ticker-item">⛽ SP 95 <span class="val" id="tick-g95">1.740 €/L</span></span>
+    <span class="ticker-item">⛽ Diesel <span class="val" id="tick-gsl">1.720 €/L</span></span>
+    <span class="ticker-item">🛢 Brent <span class="val" id="tick-brent">—</span></span>
+    <span class="ticker-item">💶 SMIC 2026 <span class="val" id="tick-wage">1,802 €</span></span>
+    <span class="ticker-item">🏠 Housing <span class="val">3,160 €/m²</span></span>
+    <span class="ticker-item">📉 Unemployment <span class="val" id="tick-unemp">7.3%</span></span>
+    <span class="ticker-item">✈ Tourists 2024 <span class="val">90M</span></span>
+    <span class="ticker-item">🌍 GDP growth <span class="val" id="tick-gdp">+0.7%</span></span>
+    <span class="ticker-item">⛽ SP 95 <span class="val" id="tick-g95b">1.740 €/L</span></span>
+    <span class="ticker-item">⛽ Diesel <span class="val" id="tick-gslb">1.720 €/L</span></span>
+    <span class="ticker-item">🛢 Brent <span class="val" id="tick-brentb">—</span></span>
+    <span class="ticker-item">💶 SMIC 2026 <span class="val" id="tick-wageb">1,802 €</span></span>
+    <span class="ticker-item">🏠 Housing <span class="val">3,160 €/m²</span></span>
+    <span class="ticker-item">📉 Unemployment <span class="val" id="tick-unempb">7.3%</span></span>
+    <span class="ticker-item">✈ Tourists 2024 <span class="val">90M</span></span>
+    <span class="ticker-item">🌍 GDP growth <span class="val" id="tick-gdpb">+0.7%</span></span>
+  </div>
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#combustiveis" class="nav-link active">⛽ Energy</a>
+    <a href="#regions" class="nav-link">🗺 Regions</a>
+    <a href="#habitacao" class="nav-link">🏠 Housing</a>
+    <a href="#rendimentos" class="nav-link">💶 Income</a>
+    <a href="#economia" class="nav-link">📊 Economy</a>
+    <a href="#evolucao" class="nav-link">📈 Historical</a>
+    <a href="#turismo" class="nav-link">✈ Tourism</a>
+    <a href="#clima" class="nav-link">🌤 Climate</a>
+    <a href="#saude" class="nav-link">🏥 Health</a>
+    <a href="#seguranca" class="nav-link">🛡 Safety</a>
+    <a href="#social" class="nav-link">👨‍👩‍👧 Society</a>
+    <a href="#europa" class="nav-link">🇪🇺 vs Europe</a>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- ═══ ENERGY & FUEL ═══ -->
+<section class="section" id="combustiveis">
+  <div class="sec-hdr">
+    <h2 class="sec-title">Energy &amp; Fuel</h2>
+    <span class="sec-tag" id="fuel-source-tag">EU Oil Bulletin · Week of May 2026</span>
+  </div>
+  <div class="notice n-ok fade">
+    <span>⚡</span>
+    <span>France is unique in Europe: <strong>~70% of electricity comes from nuclear power</strong>, making household electricity prices among the lowest in the EU (0.228 €/kWh). This also explains lower fuel-linked inflation than most EU peers.</span>
+  </div>
+  <div class="cards fade">
+    <div class="card gold" id="card-g95">
+      <div class="c-lbl">⛽ SP 95 (Gasoline)</div>
+      <div class="c-val" id="val-g95">1.740<span class="u">€/L</span></div>
+      <div class="c-sub">Sans-plomb 95 · national avg</div>
+      <span class="c-badge badge-ne" id="badge-g95">→ Stable vs last week</span>
+      <div class="c-src" id="src-g95">EU Oil Bulletin · May 2026</div>
+    </div>
+    <div class="card" id="card-g98">
+      <div class="c-lbl">⛽ SP 98 (Premium)</div>
+      <div class="c-val" id="val-g98">1.880<span class="u">€/L</span></div>
+      <div class="c-sub">Sans-plomb 98 · higher octane</div>
+      <span class="c-badge badge-ne" id="badge-g98">→ Stable</span>
+      <div class="c-src" id="src-g98">Static · May 2026</div>
+    </div>
+    <div class="card red" id="card-gsl">
+      <div class="c-lbl">⛽ Gazole (Diesel)</div>
+      <div class="c-val" id="val-gsl">1.720<span class="u">€/L</span></div>
+      <div class="c-sub">Road diesel · national avg</div>
+      <span class="c-badge badge-ne" id="badge-gsl">→ Near 2026 average</span>
+      <div class="c-src" id="src-gsl">EU Oil Bulletin · May 2026</div>
+    </div>
+    <div class="card" id="card-gpl">
+      <div class="c-lbl">⛽ GPL (Autogas)</div>
+      <div class="c-val" id="val-gpl">0.820<span class="u">€/L</span></div>
+      <div class="c-sub">Liquefied petroleum gas</div>
+      <span class="c-badge badge-dn">↓ Cheapest fuel option</span>
+      <div class="c-src" id="src-gpl">Static · May 2026</div>
+    </div>
+    <div class="card">
+      <div class="c-lbl">🛢 Brent Crude</div>
+      <div class="c-val" id="val-brent">—<span class="u">$/bbl</span></div>
+      <div class="c-sub">ICE Brent Crude</div>
+      <span class="c-badge badge-ne" id="badge-brent">→ Live data</span>
+      <div class="c-src" id="src-brent">Yahoo Finance · live</div>
+    </div>
+    <div class="card green">
+      <div class="c-lbl">⚡ Electricity</div>
+      <div class="c-val">0.228<span class="u">€/kWh</span></div>
+      <div class="c-sub">Household · ARENH tariff</div>
+      <span class="c-badge badge-dn">↓ Among lowest in EU</span>
+      <div class="c-src">Eurostat / CRE · Q1 2026</div>
+    </div>
+    <div class="card green">
+      <div class="c-lbl">🔥 Natural Gas</div>
+      <div class="c-val">0.079<span class="u">€/kWh</span></div>
+      <div class="c-sub">Household · average rate</div>
+      <span class="c-badge badge-dn">↓ Below EU avg</span>
+      <div class="c-src">Eurostat · Q1 2026</div>
+    </div>
+    <div class="card blue">
+      <div class="c-lbl">☢ Nuclear share</div>
+      <div class="c-val">70<span class="u">%</span></div>
+      <div class="c-sub">Share of electricity generation</div>
+      <span class="c-badge badge-blue">↑ Highest in the world</span>
+      <div class="c-src">RTE / EDF · 2025</div>
+    </div>
+  </div>
+  <div class="chart-card fade">
+    <div class="chart-lbl">Weekly fuel evolution 2026 (€/L) — EU Oil Bulletin</div>
+    <div class="legend">
+      <span class="leg-item"><span class="leg-dot" style="background:#002395"></span>SP 95</span>
+      <span class="leg-item"><span class="leg-dot" style="background:#ED2939"></span>Diesel</span>
+      <span class="leg-item"><span class="leg-dot" style="background:#c9a84c"></span>GPL</span>
+    </div>
+    <div style="position:relative;width:100%;height:220px"><canvas id="fuelWeeklyChart"></canvas></div>
+  </div>
+</section>
+
+<!-- ═══ REGIONS ═══ -->
+<section class="section" id="regions">
+  <div class="sec-hdr">
+    <h2 class="sec-title">Metropolitan Regions</h2>
+    <span class="sec-tag">13 régions · INSEE 2024–2025</span>
+  </div>
+  <div class="notice n-info fade">
+    <span>🗺</span>
+    <span>France has <strong>13 metropolitan regions</strong> (plus 5 overseas) since the 2016 territorial reform. Huge disparities exist: Île-de-France alone generates <strong>~30% of national GDP</strong>, while housing costs in Paris are 3× the national average.</span>
+  </div>
+  <div class="regions-grid fade">
+    <div class="region-card">
+      <div class="rc-name">🏙 Île-de-France</div>
+      <div class="rc-capital">Capital: Paris · 12.2M pop.</div>
+      <div class="rc-row"><span class="rc-key">Housing</span><span class="rc-val" style="color:var(--red)">9,800 €/m²</span></div>
+      <div class="rc-row"><span class="rc-key">Unemployment</span><span class="rc-val">6.8%</span></div>
+      <div class="rc-row"><span class="rc-key">Avg salary</span><span class="rc-val">3,800 €/mo</span></div>
+    </div>
+    <div class="region-card">
+      <div class="rc-name">⛰ Auvergne-Rhône-Alpes</div>
+      <div class="rc-capital">Capital: Lyon · 8.1M pop.</div>
+      <div class="rc-row"><span class="rc-key">Housing</span><span class="rc-val">3,800 €/m²</span></div>
+      <div class="rc-row"><span class="rc-key">Unemployment</span><span class="rc-val">6.5%</span></div>
+      <div class="rc-row"><span class="rc-key">Avg salary</span><span class="rc-val">3,100 €/mo</span></div>
+    </div>
+    <div class="region-card">
+      <div class="rc-name">☀️ Provence-Alpes-Côte d'Azur</div>
+      <div class="rc-capital">Capital: Marseille · 5.1M pop.</div>
+      <div class="rc-row"><span class="rc-key">Housing</span><span class="rc-val">3,900 €/m²</span></div>
+      <div class="rc-row"><span class="rc-key">Unemployment</span><span class="rc-val">9.0%</span></div>
+      <div class="rc-row"><span class="rc-key">Avg salary</span><span class="rc-val">2,800 €/mo</span></div>
+    </div>
+    <div class="region-card">
+      <div class="rc-name">🌻 Nouvelle-Aquitaine</div>
+      <div class="rc-capital">Capital: Bordeaux · 6.2M pop.</div>
+      <div class="rc-row"><span class="rc-key">Housing</span><span class="rc-val">3,500 €/m²</span></div>
+      <div class="rc-row"><span class="rc-key">Unemployment</span><span class="rc-val">8.5%</span></div>
+      <div class="rc-row"><span class="rc-key">Avg salary</span><span class="rc-val">2,700 €/mo</span></div>
+    </div>
+    <div class="region-card">
+      <div class="rc-name">🌸 Occitanie</div>
+      <div class="rc-capital">Capital: Toulouse · 6.1M pop.</div>
+      <div class="rc-row"><span class="rc-key">Housing</span><span class="rc-val">3,100 €/m²</span></div>
+      <div class="rc-row"><span class="rc-key">Unemployment</span><span class="rc-val">9.2%</span></div>
+      <div class="rc-row"><span class="rc-key">Avg salary</span><span class="rc-val">2,650 €/mo</span></div>
+    </div>
+    <div class="region-card">
+      <div class="rc-name">🏭 Hauts-de-France</div>
+      <div class="rc-capital">Capital: Lille · 6.0M pop.</div>
+      <div class="rc-row"><span class="rc-key">Housing</span><span class="rc-val" style="color:var(--green)">2,100 €/m²</span></div>
+      <div class="rc-row"><span class="rc-key">Unemployment</span><span class="rc-val" style="color:var(--red)">11.2%</span></div>
+      <div class="rc-row"><span class="rc-key">Avg salary</span><span class="rc-val">2,500 €/mo</span></div>
+    </div>
+    <div class="region-card">
+      <div class="rc-name">🏰 Grand Est</div>
+      <div class="rc-capital">Capital: Strasbourg · 5.6M pop.</div>
+      <div class="rc-row"><span class="rc-key">Housing</span><span class="rc-val">1,900 €/m²</span></div>
+      <div class="rc-row"><span class="rc-key">Unemployment</span><span class="rc-val">8.9%</span></div>
+      <div class="rc-row"><span class="rc-key">Avg salary</span><span class="rc-val">2,600 €/mo</span></div>
+    </div>
+    <div class="region-card">
+      <div class="rc-name">🌊 Pays de la Loire</div>
+      <div class="rc-capital">Capital: Nantes · 3.9M pop.</div>
+      <div class="rc-row"><span class="rc-key">Housing</span><span class="rc-val">2,800 €/m²</span></div>
+      <div class="rc-row"><span class="rc-key">Unemployment</span><span class="rc-val" style="color:var(--green)">6.2%</span></div>
+      <div class="rc-row"><span class="rc-key">Avg salary</span><span class="rc-val">2,700 €/mo</span></div>
+    </div>
+    <div class="region-card">
+      <div class="rc-name">🐟 Bretagne</div>
+      <div class="rc-capital">Capital: Rennes · 3.4M pop.</div>
+      <div class="rc-row"><span class="rc-key">Housing</span><span class="rc-val">2,500 €/m²</span></div>
+      <div class="rc-row"><span class="rc-key">Unemployment</span><span class="rc-val">6.5%</span></div>
+      <div class="rc-row"><span class="rc-key">Avg salary</span><span class="rc-val">2,600 €/mo</span></div>
+    </div>
+  </div>
+  <div class="chart-card fade">
+    <div class="chart-lbl">Housing price by region — 2025 (€/m²)</div>
+    <div style="position:relative;width:100%;height:300px"><canvas id="regionHousingChart"></canvas></div>
+  </div>
+</section>
+
+<!-- ═══ HOUSING ═══ -->
+<section class="section" id="habitacao">
+  <div class="sec-hdr">
+    <h2 class="sec-title">Housing</h2>
+    <span class="sec-tag">INSEE / Notaires de France · Q4 2025</span>
+  </div>
+  <div class="notice n-alert fade">
+    <span>🚨</span>
+    <span><strong>Paris paradox:</strong> Prices declined <strong>−12%</strong> from the 2022 peak of ~11,200 €/m² to 9,800 €/m² in 2025, yet Paris remains the most expensive city in Continental Europe. National median reached <strong>3,160 €/m²</strong>. Rents in major cities keep rising despite price correction.</span>
+  </div>
+  <div class="cards fade">
+    <div class="card"><div class="c-lbl">🇫🇷 National median</div><div class="c-val">3,160<span class="u">€/m²</span></div><div class="c-sub">Houses + apartments</div><span class="c-badge badge-ne">→ Stabilising</span><div class="c-src">Notaires de France · Q4 2025</div></div>
+    <div class="card red"><div class="c-lbl">🏙 Paris (city)</div><div class="c-val">9,800<span class="u">€/m²</span></div><span class="c-badge badge-dn">↓ −12% from 2022 peak</span><div class="c-src">Notaires de France · Q4 2025</div></div>
+    <div class="card"><div class="c-lbl">🏙 Lyon</div><div class="c-val">4,900<span class="u">€/m²</span></div><span class="c-badge badge-ne">→ −4% from peak</span><div class="c-src">Notaires · Q4 2025</div></div>
+    <div class="card"><div class="c-lbl">🌊 Nice</div><div class="c-val">4,700<span class="u">€/m²</span></div><span class="c-badge badge-ne">→ Stable</span><div class="c-src">Notaires · Q4 2025</div></div>
+    <div class="card"><div class="c-lbl">🍷 Bordeaux</div><div class="c-val">4,200<span class="u">€/m²</span></div><span class="c-badge badge-dn">↓ −8% from 2022</span><div class="c-src">Notaires · Q4 2025</div></div>
+    <div class="card"><div class="c-lbl">🌹 Toulouse</div><div class="c-val">3,400<span class="u">€/m²</span></div><span class="c-badge badge-ne">→ Stable · growing city</span><div class="c-src">Notaires · Q4 2025</div></div>
+    <div class="card"><div class="c-lbl">🏘 National rental T2</div><div class="c-val">820<span class="u">€/mo</span></div><span class="c-badge badge-up">↑ +5% vs 2024</span><div class="c-src">SeLoger / LocService · 2025</div></div>
+    <div class="card red"><div class="c-lbl">🔑 Paris rental T2</div><div class="c-val">1,680<span class="u">€/mo</span></div><span class="c-badge badge-up">↑ +7% vs 2024</span><div class="c-src">SeLoger · 2025</div></div>
+  </div>
+  <div class="chart-card fade">
+    <div class="chart-lbl">Paris price evolution vs national median (€/m²)</div>
+    <div style="position:relative;width:100%;height:280px"><canvas id="housingChart"></canvas></div>
+  </div>
+</section>
+
+<!-- ═══ INCOME & WORK ═══ -->
+<section class="section" id="rendimentos">
+  <div class="sec-hdr">
+    <h2 class="sec-title">Income &amp; Work</h2>
+    <span class="sec-tag">INSEE / Eurostat · 2025–2026</span>
+  </div>
+  <div class="cards fade">
+    <div class="card gold"><div class="c-lbl">💶 Average gross salary</div><div class="c-val">3,400<span class="u">€/mo</span></div><div class="c-sub">Full-time equivalent · +3.1% YoY</div><span class="c-badge badge-dn">↑ Above EU avg</span><div class="c-src">INSEE · 2026</div></div>
+    <div class="card"><div class="c-lbl">💶 Median net salary</div><div class="c-val">2,200<span class="u">€/mo</span></div><div class="c-sub">More representative</div><span class="c-badge badge-ne">→ 50th percentile</span><div class="c-src">INSEE · 2025</div></div>
+    <div class="card gold"><div class="c-lbl">📋 SMIC (min. wage)</div><div class="c-val">1,802<span class="u">€/mo</span></div><div class="c-sub">Gross · 2026 · net ~1,426 €</div><span class="c-badge badge-dn">↑ +2.0% from 2025</span><div class="c-src">Décret · Jan 2026</div></div>
+    <div class="card red"><div class="c-lbl">📉 Unemployment</div><div class="c-val" id="fr-unemp">7.3<span class="u">%</span></div><div class="c-sub">Q1 2026 · 2.25M people</div><span class="c-badge badge-ne">→ Near 20-yr low</span><div class="c-src">INSEE / Eurostat · Q1 2026</div></div>
+    <div class="card red"><div class="c-lbl">👶 Youth unemployment (15–24)</div><div class="c-val" id="fr-youth-unemp">17.5<span class="u">%</span></div><div class="c-sub">Structural challenge</div><span class="c-badge badge-up">↑ Above EU avg (15.4%)</span><div class="c-src">Eurostat · Mar 2026</div></div>
+    <div class="card"><div class="c-lbl">👥 Total employed</div><div class="c-val">29.5<span class="u">M</span></div><div class="c-sub">Record high</div><span class="c-badge badge-dn">↑ +280k in 2025</span><div class="c-src">INSEE · Q1 2026</div></div>
+    <div class="card"><div class="c-lbl">🏢 Labour participation</div><div class="c-val">68.2<span class="u">%</span></div><span class="c-badge badge-dn">↑ +0.4pp vs Q4 2025</span><div class="c-src">INSEE · Q1 2026</div></div>
+    <div class="card blue"><div class="c-lbl">⏱ Legal working week</div><div class="c-val">35<span class="u">hrs</span></div><div class="c-sub">Since 2000 · famous policy</div><span class="c-badge badge-blue">→ Unique in EU</span><div class="c-src">Code du Travail · 2000</div></div>
+  </div>
+  <div class="chart-card fade">
+    <div class="chart-lbl">Average gross salary evolution (€/year)</div>
+    <div style="position:relative;width:100%;height:240px"><canvas id="salaryHistChart"></canvas></div>
+  </div>
+</section>
+
+<!-- ═══ ECONOMY ═══ -->
+<section class="section" id="economia">
+  <div class="sec-hdr">
+    <h2 class="sec-title">Economy</h2>
+    <span class="sec-tag">European Commission / INSEE / Banque de France · 2025–2026</span>
+  </div>
+  <div class="notice n-warn fade">
+    <span>⚠️</span>
+    <span>France's <strong>public debt (112% of GDP)</strong> and budget deficit (<strong>5.4% of GDP</strong>) are well above EU treaty limits, triggering a European Commission Excessive Deficit Procedure in 2024. Fiscal consolidation is the top policy challenge for 2026.</span>
+  </div>
+  <div class="kpi-row fade">
+    <div class="kpi"><div class="kpi-val">2.87T</div><div class="kpi-lbl">GDP 2025 (€)</div><span class="kpi-chg badge-blue">2nd largest EU</span></div>
+    <div class="kpi"><div class="kpi-val">41,900</div><div class="kpi-lbl">GDP per capita (€)</div><span class="kpi-chg badge-dn">Above EU avg</span></div>
+    <div class="kpi"><div class="kpi-val" id="fr-gdp">+0.7%</div><div class="kpi-lbl">GDP growth 2026</div><span class="kpi-chg" style="background:#fef0f0;color:var(--red)">↓ Below EU avg</span></div>
+    <div class="kpi"><div class="kpi-val" id="fr-inflation">1.3%</div><div class="kpi-lbl">Inflation 2026</div><span class="kpi-chg badge-dn" style="background:#eef6f2;color:#1a6b40">↓ Well below EU avg</span></div>
+    <div class="kpi"><div class="kpi-val">112%</div><div class="kpi-lbl">Public debt / GDP</div><span class="kpi-chg badge-up" style="background:#fef0f0;color:var(--red)">↑ EDP triggered</span></div>
+    <div class="kpi"><div class="kpi-val">5.4%</div><div class="kpi-lbl">Budget deficit 2025</div><span class="kpi-chg badge-up" style="background:#fef0f0;color:var(--red)">↑ Maastricht: 3%</span></div>
+  </div>
+  <div class="cards fade">
+    <div class="card"><div class="c-lbl">🏦 ECB rate</div><div class="c-val" id="fr-ecb-rate">2.25<span class="u">%</span></div><div class="c-sub">Apr 2026</div><span class="c-badge badge-dn">↓ From 4.0% in 2024</span><div class="c-src">ECB · Apr 2026</div></div>
+    <div class="card gold"><div class="c-lbl">📊 Euribor 12m</div><div class="c-val" id="fr-euribor">2.24<span class="u">%</span></div><div class="c-sub">May 2026</div><span class="c-badge badge-dn">↓ From 4.1% in 2023</span><div class="c-src">ECB · 2026</div></div>
+    <div class="card red"><div class="c-lbl">🏛 Trade balance</div><div class="c-val">−87<span class="u">B€</span></div><div class="c-sub">Structural deficit</div><span class="c-badge badge-up">↑ Improving slowly</span><div class="c-src">Douanes · 2025</div></div>
+    <div class="card green"><div class="c-lbl">💼 Private consumption</div><div class="c-val">+1.4<span class="u">%</span></div><div class="c-sub">Key growth driver</div><span class="c-badge badge-dn">↑ Supported by SMIC rise</span><div class="c-src">INSEE · 2025</div></div>
+    <div class="card"><div class="c-lbl">🏗 Investment (GFCF)</div><div class="c-val">+0.5<span class="u">%</span></div><div class="c-sub">Weakening amid austerity</div><span class="c-badge badge-up">↓ Fiscal headwinds</span><div class="c-src">EC · 2025</div></div>
+    <div class="card"><div class="c-lbl">✈ Aerospace exports</div><div class="c-val">+8<span class="u">%</span></div><div class="c-sub">Airbus, defence sector</div><span class="c-badge badge-dn">↑ Strong order book</span><div class="c-src">GIFAS · 2025</div></div>
+  </div>
+  <div class="evo-grid">
+    <div class="chart-card fade">
+      <div class="chart-lbl">GDP growth vs EU average (%)</div>
+      <div class="legend">
+        <span class="leg-item"><span class="leg-dot" style="background:#002395"></span>France</span>
+        <span class="leg-item"><span class="leg-dot" style="background:#c9a84c"></span>EU average</span>
+      </div>
+      <div style="position:relative;height:220px"><canvas id="gdpChart"></canvas></div>
+    </div>
+    <div class="chart-card fade">
+      <div class="chart-lbl">Inflation vs EU average (%)</div>
+      <div class="legend">
+        <span class="leg-item"><span class="leg-dot" style="background:#002395"></span>France</span>
+        <span class="leg-item"><span class="leg-dot" style="background:#c9a84c"></span>EU average</span>
+      </div>
+      <div style="position:relative;height:220px"><canvas id="inflationChart"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HISTORICAL ═══ -->
+<section class="section" id="evolucao">
+  <div class="sec-hdr">
+    <h2 class="sec-title">Historical Trends</h2>
+    <span class="sec-tag">10-year view · 2016–2026</span>
+  </div>
+  <div class="evo-tabs">
+    <button class="evo-tab active" data-panel="fuel-panel">⛽ Fuel</button>
+    <button class="evo-tab" data-panel="housing-panel">🏠 Housing</button>
+    <button class="evo-tab" data-panel="salary-panel">💶 Wages</button>
+    <button class="evo-tab" data-panel="unemploy-panel">📉 Unemployment</button>
+    <button class="evo-tab" data-panel="economy-panel">📊 Economy</button>
+  </div>
+  <div class="evo-panel active" id="fuel-panel">
+    <div class="evo-insight">SP 95 rose from <strong>1.35 €/L in 2016</strong> to <strong>1.74 €/L in 2026</strong> — a +29% increase. France's fuel prices stayed consistently <em>below</em> most EU neighbours thanks to lower distribution margins, though still ~20% above 2019 pre-crisis levels.</div>
+    <div class="chart-card fade"><div class="chart-lbl">Fuel price evolution (€/L)</div><div style="height:260px"><canvas id="fuelHistChart"></canvas></div></div>
+  </div>
+  <div class="evo-panel" id="housing-panel">
+    <div class="evo-insight">Paris peaked at <strong>11,200 €/m²</strong> in 2022 and has corrected −12% to 9,800 €/m² in 2025 — still 3× the national median. Nationally, prices rose from <strong>2,400 €/m²</strong> in 2016, a +32% increase. Higher interest rates since 2022 triggered the first broad correction in 15 years.</div>
+    <div class="chart-card fade"><div class="chart-lbl">Paris vs national median (€/m²)</div><div style="height:260px"><canvas id="housingHistChart"></canvas></div></div>
+  </div>
+  <div class="evo-panel" id="salary-panel">
+    <div class="evo-insight">The SMIC minimum wage rose from <strong>1,466 €/month</strong> in 2016 to <strong>1,802 €/month</strong> in 2026 — a +23% increase. Several automatic "coups de pouce" during high-inflation periods (2022–2023) boosted the SMIC faster than inflation. Average salaries grew from ~30,000 €/yr to ~40,800 €/yr.</div>
+    <div class="evo-grid">
+      <div class="chart-card fade"><div class="chart-lbl">Salary vs housing price</div><div style="height:220px"><canvas id="salaryVsHousingChart"></canvas></div></div>
+      <div class="chart-card fade"><div class="chart-lbl">SMIC evolution (€/mo)</div><div style="height:220px"><canvas id="minWageHistChart"></canvas></div></div>
+    </div>
+  </div>
+  <div class="evo-panel" id="unemploy-panel">
+    <div class="evo-insight">Unemployment fell steadily from <strong>10.0% in 2016</strong> to <strong>7.3% in Q1 2026</strong> — the lowest in over 20 years. The Covid peak of 9.2% in 2020 recovered quickly. Youth unemployment declined from 24% to 17.5%, though it remains well above the national rate.</div>
+    <div class="chart-card fade"><div class="chart-lbl">Unemployment rate (%)</div><div style="height:260px"><canvas id="unemployHistChart"></canvas></div></div>
+  </div>
+  <div class="evo-panel" id="economy-panel">
+    <div class="evo-insight">France's public debt rose from <strong>97% of GDP in 2016</strong> to <strong>112% in 2025</strong>, with Covid adding ~15pp. Unlike Spain, France has not reduced debt significantly post-pandemic, triggering EU monitoring. The budget deficit has been above 3% every year since 2019.</div>
+    <div class="evo-grid">
+      <div class="chart-card fade"><div class="chart-lbl">Public debt (% GDP)</div><div style="height:220px"><canvas id="debtHistChart"></canvas></div></div>
+      <div class="chart-card fade"><div class="chart-lbl">Budget balance (% GDP)</div><div style="height:220px"><canvas id="budgetHistChart"></canvas></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TOURISM ═══ -->
+<section class="section" id="turismo">
+  <div class="sec-hdr">
+    <h2 class="sec-title">Tourism</h2>
+    <span class="sec-tag">DGE / Atout France · 2024–2025</span>
+  </div>
+  <div class="tour-hero fade">
+    <div class="tour-big" style="background:var(--blue-mid);color:#fff">
+      <div>
+        <div class="tb-lbl">International arrivals 2024</div>
+        <div class="tb-val">90M</div>
+        <div class="tb-sub">All-time record · +8% vs 2023</div>
+      </div>
+      <span class="tb-badge" style="background:rgba(255,255,255,.2);color:#fff">🏆 Most visited country in the world</span>
+    </div>
+    <div class="tour-big" style="background:var(--gold);color:#222">
+      <div>
+        <div class="tb-lbl">Tourism revenue 2024</div>
+        <div class="tb-val">€68B</div>
+        <div class="tb-sub">~2.4% of France's GDP</div>
+      </div>
+      <span class="tb-badge" style="background:rgba(0,0,0,.12);color:#555">💶 Record revenue</span>
+    </div>
+    <div class="tour-big" style="background:var(--red-light);border:1px solid #ffcccc">
+      <div>
+        <div class="tb-lbl">Average spending/tourist</div>
+        <div class="tb-val">€755</div>
+        <div class="tb-sub">Up from €690 in 2023</div>
+      </div>
+      <span class="tb-badge" style="background:#fff0f0;color:var(--red)">↑ +9.4% YoY</span>
+    </div>
+  </div>
+  <div class="cards fade">
+    <div class="card"><div class="c-lbl">🇩🇪 Top market: Germany</div><div class="c-val">13.2<span class="u">M</span></div><span class="c-badge badge-dn">↑ +6%</span><div class="c-src">DGE · 2024</div></div>
+    <div class="card"><div class="c-lbl">🇧🇪 Belgium</div><div class="c-val">9.4<span class="u">M</span></div><span class="c-badge badge-dn">↑ +4%</span><div class="c-src">DGE · 2024</div></div>
+    <div class="card"><div class="c-lbl">🇬🇧 United Kingdom</div><div class="c-val">8.9<span class="u">M</span></div><span class="c-badge badge-dn">↑ +7%</span><div class="c-src">DGE · 2024</div></div>
+    <div class="card blue"><div class="c-lbl">🗼 Paris region</div><div class="c-val">35<span class="u">M</span></div><span class="c-badge badge-blue">↑ 2nd most visited city</span><div class="c-src">OT Paris · 2024</div></div>
+    <div class="card"><div class="c-lbl">🏖 Côte d'Azur</div><div class="c-val">11<span class="u">M</span></div><span class="c-badge badge-dn">↑ +9%</span><div class="c-src">CRT PACA · 2024</div></div>
+    <div class="card"><div class="c-lbl">⛷ Alps (skiing)</div><div class="c-val">9.5<span class="u">M</span></div><span class="c-badge badge-ne">→ Stable</span><div class="c-src">Atout France · 2024</div></div>
+    <div class="card"><div class="c-lbl">🏨 Hotel overnights</div><div class="c-val">330<span class="u">M</span></div><span class="c-badge badge-dn">↑ +6%</span><div class="c-src">INSEE · 2024</div></div>
+    <div class="card"><div class="c-lbl">👷 Tourism employment</div><div class="c-val">2.0<span class="u">M</span></div><div class="c-sub">~7% of total employment</div><span class="c-badge badge-ne">→ Stable</span><div class="c-src">DGE · 2024</div></div>
+  </div>
+  <div class="chart-card fade">
+    <div class="chart-lbl">International arrivals by year (millions)</div>
+    <div style="height:220px"><canvas id="tourHistChart"></canvas></div>
+  </div>
+</section>
+
+<!-- ═══ CLIMATE ═══ -->
+<section class="section" id="clima">
+  <div class="sec-hdr">
+    <h2 class="sec-title">Climate</h2>
+    <span class="sec-tag">Météo-France · 2024–2025</span>
+  </div>
+  <div class="notice n-info fade">
+    <span>🌡</span>
+    <span>France spans <strong>4 climate zones</strong>: oceanic in the northwest, continental in the east and centre, Mediterranean in the south, and alpine in the mountains. Average temperatures have risen <strong>+1.7°C</strong> since pre-industrial times — faster than the global average.</span>
+  </div>
+  <div class="clima-grid fade">
+    <div class="clima-card"><div class="clima-icon">🌤</div><div class="clima-city">Paris</div><div class="clima-temp">12.6°C</div><div class="clima-sub">~1,661 hrs sun/yr</div></div>
+    <div class="clima-card"><div class="clima-icon">☀️</div><div class="clima-city">Marseille</div><div class="clima-temp">15.8°C</div><div class="clima-sub">~2,805 hrs sun/yr</div></div>
+    <div class="clima-card"><div class="clima-icon">☀️</div><div class="clima-city">Nice</div><div class="clima-temp">17.0°C</div><div class="clima-sub">Mediterranean · mild winters</div></div>
+    <div class="clima-card"><div class="clima-icon">🌤</div><div class="clima-city">Toulouse</div><div class="clima-temp">14.8°C</div><div class="clima-sub">~2,000 hrs sun/yr</div></div>
+    <div class="clima-card"><div class="clima-icon">🍷</div><div class="clima-city">Bordeaux</div><div class="clima-temp">14.2°C</div><div class="clima-sub">Oceanic · mild winters</div></div>
+    <div class="clima-card"><div class="clima-icon">⛰</div><div class="clima-city">Lyon</div><div class="clima-temp">12.4°C</div><div class="clima-sub">~1,959 hrs sun/yr</div></div>
+    <div class="clima-card"><div class="clima-icon">🌨</div><div class="clima-city">Strasbourg</div><div class="clima-temp">11.5°C</div><div class="clima-sub">Continental · cold winters</div></div>
+    <div class="clima-card"><div class="clima-icon">🌊</div><div class="clima-city">Biarritz</div><div class="clima-temp">15.2°C</div><div class="clima-sub">Atlantic coast · surf capital</div></div>
+    <div class="clima-card"><div class="clima-icon">🏔</div><div class="clima-city">Chamonix</div><div class="clima-temp">5.2°C</div><div class="clima-sub">Alpine · skiing ~200 days</div></div>
+    <div class="clima-card"><div class="clima-icon">🌧</div><div class="clima-city">Brest</div><div class="clima-temp">12.8°C</div><div class="clima-sub">Rainiest city in France</div></div>
+  </div>
+  <div class="cards fade">
+    <div class="card"><div class="c-lbl">🌿 CO₂ emissions</div><div class="c-val">4.6<span class="u">t/capita</span></div><span class="c-badge badge-dn">↓ −18% vs 2010 (nuclear)</span><div class="c-src">CITEPA · 2024</div></div>
+    <div class="card green"><div class="c-lbl">☢ Low-carbon electricity</div><div class="c-val">92<span class="u">%</span></div><div class="c-sub">Nuclear + renewables</div><span class="c-badge badge-dn">↑ Best in large EU nations</span><div class="c-src">RTE · 2025</div></div>
+    <div class="card red"><div class="c-lbl">🔥 Extreme heat 2023</div><div class="c-val">38°C+</div><div class="c-sub">Record Paris: 40.1°C in 2023</div><span class="c-badge badge-up">↑ Heat waves intensifying</span><div class="c-src">Météo-France · 2023</div></div>
+    <div class="card"><div class="c-lbl">🌊 Sea level rise</div><div class="c-val">+3.7<span class="u">mm/yr</span></div><div class="c-sub">Atlantic & Med coasts</div><span class="c-badge badge-up">↑ Accelerating</span><div class="c-src">SHOM · 2024</div></div>
+  </div>
+</section>
+
+<!-- ═══ HEALTH ═══ -->
+<section class="section" id="saude">
+  <div class="sec-hdr">
+    <h2 class="sec-title">Healthcare</h2>
+    <span class="sec-tag">DREES / Eurostat · 2024–2025</span>
+  </div>
+  <div class="notice n-ok fade">
+    <span>🏥</span>
+    <span>France's <strong>Sécurité Sociale</strong> provides universal public healthcare. The WHO (2000) ranked the French health system <strong>1st in the world</strong>. France spends the most on healthcare in the EU as a % of GDP (11.9%) — though with growing challenges of <em>déserts médicaux</em> (GP shortages in rural areas).</span>
+  </div>
+  <div class="health-grid fade">
+    <div>
+      <div class="cards" style="grid-template-columns:1fr 1fr">
+        <div class="card gold"><div class="c-lbl">🎂 Life expectancy</div><div class="c-val">82.3<span class="u">yrs</span></div><span class="c-badge badge-dn">↑ Above EU avg (81.2)</span><div class="c-src">Eurostat · 2023</div></div>
+        <div class="card green"><div class="c-lbl">💰 Health expenditure</div><div class="c-val">11.9<span class="u">% GDP</span></div><span class="c-badge badge-dn">↑ Highest in EU</span><div class="c-src">OECD · 2023</div></div>
+        <div class="card"><div class="c-lbl">👨‍⚕️ Doctors / 1000 pop.</div><div class="c-val">3.4</div><span class="c-badge badge-ne">→ Below EU avg (3.9)</span><div class="c-src">Eurostat · 2023</div></div>
+        <div class="card green"><div class="c-lbl">🛏 Hospital beds / 1000</div><div class="c-val">5.8</div><span class="c-badge badge-dn">↑ Above EU avg (4.6)</span><div class="c-src">Eurostat · 2023</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="cards" style="grid-template-columns:1fr 1fr">
+        <div class="card"><div class="c-lbl">🏥 Hospitals</div><div class="c-val">3,057</div><span class="c-badge badge-ne">→ Public + private</span><div class="c-src">DREES · 2024</div></div>
+        <div class="card green"><div class="c-lbl">👶 Infant mortality</div><div class="c-val">3.7<span class="u">/1000</span></div><span class="c-badge badge-ne">→ Near EU avg</span><div class="c-src">Eurostat · 2023</div></div>
+        <div class="card red"><div class="c-lbl">🩺 GP deserts</div><div class="c-val">6M</div><div class="c-sub">People without nearby GP</div><span class="c-badge badge-up">↑ Growing problem</span><div class="c-src">DREES · 2024</div></div>
+        <div class="card"><div class="c-lbl">🔬 Nurses / 1000</div><div class="c-val">10.8</div><span class="c-badge badge-dn">↑ Well above EU avg (6.3)</span><div class="c-src">Eurostat · 2023</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SAFETY ═══ -->
+<section class="section" id="seguranca">
+  <div class="sec-hdr">
+    <h2 class="sec-title">Safety</h2>
+    <span class="sec-tag">IEP Global Peace Index / Ministère de l'Intérieur · 2024</span>
+  </div>
+  <div class="safety-rank fade">
+    <div class="sr-num">67</div>
+    <div class="sr-txt">
+      <div class="sr-title">Global Peace Index — world ranking</div>
+      <div class="sr-sub">67th most peaceful globally · 19th in the EU · IEP GPI 2024 · score impacted by terrorism history</div>
+    </div>
+  </div>
+  <div class="notice n-warn fade">
+    <span>🛡</span>
+    <span>France remains on <strong>VIGIPIRATE "Emergency" level</strong> since 2015, the highest terrorist threat. The 2015 Paris attacks (137 deaths) and 2016 Nice attack (86 deaths) permanently elevated the threat assessment, despite no major attacks since 2020.</span>
+  </div>
+  <div class="cards fade">
+    <div class="card"><div class="c-lbl">🔒 Safety perception</div><div class="c-val">68<span class="u">%</span></div><div class="c-sub">Feel safe walking alone at night</div><span class="c-badge badge-ne">→ Near EU avg</span><div class="c-src">Eurobarometer · 2024</div></div>
+    <div class="card"><div class="c-lbl">🚔 Homicide rate</div><div class="c-val">1.2<span class="u">/100k</span></div><span class="c-badge badge-ne">→ Near EU avg</span><div class="c-src">Eurostat · 2023</div></div>
+    <div class="card red"><div class="c-lbl">🚗 Road fatalities</div><div class="c-val">3,170</div><div class="c-sub">2024 · per year</div><span class="c-badge badge-dn">↓ −3% vs 2023</span><div class="c-src">ONISR · 2024</div></div>
+    <div class="card red"><div class="c-lbl">🌊 Terrorism threat</div><div class="c-val">High</div><span class="c-badge badge-up">⚠ VIGIPIRATE Emergency</span><div class="c-src">SGDSN · 2024</div></div>
+    <div class="card"><div class="c-lbl">💻 Cybercrime</div><div class="c-val">+22<span class="u">%</span></div><div class="c-sub">Incidents 2024</div><span class="c-badge badge-up">↑ Rising fast</span><div class="c-src">ANSSI · 2024</div></div>
+    <div class="card gold"><div class="c-lbl">🏅 Olympic security 2024</div><div class="c-val">45,000</div><div class="c-sub">Officers deployed · Paris Games</div><span class="c-badge badge-dn">✓ Event-free</span><div class="c-src">Préfecture · 2024</div></div>
+  </div>
+</section>
+
+<!-- ═══ SOCIETY ═══ -->
+<section class="section" id="social">
+  <div class="sec-hdr">
+    <h2 class="sec-title">Society</h2>
+    <span class="sec-tag">INSEE / Eurostat · 2024–2025</span>
+  </div>
+  <div class="cards fade">
+    <div class="card"><div class="c-lbl">👥 Population</div><div class="c-val">68.4<span class="u">M</span></div><div class="c-sub">Jan 2026 est.</div><span class="c-badge badge-dn">↑ +0.3% in 2025</span><div class="c-src">INSEE · 2026</div></div>
+    <div class="card gold"><div class="c-lbl">🎓 University graduates</div><div class="c-val">38<span class="u">%</span></div><div class="c-sub">Share of 25–64 population</div><span class="c-badge badge-dn">↑ Above EU avg (35%)</span><div class="c-src">Eurostat · 2024</div></div>
+    <div class="card"><div class="c-lbl">👶 Birth rate</div><div class="c-val">1.68</div><div class="c-sub">Fertility rate · declining</div><span class="c-badge badge-ne">→ 2nd highest in EU</span><div class="c-src">INSEE · 2024</div></div>
+    <div class="card green"><div class="c-lbl">💰 Poverty risk (AROPE)</div><div class="c-val">15.8<span class="u">%</span></div><div class="c-sub">At-risk-of-poverty</div><span class="c-badge badge-dn">↓ Below EU avg (21.4%)</span><div class="c-src">Eurostat · 2024</div></div>
+    <div class="card"><div class="c-lbl">👴 Population 65+</div><div class="c-val">21.4<span class="u">%</span></div><div class="c-sub">Ageing population</div><span class="c-badge badge-up">↑ Rising · pension reform tension</span><div class="c-src">INSEE · 2025</div></div>
+    <div class="card"><div class="c-lbl">🌍 Foreign born</div><div class="c-val">12.9<span class="u">%</span></div><div class="c-sub">Share of population</div><span class="c-badge badge-ne">→ Stable</span><div class="c-src">INSEE · 2025</div></div>
+    <div class="card red"><div class="c-lbl">📋 Pension reform 2023</div><div class="c-val">64<span class="u">yrs</span></div><div class="c-sub">New retirement age · contested</div><span class="c-badge badge-up">↑ Major protests</span><div class="c-src">Loi n°2023-270</div></div>
+    <div class="card blue"><div class="c-lbl">⏱ Paid leave</div><div class="c-val">25<span class="u">days/yr</span></div><div class="c-sub">Legal minimum (5 weeks)</div><span class="c-badge badge-blue">→ Among best in EU</span><div class="c-src">Code du Travail</div></div>
+  </div>
+</section>
+
+<!-- ═══ vs EUROPE ═══ -->
+<section class="section" id="europa">
+  <div class="sec-hdr">
+    <h2 class="sec-title">France vs Europe</h2>
+    <span class="sec-tag">Eurostat · 2025–2026</span>
+  </div>
+  <div class="notice n-info fade"><span>📊</span><span>France performs <strong>above EU average</strong> in: GDP size, healthcare quality, life expectancy, birth rate, low-carbon electricity, tourism. It falls <strong>below</strong> in: GDP growth, public debt, budget discipline, youth unemployment, and safety index.</span></div>
+  <div class="ctable fade">
+    <table>
+      <thead><tr><th>Indicator</th><th>France</th><th>EU Average</th><th>Assessment</th></tr></thead>
+      <tbody>
+        <tr><td>GDP (total, 2025)</td><td>€2.87T</td><td>—</td><td class="rank-good">2nd largest in EU</td></tr>
+        <tr><td>GDP per capita</td><td>€41,900</td><td>€34,900</td><td class="rank-good">20% above average</td></tr>
+        <tr><td>GDP growth 2026</td><td>+0.7%</td><td>+1.5%</td><td class="rank-bad">Underperforming</td></tr>
+        <tr><td>Unemployment rate</td><td>7.3%</td><td>6.0%</td><td class="rank-ok">Above average</td></tr>
+        <tr><td>Youth unemployment (15–24)</td><td>17.5%</td><td>15.4%</td><td class="rank-ok">Slightly above avg</td></tr>
+        <tr><td>Inflation 2026</td><td>1.3%</td><td>2.6%</td><td class="rank-good">Half the EU average</td></tr>
+        <tr><td>Public debt</td><td>112% GDP</td><td>83% GDP</td><td class="rank-bad">EDP triggered</td></tr>
+        <tr><td>Budget deficit</td><td>5.4% GDP</td><td>~2.5% GDP</td><td class="rank-bad">Maastricht breach</td></tr>
+        <tr><td>Life expectancy</td><td>82.3 yrs</td><td>81.2 yrs</td><td class="rank-good">Above average</td></tr>
+        <tr><td>Health expenditure</td><td>11.9% GDP</td><td>9.7% GDP</td><td class="rank-good">Highest in EU</td></tr>
+        <tr><td>Min. wage (monthly gross)</td><td>€1,802</td><td>~€1,100</td><td class="rank-good">3rd highest in EU</td></tr>
+        <tr><td>International tourism</td><td>90M</td><td>—</td><td class="rank-good">1st globally</td></tr>
+        <tr><td>Low-carbon electricity</td><td>92%</td><td>44%</td><td class="rank-good">Best among large EU</td></tr>
+        <tr><td>At-risk-of-poverty</td><td>15.8%</td><td>21.4%</td><td class="rank-good">5.6pp below average</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <div>
+      <h4>Data Sources</h4>
+      <ul>
+        <li><a href="https://www.insee.fr">INSEE</a> — National statistics</li>
+        <li><a href="https://ec.europa.eu/eurostat">Eurostat</a> — European data</li>
+        <li><a href="https://www.notaires.fr">Notaires de France</a> — Housing</li>
+        <li><a href="https://www.cre.fr">CRE</a> — Energy regulation</li>
+        <li><a href="https://www.rte-france.com">RTE</a> — Electricity grid</li>
+        <li><a href="https://www.banque-france.fr">Banque de France</a></li>
+        <li><a href="https://www.dge.gouv.fr">DGE</a> — Tourism data</li>
+        <li><a href="https://www.meteofrance.fr">Météo-France</a> — Climate</li>
+        <li><a href="https://www.securite-routiere.gouv.fr">ONISR</a> — Road safety</li>
+        <li><a href="https://www.visionofhumanity.org">IEP</a> — Global Peace Index</li>
+        <li><a href="https://finance.yahoo.com">Yahoo Finance</a> — Brent (live)</li>
+      </ul>
+    </div>
+    <div class="foot-badge">
+      <strong>v1.0</strong>
+      🇫🇷 France · Live API<br>
+      <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">Next: Germany</span>
+    </div>
+  </div>
+  <p class="foot-disc">Data updated automatically via EU Oil Bulletin and Eurostat APIs. Static values show their reference dates. EU Stats is an independent project. Data for informational purposes only.</p>
+</footer>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" crossorigin="anonymous"></script>
+<script>
+'use strict';
+const API_BASE = 'https://eu-stats-production.up.railway.app';
+const MONTHS   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const YRS      = ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
+
+// Date stamp
+const now = new Date();
+const dateStr = now.getDate() + ' ' + MONTHS[now.getMonth()] + ' ' + now.getFullYear();
+document.querySelectorAll('#upd-date').forEach(e => { if(e) e.textContent = dateStr; });
+
+// ── Offline banner ──
+let fuelFailed = false, statsFailed = false;
+function updateOfflineBanner() {
+  const b = document.getElementById('offline-banner');
+  if (b) b.style.display = (fuelFailed && statsFailed) ? 'block' : 'none';
+}
+
+// ── Fallback fuel data ──
+const FALLBACK = {
+  gasolina95: { atual: 1.740, variacao: 0 },
+  gasoleo:    { atual: 1.720, variacao: 0 },
+  gpl:        { atual: 0.820, variacao: 0 },
+  gasolina98: { atual: 1.880, variacao: 0 },
+};
+const FALLBACK_BRENT = { preco: 108.17, moeda: 'USD' };
+
+function fmt(n, dec=3) { return n != null ? n.toFixed(dec) : '—'; }
+function set(id, txt)  { const e = document.getElementById(id); if(e) e.textContent = txt; }
+
+function updateFuelCards(d, brent, fonte) {
+  const g95  = d?.fr_gasolina95 ?? d?.gasolina95;
+  const gsl  = d?.fr_gasoleo ?? d?.gasoleo;
+  const gpl  = d?.gpl;
+  const g98  = d?.gasolina98;
+
+  if (g95) {
+    set('val-g95', fmt(g95.atual) + ' €/L');
+    set('tick-g95',  fmt(g95.atual) + ' €/L');
+    set('tick-g95b', fmt(g95.atual) + ' €/L');
+    const chg95 = g95.variacao ?? 0;
+    set('badge-g95', chg95 > 0.001 ? `↑ +${fmt(chg95,3)}€ vs last week` : chg95 < -0.001 ? `↓ ${fmt(chg95,3)}€ vs last week` : '→ Stable vs last week');
+  }
+  if (gsl) {
+    set('val-gsl', fmt(gsl.atual) + ' €/L');
+    set('tick-gsl',  fmt(gsl.atual) + ' €/L');
+    set('tick-gslb', fmt(gsl.atual) + ' €/L');
+    const chgsl = gsl.variacao ?? 0;
+    set('badge-gsl', chgsl > 0.001 ? `↑ +${fmt(chgsl,3)}€ vs last week` : chgsl < -0.001 ? `↓ ${fmt(chgsl,3)}€ vs last week` : '→ Near 2026 average');
+  }
+  if (gpl)  set('val-gpl', fmt(gpl.atual) + ' €/L');
+  if (g98)  set('val-g98', fmt(g98.atual) + ' €/L');
+  if (brent?.preco) {
+    const bp = fmt(brent.preco, 2);
+    set('val-brent', bp + ' $/bbl');
+    set('tick-brent', bp + ' $/bbl'); set('tick-brentb', bp + ' $/bbl');
+    set('badge-brent', '→ ICE Brent · live');
+    set('src-brent', 'Yahoo Finance · live');
+  }
+
+  const isLive = fonte && fonte !== 'fallback';
+  const badge = document.getElementById('live-badge');
+  if (badge) {
+    if (isLive) { badge.className = 'live-badge live'; badge.textContent = '⬤ Live data · EU Oil Bulletin'; }
+    else        { badge.className = 'live-badge cached'; badge.textContent = '📌 Cached data · May 2026'; }
+  }
+  const srcTag = document.getElementById('fuel-source-tag');
+  const srcTxt = d?.fr_gasolina95?.dataActual ?? d?.gasolina95?.dataActual ?? '—';
+  if (srcTag && isLive) srcTag.textContent = 'EU Oil Bulletin · ' + srcTxt;
+}
+
+updateFuelCards(FALLBACK, FALLBACK_BRENT, 'fallback');
+
+// ── Live data ──
+async function loadLiveData() {
+  try {
+    const ctrl  = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 5000);
+    const res   = await fetch(API_BASE + '/api/combustiveis', { signal: ctrl.signal });
+    clearTimeout(timer);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+    if (json.ok) {
+      updateFuelCards(json.combustiveis, json.brent, json.combustiveis?.fonte);
+      fuelFailed = false; updateOfflineBanner();
+    }
+  } catch(e) {
+    fuelFailed = true; updateOfflineBanner();
+    const badge = document.getElementById('live-badge');
+    if (badge) { badge.className = 'live-badge offline'; badge.textContent = '📌 Backend offline · static data'; }
+  }
+}
+loadLiveData();
+setInterval(loadLiveData, 10 * 60 * 1000);
+
+async function loadStats() {
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 8000);
+    const res = await fetch(API_BASE + '/api/stats', { signal: ctrl.signal });
+    clearTimeout(timer);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+    if (!json.ok) return;
+    const fr = json.eurostat?.fr;
+    const ecb = json.ecb?.rate;
+    const euribor = json.euribor?.rate;
+    if (fr?.unemp?.value != null) {
+      const v = fr.unemp.value;
+      set('fr-unemp', v + '%'); set('tick-unemp', v+'%'); set('tick-unempb', v+'%');
+    }
+    if (fr?.youth_unemp?.value != null) set('fr-youth-unemp', fr.youth_unemp.value + '%');
+    if (fr?.gdp?.value != null) {
+      const s = fr.gdp.value >= 0 ? '+' : '';
+      set('fr-gdp', s + fr.gdp.value + '%');
+      set('tick-gdp', s + fr.gdp.value + '%'); set('tick-gdpb', s + fr.gdp.value + '%');
+    }
+    if (fr?.inflation?.value != null) set('fr-inflation', fr.inflation.value + '%');
+    if (fr?.min_wage?.value != null) {
+      const v = fr.min_wage.value;
+      set('tick-wage', v.toLocaleString('en-GB') + ' €'); set('tick-wageb', v.toLocaleString('en-GB') + ' €');
+    }
+    if (ecb != null) set('fr-ecb-rate', ecb + '%');
+    if (euribor != null) set('fr-euribor', euribor + '%');
+    statsFailed = false; updateOfflineBanner();
+  } catch(e) { statsFailed = true; updateOfflineBanner(); }
+}
+loadStats();
+setInterval(loadStats, 30 * 60 * 1000);
+
+// ── Nav scroll spy ──
+const navLinks = document.querySelectorAll('.nav-link');
+const sections = document.querySelectorAll('.section');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => { if(window.scrollY >= s.offsetTop - 80) cur = s.id; });
+  navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + cur));
+}, { passive: true });
+
+// ── Fade-in ──
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade.anim').forEach(el => obs.observe(el));
+document.querySelectorAll('.fade').forEach(el => { el.classList.add('anim'); obs.observe(el); });
+
+// ── Evo tabs ──
+document.querySelectorAll('.evo-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const panel = btn.dataset.panel;
+    document.querySelectorAll('.evo-tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.evo-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(panel)?.classList.add('active');
+  });
+});
+
+// ── Chart defaults ──
+if (typeof Chart !== 'undefined') {
+  Chart.defaults.font.family = 'DM Sans';
+  Chart.defaults.color = '#6b6860';
+  Chart.defaults.borderColor = 'rgba(0,0,0,.06)';
+}
+
+// ── Charts ──
+function makeChart(id, config) {
+  const el = document.getElementById(id);
+  if (!el || typeof Chart === 'undefined') return null;
+  try { return new Chart(el, config); } catch(e) { return null; }
+}
+
+// Fuel weekly 2026
+makeChart('fuelWeeklyChart', {
+  type: 'line',
+  data: {
+    labels: ['Jan 6','Jan 13','Jan 20','Jan 27','Feb 3','Feb 10','Feb 17','Feb 24','Mar 3','Mar 10','Mar 17','Mar 24','Mar 31','Apr 7','Apr 14','Apr 21','Apr 28','May 5'],
+    datasets: [
+      { label:'SP 95', data:[1.718,1.724,1.728,1.731,1.735,1.738,1.741,1.745,1.748,1.752,1.750,1.748,1.745,1.742,1.741,1.740,1.739,1.740], borderColor:'#002395', backgroundColor:'rgba(0,35,149,.07)', tension:.3, fill:true, pointRadius:2 },
+      { label:'Diesel', data:[1.700,1.704,1.707,1.710,1.713,1.715,1.718,1.721,1.724,1.727,1.725,1.722,1.720,1.718,1.718,1.719,1.720,1.720], borderColor:'#ED2939', backgroundColor:'rgba(237,41,57,.06)', tension:.3, fill:true, pointRadius:2 },
+      { label:'GPL',    data:[0.815,0.816,0.818,0.819,0.820,0.820,0.820,0.821,0.822,0.822,0.821,0.821,0.820,0.820,0.820,0.820,0.820,0.820], borderColor:'#c9a84c', tension:.3, pointRadius:2 },
+    ]
+  },
+  options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ y:{ min:0.75, ticks:{ callback:v=>v.toFixed(2)+'€' } } } }
+});
+
+// Region housing bar chart
+makeChart('regionHousingChart', {
+  type: 'bar',
+  data: {
+    labels: ['Paris\n(Île-de-F.)', 'Nice\n(PACA)', 'Lyon\n(ARA)', 'Bordeaux\n(Nouv.-Aq.)', 'Toulouse\n(Occitanie)', 'Nantes\n(PDL)', 'Marseille\n(PACA)', 'Rennes\n(Bretagne)', 'Hauts-de-F.', 'Grand Est'],
+    datasets: [{
+      label: '€/m²',
+      data: [9800, 4700, 4900, 4200, 3400, 2800, 3200, 2500, 2100, 1900],
+      backgroundColor: ['#ED2939','#002395','#002395','#002395','#002395','#002395','#002395','#002395','#002395','#002395'],
+      borderRadius: 4,
+    }]
+  },
+  options: { responsive:true, maintainAspectRatio:false, indexAxis:'y', plugins:{ legend:{ display:false } }, scales:{ x:{ ticks:{ callback:v=>v.toLocaleString()+'€' } } } }
+});
+
+// Housing history
+makeChart('housingChart', {
+  type: 'line',
+  data: {
+    labels: ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025'],
+    datasets: [
+      { label:'Paris', data:[8200,8700,9200,9700,10200,10800,11200,10600,10100,9800], borderColor:'#ED2939', backgroundColor:'rgba(237,41,57,.07)', tension:.3, fill:true },
+      { label:'National median', data:[2400,2520,2650,2750,2900,3050,3180,3200,3160,3160], borderColor:'#002395', backgroundColor:'rgba(0,35,149,.06)', tension:.3, fill:true },
+    ]
+  },
+  options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ y:{ ticks:{ callback:v=>v.toLocaleString()+'€' } } } }
+});
+
+// Salary history
+makeChart('salaryHistChart', {
+  type: 'bar',
+  data: {
+    labels: YRS,
+    datasets: [{
+      label: 'Average gross salary (€/yr)',
+      data: [30200,30800,31500,32200,31800,33000,34500,36200,38500,40000,40800],
+      backgroundColor: 'rgba(0,35,149,.7)', borderRadius: 4,
+    }]
+  },
+  options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ y:{ ticks:{ callback:v=>v.toLocaleString()+'€' } } } }
+});
+
+// GDP chart
+makeChart('gdpChart', {
+  type: 'line',
+  data: {
+    labels: YRS,
+    datasets: [
+      { label:'France', data:[1.1,2.3,1.8,1.8,-7.9,6.8,2.5,0.9,1.1,1.2,0.7], borderColor:'#002395', backgroundColor:'rgba(0,35,149,.07)', tension:.3, fill:true },
+      { label:'EU avg', data:[2.0,2.7,2.0,1.6,-5.6,5.9,3.4,0.4,0.8,0.9,1.5], borderColor:'#c9a84c', tension:.3, borderDash:[5,3] },
+    ]
+  },
+  options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ y:{ ticks:{ callback:v=>v+'%' } } } }
+});
+
+// Inflation chart
+makeChart('inflationChart', {
+  type: 'line',
+  data: {
+    labels: YRS,
+    datasets: [
+      { label:'France', data:[0.3,1.0,1.8,1.1,0.5,1.6,5.9,4.9,2.3,1.5,1.3], borderColor:'#002395', backgroundColor:'rgba(0,35,149,.07)', tension:.3, fill:true },
+      { label:'EU avg', data:[0.3,1.5,1.9,1.4,0.7,2.9,9.2,6.4,2.6,2.3,2.6], borderColor:'#c9a84c', tension:.3, borderDash:[5,3] },
+    ]
+  },
+  options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ y:{ ticks:{ callback:v=>v+'%' } } } }
+});
+
+// Fuel history
+makeChart('fuelHistChart', {
+  type: 'line',
+  data: {
+    labels: YRS,
+    datasets: [
+      { label:'SP 95', data:[1.35,1.45,1.50,1.50,1.24,1.50,1.82,1.85,1.72,1.73,1.74], borderColor:'#002395', backgroundColor:'rgba(0,35,149,.07)', tension:.3, fill:true },
+      { label:'Diesel', data:[1.18,1.30,1.39,1.40,1.12,1.41,1.88,1.78,1.68,1.69,1.72], borderColor:'#ED2939', tension:.3 },
+      { label:'GPL', data:[0.74,0.78,0.81,0.80,0.68,0.76,0.91,0.89,0.83,0.82,0.82], borderColor:'#c9a84c', tension:.3 },
+    ]
+  },
+  options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ y:{ ticks:{ callback:v=>v.toFixed(2)+'€' } } } }
+});
+
+// Housing history
+makeChart('housingHistChart', {
+  type: 'line',
+  data: {
+    labels: ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025'],
+    datasets: [
+      { label:'Paris', data:[8200,8700,9200,9700,10200,10800,11200,10600,10100,9800], borderColor:'#ED2939', backgroundColor:'rgba(237,41,57,.07)', tension:.3, fill:true },
+      { label:'National median', data:[2400,2520,2650,2750,2900,3050,3180,3200,3160,3160], borderColor:'#002395', backgroundColor:'rgba(0,35,149,.06)', tension:.3, fill:true },
+    ]
+  },
+  options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ y:{ ticks:{ callback:v=>v.toLocaleString()+'€' } } } }
+});
+
+// Salary vs housing
+makeChart('salaryVsHousingChart', {
+  type: 'line',
+  data: {
+    labels: YRS,
+    datasets: [
+      { label:'Avg gross salary (k€/yr)', data:[30.2,30.8,31.5,32.2,31.8,33.0,34.5,36.2,38.5,40.0,40.8], borderColor:'#c9a84c', tension:.3, yAxisID:'y' },
+      { label:'National housing (€/m²)', data:[2400,2520,2650,2750,2900,3050,3180,3200,3160,3160,3160], borderColor:'#002395', tension:.3, yAxisID:'y1' },
+    ]
+  },
+  options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ y:{ position:'left' }, y1:{ position:'right', grid:{ drawOnChartArea:false } } } }
+});
+
+// SMIC history
+makeChart('minWageHistChart', {
+  type: 'bar',
+  data: {
+    labels: YRS,
+    datasets: [{
+      label:'SMIC (€/mo gross)',
+      data:[1466,1480,1498,1521,1539,1554,1603,1709,1767,1802,1802],
+      backgroundColor:'rgba(0,35,149,.7)', borderRadius:4,
+    }]
+  },
+  options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ y:{ min:1400 } } }
+});
+
+// Unemployment history
+makeChart('unemployHistChart', {
+  type: 'line',
+  data: {
+    labels: YRS,
+    datasets: [
+      { label:'France', data:[10.0,9.4,9.0,8.4,8.0,7.9,7.3,7.3,7.5,7.4,7.3], borderColor:'#002395', backgroundColor:'rgba(0,35,149,.07)', tension:.3, fill:true },
+      { label:'Youth (15–24)', data:[24.5,22.3,20.8,19.5,20.0,18.5,17.4,17.5,17.8,17.6,17.5], borderColor:'#ED2939', tension:.3, borderDash:[5,3] },
+    ]
+  },
+  options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ y:{ ticks:{ callback:v=>v+'%' } } } }
+});
+
+// Public debt history
+makeChart('debtHistChart', {
+  type: 'line',
+  data: {
+    labels: YRS,
+    datasets: [
+      { label:'France', data:[97,98.4,98.1,97.4,114.6,112.9,111.6,109.9,110.6,111.9,112.0], borderColor:'#002395', backgroundColor:'rgba(0,35,149,.07)', tension:.3, fill:true },
+      { label:'EU avg', data:[83,81.7,80.1,77.5,90.2,88.1,84.0,81.5,81.6,82.0,83.0], borderColor:'#c9a84c', tension:.3, borderDash:[5,3] },
+    ]
+  },
+  options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ y:{ ticks:{ callback:v=>v+'%' } } } }
+});
+
+// Budget deficit history
+makeChart('budgetHistChart', {
+  type: 'bar',
+  data: {
+    labels: YRS,
+    datasets: [{
+      label:'France (% GDP)',
+      data:[-3.6,-2.9,-2.3,-3.1,-8.9,-6.4,-4.8,-5.5,-5.4,-5.1,-4.8],
+      backgroundColor: (ctx) => ctx.raw < -3 ? 'rgba(237,41,57,.7)' : 'rgba(0,35,149,.5)',
+      borderRadius:4,
+    }]
+  },
+  options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false }, annotation:{ annotations:{ line1:{ type:'line', yMin:-3, yMax:-3, borderColor:'#c9a84c', borderWidth:2, label:{ content:'Maastricht −3%', display:true } } } } }, scales:{ y:{ ticks:{ callback:v=>v+'%' } } } }
+});
+
+// Tourism history
+makeChart('tourHistChart', {
+  type: 'bar',
+  data: {
+    labels: ['2016','2017','2018','2019','2020','2021','2022','2023','2024'],
+    datasets: [{
+      label:'International arrivals (M)',
+      data:[83.0,86.9,89.4,90.9,38.0,48.4,79.0,84.1,90.0],
+      backgroundColor:'rgba(0,35,149,.7)', borderRadius:4,
+    }]
+  },
+  options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
+});
+
+</script>
+</body>
+</html>
