@@ -213,6 +213,10 @@ footer a:hover{text-decoration:underline}
 </head>
 <body>
 
+<div id="offline-banner" style="display:none;background:#7a3520;color:#fff;font-size:.75rem;text-align:center;padding:.45rem 1rem;letter-spacing:.03em">
+  ⚠ Live data unavailable — showing last known values. <a href="javascript:location.reload()" style="color:#f0d080;text-decoration:underline;margin-left:.5rem">Retry</a>
+</div>
+
 <header class="hdr">
   <div class="hdr-stripe"></div>
   <div class="hdr-inner">
@@ -797,7 +801,7 @@ footer a:hover{text-decoration:underline}
       </ul>
     </div>
     <div class="foot-badge">
-      <strong>v0.5</strong>
+      <strong>v0.6</strong>
       Portugal · Live API<br>
       <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">Next: more countries</span>
     </div>
@@ -913,6 +917,12 @@ function updateFuelCards(comb, brent, fonte) {
 updateFuelCards(FALLBACK, FALLBACK_BRENT, 'fallback');
 
 // ── Tentar backend ──
+let fuelFailed = false, statsFailed = false;
+function updateOfflineBanner() {
+  const b = document.getElementById('offline-banner');
+  if (b) b.style.display = (fuelFailed && statsFailed) ? 'block' : 'none';
+}
+
 async function loadLiveData() {
   try {
     const ctrl  = new AbortController();
@@ -921,7 +931,7 @@ async function loadLiveData() {
     clearTimeout(timer);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const json = await res.json();
-    if (json.ok) updateFuelCards(json.combustiveis, json.brent, json.combustiveis?.fonte);
+    if (json.ok) { updateFuelCards(json.combustiveis, json.brent, json.combustiveis?.fonte); fuelFailed = false; updateOfflineBanner(); }
   } catch(e) {
     console.info('[API] Offline:', e.message);
     const badge = document.getElementById('live-badge');
