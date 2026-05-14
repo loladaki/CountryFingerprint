@@ -207,28 +207,37 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
     <span class="topbar-item"><span class="lbl">PT Gasoline 95</span><span class="v" id="t-g95">1.927 €/L</span></span>
     <span class="topbar-item"><span class="lbl">PT Diesel</span><span class="v" id="t-gsl">1.958 €/L</span></span>
     <span class="topbar-item"><span class="lbl">PT Unemployment</span><span class="v" id="t-pt-unemp">5.8%</span></span>
+    <span class="topbar-item"><span class="lbl">PT Inflation</span><span class="v" id="t-pt-infl">2.1%</span></span>
     <span class="topbar-item"><span class="lbl">PT Min. Wage</span><span class="v" id="t-pt-wage">920 €</span></span>
-    <span class="topbar-item"><span class="lbl">PT Housing</span><span class="v">2,076 €/m²</span></span>
     <span class="topbar-item"><span class="lbl">PT GDP Growth</span><span class="v" id="t-pt-gdp">+2.4%</span></span>
     <span class="topbar-item"><span class="lbl">ECB Rate</span><span class="v" id="t-ecb">2.25%</span></span>
+    <span class="topbar-item"><span class="lbl">Euribor 12M</span><span class="v" id="t-euribor">2.4%</span></span>
     <span class="topbar-item"><span class="lbl">ES Gasoline 95</span><span class="v" id="t-es-g95">1.905 €/L</span></span>
     <span class="topbar-item"><span class="lbl">ES Unemployment</span><span class="v" id="t-es-unemp">10.3%</span></span>
+    <span class="topbar-item"><span class="lbl">ES Inflation</span><span class="v" id="t-es-infl">2.6%</span></span>
     <span class="topbar-item"><span class="lbl">ES Min. Wage</span><span class="v" id="t-es-wage">1,221 €</span></span>
-    <span class="topbar-item"><span class="lbl">ES Housing</span><span class="v">2,230 €/m²</span></span>
+    <span class="topbar-item"><span class="lbl">ES GDP Growth</span><span class="v" id="t-es-gdp">+2.9%</span></span>
     <!-- duplicate for seamless loop -->
     <span class="topbar-item"><span class="lbl">Brent</span><span class="v" id="t-brent2">108.17 $/bbl</span></span>
     <span class="topbar-item"><span class="lbl">PT Gasoline 95</span><span class="v" id="t-g95b">1.927 €/L</span></span>
     <span class="topbar-item"><span class="lbl">PT Diesel</span><span class="v" id="t-gslb">1.958 €/L</span></span>
     <span class="topbar-item"><span class="lbl">PT Unemployment</span><span class="v" id="t-pt-unempb">5.8%</span></span>
+    <span class="topbar-item"><span class="lbl">PT Inflation</span><span class="v" id="t-pt-inflb">2.1%</span></span>
     <span class="topbar-item"><span class="lbl">PT Min. Wage</span><span class="v" id="t-pt-wageb">920 €</span></span>
-    <span class="topbar-item"><span class="lbl">PT Housing</span><span class="v">2,076 €/m²</span></span>
     <span class="topbar-item"><span class="lbl">PT GDP Growth</span><span class="v" id="t-pt-gdpb">+2.4%</span></span>
     <span class="topbar-item"><span class="lbl">ECB Rate</span><span class="v" id="t-ecbb">2.25%</span></span>
+    <span class="topbar-item"><span class="lbl">Euribor 12M</span><span class="v" id="t-euriborb">2.4%</span></span>
     <span class="topbar-item"><span class="lbl">ES Gasoline 95</span><span class="v" id="t-es-g95b">1.905 €/L</span></span>
     <span class="topbar-item"><span class="lbl">ES Unemployment</span><span class="v" id="t-es-unempb">10.3%</span></span>
+    <span class="topbar-item"><span class="lbl">ES Inflation</span><span class="v" id="t-es-inflb">2.6%</span></span>
     <span class="topbar-item"><span class="lbl">ES Min. Wage</span><span class="v" id="t-es-wageb">1,221 €</span></span>
-    <span class="topbar-item"><span class="lbl">ES Housing</span><span class="v">2,230 €/m²</span></span>
+    <span class="topbar-item"><span class="lbl">ES GDP Growth</span><span class="v" id="t-es-gdpb">+2.9%</span></span>
   </div>
+</div>
+
+<!-- OFFLINE BANNER (hidden by default, shown by JS when API fails) -->
+<div id="offline-banner" style="display:none;background:#7a3520;color:#fff;font-size:.75rem;text-align:center;padding:.45rem 1rem;letter-spacing:.03em">
+  ⚠ Live data unavailable — showing last known values. <a href="javascript:location.reload()" style="color:#f0d080;text-decoration:underline;margin-left:.5rem">Retry</a>
 </div>
 
 <!-- HEADER -->
@@ -310,7 +319,7 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
         <h2 class="sec-title">Explore by country</h2>
         <p class="sec-body">Each country page goes deep — fuel, housing, salaries, healthcare, safety and 10 years of trends. More countries added regularly.</p>
       </div>
-      <span class="version">v0.5 · 2 countries live</span>
+      <span class="version">v0.6 · 2 countries live</span>
     </div>
     <div class="country-grid">
 
@@ -373,19 +382,19 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
         <div class="cc-header soon-bg">
           <span class="cc-flag">🇫🇷</span>
           <div class="cc-name">France</div>
-          <div class="cc-sub">Western Europe</div>
+          <div class="cc-sub">Western Europe · 2nd largest EU economy</div>
           <span class="cc-badge badge-soon">Coming soon</span>
           <div class="cc-wm">FR</div>
         </div>
         <div class="cc-body">
           <div class="cc-metrics">
-            <div class="cc-metric"><span class="val">—</span><span class="lbl">Gasoline</span></div>
-            <div class="cc-metric"><span class="val">—</span><span class="lbl">Unemploy.</span></div>
-            <div class="cc-metric"><span class="val">—</span><span class="lbl">Housing/m²</span></div>
+            <div class="cc-metric"><span class="val">1.74€</span><span class="lbl">Gasoline</span></div>
+            <div class="cc-metric"><span class="val">7.3%</span><span class="lbl">Unemploy.</span></div>
+            <div class="cc-metric"><span class="val">3,200€</span><span class="lbl">Housing/m²</span></div>
           </div>
           <div class="cc-footer">
             <div class="cc-cats"><span class="cc-cat">⛽ Energy</span><span class="cc-cat">🏠 Housing</span><span class="cc-cat">💶 Wages</span></div>
-            <span style="color:var(--dim);font-size:.75rem">In progress</span>
+            <span style="color:var(--gold);font-size:.73rem;font-weight:500">Next up · Q3 2026</span>
           </div>
         </div>
       </div>
@@ -401,13 +410,13 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
         </div>
         <div class="cc-body">
           <div class="cc-metrics">
-            <div class="cc-metric"><span class="val">—</span><span class="lbl">Gasoline</span></div>
-            <div class="cc-metric"><span class="val">—</span><span class="lbl">Unemploy.</span></div>
-            <div class="cc-metric"><span class="val">—</span><span class="lbl">Housing/m²</span></div>
+            <div class="cc-metric"><span class="val">1.79€</span><span class="lbl">Gasoline</span></div>
+            <div class="cc-metric"><span class="val">3.4%</span><span class="lbl">Unemploy.</span></div>
+            <div class="cc-metric"><span class="val">3,600€</span><span class="lbl">Housing/m²</span></div>
           </div>
           <div class="cc-footer">
             <div class="cc-cats"><span class="cc-cat">⛽ Energy</span><span class="cc-cat">🏠 Housing</span><span class="cc-cat">💶 Wages</span></div>
-            <span style="color:var(--dim);font-size:.75rem">In progress</span>
+            <span style="color:var(--gold);font-size:.73rem;font-weight:500">Next up · Q3 2026</span>
           </div>
         </div>
       </div>
@@ -542,10 +551,8 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
     <div class="footer-links">
       <div class="footer-col">
         <h4>Countries</h4>
-        <a href="portugal-v4.html">🇵🇹 Portugal</a>
-        <a href="spain-v4.html">🇪🇸 Spain</a>
-        <a href="portugal-v4.html">🇵🇹 Portugal</a>
-        <a href="#" style="opacity:.35;pointer-events:none">🇪🇸 Spain</a>
+        <a href="/portugal">🇵🇹 Portugal</a>
+        <a href="/spain">🇪🇸 Spain</a>
         <a href="#" style="opacity:.35;pointer-events:none">🇫🇷 France</a>
         <a href="#" style="opacity:.35;pointer-events:none">🇩🇪 Germany</a>
       </div>
@@ -569,10 +576,16 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
 const set = (id, txt) => { const e = document.getElementById(id); if (e) e.textContent = txt; };
 const setAll = (ids, txt) => ids.forEach(id => set(id, txt));
 
+let fuelFailed = false, statsFailed = false;
+function updateOfflineBanner() {
+  const banner = document.getElementById('offline-banner');
+  if (banner) banner.style.display = (fuelFailed && statsFailed) ? 'block' : 'none';
+}
+
 async function loadLiveData() {
   try {
     const data = await fetch('/api/combustiveis', { signal: AbortSignal.timeout(5000) }).then(r => r.json());
-    if (!data.ok) return;
+    if (!data.ok) throw new Error('not ok');
     const g95   = data.combustiveis?.gasolina95?.atual;
     const gsl   = data.combustiveis?.gasoleo?.atual;
     const br    = data.brent?.preco;
@@ -581,16 +594,18 @@ async function loadLiveData() {
     if (gsl)     setAll(['t-gsl','t-gslb'], gsl.toFixed(3)+' €/L');
     if (br)    { setAll(['t-brent','t-brent2'], br.toFixed(2)+' $/bbl'); set('h-brent', br.toFixed(2)); }
     if (esG95) { setAll(['t-es-g95','t-es-g95b'], esG95.toFixed(3)+' €/L'); set('cc-es-g95', esG95.toFixed(3)+'€'); }
-  } catch(e) { /* backend offline — static values shown */ }
+    fuelFailed = false; updateOfflineBanner();
+  } catch(e) { fuelFailed = true; updateOfflineBanner(); }
 }
 
 async function loadStats() {
   try {
     const data = await fetch('/api/stats', { signal: AbortSignal.timeout(8000) }).then(r => r.json());
-    if (!data.ok) return;
-    const pt  = data.eurostat?.pt;
-    const es  = data.eurostat?.es;
-    const ecb = data.ecb?.rate;
+    if (!data.ok) throw new Error('not ok');
+    const pt     = data.eurostat?.pt;
+    const es     = data.eurostat?.es;
+    const ecb    = data.ecb?.rate;
+    const euribor = data.euribor?.rate;
 
     if (pt?.unemp?.value != null) {
       const v = pt.unemp.value;
@@ -605,6 +620,10 @@ async function loadStats() {
       const v = pt.min_wage.value;
       setAll(['t-pt-wage','t-pt-wageb'], v+' €'); set('h-pt-wage', v);
     }
+    if (pt?.inflation?.value != null) {
+      const v = pt.inflation.value;
+      setAll(['t-pt-infl','t-pt-inflb'], v+'%');
+    }
     if (es?.unemp?.value != null) {
       const v = es.unemp.value;
       setAll(['t-es-unemp','t-es-unempb'], v+'%'); set('cc-es-unemp', v+'%');
@@ -613,10 +632,22 @@ async function loadStats() {
       const v = es.min_wage.value;
       setAll(['t-es-wage','t-es-wageb'], v+' €');
     }
+    if (es?.inflation?.value != null) {
+      const v = es.inflation.value;
+      setAll(['t-es-infl','t-es-inflb'], v+'%');
+    }
+    if (es?.gdp?.value != null) {
+      const v = es.gdp.value; const s = v >= 0 ? '+' : '';
+      setAll(['t-es-gdp','t-es-gdpb'], s+v+'%');
+    }
     if (ecb != null) {
       setAll(['t-ecb','t-ecbb'], ecb+'%'); set('h-ecb', ecb);
     }
-  } catch(e) { /* stats offline */ }
+    if (euribor != null) {
+      setAll(['t-euribor','t-euriborb'], euribor+'%');
+    }
+    statsFailed = false; updateOfflineBanner();
+  } catch(e) { statsFailed = true; updateOfflineBanner(); }
 }
 
 loadLiveData();

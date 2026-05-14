@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://eu-stats-production.up.railway.app/sitemap.xml

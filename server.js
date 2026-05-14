@@ -1,5 +1,5 @@
 /**
- * EU Stats — Backend v0.5
+ * EU Stats — Backend v0.6
  * APIs: combustíveis (EU Oil Bulletin), Brent (Yahoo Finance),
  *       Eurostat (desemprego, PIB, inflação, salário mínimo),
  *       ECB (taxa directora, Euribor 12M)
@@ -35,6 +35,10 @@ app.get('/libs/chart.umd.js',     (req, res) => res.sendFile(path.join(__dirname
 app.get('/libs/topojson.min.js',  (req, res) => res.sendFile(path.join(__dirname,'node_modules','topojson-client','dist','topojson-client.min.js')));
 app.get('/libs/prt.topo.json',    (req, res) => res.sendFile(path.join(__dirname,'node_modules','datamaps','src','js','data','prt.topo.json')));
 app.get('/libs/esp.topo.json',    (req, res) => res.sendFile(path.join(__dirname,'node_modules','datamaps','src','js','data','esp.topo.json')));
+
+// ── SEO ───────────────────────────────────────
+app.get('/robots.txt', (req, res) => res.sendFile(path.join(__dirname, 'robots.txt')));
+app.get('/sitemap.xml', (req, res) => res.type('application/xml').sendFile(path.join(__dirname, 'sitemap.xml')));
 
 // ── Cache ─────────────────────────────────────
 const CACHE = {};
@@ -315,7 +319,7 @@ app.get('/api/stats', async (req, res) => {
 app.get('/api/status', (req, res) => {
   const age = k => CACHE[k] ? Math.round((Date.now() - CACHE[k].ts) / 60000) : null;
   res.json({
-    ok: true, versao: '0.5',
+    ok: true, versao: '0.6',
     cache: {
       combustiveis: { idade_min: age('combustiveis') },
       brent:        { idade_min: age('brent') },
@@ -337,7 +341,7 @@ app.get('/api/refresh', async (req, res) => {
 
 // ── Arranque ──────────────────────────────────
 app.listen(PORT, () => {
-  console.log(`\n🇪🇺  EU Stats — Backend v0.5`);
+  console.log(`\n🇪🇺  EU Stats — Backend v0.6`);
   console.log(`\n     🌐  http://localhost:${PORT}`);
   console.log(`     📡  /api/combustiveis  /api/stats  /api/status  /api/refresh\n`);
   fetchCombustiveis();
