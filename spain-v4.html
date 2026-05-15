@@ -709,9 +709,9 @@ footer a:hover{text-decoration:underline}
       </ul>
     </div>
     <div class="foot-badge">
-      <strong>v0.6</strong>
+      <strong>v0.7</strong>
       🇪🇸 Spain · Live API<br>
-      <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">Updated <span id="upd-date-footer">Apr 2026</span></span>
+      <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">+ INE EPA · Updated <span id="upd-date-footer">May 2026</span></span>
       <a href="/" style="color:rgba(255,255,255,.6);font-size:.75rem;margin-top:.3rem;display:block">← EU Stats Home</a>
     </div>
   </div>
@@ -866,7 +866,14 @@ async function loadStats() {
     }
     if (ecb != null) set('es-ecb-rate', ecb+'%');
     if (euribor != null) set('es-euribor', euribor+'%');
-  } catch(e) { /* stats offline */ }
+    // INE España — override Eurostat with national EPA data (mais preciso/recente)
+    const ineEs = json.ine_es;
+    if (ineEs?.unemp?.value != null) {
+      const v = ineEs.unemp.value;
+      set('es-unemp', v+'%'); set('tick-unemp', v+'%'); set('tick-unempb', v+'%');
+    }
+    statsFailed = false; updateOfflineBanner();
+  } catch(e) { statsFailed = true; updateOfflineBanner(); }
 }
 loadStats();
 setInterval(loadStats, 30*60*1000);
