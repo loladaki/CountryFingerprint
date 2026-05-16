@@ -27,10 +27,14 @@ function serveFile(res, ...candidates) {
   res.status(404).send('<h2>Ficheiro não encontrado.</h2>');
 }
 
-app.get('/',        (req, res) => serveFile(res, path.join(__dirname, 'index.html')));
-app.get('/portugal', (req, res) => serveFile(res, path.join(__dirname, 'portugal-v4.html')));
-app.get('/spain',    (req, res) => serveFile(res, path.join(__dirname, 'spain-v4.html')));
-app.get('/france',   (req, res) => serveFile(res, path.join(__dirname, 'france-v1.html')));
+app.get('/',               (req, res) => serveFile(res, path.join(__dirname, 'index.html')));
+app.get('/index.html',     (req, res) => serveFile(res, path.join(__dirname, 'index.html')));
+app.get('/portugal',       (req, res) => serveFile(res, path.join(__dirname, 'portugal-v4.html')));
+app.get('/portugal-v4.html', (req, res) => serveFile(res, path.join(__dirname, 'portugal-v4.html')));
+app.get('/spain',          (req, res) => serveFile(res, path.join(__dirname, 'spain-v4.html')));
+app.get('/spain-v4.html',  (req, res) => serveFile(res, path.join(__dirname, 'spain-v4.html')));
+app.get('/france',         (req, res) => serveFile(res, path.join(__dirname, 'france-v1.html')));
+app.get('/france-v1.html', (req, res) => serveFile(res, path.join(__dirname, 'france-v1.html')));
 
 // ── Bibliotecas JS locais ─────────────────────
 app.get('/libs/d3.min.js',        (req, res) => res.sendFile(path.join(__dirname,'node_modules','d3','dist','d3.min.js')));
