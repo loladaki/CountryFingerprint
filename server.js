@@ -184,14 +184,21 @@ async function fetchINESpain() {
     const parseINE = result => {
       if (result.status !== 'fulfilled') return null;
       const raw = result.value;
-      // API devolve array ou objecto com campo Data
+      // API devolve objecto com campo Data (ou array de objectos)
       const arr  = Array.isArray(raw) ? raw : [raw];
       const data = arr[0]?.Data ?? arr[0]?.data ?? null;
       if (!data?.length) return null;
       const latest = data[data.length - 1];
-      const val = latest.Dato ?? latest.dato ?? null;
+      // INE usa "Valor" — fallback para grafias alternativas
+      const val = latest.Valor ?? latest.valor ?? latest.Dato ?? latest.dato ?? null;
       if (val === null || isNaN(val)) return null;
-      const period = latest.T3_Periodo ?? `${latest.Anyo}-${latest.Periodo ?? ''}`;
+      // Derivar trimestre a partir do timestamp Fecha (ms)
+      let period = String(latest.Anyo ?? '');
+      if (latest.Fecha) {
+        const d = new Date(latest.Fecha);
+        const q = Math.floor(d.getMonth() / 3) + 1;
+        period  = `${d.getFullYear()}-Q${q}`;
+      }
       return { value: +parseFloat(val).toFixed(2), period };
     };
     const unemp   = parseINE(unempR);
@@ -321,21 +328,37 @@ async function fetchEuribor12M() {
   if (cached) { console.log('[Euribor] cache hit'); return cached; }
   try {
     console.log('[Euribor] A buscar Euribor 12M...');
+    // ECB FM dataset via ?key= parameter (path format deprecated — returns 400)
+    // Fetches broader FM dataset and finds EURIBOR1YD_ series
     const raw = await fetchJSON(
-      'https://data-api.ecb.europa.eu/service/data/FM/B.U2.EUR.RT.MM.EURIBOR1YD_?lastNObservations=1&format=jsondata',
-      8000
+      'https://data-api.ecb.europa.eu/service/data/FM?key=B.U2.EUR.RT.MM.EURIBOR1YD_&lastNObservations=1&format=jsondata',
+      12000
     );
-    const seriesKey = Object.keys(raw?.dataSets?.[0]?.series ?? {})[0];
-    const obs  = Object.values(raw?.dataSets?.[0]?.series?.[seriesKey]?.observations ?? {})[0];
-    const rate = obs?.[0];
-    if (typeof rate !== 'number') throw new Error('Sem dados');
+    // Find the series whose attributes include EURIBOR1YD_ in PROVIDER_FM_ID dimension
+    const structure = raw?.structure?.dimensions?.series ?? [];
+    const provIdx = structure.findIndex(d => d.id === 'PROVIDER_FM_ID');
+    const euriborIdx = provIdx >= 0
+      ? structure[provIdx]?.values?.findIndex(v => v.id === 'EURIBOR1YD_')
+      : -1;
+    let rate = null;
+    if (euriborIdx >= 0) {
+      const series = raw?.dataSets?.[0]?.series ?? {};
+      for (const [key, val] of Object.entries(series)) {
+        const parts = key.split(':');
+        if (parts[provIdx] === String(euriborIdx)) {
+          const obsVals = Object.values(val?.observations ?? {});
+          if (obsVals.length) { rate = obsVals[obsVals.length - 1]?.[0]; break; }
+        }
+      }
+    }
+    if (typeof rate !== 'number' || isNaN(rate)) throw new Error('Série não encontrada');
     const r = { rate: +rate.toFixed(3), fonte: 'ecb_api', data: new Date().toISOString() };
     console.log(`[Euribor] ✅ ${r.rate}%`);
     cacheSet('euribor', r);
     return r;
   } catch(e) {
     console.error('[Euribor] Erro:', e.message, '— fallback');
-    return { rate: 2.4, fonte: 'fallback', data: new Date().toISOString() };
+    return { rate: 2.821, fonte: 'fallback', data: new Date().toISOString() };
   }
 }
 
