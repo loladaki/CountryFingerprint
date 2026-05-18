@@ -1,5 +1,5 @@
 /**
- * EU Stats — Backend v0.8
+ * EU Stats — Backend v0.9
  * APIs: combustíveis (EU Oil Bulletin), Brent (Yahoo Finance),
  *       Eurostat (desemprego, PIB, inflação, salário mínimo),
  *       ECB (taxa directora, Euribor 12M),
@@ -63,10 +63,10 @@ const cacheSet = (k, d) => { CACHE[k] = { data: d, ts: Date.now() }; };
 
 // ── Fallbacks ─────────────────────────────────
 const FB_FUEL = {
-  gasolina95: { atual: 1.927, anterior: 1.921, variacao: +0.006 },
-  gasoleo:    { atual: 1.958, anterior: 1.928, variacao: +0.030 },
+  gasolina95: { atual: 1.979, anterior: 1.927, variacao: +0.052 },
+  gasoleo:    { atual: 1.968, anterior: 1.958, variacao: +0.010 },
   gpl:        { atual: 0.930, anterior: 0.928, variacao: +0.002 },
-  gasolina98: { atual: 2.049, anterior: 2.049, variacao:  0.000 },
+  gasolina98: { atual: 2.099, anterior: 2.049, variacao: +0.050 },
 };
 const FB_STATS = {
   pt: { unemp: 5.8, youth_unemp: 18.1, gdp: 2.4, inflation: 2.1, min_wage: 920 },
@@ -432,10 +432,10 @@ async function fetchCombustiveis() {
       gasoleo:       mkFuel(parsed.pt.diesel, FB_FUEL.gasoleo.atual),
       gpl:           { ...FB_FUEL.gpl,        dataActual: parsed.date, serie: [] },
       gasolina98:    { ...FB_FUEL.gasolina98,  dataActual: parsed.date, serie: [] },
-      es_gasolina95: parsed.es ? mkFuel(parsed.es.petrol, 1.905) : { atual: 1.905, serie: [] },
-      es_gasoleo:    parsed.es ? mkFuel(parsed.es.diesel, 1.952) : { atual: 1.952, serie: [] },
-      fr_gasolina95: parsed.fr ? mkFuel(parsed.fr.petrol, 1.740) : { atual: 1.740, serie: [] },
-      fr_gasoleo:    parsed.fr ? mkFuel(parsed.fr.diesel, 1.720) : { atual: 1.720, serie: [] },
+      es_gasolina95: parsed.es ? mkFuel(parsed.es.petrol, 1.541) : { atual: 1.541, serie: [] },
+      es_gasoleo:    parsed.es ? mkFuel(parsed.es.diesel, 1.718) : { atual: 1.718, serie: [] },
+      fr_gasolina95: parsed.fr ? mkFuel(parsed.fr.petrol, 2.083) : { atual: 2.083, serie: [] },
+      fr_gasoleo:    parsed.fr ? mkFuel(parsed.fr.diesel, 2.157) : { atual: 2.157, serie: [] },
       fonte: 'eu_oil_bulletin', data: new Date().toISOString(),
     };
     cacheSet('combustiveis', r);
@@ -443,11 +443,11 @@ async function fetchCombustiveis() {
   } catch(err) {
     console.error('[Comb] Erro:', err.message, '— fallback');
     return {
-      ...Object.fromEntries(Object.entries(FB_FUEL).map(([k, v]) => [k, { ...v, dataActual: '2026-05-05', serie: [] }])),
-      es_gasolina95: { atual: 1.905, serie: [] },
-      es_gasoleo:    { atual: 1.952, serie: [] },
-      fr_gasolina95: { atual: 1.740, serie: [] },
-      fr_gasoleo:    { atual: 1.720, serie: [] },
+      ...Object.fromEntries(Object.entries(FB_FUEL).map(([k, v]) => [k, { ...v, dataActual: '2026-05-11', serie: [] }])),
+      es_gasolina95: { atual: 1.541, serie: [] },
+      es_gasoleo:    { atual: 1.718, serie: [] },
+      fr_gasolina95: { atual: 2.083, serie: [] },
+      fr_gasoleo:    { atual: 2.157, serie: [] },
       fonte: 'fallback', erro: err.message, data: new Date().toISOString(),
     };
   }
@@ -469,7 +469,7 @@ async function fetchBrent() {
     return r;
   } catch(err) {
     console.error('[Brent] Erro:', err.message, '— fallback');
-    return { preco: 108.17, moeda: 'USD', fonte: 'fallback', data: new Date().toISOString() };
+    return { preco: 110.87, moeda: 'USD', fonte: 'fallback', data: new Date().toISOString() };
   }
 }
 
@@ -493,7 +493,7 @@ app.get('/api/stats', async (req, res) => {
 app.get('/api/status', (req, res) => {
   const age = k => CACHE[k] ? Math.round((Date.now() - CACHE[k].ts) / 60000) : null;
   res.json({
-    ok: true, versao: '0.8',
+    ok: true, versao: '0.9',
     cache: {
       combustiveis: { idade_min: age('combustiveis') },
       brent:        { idade_min: age('brent') },
@@ -518,7 +518,7 @@ app.get('/api/refresh', async (req, res) => {
 
 // ── Arranque ──────────────────────────────────
 app.listen(PORT, () => {
-  console.log(`\n🇪🇺  EU Stats — Backend v0.8`);
+  console.log(`\n🇪🇺  EU Stats — Backend v0.9`);
   console.log(`\n     🌐  http://localhost:${PORT}`);
   console.log(`     📡  /api/combustiveis  /api/stats  /api/status  /api/refresh\n`);
   fetchCombustiveis();

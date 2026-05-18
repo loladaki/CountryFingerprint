@@ -229,7 +229,7 @@ footer a:hover{text-decoration:underline}
       <a href="index.html" style="color:rgba(255,255,255,.6);font-size:.75rem;text-decoration:none;display:block;margin-bottom:.6rem">← EU Stats Home</a>
       <span class="lbl">Last updated</span>
       <div class="dt" id="upd-date">—</div>
-      <div id="live-badge" class="live-badge cached">📌 Static data · Apr 2026</div>
+      <div id="live-badge" class="live-badge cached">📌 Static data · May 2026</div>
     </div>
   </div>
 </header>
@@ -279,7 +279,7 @@ footer a:hover{text-decoration:underline}
 <section class="section" id="combustiveis">
   <div class="sec-hdr">
     <h2 class="sec-title">Energy &amp; Fuel</h2>
-    <span class="sec-tag" id="fuel-source-tag">EU Oil Bulletin · Week 27 Apr 2026</span>
+    <span class="sec-tag" id="fuel-source-tag">EU Oil Bulletin · Week 19 May 2026</span>
   </div>
   <div class="notice n-alert fade">
     <span>⚠️</span>
@@ -291,28 +291,28 @@ footer a:hover{text-decoration:underline}
       <div class="c-val" id="val-g95">1.905<span class="u">€/L</span></div>
       <div class="c-sub">Unleaded · Spain mainland</div>
       <span class="c-badge badge-ne" id="badge-g95">→ Stable vs last week</span>
-      <div class="c-src" id="src-g95">EU Oil Bulletin · Apr 2026</div>
+      <div class="c-src" id="src-g95">EU Oil Bulletin · May 2026</div>
     </div>
     <div class="card" id="card-g98">
       <div class="c-lbl">⛽ Gasoline 98</div>
       <div class="c-val" id="val-g98">2.019<span class="u">€/L</span></div>
       <div class="c-sub">Premium · higher octane</div>
       <span class="c-badge badge-ne" id="badge-g98">→ Stable</span>
-      <div class="c-src" id="src-g98">Static · Apr 2026</div>
+      <div class="c-src" id="src-g98">Static · May 2026</div>
     </div>
     <div class="card red" id="card-gsl">
       <div class="c-lbl">⛽ Diesel</div>
       <div class="c-val" id="val-gsl">1.952<span class="u">€/L</span></div>
       <div class="c-sub">Road diesel · hist. high: 2.037 €</div>
       <span class="c-badge badge-up" id="badge-gsl">↑ +0.016€ vs last week</span>
-      <div class="c-src" id="src-gsl">EU Oil Bulletin · Apr 2026</div>
+      <div class="c-src" id="src-gsl">EU Oil Bulletin · May 2026</div>
     </div>
     <div class="card" id="card-gpl">
       <div class="c-lbl">⛽ LPG Autogas</div>
       <div class="c-val" id="val-gpl">0.906<span class="u">€/L</span></div>
       <div class="c-sub">Liquefied petroleum gas</div>
       <span class="c-badge badge-up" id="badge-gpl">↑ Near historic high</span>
-      <div class="c-src" id="src-gpl">Static · Apr 2026</div>
+      <div class="c-src" id="src-gpl">Static · May 2026</div>
     </div>
     <div class="card">
       <div class="c-lbl">🛢 Brent Crude</div>
@@ -762,7 +762,11 @@ window.ESP_TOPO = {"type":"Topology","objects":{"esp":{"type":"GeometryCollectio
 (function() {
 'use strict';
 
-const API_BASE = 'https://eu-stats-production.up.railway.app';
+const API_BASE = (() => {
+  const h = window.location.hostname;
+  return (h === 'localhost' || h === '127.0.0.1' || h.includes('github.io'))
+    ? 'https://eu-stats-production.up.railway.app' : '';
+})();
 const MONTHS   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const YRS      = ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
 
@@ -773,10 +777,10 @@ document.querySelectorAll('#upd-date,#upd-date-footer').forEach(e => { if(e) e.t
 
 // ── FALLBACK static data ──
 const FALLBACK = {
-  gasolina95: { atual:1.905, variacao:0.000 },
-  gasoleo:    { atual:1.952, variacao:+0.016 },
-  gpl:        { atual:0.906, variacao:+0.002 },
-  gasolina98: { atual:2.019, variacao:0.000 },
+  gasolina95: { atual:1.541, variacao:-0.364 },
+  gasoleo:    { atual:1.718, variacao:-0.234 },
+  gpl:        { atual:0.906, variacao: 0.000 },
+  gasolina98: { atual:1.641, variacao:-0.378 },
 };
 
 function fmtPreco(v) { return v ? Number(v).toFixed(3) : '—'; }
@@ -802,7 +806,7 @@ function updateFuelCards(comb, brent, fonte) {
   const tag = document.getElementById('fuel-source-tag');
   const badge = document.getElementById('live-badge');
   if (fonte === 'eu_oil_bulletin') {
-    if (tag) tag.textContent = 'EU Oil Bulletin · Live Apr 2026';
+    if (tag) tag.textContent = 'EU Oil Bulletin · Live May 2026';
     if (badge) { badge.textContent = '⬤ Live data · EU Oil Bulletin'; badge.className='live-badge live'; }
   }
   // Update ticker

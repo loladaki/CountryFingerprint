@@ -229,7 +229,7 @@ footer a:hover{text-decoration:underline}
       <a href="index.html" style="color:rgba(255,255,255,.6);font-size:.75rem;text-decoration:none;display:block;margin-bottom:.6rem">← EU Stats Home</a>
       <span class="lbl">Last updated</span>
       <div class="dt" id="upd-date">—</div>
-      <div id="live-badge" class="live-badge cached">📌 Static data · Apr 2026</div>
+      <div id="live-badge" class="live-badge cached">📌 Static data · May 2026</div>
     </div>
   </div>
 </header>
@@ -280,7 +280,7 @@ footer a:hover{text-decoration:underline}
 <section class="section" id="combustiveis">
   <div class="sec-hdr">
     <h2 class="sec-title">Fuel &amp; Energy</h2>
-    <span class="sec-tag" id="fuel-source-tag">EU Oil Bulletin · Week 27 Apr 2026</span>
+    <span class="sec-tag" id="fuel-source-tag">EU Oil Bulletin · Week 19 May 2026</span>
   </div>
   <div class="notice n-alert fade">
     <span>⚠️</span>
@@ -292,28 +292,28 @@ footer a:hover{text-decoration:underline}
       <div class="c-val" id="val-g95">1.927<span class="u">€/L</span></div>
       <div class="c-sub">Unleaded · Mainland Portugal</div>
       <span class="c-badge badge-up" id="badge-g95">↑ +€0.006 vs previous week</span>
-      <div class="c-src" id="src-g95">EU Oil Bulletin · Apr 2026</div>
+      <div class="c-src" id="src-g95">EU Oil Bulletin · May 2026</div>
     </div>
     <div class="card" id="card-g98">
       <div class="c-lbl">⛽ Petrol 98</div>
       <div class="c-val" id="val-g98">2.049<span class="u">€/L</span></div>
       <div class="c-sub">Premium · higher octane</div>
       <span class="c-badge badge-ne" id="badge-g98">→ Stable</span>
-      <div class="c-src" id="src-g98">Static · Apr 2026</div>
+      <div class="c-src" id="src-g98">Static · May 2026</div>
     </div>
     <div class="card red" id="card-gsl">
       <div class="c-lbl">⛽ Diesel</div>
       <div class="c-val" id="val-gsl">1.958<span class="u">€/L</span></div>
       <div class="c-sub">Road · all-time high: €2.037</div>
       <span class="c-badge badge-up" id="badge-gsl">↑ +€0.030 vs previous week</span>
-      <div class="c-src" id="src-gsl">EU Oil Bulletin · Apr 2026</div>
+      <div class="c-src" id="src-gsl">EU Oil Bulletin · May 2026</div>
     </div>
     <div class="card" id="card-gpl">
       <div class="c-lbl">⛽ Autogas (LPG)</div>
       <div class="c-val" id="val-gpl">0.930<span class="u">€/L</span></div>
       <div class="c-sub">Liquefied gas — all-time high</div>
       <span class="c-badge badge-up" id="badge-gpl">↑ New all-time high</span>
-      <div class="c-src" id="src-gpl">Static · Apr 2026</div>
+      <div class="c-src" id="src-gpl">Static · May 2026</div>
     </div>
     <div class="card">
       <div class="c-lbl">🛢 Brent Crude</div>
@@ -849,7 +849,11 @@ window.PRT_TOPO = {"type":"Topology","objects":{"prt":{"type":"GeometryCollectio
 'use strict';
 
 // ── Config ──
-const API_BASE   = 'https://eu-stats-production.up.railway.app';
+const API_BASE = (() => {
+  const h = window.location.hostname;
+  return (h === 'localhost' || h === '127.0.0.1' || h.includes('github.io'))
+    ? 'https://eu-stats-production.up.railway.app' : '';
+})();
 const MONTHS   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const YRS      = ['2016','2017','2018','2019','2020','2021','2022','2023','2024','2025','2026'];
 
@@ -860,12 +864,12 @@ if (dateEl) dateEl.textContent = now.getDate() + ' ' + MONTHS[now.getMonth()] + 
 
 // ── Fallback combustíveis ──
 const FALLBACK = {
-  gasolina95: { atual:1.927, anterior:1.921, variacao:+0.006 },
-  gasolina98: { atual:2.049, anterior:2.049, variacao: 0.000 },
-  gasoleo:    { atual:1.958, anterior:1.928, variacao:+0.030 },
+  gasolina95: { atual:1.979, anterior:1.927, variacao:+0.052 },
+  gasolina98: { atual:2.099, anterior:2.049, variacao:+0.050 },
+  gasoleo:    { atual:1.968, anterior:1.958, variacao:+0.010 },
   gpl:        { atual:0.930, anterior:0.928, variacao:+0.002 },
 };
-const FALLBACK_BRENT = { preco: 108.0 };
+const FALLBACK_BRENT = { preco: 110.87 };
 const LIVE_FONTES    = ['eu_oil_bulletin','dgeg_live'];
 
 // ── Actualizar cards combustíveis ──
@@ -881,7 +885,7 @@ function fmtBadge(variacao, id) {
 
 function updateFuelCards(comb, brent, fonte) {
   const isLive = LIVE_FONTES.includes(fonte);
-  const srcTxt = isLive ? 'EU Oil Bulletin · ' + MONTHS[now.getMonth()] + ' ' + now.getFullYear() : 'Static · Apr 2026';
+  const srcTxt = isLive ? 'EU Oil Bulletin · ' + MONTHS[now.getMonth()] + ' ' + now.getFullYear() : 'Static · May 2026';
   const keys   = { gasolina95:'g95', gasolina98:'g98', gasoleo:'gsl', gpl:'gpl' };
 
   for (const [key, abbr] of Object.entries(keys)) {
@@ -895,7 +899,7 @@ function updateFuelCards(comb, brent, fonte) {
   const bve = document.getElementById('val-brent');
   if (bve) bve.innerHTML = (brent?.preco ?? '—') + '<span class="u">$/bbl</span>';
   const bse = document.getElementById('src-brent');
-  if (bse) bse.textContent = brent?.fonte === 'yahoo_finance' ? 'Yahoo Finance · Live' : 'Static · Apr 2026';
+  if (bse) bse.textContent = brent?.fonte === 'yahoo_finance' ? 'Yahoo Finance · Live' : 'Static · May 2026';
 
   // Ticker
   [['tick-g95','tick-g95b'], ['tick-gsl','tick-gslb'], ['tick-brent','tick-brentb']].forEach(([a,b], i) => {
@@ -909,7 +913,7 @@ function updateFuelCards(comb, brent, fonte) {
   const badge = document.getElementById('live-badge');
   if (badge) {
     badge.className   = 'live-badge ' + (isLive ? 'live' : 'cached');
-    badge.textContent = isLive ? '⬤ Live data · EU Oil Bulletin' : '📌 Static data · Apr 2026';
+    badge.textContent = isLive ? '⬤ Live data · EU Oil Bulletin' : '📌 Static data · May 2026';
   }
 }
 
