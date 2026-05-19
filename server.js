@@ -540,9 +540,10 @@ app.get('/api/refresh', async (req, res) => {
 });
 
 // ── Arranque ──────────────────────────────────
-app.listen(PORT, () => {
+// Bind explicitly to 0.0.0.0 — Railway proxy only routes to all-interfaces bindings
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n🇪🇺  EU Stats — Backend v0.9`);
-  console.log(`\n     🌐  http://localhost:${PORT}`);
+  console.log(`\n     🌐  http://0.0.0.0:${PORT}`);
   console.log(`     📡  /api/combustiveis  /api/stats  /api/status  /api/refresh\n`);
   fetchCombustiveis();
   fetchBrent();
