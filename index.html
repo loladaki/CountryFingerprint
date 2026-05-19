@@ -573,6 +573,13 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
 
 <script>
 // Live data from backend
+// API_BASE: relative on Railway (where backend is served), full Railway URL on GitHub Pages / localhost
+const API_BASE = (() => {
+  const h = window.location.hostname;
+  return (h === 'localhost' || h === '127.0.0.1' || h.includes('github.io'))
+    ? 'https://eu-stats-production.up.railway.app' : '';
+})();
+
 const set = (id, txt) => { const e = document.getElementById(id); if (e) e.textContent = txt; };
 const setAll = (ids, txt) => ids.forEach(id => set(id, txt));
 
@@ -584,7 +591,7 @@ function updateOfflineBanner() {
 
 async function loadLiveData() {
   try {
-    const data = await fetch('/api/combustiveis', { signal: AbortSignal.timeout(5000) }).then(r => r.json());
+    const data = await fetch(API_BASE + '/api/combustiveis', { signal: AbortSignal.timeout(5000) }).then(r => r.json());
     if (!data.ok) throw new Error('not ok');
     const g95   = data.combustiveis?.gasolina95?.atual;
     const gsl   = data.combustiveis?.gasoleo?.atual;
@@ -602,7 +609,7 @@ async function loadLiveData() {
 
 async function loadStats() {
   try {
-    const data = await fetch('/api/stats', { signal: AbortSignal.timeout(8000) }).then(r => r.json());
+    const data = await fetch(API_BASE + '/api/stats', { signal: AbortSignal.timeout(8000) }).then(r => r.json());
     if (!data.ok) throw new Error('not ok');
     const pt     = data.eurostat?.pt;
     const es     = data.eurostat?.es;
