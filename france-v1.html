@@ -108,6 +108,28 @@ body{font-family:var(--font-u);background:var(--cream);color:var(--text);font-si
 .rc-key{color:var(--muted)}
 .rc-val{font-family:var(--font-m);font-weight:500}
 
+/* INTERACTIVE MAP */
+.map-wrap{display:grid;grid-template-columns:1fr 360px;gap:1.5rem;align-items:start}
+@media(max-width:900px){.map-wrap{grid-template-columns:1fr}}
+.map-ctrl{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem}
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:1.25rem}
+.metric-btn{padding:.5rem .6rem;background:var(--cream);border:1px solid var(--border);border-radius:8px;font-size:.75rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;font-family:var(--font-u);text-align:center;line-height:1.3}
+.metric-btn:hover{background:var(--blue-light);border-color:#9bbde8;color:var(--blue-mid)}
+.metric-btn.active{background:var(--blue-mid);border-color:var(--blue-mid);color:#fff}
+.map-legend{margin:.75rem 0}
+.legend-bar{width:100%;height:12px;border-radius:6px;margin:.4rem 0}
+.legend-ends{display:flex;justify-content:space-between;font-family:var(--font-m);font-size:.7rem;color:var(--muted)}
+.dp-name{font-family:var(--font-d);font-size:1.1rem;font-weight:600;color:var(--blue-mid);margin-bottom:.75rem}
+.dp-row{display:flex;justify-content:space-between;align-items:center;padding:.38rem 0;border-top:1px solid var(--border);font-size:.81rem}
+.dp-row:first-of-type{border-top:none}
+.dp-key{color:var(--muted)}
+.dp-v{font-family:var(--font-m);font-weight:500;color:var(--text)}
+#map-svg{width:100%;height:auto;cursor:pointer}
+#map-svg path{transition:opacity .12s,stroke-width .12s}
+#map-svg path:hover{opacity:.82;stroke-width:2.5}
+.map-tip{position:fixed;background:var(--blue-mid);color:#fff;padding:.5rem .9rem;border-radius:8px;font-size:.8rem;pointer-events:none;z-index:999;display:none;max-width:200px}
+.map-tip .tip-val{font-family:var(--font-m);color:var(--gold);font-size:.9rem;display:block;margin-top:.1rem}
+
 /* NOTICES */
 .notice{border-radius:8px;padding:.7rem 1rem;font-size:.8rem;display:flex;align-items:flex-start;gap:.55rem;margin-bottom:1rem;line-height:1.5}
 .n-warn{background:var(--gold-light);border:1px solid #dcc87a;color:#6a4f14}
@@ -248,7 +270,8 @@ footer a:hover{text-decoration:underline}
 <nav class="nav">
   <div class="nav-inner">
     <a href="#combustiveis" class="nav-link active">⛽ Energy</a>
-    <a href="#regions" class="nav-link">🗺 Regions</a>
+    <a href="#mapa" class="nav-link">🗺 Map</a>
+    <a href="#regions" class="nav-link">📋 Regions</a>
     <a href="#habitacao" class="nav-link">🏠 Housing</a>
     <a href="#rendimentos" class="nav-link">💶 Income</a>
     <a href="#economia" class="nav-link">📊 Economy</a>
@@ -344,6 +367,46 @@ footer a:hover{text-decoration:underline}
 </section>
 
 <!-- ═══ REGIONS ═══ -->
+<!-- ═══ INTERACTIVE MAP ═══ -->
+<div class="map-tip" id="map-tip"></div>
+<section class="section" id="mapa">
+  <div class="sec-hdr">
+    <h2 class="sec-title">Interactive Map by Region</h2>
+    <span class="sec-tag">8 metrics · click a region to see all data</span>
+  </div>
+  <div class="map-wrap fade">
+    <div>
+      <div class="chart-card" style="padding:1rem">
+        <svg id="map-svg" viewBox="0 0 550 620" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+    </div>
+    <div>
+      <div class="map-ctrl">
+        <div style="font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.75rem">Displayed metric</div>
+        <div class="metric-grid">
+          <button class="metric-btn active" data-metric="salary">💶 Salary</button>
+          <button class="metric-btn" data-metric="housing">🏠 Housing</button>
+          <button class="metric-btn" data-metric="unemployment">📉 Unemployment</button>
+          <button class="metric-btn" data-metric="population">👥 Population</button>
+          <button class="metric-btn" data-metric="crime">🚨 Crime</button>
+          <button class="metric-btn" data-metric="temperature">🌡 Temperature</button>
+          <button class="metric-btn" data-metric="doctors">💊 Doctors</button>
+          <button class="metric-btn" data-metric="gdp">📊 GDP pc</button>
+        </div>
+        <div class="map-legend">
+          <div style="font-size:.72rem;color:var(--muted);margin-bottom:.35rem" id="legend-title">—</div>
+          <div class="legend-bar" id="legend-bar"></div>
+          <div class="legend-ends"><span id="legend-min">—</span><span id="legend-max">—</span></div>
+        </div>
+        <div id="district-panel" style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+          <div style="font-size:.78rem;color:var(--dim);text-align:center;padding:.5rem 0">← Click a region on the map</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ METROPOLITAN REGIONS (CARDS) ═══ -->
 <section class="section" id="regions">
   <div class="sec-hdr">
     <h2 class="sec-title">Metropolitan Regions</h2>
@@ -763,15 +826,17 @@ footer a:hover{text-decoration:underline}
       </ul>
     </div>
     <div class="foot-badge">
-      <strong>v1.1</strong>
+      <strong>v1.2</strong>
       🇫🇷 France · Live API<br>
-      <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">+ INSEE BDM · Next: Germany</span>
+      <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">+ INSEE BDM + interactive map · Next: Germany</span>
       <a href="index.html" style="color:rgba(255,255,255,.6);font-size:.75rem;margin-top:.3rem;display:block">← EU Stats Home</a>
     </div>
   </div>
   <p class="foot-disc">Data updated automatically via EU Oil Bulletin, Eurostat, and INSEE BDM APIs. Static values show their reference dates. EU Stats is an independent project. Data for informational purposes only.</p>
 </footer>
 
+<!-- D3 (for interactive map) -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js" crossorigin="anonymous"></script>
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" crossorigin="anonymous"></script>
 <script>
@@ -1147,6 +1212,127 @@ makeChart('tourHistChart', {
   },
   options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } } }
 });
+
+// ── INTERACTIVE MAP (D3) ──
+(function initFranceMap() {
+  if (typeof d3 === 'undefined') {
+    const el = document.querySelector('#map-svg');
+    if (el) el.innerHTML = '<text x="275" y="310" text-anchor="middle" fill="#9e9b96" font-family="DM Sans" font-size="13">Map requires an internet connection</text>';
+    return;
+  }
+
+  // INSEE region codes → metrics (2024-2025 estimates from INSEE, Notaires de France, ONISR, Météo-France)
+  const REGIONS = {
+    '11':{name:'Île-de-France',              salary:2800, housing:9800, unemployment:6.8,  population:12200000, crime:65.0, temperature:11.5, doctors:4.2, gdp:60000},
+    '24':{name:'Centre-Val de Loire',        salary:2100, housing:1800, unemployment:7.0,  population:2570000,  crime:35.0, temperature:12.0, doctors:2.8, gdp:31000},
+    '27':{name:'Bourgogne-Franche-Comté',    salary:2050, housing:1700, unemployment:6.8,  population:2790000,  crime:32.0, temperature:11.0, doctors:2.9, gdp:30500},
+    '28':{name:'Normandie',                  salary:2100, housing:2300, unemployment:7.5,  population:3320000,  crime:36.0, temperature:11.0, doctors:3.0, gdp:31000},
+    '32':{name:'Hauts-de-France',            salary:2050, housing:2100, unemployment:11.2, population:6000000,  crime:42.0, temperature:10.5, doctors:2.7, gdp:29000},
+    '44':{name:'Grand Est',                  salary:2150, housing:1900, unemployment:8.9,  population:5560000,  crime:38.0, temperature:11.0, doctors:3.1, gdp:30500},
+    '52':{name:'Pays de la Loire',           salary:2200, housing:2800, unemployment:6.2,  population:3870000,  crime:30.0, temperature:12.0, doctors:3.0, gdp:32000},
+    '53':{name:'Bretagne',                   salary:2150, housing:2500, unemployment:6.5,  population:3380000,  crime:28.0, temperature:11.5, doctors:3.2, gdp:30500},
+    '75':{name:'Nouvelle-Aquitaine',         salary:2150, housing:3500, unemployment:8.5,  population:6020000,  crime:36.0, temperature:13.0, doctors:3.2, gdp:31000},
+    '76':{name:'Occitanie',                  salary:2150, housing:3100, unemployment:9.2,  population:6080000,  crime:38.0, temperature:14.0, doctors:3.4, gdp:28500},
+    '84':{name:'Auvergne-Rhône-Alpes',       salary:2400, housing:3800, unemployment:6.5,  population:8100000,  crime:36.0, temperature:11.5, doctors:3.5, gdp:36000},
+    '93':{name:"Provence-Alpes-Côte d'Azur", salary:2300, housing:3900, unemployment:9.0,  population:5100000,  crime:48.0, temperature:14.5, doctors:3.6, gdp:32000},
+    '94':{name:'Corse',                      salary:2050, housing:3200, unemployment:7.6,  population:350000,   crime:38.0, temperature:14.5, doctors:3.5, gdp:28500},
+  };
+
+  const METRICS = {
+    salary:      {label:'Average net salary (€/mo)',    fmt:v=>v.toLocaleString('en-GB')+'€',     colors:['#e6eaf8','#001a75']},
+    housing:     {label:'Median housing price (€/m²)',  fmt:v=>v.toLocaleString('en-GB')+'€/m²',  colors:['#fdecd0','#a51c30']},
+    unemployment:{label:'Unemployment rate (%)',         fmt:v=>v.toFixed(1)+'%',                  colors:['#fdecd0','#7a3520']},
+    population:  {label:'Resident population',          fmt:v=>v.toLocaleString('en-GB')+' pop.', colors:['#e6eaf8','#1a3d8c']},
+    crime:       {label:'Crime rate (‰)',                fmt:v=>v.toFixed(1)+'‰',                  colors:['#fff8e0','#7a4a00']},
+    temperature: {label:'Annual avg. temperature (°C)',  fmt:v=>v.toFixed(1)+'°C',                 colors:['#e8f4fb','#a51c30']},
+    doctors:     {label:'Doctors per 1,000 pop.',        fmt:v=>v.toFixed(1)+'/1,000',             colors:['#e6f2eb','#1a6b40']},
+    gdp:         {label:'GDP per capita (€/yr)',         fmt:v=>v.toLocaleString('en-GB')+'€',     colors:['#fff8e0','#c9a84c']},
+  };
+
+  let activeMetric = 'salary';
+  const svgEl = d3.select('#map-svg');
+  const tip   = document.getElementById('map-tip');
+  // Mercator centered on metropolitan France (Corsica fits within frame)
+  const proj   = d3.geoMercator().center([2.5, 46.5]).scale(1700).translate([275, 310]);
+  const pathFn = d3.geoPath().projection(proj);
+
+  function getColor(id) {
+    const data = REGIONS[id]; if (!data) return '#e8e8e8';
+    const m    = METRICS[activeMetric];
+    const vals = Object.values(REGIONS).map(d => d[activeMetric]);
+    const mn   = Math.min(...vals), mx = Math.max(...vals);
+    const t    = mx === mn ? 0.5 : (data[activeMetric]-mn)/(mx-mn);
+    return d3.interpolateRgb(m.colors[0], m.colors[1])(t);
+  }
+
+  function updateLegend() {
+    const m    = METRICS[activeMetric];
+    const vals = Object.values(REGIONS).map(d => d[activeMetric]);
+    const lte  = document.getElementById('legend-title');
+    const lmi  = document.getElementById('legend-min');
+    const lma  = document.getElementById('legend-max');
+    const lba  = document.getElementById('legend-bar');
+    if (lte) lte.textContent = m.label;
+    if (lmi) lmi.textContent = m.fmt(Math.min(...vals));
+    if (lma) lma.textContent = m.fmt(Math.max(...vals));
+    if (lba) lba.style.background = `linear-gradient(to right,${m.colors[0]},${m.colors[1]})`;
+  }
+
+  function renderRegion(id) {
+    const data = REGIONS[id]; if (!data) return;
+    svgEl.selectAll('path').attr('stroke-width', p => p.id===id ? 2.5 : 0.6).attr('stroke', p => p.id===id ? '#001a75' : '#fff');
+    const panel = document.getElementById('district-panel');
+    if (!panel) return;
+    panel.innerHTML = `<div class="dp-name">${data.name}</div>
+      <div class="dp-row"><span class="dp-key">💶 Average net salary</span><span class="dp-v">${data.salary.toLocaleString('en-GB')} €/mo</span></div>
+      <div class="dp-row"><span class="dp-key">🏠 Median housing price</span><span class="dp-v">${data.housing.toLocaleString('en-GB')} €/m²</span></div>
+      <div class="dp-row"><span class="dp-key">📉 Unemployment</span><span class="dp-v">${data.unemployment.toFixed(1)}%</span></div>
+      <div class="dp-row"><span class="dp-key">👥 Population</span><span class="dp-v">${data.population.toLocaleString('en-GB')}</span></div>
+      <div class="dp-row"><span class="dp-key">🚨 Crime rate</span><span class="dp-v">${data.crime.toFixed(1)}‰</span></div>
+      <div class="dp-row"><span class="dp-key">🌡 Avg. temperature</span><span class="dp-v">${data.temperature.toFixed(1)}°C</span></div>
+      <div class="dp-row"><span class="dp-key">💊 Doctors /1,000 pop.</span><span class="dp-v">${data.doctors.toFixed(1)}</span></div>
+      <div class="dp-row"><span class="dp-key">📊 GDP per capita</span><span class="dp-v">${data.gdp.toLocaleString('en-GB')} €</span></div>`;
+  }
+
+  // Load French regions GeoJSON (etalab-style data via jsDelivr CDN — INSEE codes as feature IDs)
+  d3.json('https://cdn.jsdelivr.net/gh/gregoiredavid/france-geojson@master/regions.geojson').then(geo => {
+    // Normalise feature.id from properties.code (INSEE region code) and filter to metropolitan regions
+    const features = geo.features
+      .map(f => ({ ...f, id: f.properties?.code ?? f.id }))
+      .filter(f => REGIONS[f.id]);
+
+    svgEl.selectAll('path').data(features).join('path')
+      .attr('d', pathFn).attr('stroke','#fff').attr('stroke-width', 0.6)
+      .attr('fill', d => getColor(d.id)).style('cursor','pointer')
+      .on('mousemove', (event, d) => {
+        const data = REGIONS[d.id]; if (!data) return;
+        const m = METRICS[activeMetric];
+        if (tip) {
+          tip.style.display = 'block';
+          tip.style.left = (event.clientX + 14) + 'px';
+          tip.style.top  = (event.clientY - 10) + 'px';
+          tip.innerHTML  = `<strong>${data.name}</strong><span class="tip-val">${m.fmt(data[activeMetric])}</span>`;
+        }
+      })
+      .on('mouseleave', () => { if (tip) tip.style.display = 'none'; })
+      .on('click', (e, d) => renderRegion(d.id));
+    updateLegend();
+  }).catch(err => {
+    console.warn('Map load failed:', err.message);
+    const el = document.querySelector('#map-svg');
+    if (el) el.innerHTML = '<text x="275" y="310" text-anchor="middle" fill="#9e9b96" font-family="DM Sans" font-size="13">Map data could not be loaded</text>';
+  });
+
+  document.querySelectorAll('.metric-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.metric-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      activeMetric = this.dataset.metric;
+      svgEl.selectAll('path').transition().duration(500).attr('fill', d => getColor(d.id));
+      updateLegend();
+    });
+  });
+})();
 
 </script>
 </body>
