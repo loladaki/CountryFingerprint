@@ -385,7 +385,8 @@ footer a:hover{text-decoration:underline}
         <div style="font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.75rem">Displayed metric</div>
         <div class="metric-grid">
           <button class="metric-btn active" data-metric="salary">💶 Salary</button>
-          <button class="metric-btn" data-metric="housing">🏠 House price</button>
+          <button class="metric-btn" data-metric="housing">🛒 Buy €/m²</button>
+          <button class="metric-btn" data-metric="rent">🔑 Rent €/mo</button>
           <button class="metric-btn" data-metric="unemployment">📉 Unemployment</button>
           <button class="metric-btn" data-metric="population">👥 Population</button>
           <button class="metric-btn" data-metric="crime">🚨 Crime</button>
@@ -1227,30 +1228,31 @@ makeChart('tourHistChart', {
 
   // INSEE region codes → metrics (2024-2025 estimates from INSEE, Notaires de France, ONISR, Météo-France)
   const REGIONS = {
-    '11':{name:'Île-de-France',              salary:2800, housing:9800, unemployment:6.8,  population:12200000, crime:65.0, temperature:11.5, doctors:4.2, gdp:60000},
-    '24':{name:'Centre-Val de Loire',        salary:2100, housing:1800, unemployment:7.0,  population:2570000,  crime:35.0, temperature:12.0, doctors:2.8, gdp:31000},
-    '27':{name:'Bourgogne-Franche-Comté',    salary:2050, housing:1700, unemployment:6.8,  population:2790000,  crime:32.0, temperature:11.0, doctors:2.9, gdp:30500},
-    '28':{name:'Normandie',                  salary:2100, housing:2300, unemployment:7.5,  population:3320000,  crime:36.0, temperature:11.0, doctors:3.0, gdp:31000},
-    '32':{name:'Hauts-de-France',            salary:2050, housing:2100, unemployment:11.2, population:6000000,  crime:42.0, temperature:10.5, doctors:2.7, gdp:29000},
-    '44':{name:'Grand Est',                  salary:2150, housing:1900, unemployment:8.9,  population:5560000,  crime:38.0, temperature:11.0, doctors:3.1, gdp:30500},
-    '52':{name:'Pays de la Loire',           salary:2200, housing:2800, unemployment:6.2,  population:3870000,  crime:30.0, temperature:12.0, doctors:3.0, gdp:32000},
-    '53':{name:'Bretagne',                   salary:2150, housing:2500, unemployment:6.5,  population:3380000,  crime:28.0, temperature:11.5, doctors:3.2, gdp:30500},
-    '75':{name:'Nouvelle-Aquitaine',         salary:2150, housing:3500, unemployment:8.5,  population:6020000,  crime:36.0, temperature:13.0, doctors:3.2, gdp:31000},
-    '76':{name:'Occitanie',                  salary:2150, housing:3100, unemployment:9.2,  population:6080000,  crime:38.0, temperature:14.0, doctors:3.4, gdp:28500},
-    '84':{name:'Auvergne-Rhône-Alpes',       salary:2400, housing:3800, unemployment:6.5,  population:8100000,  crime:36.0, temperature:11.5, doctors:3.5, gdp:36000},
-    '93':{name:"Provence-Alpes-Côte d'Azur", salary:2300, housing:3900, unemployment:9.0,  population:5100000,  crime:48.0, temperature:14.5, doctors:3.6, gdp:32000},
-    '94':{name:'Corse',                      salary:2050, housing:3200, unemployment:7.6,  population:350000,   crime:38.0, temperature:14.5, doctors:3.5, gdp:28500},
+    '11':{name:'Île-de-France',              salary:2800, housing:9800, rent:1400, unemployment:6.8,  population:12200000, crime:65.0, temperature:11.5, doctors:4.2, gdp:60000},
+    '24':{name:'Centre-Val de Loire',        salary:2100, housing:1800, rent: 650, unemployment:7.0,  population:2570000,  crime:35.0, temperature:12.0, doctors:2.8, gdp:31000},
+    '27':{name:'Bourgogne-Franche-Comté',    salary:2050, housing:1700, rent: 600, unemployment:6.8,  population:2790000,  crime:32.0, temperature:11.0, doctors:2.9, gdp:30500},
+    '28':{name:'Normandie',                  salary:2100, housing:2300, rent: 700, unemployment:7.5,  population:3320000,  crime:36.0, temperature:11.0, doctors:3.0, gdp:31000},
+    '32':{name:'Hauts-de-France',            salary:2050, housing:2100, rent: 650, unemployment:11.2, population:6000000,  crime:42.0, temperature:10.5, doctors:2.7, gdp:29000},
+    '44':{name:'Grand Est',                  salary:2150, housing:1900, rent: 700, unemployment:8.9,  population:5560000,  crime:38.0, temperature:11.0, doctors:3.1, gdp:30500},
+    '52':{name:'Pays de la Loire',           salary:2200, housing:2800, rent: 800, unemployment:6.2,  population:3870000,  crime:30.0, temperature:12.0, doctors:3.0, gdp:32000},
+    '53':{name:'Bretagne',                   salary:2150, housing:2500, rent: 750, unemployment:6.5,  population:3380000,  crime:28.0, temperature:11.5, doctors:3.2, gdp:30500},
+    '75':{name:'Nouvelle-Aquitaine',         salary:2150, housing:3500, rent: 800, unemployment:8.5,  population:6020000,  crime:36.0, temperature:13.0, doctors:3.2, gdp:31000},
+    '76':{name:'Occitanie',                  salary:2150, housing:3100, rent: 800, unemployment:9.2,  population:6080000,  crime:38.0, temperature:14.0, doctors:3.4, gdp:28500},
+    '84':{name:'Auvergne-Rhône-Alpes',       salary:2400, housing:3800, rent: 850, unemployment:6.5,  population:8100000,  crime:36.0, temperature:11.5, doctors:3.5, gdp:36000},
+    '93':{name:"Provence-Alpes-Côte d'Azur", salary:2300, housing:3900, rent:1000, unemployment:9.0,  population:5100000,  crime:48.0, temperature:14.5, doctors:3.6, gdp:32000},
+    '94':{name:'Corse',                      salary:2050, housing:3200, rent: 900, unemployment:7.6,  population:350000,   crime:38.0, temperature:14.5, doctors:3.5, gdp:28500},
   };
 
   const METRICS = {
-    salary:      {label:'Average net salary (€/mo)',    fmt:v=>v.toLocaleString('en-GB')+'€',     colors:['#e6eaf8','#001a75']},
-    housing:     {label:'Median purchase price (€/m², to buy)', fmt:v=>v.toLocaleString('en-GB')+'€/m²', colors:['#fdecd0','#a51c30']},
-    unemployment:{label:'Unemployment rate (%)',         fmt:v=>v.toFixed(1)+'%',                  colors:['#fdecd0','#7a3520']},
-    population:  {label:'Resident population',          fmt:v=>v.toLocaleString('en-GB')+' pop.', colors:['#e6eaf8','#1a3d8c']},
-    crime:       {label:'Crime rate (‰)',                fmt:v=>v.toFixed(1)+'‰',                  colors:['#fff8e0','#7a4a00']},
-    temperature: {label:'Annual avg. temperature (°C)',  fmt:v=>v.toFixed(1)+'°C',                 colors:['#e8f4fb','#a51c30']},
-    doctors:     {label:'Doctors per 1,000 pop.',        fmt:v=>v.toFixed(1)+'/1,000',             colors:['#e6f2eb','#1a6b40']},
-    gdp:         {label:'GDP per capita (€/yr)',         fmt:v=>v.toLocaleString('en-GB')+'€',     colors:['#fff8e0','#c9a84c']},
+    salary:      {label:'Average net salary (€/mo)',                fmt:v=>v.toLocaleString('en-GB')+'€',     colors:['#e6eaf8','#001a75']},
+    housing:     {label:'Median purchase price (€/m², to buy)',     fmt:v=>v.toLocaleString('en-GB')+'€/m²',  colors:['#fdecd0','#a51c30']},
+    rent:        {label:'Median monthly rent (€/mo, T2 apartment)', fmt:v=>v.toLocaleString('en-GB')+'€/mo',  colors:['#e6eaf8','#1a3d8c']},
+    unemployment:{label:'Unemployment rate (%)',                    fmt:v=>v.toFixed(1)+'%',                  colors:['#fdecd0','#7a3520']},
+    population:  {label:'Resident population',                      fmt:v=>v.toLocaleString('en-GB')+' pop.', colors:['#e6eaf8','#1a3d8c']},
+    crime:       {label:'Crime rate (‰)',                           fmt:v=>v.toFixed(1)+'‰',                  colors:['#fff8e0','#7a4a00']},
+    temperature: {label:'Annual avg. temperature (°C)',             fmt:v=>v.toFixed(1)+'°C',                 colors:['#e8f4fb','#a51c30']},
+    doctors:     {label:'Doctors per 1,000 pop.',                   fmt:v=>v.toFixed(1)+'/1,000',             colors:['#e6f2eb','#1a6b40']},
+    gdp:         {label:'GDP per capita (€/yr)',                    fmt:v=>v.toLocaleString('en-GB')+'€',     colors:['#fff8e0','#c9a84c']},
   };
 
   let activeMetric = 'salary';
@@ -1289,7 +1291,8 @@ makeChart('tourHistChart', {
     if (!panel) return;
     panel.innerHTML = `<div class="dp-name">${data.name}</div>
       <div class="dp-row"><span class="dp-key">💶 Average net salary</span><span class="dp-v">${data.salary.toLocaleString('en-GB')} €/mo</span></div>
-      <div class="dp-row"><span class="dp-key">🏠 Purchase price (to buy)</span><span class="dp-v">${data.housing.toLocaleString('en-GB')} €/m²</span></div>
+      <div class="dp-row"><span class="dp-key">🛒 Buy price</span><span class="dp-v">${data.housing.toLocaleString('en-GB')} €/m²</span></div>
+      <div class="dp-row"><span class="dp-key">🔑 Monthly rent (T2)</span><span class="dp-v">${data.rent.toLocaleString('en-GB')} €/mo</span></div>
       <div class="dp-row"><span class="dp-key">📉 Unemployment</span><span class="dp-v">${data.unemployment.toFixed(1)}%</span></div>
       <div class="dp-row"><span class="dp-key">👥 Population</span><span class="dp-v">${data.population.toLocaleString('en-GB')}</span></div>
       <div class="dp-row"><span class="dp-key">🚨 Crime rate</span><span class="dp-v">${data.crime.toFixed(1)}‰</span></div>

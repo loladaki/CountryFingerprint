@@ -371,7 +371,8 @@ footer a:hover{text-decoration:underline}
         <div style="font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.75rem">Metric displayed</div>
         <div class="metric-grid">
           <button class="metric-btn active" data-metric="salary">💶 Salary</button>
-          <button class="metric-btn" data-metric="housing">🏠 House price</button>
+          <button class="metric-btn" data-metric="housing">🛒 Buy €/m²</button>
+          <button class="metric-btn" data-metric="rent">🔑 Rent €/mo</button>
           <button class="metric-btn" data-metric="unemployment">📉 Unemploy.</button>
           <button class="metric-btn" data-metric="population">👥 Population</button>
           <button class="metric-btn" data-metric="crime">🚨 Crime</button>
@@ -1012,35 +1013,36 @@ makeChart('budgetHistChart', { type:'bar', data:{
   }
 
   const REGIONS = {
-    'ES.AN':{name:'Andalucía',         salary:1650, housing:1600, unemployment:17.2, population:8499748,  crime:28.4, temperature:18.5, doctors:3.3, gdp:17800},
-    'ES.AR':{name:'Aragón',            salary:2020, housing:1800, unemployment:8.2,  population:1329391,  crime:20.1, temperature:13.8, doctors:4.2, gdp:25100},
-    'ES.AS':{name:'Asturias',          salary:1920, housing:1500, unemployment:11.0, population:1011792,  crime:21.3, temperature:13.5, doctors:4.8, gdp:22100},
-    'ES.PM':{name:'Balearic Islands',  salary:2050, housing:4300, unemployment:8.5,  population:1173008,  crime:29.5, temperature:18.1, doctors:3.8, gdp:30200},
-    'ES.CN':{name:'Canary Islands',    salary:1680, housing:2800, unemployment:17.5, population:2237309,  crime:26.2, temperature:21.2, doctors:3.2, gdp:19800},
-    'ES.CB':{name:'Cantabria',         salary:1890, housing:2100, unemployment:9.3,  population:584507,   crime:18.4, temperature:14.1, doctors:4.6, gdp:24100},
-    'ES.CL':{name:'Castilla y León',   salary:1870, housing:1300, unemployment:8.9,  population:2394918,  crime:15.2, temperature:11.5, doctors:4.9, gdp:23400},
-    'ES.CM':{name:'Castilla-La Mancha',salary:1720, housing:900,  unemployment:12.8, population:2038440,  crime:14.8, temperature:14.5, doctors:2.8, gdp:18500},
-    'ES.CT':{name:'Cataluña',          salary:2380, housing:4600, unemployment:9.5,  population:7747709,  crime:32.1, temperature:15.8, doctors:5.2, gdp:34200},
-    'ES.CE':{name:'Ceuta / Melilla',   salary:1680, housing:1800, unemployment:22.0, population:173040,   crime:35.2, temperature:18.0, doctors:2.9, gdp:16400},
-    'ES.EX':{name:'Extremadura',       salary:1520, housing:900,  unemployment:18.5, population:1059501,  crime:13.5, temperature:16.0, doctors:3.1, gdp:15200},
-    'ES.GA':{name:'Galicia',           salary:1780, housing:1700, unemployment:10.2, population:2695645,  crime:16.8, temperature:13.1, doctors:4.7, gdp:21500},
-    'ES.LO':{name:'La Rioja',          salary:1990, housing:1600, unemployment:8.0,  population:322415,   crime:16.2, temperature:12.8, doctors:4.1, gdp:26200},
-    'ES.MD':{name:'Madrid',            salary:2700, housing:5100, unemployment:9.2,  population:6751251,  crime:38.5, temperature:15.1, doctors:6.2, gdp:42100},
-    'ES.MU':{name:'Murcia',            salary:1680, housing:1700, unemployment:14.5, population:1511251,  crime:22.8, temperature:17.8, doctors:2.9, gdp:19200},
-    'ES.NA':{name:'Navarra',           salary:2250, housing:2600, unemployment:7.5,  population:661197,   crime:17.5, temperature:12.5, doctors:4.8, gdp:34500},
-    'ES.PV':{name:'País Vasco',        salary:2580, housing:3800, unemployment:7.8,  population:2213993,  crime:22.4, temperature:13.9, doctors:5.4, gdp:38200},
-    'ES.VC':{name:'Valencia',          salary:1850, housing:2900, unemployment:13.2, population:5058138,  crime:27.3, temperature:18.3, doctors:3.5, gdp:23100},
+    'ES.AN':{name:'Andalucía',         salary:1650, housing:1600, rent: 950, unemployment:17.2, population:8499748,  crime:28.4, temperature:18.5, doctors:3.3, gdp:17800},
+    'ES.AR':{name:'Aragón',            salary:2020, housing:1800, rent: 800, unemployment:8.2,  population:1329391,  crime:20.1, temperature:13.8, doctors:4.2, gdp:25100},
+    'ES.AS':{name:'Asturias',          salary:1920, housing:1500, rent: 700, unemployment:11.0, population:1011792,  crime:21.3, temperature:13.5, doctors:4.8, gdp:22100},
+    'ES.PM':{name:'Balearic Islands',  salary:2050, housing:4300, rent:1400, unemployment:8.5,  population:1173008,  crime:29.5, temperature:18.1, doctors:3.8, gdp:30200},
+    'ES.CN':{name:'Canary Islands',    salary:1680, housing:2800, rent:1100, unemployment:17.5, population:2237309,  crime:26.2, temperature:21.2, doctors:3.2, gdp:19800},
+    'ES.CB':{name:'Cantabria',         salary:1890, housing:2100, rent: 750, unemployment:9.3,  population:584507,   crime:18.4, temperature:14.1, doctors:4.6, gdp:24100},
+    'ES.CL':{name:'Castilla y León',   salary:1870, housing:1300, rent: 650, unemployment:8.9,  population:2394918,  crime:15.2, temperature:11.5, doctors:4.9, gdp:23400},
+    'ES.CM':{name:'Castilla-La Mancha',salary:1720, housing:900,  rent: 600, unemployment:12.8, population:2038440,  crime:14.8, temperature:14.5, doctors:2.8, gdp:18500},
+    'ES.CT':{name:'Cataluña',          salary:2380, housing:4600, rent:1500, unemployment:9.5,  population:7747709,  crime:32.1, temperature:15.8, doctors:5.2, gdp:34200},
+    'ES.CE':{name:'Ceuta / Melilla',   salary:1680, housing:1800, rent: 700, unemployment:22.0, population:173040,   crime:35.2, temperature:18.0, doctors:2.9, gdp:16400},
+    'ES.EX':{name:'Extremadura',       salary:1520, housing:900,  rent: 550, unemployment:18.5, population:1059501,  crime:13.5, temperature:16.0, doctors:3.1, gdp:15200},
+    'ES.GA':{name:'Galicia',           salary:1780, housing:1700, rent: 700, unemployment:10.2, population:2695645,  crime:16.8, temperature:13.1, doctors:4.7, gdp:21500},
+    'ES.LO':{name:'La Rioja',          salary:1990, housing:1600, rent: 700, unemployment:8.0,  population:322415,   crime:16.2, temperature:12.8, doctors:4.1, gdp:26200},
+    'ES.MD':{name:'Madrid',            salary:2700, housing:5100, rent:1700, unemployment:9.2,  population:6751251,  crime:38.5, temperature:15.1, doctors:6.2, gdp:42100},
+    'ES.MU':{name:'Murcia',            salary:1680, housing:1700, rent: 750, unemployment:14.5, population:1511251,  crime:22.8, temperature:17.8, doctors:2.9, gdp:19200},
+    'ES.NA':{name:'Navarra',           salary:2250, housing:2600, rent: 850, unemployment:7.5,  population:661197,   crime:17.5, temperature:12.5, doctors:4.8, gdp:34500},
+    'ES.PV':{name:'País Vasco',        salary:2580, housing:3800, rent:1100, unemployment:7.8,  population:2213993,  crime:22.4, temperature:13.9, doctors:5.4, gdp:38200},
+    'ES.VC':{name:'Valencia',          salary:1850, housing:2900, rent:1000, unemployment:13.2, population:5058138,  crime:27.3, temperature:18.3, doctors:3.5, gdp:23100},
   };
 
   const METRICS = {
-    salary:      {label:'Average net salary (€/mo)',   fmt:v=>v.toLocaleString()+'€',       colors:['#ffe0e0','#7a0000']},
-    housing:     {label:'Median purchase price (€/m², to buy)', fmt:v=>v.toLocaleString()+'€/m²', colors:['#fff3e0','#AA151B']},
-    unemployment:{label:'Unemployment rate (%)',       fmt:v=>v.toFixed(1)+'%',             colors:['#fff5d8','#7a4a00']},
-    population:  {label:'Resident population',        fmt:v=>v.toLocaleString()+' inh.',   colors:['#f0f0ff','#1a1a6b']},
-    crime:       {label:'Crime rate (‰)',              fmt:v=>v.toFixed(1)+'‰',             colors:['#fff8e0','#7a5000']},
-    temperature: {label:'Mean annual temperature (°C)',fmt:v=>v.toFixed(1)+'°C',            colors:['#e8f4fb','#AA151B']},
-    doctors:     {label:'Doctors per 1000 pop.',      fmt:v=>v.toFixed(1)+'/1000',         colors:['#f0fff0','#1a6b40']},
-    gdp:         {label:'GDP per capita (€/yr)',      fmt:v=>v.toLocaleString()+'€',       colors:['#f0f0ff','#1a1a6b']},
+    salary:      {label:'Average net salary (€/mo)',                fmt:v=>v.toLocaleString()+'€',       colors:['#ffe0e0','#7a0000']},
+    housing:     {label:'Median purchase price (€/m², to buy)',     fmt:v=>v.toLocaleString()+'€/m²',    colors:['#fff3e0','#AA151B']},
+    rent:        {label:'Median monthly rent (€/mo, ~T2 apartment)',fmt:v=>v.toLocaleString()+'€/mo',    colors:['#f0f0ff','#1a1a6b']},
+    unemployment:{label:'Unemployment rate (%)',                    fmt:v=>v.toFixed(1)+'%',             colors:['#fff5d8','#7a4a00']},
+    population:  {label:'Resident population',                      fmt:v=>v.toLocaleString()+' inh.',   colors:['#f0f0ff','#1a1a6b']},
+    crime:       {label:'Crime rate (‰)',                           fmt:v=>v.toFixed(1)+'‰',             colors:['#fff8e0','#7a5000']},
+    temperature: {label:'Mean annual temperature (°C)',             fmt:v=>v.toFixed(1)+'°C',            colors:['#e8f4fb','#AA151B']},
+    doctors:     {label:'Doctors per 1000 pop.',                    fmt:v=>v.toFixed(1)+'/1000',         colors:['#f0fff0','#1a6b40']},
+    gdp:         {label:'GDP per capita (€/yr)',                    fmt:v=>v.toLocaleString()+'€',       colors:['#f0f0ff','#1a1a6b']},
   };
 
   let activeMetric = 'salary';
@@ -1078,7 +1080,8 @@ makeChart('budgetHistChart', { type:'bar', data:{
     if (!panel) return;
     panel.innerHTML = `<div class="dp-name">${data.name}</div>
       <div class="dp-row"><span class="dp-key">💶 Average net salary</span><span class="dp-v">${data.salary.toLocaleString()} €/mo</span></div>
-      <div class="dp-row"><span class="dp-key">🏠 Purchase price (to buy)</span><span class="dp-v">${data.housing.toLocaleString()} €/m²</span></div>
+      <div class="dp-row"><span class="dp-key">🛒 Buy price</span><span class="dp-v">${data.housing.toLocaleString()} €/m²</span></div>
+      <div class="dp-row"><span class="dp-key">🔑 Monthly rent (T2)</span><span class="dp-v">${data.rent.toLocaleString()} €/mo</span></div>
       <div class="dp-row"><span class="dp-key">📉 Unemployment</span><span class="dp-v">${data.unemployment.toFixed(1)}%</span></div>
       <div class="dp-row"><span class="dp-key">👥 Population</span><span class="dp-v">${data.population.toLocaleString()}</span></div>
       <div class="dp-row"><span class="dp-key">🚨 Crime rate</span><span class="dp-v">${data.crime.toFixed(1)}‰</span></div>

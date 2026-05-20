@@ -386,7 +386,8 @@ footer a:hover{text-decoration:underline}
         <div style="font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.75rem">Displayed metric</div>
         <div class="metric-grid">
           <button class="metric-btn active" data-metric="salary">💶 Salary</button>
-          <button class="metric-btn" data-metric="housing">🏠 House price</button>
+          <button class="metric-btn" data-metric="housing">🛒 Buy €/m²</button>
+          <button class="metric-btn" data-metric="rent">🔑 Rent €/m²/mo</button>
           <button class="metric-btn" data-metric="unemployment">📉 Unemployment</button>
           <button class="metric-btn" data-metric="population">👥 Population</button>
           <button class="metric-btn" data-metric="crime">🚨 Crime</button>
@@ -1229,27 +1230,28 @@ makeChart('tourHistChart', {
 
   // ISO 3166-2 Bundesland codes → metrics (2024-2025 estimates from Destatis, BA, vdpResearch, BKA, DWD)
   const REGIONS = {
-    'BW':{name:'Baden-Württemberg',         salary:3050, housing:4500, unemployment:3.4,  population:11280000, crime:46.0, temperature:10.5, doctors:4.3, gdp:51200},
-    'BY':{name:'Bayern (Bavaria)',          salary:3100, housing:6200, unemployment:2.9,  population:13390000, crime:42.0, temperature:9.7,  doctors:4.4, gdp:54100},
-    'BE':{name:'Berlin',                    salary:2850, housing:5500, unemployment:8.9,  population:3780000,  crime:74.0, temperature:10.4, doctors:5.2, gdp:48400},
-    'BB':{name:'Brandenburg',               salary:2600, housing:2400, unemployment:5.4,  population:2540000,  crime:50.0, temperature:10.1, doctors:3.6, gdp:34000},
-    'HB':{name:'Bremen',                    salary:2900, housing:3400, unemployment:11.0, population:680000,   crime:80.0, temperature:10.2, doctors:4.7, gdp:54900},
-    'HH':{name:'Hamburg',                   salary:3300, housing:6000, unemployment:6.8,  population:1890000,  crime:70.0, temperature:10.1, doctors:5.5, gdp:74900},
-    'HE':{name:'Hessen',                    salary:3200, housing:4200, unemployment:5.5,  population:6310000,  crime:50.0, temperature:11.0, doctors:4.3, gdp:53600},
-    'MV':{name:'Mecklenburg-Vorpommern',    salary:2500, housing:2100, unemployment:6.7,  population:1620000,  crime:51.0, temperature:9.4,  doctors:4.4, gdp:31300},
-    'NI':{name:'Niedersachsen',             salary:2800, housing:2600, unemployment:5.6,  population:8100000,  crime:48.0, temperature:10.2, doctors:3.9, gdp:39400},
-    'NW':{name:'Nordrhein-Westfalen',       salary:2850, housing:3100, unemployment:7.0,  population:17920000, crime:54.0, temperature:10.7, doctors:4.4, gdp:44400},
-    'RP':{name:'Rheinland-Pfalz',           salary:2800, housing:2800, unemployment:5.2,  population:4140000,  crime:46.0, temperature:11.0, doctors:4.2, gdp:39400},
-    'SL':{name:'Saarland',                  salary:2750, housing:2200, unemployment:7.1,  population:980000,   crime:48.0, temperature:10.8, doctors:4.5, gdp:39400},
-    'SN':{name:'Sachsen (Saxony)',          salary:2500, housing:1950, unemployment:6.0,  population:4090000,  crime:54.0, temperature:10.0, doctors:4.5, gdp:33700},
-    'ST':{name:'Sachsen-Anhalt',            salary:2450, housing:1700, unemployment:7.4,  population:2160000,  crime:54.0, temperature:9.8,  doctors:4.6, gdp:31900},
-    'SH':{name:'Schleswig-Holstein',        salary:2750, housing:3100, unemployment:5.8,  population:2920000,  crime:49.0, temperature:9.6,  doctors:4.0, gdp:36200},
-    'TH':{name:'Thüringen (Thuringia)',     salary:2500, housing:1850, unemployment:6.0,  population:2100000,  crime:43.0, temperature:9.5,  doctors:4.5, gdp:32600},
+    'BW':{name:'Baden-Württemberg',         salary:3050, housing:4500, rent:12.0, unemployment:3.4,  population:11280000, crime:46.0, temperature:10.5, doctors:4.3, gdp:51200},
+    'BY':{name:'Bayern (Bavaria)',          salary:3100, housing:6200, rent:14.5, unemployment:2.9,  population:13390000, crime:42.0, temperature:9.7,  doctors:4.4, gdp:54100},
+    'BE':{name:'Berlin',                    salary:2850, housing:5500, rent:14.0, unemployment:8.9,  population:3780000,  crime:74.0, temperature:10.4, doctors:5.2, gdp:48400},
+    'BB':{name:'Brandenburg',               salary:2600, housing:2400, rent: 8.5, unemployment:5.4,  population:2540000,  crime:50.0, temperature:10.1, doctors:3.6, gdp:34000},
+    'HB':{name:'Bremen',                    salary:2900, housing:3400, rent:11.0, unemployment:11.0, population:680000,   crime:80.0, temperature:10.2, doctors:4.7, gdp:54900},
+    'HH':{name:'Hamburg',                   salary:3300, housing:6000, rent:16.0, unemployment:6.8,  population:1890000,  crime:70.0, temperature:10.1, doctors:5.5, gdp:74900},
+    'HE':{name:'Hessen',                    salary:3200, housing:4200, rent:13.0, unemployment:5.5,  population:6310000,  crime:50.0, temperature:11.0, doctors:4.3, gdp:53600},
+    'MV':{name:'Mecklenburg-Vorpommern',    salary:2500, housing:2100, rent: 8.0, unemployment:6.7,  population:1620000,  crime:51.0, temperature:9.4,  doctors:4.4, gdp:31300},
+    'NI':{name:'Niedersachsen',             salary:2800, housing:2600, rent: 9.0, unemployment:5.6,  population:8100000,  crime:48.0, temperature:10.2, doctors:3.9, gdp:39400},
+    'NW':{name:'Nordrhein-Westfalen',       salary:2850, housing:3100, rent:10.5, unemployment:7.0,  population:17920000, crime:54.0, temperature:10.7, doctors:4.4, gdp:44400},
+    'RP':{name:'Rheinland-Pfalz',           salary:2800, housing:2800, rent:10.0, unemployment:5.2,  population:4140000,  crime:46.0, temperature:11.0, doctors:4.2, gdp:39400},
+    'SL':{name:'Saarland',                  salary:2750, housing:2200, rent: 8.5, unemployment:7.1,  population:980000,   crime:48.0, temperature:10.8, doctors:4.5, gdp:39400},
+    'SN':{name:'Sachsen (Saxony)',          salary:2500, housing:1950, rent: 8.5, unemployment:6.0,  population:4090000,  crime:54.0, temperature:10.0, doctors:4.5, gdp:33700},
+    'ST':{name:'Sachsen-Anhalt',            salary:2450, housing:1700, rent: 7.5, unemployment:7.4,  population:2160000,  crime:54.0, temperature:9.8,  doctors:4.6, gdp:31900},
+    'SH':{name:'Schleswig-Holstein',        salary:2750, housing:3100, rent:10.5, unemployment:5.8,  population:2920000,  crime:49.0, temperature:9.6,  doctors:4.0, gdp:36200},
+    'TH':{name:'Thüringen (Thuringia)',     salary:2500, housing:1850, rent: 8.0, unemployment:6.0,  population:2100000,  crime:43.0, temperature:9.5,  doctors:4.5, gdp:32600},
   };
 
   const METRICS = {
     salary:      {label:'Average net salary (€/mo)',    fmt:v=>v.toLocaleString('en-GB')+'€',     colors:['#f0f0f0','#0a0a0a']},
-    housing:     {label:'Median purchase price (€/m², to buy)', fmt:v=>v.toLocaleString('en-GB')+'€/m²', colors:['#fdecec','#DD0000']},
+    housing:     {label:'Median purchase price (€/m², to buy)',        fmt:v=>v.toLocaleString('en-GB')+'€/m²', colors:['#fdecec','#DD0000']},
+    rent:        {label:'Average rent (€/m²/month, German convention)',fmt:v=>v.toFixed(2)+'€/m²/mo',           colors:['#f0f0f0','#3a3a8c']},
     unemployment:{label:'Unemployment rate (%)',         fmt:v=>v.toFixed(1)+'%',                  colors:['#fdecec','#7a3520']},
     population:  {label:'Resident population',          fmt:v=>v.toLocaleString('en-GB')+' pop.', colors:['#f0f0f0','#1a1a1a']},
     crime:       {label:'Crime rate (per 1000)',         fmt:v=>v.toFixed(1)+'‰',                  colors:['#fff8d8','#806800']},
@@ -1294,7 +1296,8 @@ makeChart('tourHistChart', {
     if (!panel) return;
     panel.innerHTML = `<div class="dp-name">${data.name}</div>
       <div class="dp-row"><span class="dp-key">💶 Average net salary</span><span class="dp-v">${data.salary.toLocaleString('en-GB')} €/mo</span></div>
-      <div class="dp-row"><span class="dp-key">🏠 Purchase price (to buy)</span><span class="dp-v">${data.housing.toLocaleString('en-GB')} €/m²</span></div>
+      <div class="dp-row"><span class="dp-key">🛒 Buy price</span><span class="dp-v">${data.housing.toLocaleString('en-GB')} €/m²</span></div>
+      <div class="dp-row"><span class="dp-key">🔑 Rent (avg)</span><span class="dp-v">${data.rent.toFixed(2)} €/m²/mo</span></div>
       <div class="dp-row"><span class="dp-key">📉 Unemployment</span><span class="dp-v">${data.unemployment.toFixed(1)}%</span></div>
       <div class="dp-row"><span class="dp-key">👥 Population</span><span class="dp-v">${data.population.toLocaleString('en-GB')}</span></div>
       <div class="dp-row"><span class="dp-key">🚨 Crime rate</span><span class="dp-v">${data.crime.toFixed(1)}‰</span></div>

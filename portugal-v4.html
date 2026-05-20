@@ -372,7 +372,8 @@ footer a:hover{text-decoration:underline}
         <div style="font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.75rem">Displayed metric</div>
         <div class="metric-grid">
           <button class="metric-btn active" data-metric="salary">💶 Salary</button>
-          <button class="metric-btn" data-metric="housing">🏠 House price</button>
+          <button class="metric-btn" data-metric="housing">🛒 Buy €/m²</button>
+          <button class="metric-btn" data-metric="rent">🔑 Rent €/mo</button>
           <button class="metric-btn" data-metric="unemployment">📉 Unemployment</button>
           <button class="metric-btn" data-metric="population">👥 Population</button>
           <button class="metric-btn" data-metric="crime">🚨 Crime</button>
@@ -1142,36 +1143,37 @@ document.querySelectorAll('.evo-tab').forEach(btn => {
   }
 
   const DISTRICTS = {
-    'PT.LI':{name:'Lisboa',           salary:1520,housing:4800,unemployment:6.3,population:2871133,crime:38.2,temperature:17.4,doctors:8.2,gdp:28400},
-    'PT.PO':{name:'Porto',            salary:1290,housing:3500,unemployment:6.0,population:1737395,crime:35.1,temperature:14.8,doctors:5.8,gdp:18200},
-    'PT.FA':{name:'Faro (Algarve)',   salary:1180,housing:3800,unemployment:5.3,population:473062, crime:28.4,temperature:18.2,doctors:4.2,gdp:17800},
-    'PT.SE':{name:'Setúbal',          salary:1210,housing:2950,unemployment:8.0,population:809980, crime:31.2,temperature:16.8,doctors:3.8,gdp:16400},
-    'PT.BR':{name:'Braga',            salary:1100,housing:2100,unemployment:6.0,population:866085, crime:19.8,temperature:13.9,doctors:3.9,gdp:15800},
-    'PT.AV':{name:'Aveiro',           salary:1150,housing:2050,unemployment:5.5,population:737113, crime:18.4,temperature:14.5,doctors:3.5,gdp:17100},
-    'PT.CO':{name:'Coimbra',          salary:1120,housing:2050,unemployment:4.5,population:420054, crime:22.1,temperature:15.8,doctors:8.4,gdp:16900},
-    'PT.LE':{name:'Leiria',           salary:1080,housing:1900,unemployment:6.2,population:467136, crime:17.3,temperature:15.2,doctors:3.2,gdp:16500},
-    'PT.SA':{name:'Santarém',         salary:1050,housing:1400,unemployment:6.3,population:427099, crime:18.9,temperature:16.1,doctors:3.4,gdp:14800},
-    'PT.VI':{name:'Viseu',            salary:990, housing:1000,unemployment:4.9,population:371096, crime:12.4,temperature:12.9,doctors:3.1,gdp:13900},
-    'PT.VC':{name:'Viana do Castelo', salary:980, housing:1200,unemployment:6.3,population:244836, crime:14.2,temperature:13.5,doctors:3.0,gdp:14200},
-    'PT.EV':{name:'Évora',            salary:1020,housing:1550,unemployment:5.9,population:164098, crime:17.6,temperature:16.5,doctors:4.1,gdp:14500},
-    'PT.BE':{name:'Beja',             salary:970, housing:950, unemployment:9.0,population:147640, crime:15.8,temperature:17.1,doctors:2.8,gdp:11800},
-    'PT.BA':{name:'Bragança',         salary:930, housing:700, unemployment:4.9,population:113884, crime:11.2,temperature:11.8,doctors:2.6,gdp:11400},
-    'PT.CB':{name:'Castelo Branco',   salary:960, housing:840, unemployment:5.2,population:171644, crime:13.5,temperature:15.4,doctors:2.9,gdp:12100},
-    'PT.GU':{name:'Guarda',           salary:940, housing:780, unemployment:5.1,population:141861, crime:11.8,temperature:10.2,doctors:2.7,gdp:11900},
-    'PT.VR':{name:'Vila Real',        salary:960, housing:850, unemployment:5.9,population:193561, crime:13.2,temperature:13.1,doctors:3.0,gdp:12400},
-    'PT.PA':{name:'Portalegre',       salary:990, housing:880, unemployment:5.6,population:104770, crime:14.1,temperature:14.8,doctors:2.9,gdp:12200},
-    'PT.AC':{name:'Açores',           salary:1050,housing:1400,unemployment:4.9,population:243018, crime:16.4,temperature:17.5,doctors:3.3,gdp:14200},
-    'PT.MA':{name:'Madeira',          salary:1100,housing:3200,unemployment:4.9,population:253945, crime:19.2,temperature:20.8,doctors:3.8,gdp:16100}
+    'PT.LI':{name:'Lisboa',           salary:1520,housing:4800,rent:1850,unemployment:6.3,population:2871133,crime:38.2,temperature:17.4,doctors:8.2,gdp:28400},
+    'PT.PO':{name:'Porto',            salary:1290,housing:3500,rent:1200,unemployment:6.0,population:1737395,crime:35.1,temperature:14.8,doctors:5.8,gdp:18200},
+    'PT.FA':{name:'Faro (Algarve)',   salary:1180,housing:3800,rent:1100,unemployment:5.3,population:473062, crime:28.4,temperature:18.2,doctors:4.2,gdp:17800},
+    'PT.SE':{name:'Setúbal',          salary:1210,housing:2950,rent: 950,unemployment:8.0,population:809980, crime:31.2,temperature:16.8,doctors:3.8,gdp:16400},
+    'PT.BR':{name:'Braga',            salary:1100,housing:2100,rent: 800,unemployment:6.0,population:866085, crime:19.8,temperature:13.9,doctors:3.9,gdp:15800},
+    'PT.AV':{name:'Aveiro',           salary:1150,housing:2050,rent: 750,unemployment:5.5,population:737113, crime:18.4,temperature:14.5,doctors:3.5,gdp:17100},
+    'PT.CO':{name:'Coimbra',          salary:1120,housing:2050,rent: 800,unemployment:4.5,population:420054, crime:22.1,temperature:15.8,doctors:8.4,gdp:16900},
+    'PT.LE':{name:'Leiria',           salary:1080,housing:1900,rent: 700,unemployment:6.2,population:467136, crime:17.3,temperature:15.2,doctors:3.2,gdp:16500},
+    'PT.SA':{name:'Santarém',         salary:1050,housing:1400,rent: 600,unemployment:6.3,population:427099, crime:18.9,temperature:16.1,doctors:3.4,gdp:14800},
+    'PT.VI':{name:'Viseu',            salary:990, housing:1000,rent: 550,unemployment:4.9,population:371096, crime:12.4,temperature:12.9,doctors:3.1,gdp:13900},
+    'PT.VC':{name:'Viana do Castelo', salary:980, housing:1200,rent: 600,unemployment:6.3,population:244836, crime:14.2,temperature:13.5,doctors:3.0,gdp:14200},
+    'PT.EV':{name:'Évora',            salary:1020,housing:1550,rent: 650,unemployment:5.9,population:164098, crime:17.6,temperature:16.5,doctors:4.1,gdp:14500},
+    'PT.BE':{name:'Beja',             salary:970, housing:950, rent: 500,unemployment:9.0,population:147640, crime:15.8,temperature:17.1,doctors:2.8,gdp:11800},
+    'PT.BA':{name:'Bragança',         salary:930, housing:700, rent: 480,unemployment:4.9,population:113884, crime:11.2,temperature:11.8,doctors:2.6,gdp:11400},
+    'PT.CB':{name:'Castelo Branco',   salary:960, housing:840, rent: 520,unemployment:5.2,population:171644, crime:13.5,temperature:15.4,doctors:2.9,gdp:12100},
+    'PT.GU':{name:'Guarda',           salary:940, housing:780, rent: 500,unemployment:5.1,population:141861, crime:11.8,temperature:10.2,doctors:2.7,gdp:11900},
+    'PT.VR':{name:'Vila Real',        salary:960, housing:850, rent: 520,unemployment:5.9,population:193561, crime:13.2,temperature:13.1,doctors:3.0,gdp:12400},
+    'PT.PA':{name:'Portalegre',       salary:990, housing:880, rent: 530,unemployment:5.6,population:104770, crime:14.1,temperature:14.8,doctors:2.9,gdp:12200},
+    'PT.AC':{name:'Açores',           salary:1050,housing:1400,rent: 750,unemployment:4.9,population:243018, crime:16.4,temperature:17.5,doctors:3.3,gdp:14200},
+    'PT.MA':{name:'Madeira',          salary:1100,housing:3200,rent:1000,unemployment:4.9,population:253945, crime:19.2,temperature:20.8,doctors:3.8,gdp:16100}
   };
   const METRICS = {
-    salary:      {label:'Average net salary (€/mo)',    fmt:v=>v.toLocaleString('en-GB')+'€',      colors:['#cde8d8','#1a3d2b']},
-    housing:     {label:'Median purchase price (€/m², to buy)', fmt:v=>v.toLocaleString('en-GB')+'€/m²',   colors:['#fdecd0','#a51c30']},
-    unemployment:{label:'Unemployment rate (%)',        fmt:v=>v.toFixed(1)+'%',                    colors:['#d8f0e2','#7a3520']},
-    population:  {label:'Resident population',         fmt:v=>v.toLocaleString('en-GB')+' pop.',  colors:['#e8eef8','#1a3d8c']},
-    crime:       {label:'Crime rate (‰)',               fmt:v=>v.toFixed(1)+'‰',                   colors:['#fdf8e8','#7a4a00']},
-    temperature: {label:'Annual avg. temperature (°C)',fmt:v=>v.toFixed(1)+'°C',                   colors:['#e8f4fb','#a51c30']},
-    doctors:     {label:'Doctors per 1,000 pop.',       fmt:v=>v.toFixed(1)+'/1,000',               colors:['#f0f8f0','#1a6b40']},
-    gdp:         {label:'GDP per capita (€/yr)',        fmt:v=>v.toLocaleString('en-GB')+'€',       colors:['#f0f0f8','#1a3d8c']}
+    salary:      {label:'Average net salary (€/mo)',                fmt:v=>v.toLocaleString('en-GB')+'€',      colors:['#cde8d8','#1a3d2b']},
+    housing:     {label:'Median purchase price (€/m², to buy)',     fmt:v=>v.toLocaleString('en-GB')+'€/m²',   colors:['#fdecd0','#a51c30']},
+    rent:        {label:'Median monthly rent (€/mo, ~T2 apartment)',fmt:v=>v.toLocaleString('en-GB')+'€/mo',   colors:['#e8eef8','#1a3d8c']},
+    unemployment:{label:'Unemployment rate (%)',                    fmt:v=>v.toFixed(1)+'%',                   colors:['#d8f0e2','#7a3520']},
+    population:  {label:'Resident population',                      fmt:v=>v.toLocaleString('en-GB')+' pop.',  colors:['#e8eef8','#1a3d8c']},
+    crime:       {label:'Crime rate (‰)',                           fmt:v=>v.toFixed(1)+'‰',                   colors:['#fdf8e8','#7a4a00']},
+    temperature: {label:'Annual avg. temperature (°C)',             fmt:v=>v.toFixed(1)+'°C',                  colors:['#e8f4fb','#a51c30']},
+    doctors:     {label:'Doctors per 1,000 pop.',                   fmt:v=>v.toFixed(1)+'/1,000',              colors:['#f0f8f0','#1a6b40']},
+    gdp:         {label:'GDP per capita (€/yr)',                    fmt:v=>v.toLocaleString('en-GB')+'€',      colors:['#f0f0f8','#1a3d8c']}
   };
 
   let activeMetric = 'salary';
@@ -1207,7 +1209,8 @@ document.querySelectorAll('.evo-tab').forEach(btn => {
     if (!panel) return;
     panel.innerHTML = `<div class="dp-name">${data.name}</div>
       <div class="dp-row"><span class="dp-key">💶 Average net salary</span><span class="dp-v">${data.salary.toLocaleString('en-GB')} €/mo</span></div>
-      <div class="dp-row"><span class="dp-key">🏠 Purchase price (to buy)</span><span class="dp-v">${data.housing.toLocaleString('en-GB')} €/m²</span></div>
+      <div class="dp-row"><span class="dp-key">🛒 Buy price</span><span class="dp-v">${data.housing.toLocaleString('en-GB')} €/m²</span></div>
+      <div class="dp-row"><span class="dp-key">🔑 Monthly rent (T2)</span><span class="dp-v">${data.rent.toLocaleString('en-GB')} €/mo</span></div>
       <div class="dp-row"><span class="dp-key">📉 Unemployment</span><span class="dp-v">${data.unemployment.toFixed(1)}%</span></div>
       <div class="dp-row"><span class="dp-key">👥 Population</span><span class="dp-v">${data.population.toLocaleString('en-GB')}</span></div>
       <div class="dp-row"><span class="dp-key">🚨 Crime rate</span><span class="dp-v">${data.crime.toFixed(1)}‰</span></div>
