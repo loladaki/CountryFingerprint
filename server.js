@@ -71,10 +71,10 @@ const FB_FUEL = {
   gasolina98: { atual: 2.099, anterior: 2.049, variacao: +0.050 },
 };
 const FB_STATS = {
-  pt: { unemp: 5.8, youth_unemp: 18.1, gdp: 2.4, inflation: 2.1, min_wage: 920 },
-  es: { unemp: 11.4, youth_unemp: 24.3, gdp: 2.9, inflation: 2.6, min_wage: 1184, housing_yoy: 12.9 },
-  fr: { unemp: 7.9, youth_unemp: 21.1, gdp: 0.7, inflation: 2.5, min_wage: 1802, housing_idx: 127.1, housing_yoy: 1.1 },
-  de: { unemp: 3.4, youth_unemp: 6.5,  gdp: 0.3, inflation: 2.5, min_wage: 2222 },
+  pt: { unemp: 5.8, youth_unemp: 18.1, gdp: 2.4, inflation: 3.0, min_wage: 920 },
+  es: { unemp: 10.3, youth_unemp: 24.3, gdp: 2.9, inflation: 2.0, min_wage: 1184, housing_yoy: 12.9 },
+  fr: { unemp: 7.9, youth_unemp: 21.1, gdp: 0.7, inflation: 3.2, min_wage: 1802, housing_idx: 127.1, housing_yoy: 1.1 },
+  de: { unemp: 4.0, youth_unemp: 6.5,  gdp: 0.3, inflation: 2.6, min_wage: 2222 },
 };
 
 // ── HTTP fetch com redirects ──────────────────
@@ -361,7 +361,7 @@ async function fetchEuribor12M() {
     return r;
   } catch(e) {
     console.error('[Euribor] Erro:', e.message, '— fallback');
-    return { rate: 2.821, fonte: 'fallback', data: new Date().toISOString() };
+    return { rate: 2.222, fonte: 'fallback', data: new Date().toISOString() };
   }
 }
 
@@ -508,7 +508,7 @@ async function fetchBrent() {
     return r;
   } catch(err) {
     console.error('[Brent] Erro:', err.message, '— fallback');
-    return { preco: 110.87, moeda: 'USD', fonte: 'fallback', data: new Date().toISOString() };
+    return { preco: 105.84, moeda: 'USD', fonte: 'fallback', data: new Date().toISOString() };
   }
 }
 
