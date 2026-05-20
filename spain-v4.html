@@ -371,7 +371,7 @@ footer a:hover{text-decoration:underline}
         <div style="font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.75rem">Metric displayed</div>
         <div class="metric-grid">
           <button class="metric-btn active" data-metric="salary">💶 Salary</button>
-          <button class="metric-btn" data-metric="housing">🏠 Housing</button>
+          <button class="metric-btn" data-metric="housing">🏠 House price</button>
           <button class="metric-btn" data-metric="unemployment">📉 Unemploy.</button>
           <button class="metric-btn" data-metric="population">👥 Population</button>
           <button class="metric-btn" data-metric="crime">🚨 Crime</button>
@@ -395,20 +395,24 @@ footer a:hover{text-decoration:underline}
 <!-- ═══ HOUSING ═══ -->
 <section class="section" id="habitacao">
   <div class="sec-hdr">
-    <h2 class="sec-title">Housing</h2>
+    <h2 class="sec-title">Housing — Buy &amp; Rent</h2>
     <span class="sec-tag">INE / MIVAU · Q4 2025 (published Mar 2026)</span>
+  </div>
+  <div class="notice n-info fade">
+    <span>ℹ️</span>
+    <span>Below: <strong>🛒 Buy cards</strong> show <strong>sale price per m²</strong> (median of recorded property transactions). <strong>🔑 Rent cards</strong> show <strong>monthly rental</strong> for a ~T2 apartment. Construction cost is <em>not</em> shown here (~1,600 €/m² in ES).</span>
   </div>
   <div class="notice n-alert fade">
     <span>🚨</span>
-    <span><strong>2025:</strong> Median price reached <strong>2,230 €/m²</strong> (+13.1%), an all-time record. Spain is facing a structural housing deficit of <strong>500,000–800,000 units</strong>. Annual demand far outpaces construction.</span>
+    <span><strong>2025:</strong> Median sale price reached <strong>2,230 €/m²</strong> (+13.1%), an all-time record. Spain is facing a structural housing deficit of <strong>500,000–800,000 units</strong>. Annual demand far outpaces construction.</span>
   </div>
   <div class="cards fade">
-    <div class="card red"><div class="c-lbl">🇪🇸 National median</div><div class="c-val">2,230<span class="u">€/m²</span></div><div class="c-sub">All-time high</div><span class="c-badge badge-up">↑ +13.1% vs 2024</span><div class="c-src">MIVAU · Q4 2025</div></div>
-    <div class="card red"><div class="c-lbl">🏙 Madrid</div><div class="c-val">5,100<span class="u">€/m²</span></div><span class="c-badge badge-up">↑ +15% vs 2024</span><div class="c-src">INE · Q4 2025</div></div>
-    <div class="card"><div class="c-lbl">🏙 Barcelona</div><div class="c-val">4,600<span class="u">€/m²</span></div><span class="c-badge badge-up">↑ +13% vs 2024</span><div class="c-src">INE · Q4 2025</div></div>
-    <div class="card"><div class="c-lbl">🌊 Costa del Sol</div><div class="c-val">4,200<span class="u">€/m²</span></div><span class="c-badge badge-up">↑ +20% vs 2024</span><div class="c-src">Idealista · 2025</div></div>
-    <div class="card"><div class="c-lbl">🏘 National rental T2</div><div class="c-val">1,320<span class="u">€/mo</span></div><span class="c-badge badge-up">↑ +9%</span><div class="c-src">Idealista · Q1 2026</div></div>
-    <div class="card"><div class="c-lbl">🔑 Madrid rental T2</div><div class="c-val">2,100<span class="u">€/mo</span></div><span class="c-badge badge-up">↑ +12%</span><div class="c-src">Idealista · 2025</div></div>
+    <div class="card red"><div class="c-lbl">🛒 Buy · national median</div><div class="c-val">2,230<span class="u">€/m²</span></div><div class="c-sub">Sale price · all-time high</div><span class="c-badge badge-up">↑ +13.1% vs 2024</span><div class="c-src">MIVAU · Q4 2025</div></div>
+    <div class="card red"><div class="c-lbl">🛒 Buy · Madrid</div><div class="c-val">5,100<span class="u">€/m²</span></div><div class="c-sub">Sale price · €/m²</div><span class="c-badge badge-up">↑ +15% vs 2024</span><div class="c-src">INE · Q4 2025</div></div>
+    <div class="card"><div class="c-lbl">🛒 Buy · Barcelona</div><div class="c-val">4,600<span class="u">€/m²</span></div><div class="c-sub">Sale price · €/m²</div><span class="c-badge badge-up">↑ +13% vs 2024</span><div class="c-src">INE · Q4 2025</div></div>
+    <div class="card"><div class="c-lbl">🛒 Buy · Costa del Sol</div><div class="c-val">4,200<span class="u">€/m²</span></div><div class="c-sub">Sale price · €/m²</div><span class="c-badge badge-up">↑ +20% vs 2024</span><div class="c-src">Idealista · 2025</div></div>
+    <div class="card blue"><div class="c-lbl">🔑 Rent · national (T2)</div><div class="c-val">1,320<span class="u">€/mo</span></div><div class="c-sub">Monthly rental · ~T2</div><span class="c-badge badge-up">↑ +9%</span><div class="c-src">Idealista · Q1 2026</div></div>
+    <div class="card blue"><div class="c-lbl">🔑 Rent · Madrid (T2)</div><div class="c-val">2,100<span class="u">€/mo</span></div><div class="c-sub">Monthly rental · ~T2</div><span class="c-badge badge-up">↑ +12%</span><div class="c-src">Idealista · 2025</div></div>
     <div class="card red"><div class="c-lbl">📊 Affordability ratio</div><div class="c-val">~10<span class="u">× annual salary</span></div><div class="c-sub">Worsening in all cities</div><span class="c-badge badge-up">↑ Critical</span><div class="c-src">OECD / Banco de España · 2025</div></div>
     <div class="card gold"><div class="c-lbl">🔨 New build permits</div><div class="c-val">132,000</div><span class="c-badge badge-dn">↑ +13% vs 2024</span><div class="c-src">INE · 2025</div></div>
   </div>
@@ -1030,7 +1034,7 @@ makeChart('budgetHistChart', { type:'bar', data:{
 
   const METRICS = {
     salary:      {label:'Average net salary (€/mo)',   fmt:v=>v.toLocaleString()+'€',       colors:['#ffe0e0','#7a0000']},
-    housing:     {label:'Housing price (€/m²)',        fmt:v=>v.toLocaleString()+'€/m²',    colors:['#fff3e0','#AA151B']},
+    housing:     {label:'Median purchase price (€/m², to buy)', fmt:v=>v.toLocaleString()+'€/m²', colors:['#fff3e0','#AA151B']},
     unemployment:{label:'Unemployment rate (%)',       fmt:v=>v.toFixed(1)+'%',             colors:['#fff5d8','#7a4a00']},
     population:  {label:'Resident population',        fmt:v=>v.toLocaleString()+' inh.',   colors:['#f0f0ff','#1a1a6b']},
     crime:       {label:'Crime rate (‰)',              fmt:v=>v.toFixed(1)+'‰',             colors:['#fff8e0','#7a5000']},
@@ -1074,7 +1078,7 @@ makeChart('budgetHistChart', { type:'bar', data:{
     if (!panel) return;
     panel.innerHTML = `<div class="dp-name">${data.name}</div>
       <div class="dp-row"><span class="dp-key">💶 Average net salary</span><span class="dp-v">${data.salary.toLocaleString()} €/mo</span></div>
-      <div class="dp-row"><span class="dp-key">🏠 Housing median</span><span class="dp-v">${data.housing.toLocaleString()} €/m²</span></div>
+      <div class="dp-row"><span class="dp-key">🏠 Purchase price (to buy)</span><span class="dp-v">${data.housing.toLocaleString()} €/m²</span></div>
       <div class="dp-row"><span class="dp-key">📉 Unemployment</span><span class="dp-v">${data.unemployment.toFixed(1)}%</span></div>
       <div class="dp-row"><span class="dp-key">👥 Population</span><span class="dp-v">${data.population.toLocaleString()}</span></div>
       <div class="dp-row"><span class="dp-key">🚨 Crime rate</span><span class="dp-v">${data.crime.toFixed(1)}‰</span></div>

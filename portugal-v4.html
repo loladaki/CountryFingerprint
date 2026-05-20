@@ -372,7 +372,7 @@ footer a:hover{text-decoration:underline}
         <div style="font-size:.75rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.75rem">Displayed metric</div>
         <div class="metric-grid">
           <button class="metric-btn active" data-metric="salary">💶 Salary</button>
-          <button class="metric-btn" data-metric="housing">🏠 Housing</button>
+          <button class="metric-btn" data-metric="housing">🏠 House price</button>
           <button class="metric-btn" data-metric="unemployment">📉 Unemployment</button>
           <button class="metric-btn" data-metric="population">👥 Population</button>
           <button class="metric-btn" data-metric="crime">🚨 Crime</button>
@@ -396,20 +396,24 @@ footer a:hover{text-decoration:underline}
 <!-- ═══ HOUSING ═══ -->
 <section class="section" id="habitacao">
   <div class="sec-hdr">
-    <h2 class="sec-title">Housing</h2>
+    <h2 class="sec-title">Housing — Buy &amp; Rent</h2>
     <span class="sec-tag">INE · 2025 (published Apr 2026)</span>
+  </div>
+  <div class="notice n-info fade">
+    <span>ℹ️</span>
+    <span>Below: <strong>🛒 Buy cards</strong> show <strong>sale price per m²</strong> (median of recorded property transactions). <strong>🔑 Rent cards</strong> show <strong>monthly rental</strong> for a ~T2 apartment. Construction cost is <em>not</em> shown here (~1,300 €/m² in PT).</span>
   </div>
   <div class="notice n-alert fade">
     <span>🚨</span>
-    <span><strong>2025:</strong> Median price hit <strong>€2,076/m²</strong> (+16.8%), the largest annual increase ever recorded. Portugal is the <strong>least affordable housing market in the EU</strong> (price-to-income ratio, OECD 2023).</span>
+    <span><strong>2025:</strong> Median sale price hit <strong>€2,076/m²</strong> (+16.8%), the largest annual increase ever recorded. Portugal is the <strong>least affordable housing market in the EU</strong> (price-to-income ratio, OECD 2023).</span>
   </div>
   <div class="cards fade">
-    <div class="card red"><div class="c-lbl">🇵🇹 National median</div><div class="c-val">2,076<span class="u">€/m²</span></div><div class="c-sub">All-time high</div><span class="c-badge badge-up">↑ +16.8% vs 2024</span><div class="c-src">INE · 2025</div></div>
-    <div class="card red"><div class="c-lbl">🏙 Lisbon (Greater)</div><div class="c-val">4,800<span class="u">€/m²</span></div><span class="c-badge badge-up">↑ +12% vs 2024</span><div class="c-src">INE · 2025</div></div>
-    <div class="card"><div class="c-lbl">🏙 Porto</div><div class="c-val">3,500<span class="u">€/m²</span></div><span class="c-badge badge-up">↑ +10% vs 2024</span><div class="c-src">INE · 2025</div></div>
-    <div class="card"><div class="c-lbl">🌊 Algarve</div><div class="c-val">3,800<span class="u">€/m²</span></div><span class="c-badge badge-up">↑ +14% vs 2024</span><div class="c-src">INE · 2025</div></div>
-    <div class="card"><div class="c-lbl">🏘 National rent (2-bed)</div><div class="c-val">1,250<span class="u">€/mo</span></div><span class="c-badge badge-up">↑ +10%</span><div class="c-src">INE · Q1 2025</div></div>
-    <div class="card"><div class="c-lbl">🔑 Lisbon rent (2-bed)</div><div class="c-val">1,850<span class="u">€/mo</span></div><span class="c-badge badge-up">↑ +12%</span><div class="c-src">Idealista · 2025</div></div>
+    <div class="card red"><div class="c-lbl">🛒 Buy · national median</div><div class="c-val">2,076<span class="u">€/m²</span></div><div class="c-sub">Sale price · all-time high</div><span class="c-badge badge-up">↑ +16.8% vs 2024</span><div class="c-src">INE · 2025</div></div>
+    <div class="card red"><div class="c-lbl">🛒 Buy · Lisbon (Greater)</div><div class="c-val">4,800<span class="u">€/m²</span></div><div class="c-sub">Sale price · €/m²</div><span class="c-badge badge-up">↑ +12% vs 2024</span><div class="c-src">INE · 2025</div></div>
+    <div class="card"><div class="c-lbl">🛒 Buy · Porto</div><div class="c-val">3,500<span class="u">€/m²</span></div><div class="c-sub">Sale price · €/m²</div><span class="c-badge badge-up">↑ +10% vs 2024</span><div class="c-src">INE · 2025</div></div>
+    <div class="card"><div class="c-lbl">🛒 Buy · Algarve</div><div class="c-val">3,800<span class="u">€/m²</span></div><div class="c-sub">Sale price · €/m²</div><span class="c-badge badge-up">↑ +14% vs 2024</span><div class="c-src">INE · 2025</div></div>
+    <div class="card blue"><div class="c-lbl">🔑 Rent · national (2-bed)</div><div class="c-val">1,250<span class="u">€/mo</span></div><div class="c-sub">Monthly rental · ~T2</div><span class="c-badge badge-up">↑ +10%</span><div class="c-src">INE · Q1 2025</div></div>
+    <div class="card blue"><div class="c-lbl">🔑 Rent · Lisbon (2-bed)</div><div class="c-val">1,850<span class="u">€/mo</span></div><div class="c-sub">Monthly rental · ~T2</div><span class="c-badge badge-up">↑ +12%</span><div class="c-src">Idealista · 2025</div></div>
     <div class="card red"><div class="c-lbl">📊 Housing affordability</div><div class="c-val">10.4<span class="u">× ann. salary</span></div><div class="c-sub">Worst in EU (OECD)</div><span class="c-badge badge-up">↑ Worsened</span><div class="c-src">OECD / BdP · 2025</div></div>
     <div class="card gold"><div class="c-lbl">🔨 Building permits</div><div class="c-val">25,470</div><span class="c-badge badge-dn">↑ +7.2% vs 2023</span><div class="c-src">INE · 2024</div></div>
   </div>
@@ -1161,7 +1165,7 @@ document.querySelectorAll('.evo-tab').forEach(btn => {
   };
   const METRICS = {
     salary:      {label:'Average net salary (€/mo)',    fmt:v=>v.toLocaleString('en-GB')+'€',      colors:['#cde8d8','#1a3d2b']},
-    housing:     {label:'Median housing price (€/m²)', fmt:v=>v.toLocaleString('en-GB')+'€/m²',   colors:['#fdecd0','#a51c30']},
+    housing:     {label:'Median purchase price (€/m², to buy)', fmt:v=>v.toLocaleString('en-GB')+'€/m²',   colors:['#fdecd0','#a51c30']},
     unemployment:{label:'Unemployment rate (%)',        fmt:v=>v.toFixed(1)+'%',                    colors:['#d8f0e2','#7a3520']},
     population:  {label:'Resident population',         fmt:v=>v.toLocaleString('en-GB')+' pop.',  colors:['#e8eef8','#1a3d8c']},
     crime:       {label:'Crime rate (‰)',               fmt:v=>v.toFixed(1)+'‰',                   colors:['#fdf8e8','#7a4a00']},
@@ -1203,7 +1207,7 @@ document.querySelectorAll('.evo-tab').forEach(btn => {
     if (!panel) return;
     panel.innerHTML = `<div class="dp-name">${data.name}</div>
       <div class="dp-row"><span class="dp-key">💶 Average net salary</span><span class="dp-v">${data.salary.toLocaleString('en-GB')} €/mo</span></div>
-      <div class="dp-row"><span class="dp-key">🏠 Median housing price</span><span class="dp-v">${data.housing.toLocaleString('en-GB')} €/m²</span></div>
+      <div class="dp-row"><span class="dp-key">🏠 Purchase price (to buy)</span><span class="dp-v">${data.housing.toLocaleString('en-GB')} €/m²</span></div>
       <div class="dp-row"><span class="dp-key">📉 Unemployment</span><span class="dp-v">${data.unemployment.toFixed(1)}%</span></div>
       <div class="dp-row"><span class="dp-key">👥 Population</span><span class="dp-v">${data.population.toLocaleString('en-GB')}</span></div>
       <div class="dp-row"><span class="dp-key">🚨 Crime rate</span><span class="dp-v">${data.crime.toFixed(1)}‰</span></div>
