@@ -219,6 +219,7 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
       <a href="spain-v4.html">🇪🇸 Spain</a>
       <a href="france-v1.html">🇫🇷 France</a>
       <a href="germany-v1.html">🇩🇪 Germany</a>
+      <a href="italy-v1.html">🇮🇹 Italy</a>
     </div>
   </div>
 </div>
@@ -444,6 +445,28 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
         </div>
       </a>
 
+      <!-- ITALY -->
+      <a href="italy-v1.html" class="country-card available reveal reveal-d4">
+        <div class="cc-header live-bg">
+          <span class="cc-flag">🇮🇹</span>
+          <div class="cc-name">Italy</div>
+          <div class="cc-sub">Southern Europe · 3rd largest EU economy</div>
+          <span class="cc-badge badge-live">Live</span>
+          <div class="cc-wm">IT</div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-metrics">
+            <div class="cc-metric"><span class="val" id="cc-it-g95">1.937€</span><span class="lbl">Gasoline</span></div>
+            <div class="cc-metric"><span class="val" id="cc-it-unemp">5.2%</span><span class="lbl">Unemploy.</span></div>
+            <div class="cc-metric"><span class="val">2,100€</span><span class="lbl">Housing/m²</span></div>
+          </div>
+          <div class="cc-footer">
+            <div class="cc-cats"><span class="cc-cat">⛽ Energy</span><span class="cc-cat">🏠 Housing</span><span class="cc-cat">💶 Wages</span><span class="cc-cat">✈ Tourism</span></div>
+            <span class="cc-explore">Explore</span>
+          </div>
+        </div>
+      </a>
+
     </div>
   </div>
 </section>
@@ -622,12 +645,14 @@ async function loadLiveData() {
     const esG95 = data.combustiveis?.es_gasolina95?.atual;
     const frG95 = data.combustiveis?.fr_gasolina95?.atual;
     const deG95 = data.combustiveis?.de_gasolina95?.atual;
+    const itG95 = data.combustiveis?.it_gasolina95?.atual;
     if (g95)   { setAll(['t-g95','t-g95b'], g95.toFixed(3)+' €/L'); set('h-g95', g95.toFixed(3)); set('cc-pt-g95', g95.toFixed(3)+'€'); }
     if (gsl)     setAll(['t-gsl','t-gslb'], gsl.toFixed(3)+' €/L');
     if (br)    { setAll(['t-brent','t-brent2'], br.toFixed(2)+' $/bbl'); set('h-brent', br.toFixed(2)); }
     if (esG95) { setAll(['t-es-g95','t-es-g95b'], esG95.toFixed(3)+' €/L'); set('cc-es-g95', esG95.toFixed(3)+'€'); }
     if (frG95) { set('cc-fr-g95', frG95.toFixed(3)+'€'); }
     if (deG95) { set('cc-de-g95', deG95.toFixed(3)+'€'); }
+    if (itG95) { set('cc-it-g95', itG95.toFixed(3)+'€'); }
     fuelFailed = false; updateOfflineBanner();
   } catch(e) { fuelFailed = true; updateOfflineBanner(); }
 }
@@ -678,6 +703,8 @@ async function loadStats() {
     if (fr?.unemp?.value != null) set('cc-fr-unemp', fr.unemp.value+'%');
     const de = data.eurostat?.de;
     if (de?.unemp?.value != null) set('cc-de-unemp', de.unemp.value+'%');
+    const it = data.eurostat?.it;
+    if (it?.unemp?.value != null) set('cc-it-unemp', it.unemp.value+'%');
     if (ecb != null) {
       setAll(['t-ecb','t-ecbb'], ecb+'%'); set('h-ecb', ecb);
     }

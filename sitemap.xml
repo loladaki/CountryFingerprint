@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://eu-stats-production.up.railway.app/</loc>
+    <loc>https://countryfingerprint.onrender.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://eu-stats-production.up.railway.app/portugal</loc>
+    <loc>https://countryfingerprint.onrender.com/portugal</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://eu-stats-production.up.railway.app/spain</loc>
+    <loc>https://countryfingerprint.onrender.com/spain</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://eu-stats-production.up.railway.app/france</loc>
+    <loc>https://countryfingerprint.onrender.com/france</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://countryfingerprint.onrender.com/germany</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://countryfingerprint.onrender.com/italy</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
