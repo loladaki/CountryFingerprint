@@ -56,11 +56,18 @@ body{font-family:var(--font-u);background:var(--cream);color:var(--text);font-si
 @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
 /* NAV */
-.nav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:40px;z-index:100}
 .nav-inner{max-width:1120px;margin:0 auto;padding:0 2rem;display:flex;overflow-x:auto;scrollbar-width:none}
 .nav-inner::-webkit-scrollbar{display:none}
-.nav-home{padding:.85rem 1rem;font-size:.82rem;font-weight:600;color:#fff;background:var(--blue-mid);text-decoration:none;border-radius:6px;margin-right:.5rem;white-space:nowrap;transition:opacity .15s}
-.nav-home:hover{opacity:.85}
+/* Top sticky bar — shared across all 4 country pages + index */
+.eubar{position:sticky;top:0;z-index:101;background:#0a0a0a;color:rgba(255,255,255,.7);font-size:.78rem;border-bottom:1px solid rgba(255,255,255,.05)}
+.eubar-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:0 1.5rem;height:40px;gap:1rem;flex-wrap:wrap}
+.eubar-home{color:rgba(255,255,255,.9);text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:.4rem}
+.eubar-home:hover{color:#fff}
+.eubar-nav{display:flex;gap:1.2rem;align-items:center}
+.eubar-nav a{color:rgba(255,255,255,.5);text-decoration:none;transition:color .15s;font-size:.76rem}
+.eubar-nav a:hover{color:#fff}
+.eubar-nav a.current{color:var(--gold);font-weight:500}
 .nav-link{padding:.85rem 1rem;font-size:.82rem;font-weight:500;color:var(--muted);text-decoration:none;border-bottom:2.5px solid transparent;white-space:nowrap;transition:color .15s,border-color .15s}
 .nav-link:hover{color:var(--text)}
 .nav-link.active{color:var(--blue-mid);border-bottom-color:var(--blue-mid)}
@@ -231,6 +238,19 @@ footer a:hover{text-decoration:underline}
   ⚠ Live data unavailable — showing last known values. <a href="javascript:location.reload()" style="color:#f0d080;text-decoration:underline;margin-left:.5rem">Retry</a>
 </div>
 
+<!-- ═══ TOPBAR (shared) ═══ -->
+<div class="eubar">
+  <div class="eubar-inner">
+    <a href="index.html" class="eubar-home">← <strong>EU Stats</strong></a>
+    <div class="eubar-nav">
+      <a href="portugal-v4.html">🇵🇹 Portugal</a>
+      <a href="spain-v4.html">🇪🇸 Spain</a>
+      <a href="france-v1.html" class="current">🇫🇷 France</a>
+      <a href="germany-v1.html">🇩🇪 Germany</a>
+    </div>
+  </div>
+</div>
+
 <header class="hdr">
   <div class="hdr-stripe"></div>
   <div class="hdr-inner">
@@ -271,7 +291,6 @@ footer a:hover{text-decoration:underline}
 
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-home">← Home</a>
     <a href="#combustiveis" class="nav-link active">⛽ Energy</a>
     <a href="#mapa" class="nav-link">🗺 Map</a>
     <a href="#regions" class="nav-link">📋 Regions</a>

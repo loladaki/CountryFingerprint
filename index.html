@@ -25,6 +25,15 @@ html{scroll-behavior:smooth}
 body{font-family:var(--font-u);background:var(--cream);color:var(--text);font-size:15px;line-height:1.6;overflow-x:hidden}
 
 /* TOPBAR */
+/* EU Stats sticky bar — shared with country pages */
+.eubar{position:sticky;top:0;z-index:101;background:#0a0a0a;color:rgba(255,255,255,.7);font-size:.78rem;border-bottom:1px solid rgba(255,255,255,.05)}
+.eubar-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:0 1.5rem;height:40px;gap:1rem;flex-wrap:wrap}
+.eubar-home{color:rgba(255,255,255,.9);text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:.4rem}
+.eubar-home:hover{color:#fff}
+.eubar-nav{display:flex;gap:1.2rem;align-items:center}
+.eubar-nav a{color:rgba(255,255,255,.5);text-decoration:none;transition:color .15s;font-size:.76rem}
+.eubar-nav a:hover{color:#fff}
+.eubar-nav a.current{color:var(--gold);font-weight:500}
 .topbar{background:var(--navy);height:40px;display:flex;align-items:center;overflow:hidden}
 .topbar-inner{display:flex;animation:marquee 40s linear infinite;white-space:nowrap}
 .topbar-item{font-family:var(--font-m);font-size:.72rem;color:rgba(255,255,255,.65);padding:0 2rem;border-right:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:.4rem;flex-shrink:0}
@@ -199,6 +208,20 @@ footer{background:var(--navy);padding:3rem 2rem 2rem}
 </style>
 </head>
 <body>
+
+<!-- ═══ EU STATS BAR (shared across all pages) ═══ -->
+<div class="eubar">
+  <div class="eubar-inner">
+    <a href="index.html" class="eubar-home">🇪🇺 <strong>EU Stats</strong></a>
+    <div class="eubar-nav">
+      <a href="index.html" class="current">Home</a>
+      <a href="portugal-v4.html">🇵🇹 Portugal</a>
+      <a href="spain-v4.html">🇪🇸 Spain</a>
+      <a href="france-v1.html">🇫🇷 France</a>
+      <a href="germany-v1.html">🇩🇪 Germany</a>
+    </div>
+  </div>
+</div>
 
 <!-- TICKER -->
 <div class="topbar" aria-hidden="true">
