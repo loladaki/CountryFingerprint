@@ -1,24 +1,231 @@
 ---
 import BaseLayout from '@layouts/BaseLayout.astro';
+
+// Pull country meta from each JSON so the home page is always in sync
+import pt from '@data/pt.json';
+import es from '@data/es.json';
+import fr from '@data/fr.json';
+import de from '@data/de.json';
+import it from '@data/it.json';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const countries = [
+  { ...pt, slug: 'portugal',  blurb: 'Lowest cost of living in W. Europe · safest big country in EU · rising tourism', highlights: { unemp: 5.8, gdp: '+2.4%', tax: 'IRS Jovem' } },
+  { ...es, slug: 'spain',     blurb: 'Fastest-growing big-EU economy · 94M tourists · 30 paid leave days · housing crisis',  highlights: { unemp: 10.3, gdp: '+2.9%', tax: 'Beckham law' } },
+  { ...fr, slug: 'france',    blurb: 'Highest fertility rate in EU · 35h workweek · best healthcare · costly fuel/taxes',   highlights: { unemp: 7.9, gdp: '+0.7%', tax: '€1,802 SMIC' } },
+  { ...de, slug: 'germany',   blurb: 'Largest EU economy · €2,222 min wage · top university system · sluggish growth',      highlights: { unemp: 4.0, gdp: '+0.3%', tax: '€12.82/hr' } },
+  { ...it, slug: 'italy',     blurb: '5th most-visited globally · highest life expectancy · no statutory min wage',         highlights: { unemp: 5.2, gdp: '+0.6%', tax: 'CCNL' } },
+];
 ---
 <BaseLayout
-  title="EU Stats — Country comparison for living, moving & investing"
-  description="Side-by-side statistics for 5 EU countries: fuel, housing, wages, unemployment, GDP, tourism, climate, healthcare and more. Data sourced from Eurostat, ECB and national statistical institutes."
+  title="EU Stats — Compare 5 European countries for living, moving & investing"
+  description="Side-by-side statistics for Portugal, Spain, France, Germany and Italy. Live data on fuel prices, housing, wages, unemployment, GDP, tourism and more — sourced from Eurostat, ECB, INSEE, INE, ISTAT and Destatis."
   current="home"
 >
-  <main class="main" style="padding-top:3rem">
-    <section class="section">
-      <h1 style="font-family:var(--font-d);font-size:3rem;font-weight:600;letter-spacing:-.02em;margin-bottom:.5rem">
-        Europe <em style="font-style:italic;color:var(--gold);font-weight:300">by the Numbers</em>
+  <main class="main">
+    <!-- Hero -->
+    <section class="hero fade">
+      <h1>
+        Europe <em>by the Numbers</em>
       </h1>
-      <p style="font-size:1.1rem;color:var(--muted);max-width:680px;line-height:1.6">
-        Compare 5 European countries side-by-side. Live data from Eurostat,
-        ECB, INSEE, INE, ISTAT and Destatis. The full home page comes back
-        in Phase G — for now, use the bar above to navigate to a country.
+      <p class="hero-lead">
+        Side-by-side data for 5 European countries — for anyone thinking of moving, investing,
+        or just curious how their country compares. Updated weekly from official sources.
       </p>
-      <p style="margin-top:1.5rem;color:var(--dim);font-size:.85rem">
-        v2 architecture · Phase B scaffolding · {new Date().toISOString().slice(0, 10)}
-      </p>
+      <div class="hero-meta">
+        <span class="hero-pill">⛽ Live fuel prices</span>
+        <span class="hero-pill">🏠 Housing &amp; rent</span>
+        <span class="hero-pill">💶 Wages &amp; unemployment</span>
+        <span class="hero-pill">🗺 Interactive maps</span>
+        <span class="hero-pill">📊 vs Europe comparisons</span>
+      </div>
+    </section>
+
+    <!-- Country cards -->
+    <section class="country-grid">
+      {countries.map((c) => (
+        <a href={`${base}/${c.slug}`} class="country-card fade" data-country={c.meta.code}>
+          <div class="cc-header">
+            <span class="cc-flag">{c.meta.flag}</span>
+            <div>
+              <div class="cc-name">{c.meta.name}</div>
+              <div class="cc-blurb">{c.blurb}</div>
+            </div>
+            <span class="cc-arrow">→</span>
+          </div>
+          <div class="cc-metrics">
+            <div class="cc-metric">
+              <span class="cc-val">{c.fuelFallback.gasolina95.atual}€</span>
+              <span class="cc-lbl">Gasoline /L</span>
+            </div>
+            <div class="cc-metric">
+              <span class="cc-val">{c.highlights.unemp}%</span>
+              <span class="cc-lbl">Unemployment</span>
+            </div>
+            <div class="cc-metric">
+              <span class="cc-val">{c.highlights.gdp}</span>
+              <span class="cc-lbl">GDP 2026</span>
+            </div>
+            <div class="cc-metric">
+              <span class="cc-val">{c.stats.lifeExpectancy.value}y</span>
+              <span class="cc-lbl">Life expect.</span>
+            </div>
+          </div>
+          <div class="cc-footer">
+            <span class="cc-cats">⛽ 🏠 💶 🏥 🛡</span>
+            <span class="cc-explore">Explore →</span>
+          </div>
+        </a>
+      ))}
+    </section>
+
+    <!-- Why this exists -->
+    <section class="why fade">
+      <h2>Why this exists</h2>
+      <div class="why-grid">
+        <div>
+          <h3>🧭 For people moving</h3>
+          <p>
+            Real numbers — wages, rent, gasoline, taxes, healthcare — without the noise of
+            travel-blog generalities. Each indicator includes its source and reference date.
+          </p>
+        </div>
+        <div>
+          <h3>📊 Live data</h3>
+          <p>
+            Fuel prices update weekly from the EU Oil Bulletin. Brent crude refreshes every
+            30 min. Eurostat, ECB, INSEE, INE, ISTAT and Destatis power the deeper stats.
+          </p>
+        </div>
+        <div>
+          <h3>🆓 No tracking, no ads</h3>
+          <p>
+            Open-source, no analytics by default. The backend is a free-tier Node API on
+            Render; the frontend is a static Astro site on GitHub Pages.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comparison teaser -->
+    <section class="compare-teaser fade">
+      <h2>Some quick comparisons</h2>
+      <div class="compare-grid">
+        <div class="compare-card">
+          <div class="cmp-lbl">💶 Average net salary</div>
+          <ul>
+            <li><strong>🇩🇪 €2,800</strong></li>
+            <li><strong>🇫🇷 €2,700</strong></li>
+            <li><strong>🇪🇸 €1,900</strong></li>
+            <li><strong>🇮🇹 €1,750</strong></li>
+            <li><strong>🇵🇹 €1,230</strong></li>
+          </ul>
+        </div>
+        <div class="compare-card">
+          <div class="cmp-lbl">🏠 National housing price</div>
+          <ul>
+            <li><strong>🇩🇪 €3,600/m²</strong></li>
+            <li><strong>🇫🇷 €3,160/m²</strong></li>
+            <li><strong>🇪🇸 €2,230/m²</strong></li>
+            <li><strong>🇮🇹 €2,100/m²</strong></li>
+            <li><strong>🇵🇹 €2,076/m²</strong></li>
+          </ul>
+        </div>
+        <div class="compare-card">
+          <div class="cmp-lbl">📉 Unemployment</div>
+          <ul>
+            <li><strong>🇩🇪 4.0%</strong></li>
+            <li><strong>🇮🇹 5.2%</strong></li>
+            <li><strong>🇵🇹 5.8%</strong></li>
+            <li><strong>🇫🇷 7.9%</strong></li>
+            <li><strong>🇪🇸 10.3%</strong></li>
+          </ul>
+        </div>
+        <div class="compare-card">
+          <div class="cmp-lbl">🎂 Life expectancy</div>
+          <ul>
+            <li><strong>🇮🇹 83.5y</strong></li>
+            <li><strong>🇪🇸 83.2y</strong></li>
+            <li><strong>🇫🇷 82.5y</strong></li>
+            <li><strong>🇵🇹 81.5y</strong></li>
+            <li><strong>🇩🇪 81.1y</strong></li>
+          </ul>
+        </div>
+        <div class="compare-card">
+          <div class="cmp-lbl">✈ International tourists 2024</div>
+          <ul>
+            <li><strong>🇫🇷 100M</strong></li>
+            <li><strong>🇪🇸 94M</strong></li>
+            <li><strong>🇮🇹 65M</strong></li>
+            <li><strong>🇩🇪 39M</strong></li>
+            <li><strong>🇵🇹 32M</strong></li>
+          </ul>
+        </div>
+        <div class="compare-card">
+          <div class="cmp-lbl">📋 Minimum wage / mo</div>
+          <ul>
+            <li><strong>🇩🇪 €2,222</strong></li>
+            <li><strong>🇫🇷 €1,802</strong></li>
+            <li><strong>🇪🇸 €1,184</strong></li>
+            <li><strong>🇵🇹 €920</strong></li>
+            <li><strong>🇮🇹 — (CCNL)</strong></li>
+          </ul>
+        </div>
+      </div>
     </section>
   </main>
 </BaseLayout>
+
+<style>
+  .hero{margin:2.5rem 0 3.5rem;text-align:left}
+  .hero h1{font-family:var(--font-d);font-size:3rem;font-weight:600;letter-spacing:-.02em;line-height:1.05;color:var(--text);margin-bottom:.8rem}
+  .hero h1 em{font-style:italic;font-weight:300;color:var(--gold)}
+  .hero-lead{font-size:1.15rem;color:var(--muted);max-width:720px;line-height:1.6}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+  .hero-pill{display:inline-flex;align-items:center;padding:.4rem .9rem;background:var(--surface);border:1px solid var(--border);border-radius:99px;font-size:.78rem;color:var(--muted)}
+
+  .country-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:1.2rem;margin-bottom:4rem}
+  .country-card{
+    background:var(--surface);border:1px solid var(--border);border-radius:14px;
+    padding:1.5rem;transition:transform .18s, box-shadow .18s, border-color .18s;
+    color:var(--text);
+  }
+  .country-card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(0,0,0,.07);border-color:var(--accent-mid,#666)}
+  .country-card[data-country="pt"]{--accent-mid:#1a6b40}
+  .country-card[data-country="es"]{--accent-mid:#c0173a}
+  .country-card[data-country="fr"]{--accent-mid:#002395}
+  .country-card[data-country="de"]{--accent-mid:#1a1a1a}
+  .country-card[data-country="it"]{--accent-mid:#008C45}
+
+  .cc-header{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem}
+  .cc-flag{font-size:2.4rem;line-height:1}
+  .cc-name{font-family:var(--font-d);font-size:1.4rem;font-weight:600;color:var(--text)}
+  .cc-blurb{font-size:.8rem;color:var(--muted);margin-top:.25rem;line-height:1.5}
+  .cc-arrow{margin-left:auto;font-size:1.4rem;color:var(--muted);transition:transform .15s,color .15s}
+  .country-card:hover .cc-arrow{transform:translateX(4px);color:var(--accent-mid)}
+
+  .cc-metrics{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:.5rem;padding:.8rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:.8rem}
+  .cc-metric{text-align:center;padding:.3rem 0}
+  .cc-val{display:block;font-family:var(--font-d);font-weight:600;font-size:1.15rem;color:var(--text)}
+  .cc-lbl{display:block;font-size:.66rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:.1rem}
+
+  .cc-footer{display:flex;justify-content:space-between;align-items:center}
+  .cc-cats{font-size:1rem;opacity:.7}
+  .cc-explore{font-size:.78rem;color:var(--muted);font-weight:500}
+
+  .why{margin:4rem 0;padding:2.5rem;background:var(--surface);border:1px solid var(--border);border-radius:14px}
+  .why h2{font-family:var(--font-d);font-size:1.8rem;font-weight:600;margin-bottom:1.5rem}
+  .why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem}
+  .why-grid h3{font-size:1rem;font-weight:500;margin-bottom:.5rem;color:var(--text)}
+  .why-grid p{font-size:.88rem;color:var(--muted);line-height:1.6}
+
+  .compare-teaser{margin:4rem 0 2rem}
+  .compare-teaser h2{font-family:var(--font-d);font-size:1.8rem;font-weight:600;margin-bottom:1.5rem}
+  .compare-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+  .compare-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.1rem 1.25rem}
+  .cmp-lbl{font-size:.78rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.7rem}
+  .compare-card ul{list-style:none;padding:0}
+  .compare-card li{padding:.3rem 0;font-size:.88rem;font-family:var(--font-m);border-top:1px solid var(--border)}
+  .compare-card li:first-child{border-top:none}
+</style>
