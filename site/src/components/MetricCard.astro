@@ -1,0 +1,50 @@
+---
+/**
+ * <MetricCard> — single statistic card used everywhere in the dashboard.
+ *
+ *   <MetricCard
+ *     label="📉 Unemployment"
+ *     value="5.8"
+ *     unit="%"
+ *     sub="Mar 2026 · INE EPA"
+ *     valueId="pt-unemp"             // makes live-data updater target it
+ *     badge={{ kind: 'dn', text: '↓ Lowest since 2002' }}
+ *     source="INE · 29 Apr 2026"
+ *     variant="green"
+ *   />
+ */
+export type CardVariant = 'default' | 'red' | 'green' | 'gold' | 'blue';
+export type BadgeKind = 'up' | 'dn' | 'ne';
+
+interface Props {
+  label: string;
+  value: string | number;
+  unit?: string;
+  sub?: string;
+  /** DOM id assigned to the value span — used by LiveDataLoader to patch */
+  valueId?: string;
+  badge?: { kind: BadgeKind; text: string };
+  source?: string;
+  variant?: CardVariant;
+}
+const {
+  label,
+  value,
+  unit,
+  sub,
+  valueId,
+  badge,
+  source,
+  variant = 'default',
+} = Astro.props as Props;
+const cardClass = variant === 'default' ? 'card' : `card ${variant}`;
+---
+<div class={cardClass}>
+  <div class="c-lbl" set:html={label} />
+  <div class="c-val">
+    <span id={valueId}>{value}</span>{unit && <span class="u">{unit}</span>}
+  </div>
+  {sub && <div class="c-sub">{sub}</div>}
+  {badge && <span class={`c-badge badge-${badge.kind}`} set:html={badge.text} />}
+  {source && <div class="c-src">{source}</div>}
+</div>

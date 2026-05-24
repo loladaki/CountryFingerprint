@@ -1,0 +1,50 @@
+---
+/**
+ * <EvoTabs> — historical trends tab interface used in the "Historical" section.
+ *
+ *   <EvoTabs tabs={[
+ *     { key: 'fuel',     label: '⛽ Fuel'         },
+ *     { key: 'housing',  label: '🏠 Housing'      },
+ *     ...
+ *   ]}>
+ *     <Fragment slot="fuel">...insight + chart card...</Fragment>
+ *     <Fragment slot="housing">...</Fragment>
+ *   </EvoTabs>
+ */
+interface Tab { key: string; label: string }
+interface Props { tabs: Tab[] }
+const { tabs } = Astro.props as Props;
+---
+<style>
+  .evo-tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}
+  .evo-tab{padding:.5rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:20px;font-size:.82rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;font-family:var(--font-u)}
+  .evo-tab:hover{background:var(--accent-light);border-color:var(--accent-mid);color:var(--accent)}
+  .evo-tab.active{background:var(--accent);border-color:var(--accent);color:#fff}
+  .evo-panel{display:none}
+  .evo-panel.active{display:block}
+  .evo-insight{background:var(--accent-light);border-left:3px solid var(--accent);padding:.9rem 1.1rem;border-radius:0 8px 8px 0;font-size:.88rem;color:var(--accent);margin-bottom:1.25rem;line-height:1.6}
+  .evo-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  @media(max-width:760px){.evo-grid{grid-template-columns:1fr}}
+</style>
+<div class="evo-tabs">
+  {tabs.map((t, i) => (
+    <button class={`evo-tab${i === 0 ? ' active' : ''}`} data-panel={t.key + '-panel'}>{t.label}</button>
+  ))}
+</div>
+{tabs.map((t, i) => (
+  <div class={`evo-panel${i === 0 ? ' active' : ''}`} id={t.key + '-panel'}>
+    <slot name={t.key} />
+  </div>
+))}
+
+<script is:inline>
+  document.querySelectorAll('.evo-tab').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const panel = btn.dataset.panel;
+      document.querySelectorAll('.evo-tab').forEach((b) => b.classList.remove('active'));
+      document.querySelectorAll('.evo-panel').forEach((p) => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(panel)?.classList.add('active');
+    });
+  });
+</script>

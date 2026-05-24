@@ -1,0 +1,26 @@
+---
+/**
+ * <ChartCard> — labelled chart container.
+ * Renders a <canvas id={canvasId}> which a page-level script can pick up
+ * with Chart.js.
+ *
+ *   <ChartCard label="GDP growth (%)" canvasId="gdpChart" height={220}>
+ *     <legend>
+ *       <span class="leg-item"><span class="leg-dot" style="background:#008C45"></span>Italy</span>
+ *     </legend>
+ *   </ChartCard>
+ */
+interface Props {
+  label: string;
+  canvasId: string;
+  height?: number;
+}
+const { label, canvasId, height = 240 } = Astro.props as Props;
+---
+<div class="chart-card fade">
+  <div class="chart-lbl" set:html={label} />
+  <slot name="legend" />
+  <div style={`position:relative;width:100%;height:${height}px`}>
+    <canvas id={canvasId}></canvas>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+---
+/**
+ * <RegionCard> — used inside the "Regions" grid section.
+ *
+ *   <RegionCard
+ *     icon="🏙"
+ *     name="Lombardia"
+ *     capital="Capital: Milano · 9.95M pop."
+ *     rows={[
+ *       { key: 'Buy €/m²',    value: '2,800 €/m²', tone: 'red' },
+ *       { key: 'Unemployment', value: '4.0%',       tone: 'green' },
+ *       { key: 'Avg salary',   value: '1,950 €/mo' },
+ *     ]}
+ *   />
+ */
+export type Tone = 'green' | 'red' | 'default';
+export interface Row { key: string; value: string; tone?: Tone }
+
+interface Props {
+  icon: string;
+  name: string;
+  capital: string;
+  rows: Row[];
+}
+const { icon, name, capital, rows } = Astro.props as Props;
+
+const tone = (t?: Tone) =>
+  t === 'red'   ? 'color:var(--warn)' :
+  t === 'green' ? 'color:var(--accent-mid)' :
+  '';
+---
+<style>
+  .region-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.25rem;transition:border-color .2s,box-shadow .2s}
+  .region-card:hover{border-color:var(--accent-mid);box-shadow:var(--shadow-sm)}
+  .rc-name{font-family:var(--font-d);font-size:1rem;font-weight:600;color:var(--accent);margin-bottom:.5rem}
+  .rc-capital{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.6rem}
+  .rc-row{display:flex;justify-content:space-between;font-size:.8rem;padding:.2rem 0;border-top:1px solid var(--border)}
+  .rc-row:first-of-type{border-top:none}
+  .rc-key{color:var(--muted)}
+  .rc-val{font-family:var(--font-m);font-weight:500}
+</style>
+<div class="region-card">
+  <div class="rc-name">{icon} {name}</div>
+  <div class="rc-capital">{capital}</div>
+  {rows.map((r) => (
+    <div class="rc-row">
+      <span class="rc-key">{r.key}</span>
+      <span class="rc-val" style={tone(r.tone)}>{r.value}</span>
+    </div>
+  ))}
+</div>

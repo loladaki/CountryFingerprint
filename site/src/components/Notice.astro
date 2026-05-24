@@ -1,0 +1,19 @@
+---
+/**
+ * <Notice> — coloured callout box.
+ *
+ *   <Notice variant="info" icon="ℹ️">
+ *     <strong>Italy</strong> has no statutory minimum wage…
+ *   </Notice>
+ */
+interface Props {
+  variant?: 'info' | 'warn' | 'alert' | 'ok';
+  icon?: string;
+}
+const { variant = 'info', icon = 'ℹ️' } = Astro.props as Props;
+const classMap = { info: 'n-info', warn: 'n-warn', alert: 'n-alert', ok: 'n-ok' };
+---
+<div class={`notice ${classMap[variant]} fade`}>
+  <span>{icon}</span>
+  <span><slot /></span>
+</div>

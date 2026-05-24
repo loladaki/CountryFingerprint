@@ -1,0 +1,44 @@
+---
+/**
+ * <KPIRow> — wide 6-up KPI grid used at the top of Economy sections.
+ *
+ *   <KPIRow items={[
+ *     { value: '2.20T', label: 'GDP 2025 (€)', badge: { text: '3rd in EU', kind: 'info' } },
+ *     ...
+ *   ]} />
+ */
+type Kind = 'good' | 'bad' | 'info' | 'neutral';
+export interface KPI {
+  value: string;
+  label: string;
+  valueId?: string;
+  badge?: { text: string; kind?: Kind };
+}
+interface Props { items: KPI[] }
+const { items } = Astro.props as Props;
+
+const badgeStyle = (kind: Kind = 'info') => {
+  if (kind === 'good') return 'background:#eef6f2;color:#1a6b40';
+  if (kind === 'bad')  return 'background:#fef0f0;color:#7a2030';
+  if (kind === 'info') return 'background:var(--blue-light);color:var(--blue)';
+  return 'background:#f5f0e8;color:#6a4f14';
+};
+---
+<style>
+  .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-bottom:1.5rem}
+  .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem}
+  .kpi-val{font-family:var(--font-d);font-size:1.7rem;font-weight:600;line-height:1.1;color:var(--text)}
+  .kpi-lbl{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:.4rem;margin-bottom:.4rem}
+  .kpi-chg{display:inline-flex;align-items:center;font-size:.7rem;font-weight:500;padding:.2rem .55rem;border-radius:99px}
+</style>
+<div class="kpi-row fade">
+  {items.map((it) => (
+    <div class="kpi">
+      <div class="kpi-val"><span id={it.valueId}>{it.value}</span></div>
+      <div class="kpi-lbl">{it.label}</div>
+      {it.badge && (
+        <span class="kpi-chg" style={badgeStyle(it.badge.kind)} set:html={it.badge.text} />
+      )}
+    </div>
+  ))}
+</div>

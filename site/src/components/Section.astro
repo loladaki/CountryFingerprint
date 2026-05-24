@@ -1,0 +1,22 @@
+---
+/**
+ * <Section> — wraps a page section with header (title + small tag).
+ *
+ *   <Section id="combustiveis" title="Energy & Fuel" tag="EU Oil Bulletin · weekly">
+ *     ...content...
+ *   </Section>
+ */
+interface Props {
+  id: string;
+  title: string;
+  tag?: string;
+}
+const { id, title, tag } = Astro.props as Props;
+---
+<section class="section fade" id={id}>
+  <div class="sec-hdr">
+    <h2 class="sec-title" set:html={title} />
+    {tag && <span class="sec-tag">{tag}</span>}
+  </div>
+  <slot />
+</section>

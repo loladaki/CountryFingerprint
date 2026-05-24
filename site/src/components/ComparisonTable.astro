@@ -1,0 +1,55 @@
+---
+/**
+ * <ComparisonTable> — country vs EU table used in the "vs Europe" section.
+ *
+ *   <ComparisonTable rows={[
+ *     { indicator: 'GDP growth 2026', country: '+0.6%', eu: '+1.5%', rank: 'bad',  note: 'Chronic underperformer' },
+ *     ...
+ *   ]} countryLabel="Italy" />
+ */
+export type Rank = 'good' | 'ok' | 'bad';
+export interface Row {
+  indicator: string;
+  country: string;
+  eu: string;
+  rank: Rank;
+  note: string;
+}
+interface Props {
+  countryLabel: string;
+  rows: Row[];
+}
+const { countryLabel, rows } = Astro.props as Props;
+---
+<style>
+  .ctable{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+  .ctable table{width:100%;border-collapse:collapse;font-size:.85rem}
+  .ctable th{text-align:left;padding:.7rem 1rem;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--cream);border-bottom:1px solid var(--border)}
+  .ctable td{padding:.7rem 1rem;border-top:1px solid var(--border);vertical-align:middle}
+  .ctable td:nth-child(2),.ctable td:nth-child(3){font-family:var(--font-m);font-weight:500}
+  .rank-good{color:var(--accent-mid)}
+  .rank-ok{color:#6a4f14}
+  .rank-bad{color:var(--warn)}
+</style>
+<div class="ctable fade">
+  <table>
+    <thead>
+      <tr>
+        <th>Indicator</th>
+        <th>{countryLabel}</th>
+        <th>EU Average</th>
+        <th>Assessment</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((r) => (
+        <tr>
+          <td>{r.indicator}</td>
+          <td>{r.country}</td>
+          <td>{r.eu}</td>
+          <td class={`rank-${r.rank}`}>{r.note}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
