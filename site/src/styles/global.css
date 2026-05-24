@@ -43,6 +43,7 @@ body[data-country="es"]{ --accent:#a51c30; --accent-mid:#c0173a; --accent-light:
 body[data-country="fr"]{ --accent:#001a75; --accent-mid:#002395; --accent-light:#e6eaf8; --hdr-bg:#0a1230; --stripe:linear-gradient(90deg,#001a75 0%,#001a75 33.3%,#fff 33.3%,#fff 66.6%,#ed2939 66.6%); }
 body[data-country="de"]{ --accent:#0a0a0a; --accent-mid:#1a1a1a; --accent-light:#f0f0f0; --hdr-bg:#0a0a0a; --stripe:linear-gradient(180deg,#0a0a0a 0%,#0a0a0a 33.3%,#DD0000 33.3%,#DD0000 66.6%,#FFCE00 66.6%); }
 body[data-country="it"]{ --accent:#008C45; --accent-mid:#006B33; --accent-light:#e6f4ec; --hdr-bg:#0d1f17; --stripe:linear-gradient(90deg,#008C45 0%,#008C45 33.3%,#fff 33.3%,#fff 66.6%,#CD212A 66.6%); }
+body[data-country="nl"]{ --accent:#21468B; --accent-mid:#1a3970; --accent-light:#e6eaf5; --hdr-bg:#0e1a3a; --stripe:linear-gradient(180deg,#AE1C28 0%,#AE1C28 33.3%,#fff 33.3%,#fff 66.6%,#21468B 66.6%); }
 
 body{
   font-family:var(--font-u);

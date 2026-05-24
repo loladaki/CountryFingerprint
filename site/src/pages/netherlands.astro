@@ -1,0 +1,243 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import data from '@data/nl.json';
+---
+<CountryLayout
+  country="nl"
+  title={data.meta.title}
+  flag={data.meta.flag}
+  subtitle={data.meta.subtitle}
+  description={data.meta.description}
+  tickerItems={data.tickerItems}
+  sections={data.sections}
+  liveBadge="📌 Static data · loading…"
+>
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="alert" icon="⛽">
+      The Netherlands has the <strong>most expensive petrol and diesel in the entire EU</strong>.
+      Accijns + BTW (excise + VAT) account for ~63% of the pump price. Despite this, fuel
+      consumption per capita is among the lowest because cycling and public transit are dominant.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Euro 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" sub="Self-service · national avg"
+                  valueId="val-g95" badge={{ kind: 'up', text: '↑ Highest in EU' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="⛽ Diesel" value={data.fuelFallback.gasoleo.atual} unit="€/L" sub="Diesel · national avg"
+                  valueId="val-gsl" badge={{ kind: 'up', text: '↑ Highest in EU' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="⛽ LPG" value={data.fuelFallback.gpl.atual} unit="€/L" sub="Auto LPG"
+                  badge={{ kind: 'ne', text: '→ Stable' }} source="Static · May 2026" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" sub="ICE Brent · live"
+                  valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.36" unit="€/kWh" sub="Household · all-in" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · Q1 2026" variant="red" />
+      <MetricCard label="🌬 Renewables" value="47" unit="%" sub="Wind + solar share of generation"
+                  badge={{ kind: 'dn', text: '↑ Climbing fast' }} source="CBS · 2025" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Provincie" tag="9 metrics · click a province">
+    <InteractiveMap
+      regions={data.map.regions}
+      metrics={data.map.metrics}
+      metricButtons={data.map.buttons}
+      geojsonUrl={data.map.geojsonUrl}
+      projection={data.map.projection}
+      featureIdResolver={data.map.featureIdResolver}
+      viewBox={data.map.viewBox}
+      strokeOnSelect={data.map.strokeOnSelect}
+      unit={data.map.regionUnit}
+      country="nl"
+    />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="Kadaster / NVM · Q4 2025">
+    <Notice variant="alert" icon="🚨">
+      The Netherlands has one of <strong>Europe's worst housing crises</strong>. The average
+      sale price hit <strong>€480k in 2025</strong> (vs €280k in 2018). Shortage estimated at
+      <strong>400,000+ homes</strong>. Annual housing wait lists in Amsterdam exceed 12 years
+      for social housing. Rents are tightly regulated below ~€880/mo but free-market rents
+      have exploded.
+    </Notice>
+    <Notice variant="info" icon="ℹ️">
+      <strong>🛒 Buy cards</strong> show <strong>sale price per m²</strong> (Kadaster
+      transaction-based). <strong>🔑 Rent cards</strong> show <strong>monthly rental</strong>
+      for a ~70m² apartment on the free market.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · national avg" value="5,200" unit="€/m²" sub="Avg sale price · €480k/home"
+                  badge={{ kind: 'up', text: '↑ +9% vs 2024' }} source="NVM/Kadaster · Q4 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Amsterdam"   value="8,400" unit="€/m²" sub="Sale price · €/m²"
+                  badge={{ kind: 'up', text: '↑ +7% vs 2024' }} source="NVM · Q4 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Utrecht"     value="6,200" unit="€/m²" badge={{ kind: 'up', text: '↑ +8% vs 2024' }} source="NVM · Q4 2025" />
+      <MetricCard label="🛒 Buy · Rotterdam"   value="5,000" unit="€/m²" badge={{ kind: 'up', text: '↑ +9% vs 2024' }} source="NVM · Q4 2025" />
+      <MetricCard label="🛒 Buy · The Hague"   value="5,400" unit="€/m²" badge={{ kind: 'up', text: '↑ +6% vs 2024' }} source="NVM · Q4 2025" />
+      <MetricCard label="🔑 Rent · national (T2)" value="1,500" unit="€/mo" sub="Free market · ~70m²"
+                  badge={{ kind: 'up', text: '↑ +8% YoY' }} source="Pararius · Q1 2026" variant="blue" />
+      <MetricCard label="🔑 Rent · Amsterdam (T2)" value="2,400" unit="€/mo" sub="Free market · ~70m²"
+                  badge={{ kind: 'up', text: '↑ +9% YoY' }} source="Pararius · Q1 2026" variant="red" />
+      <MetricCard label="🏘 Social housing wait" value="12+" unit="years" sub="Amsterdam waiting list"
+                  badge={{ kind: 'up', text: '↑ Worst-ever wait' }} source="WoningNet · 2025" variant="red" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="CBS / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo"
+                  badge={{ kind: 'dn', text: '↑ Among top-5 EU' }} source="CBS · 2025" variant="gold" />
+      <MetricCard label="💶 Median net salary" value={data.stats.avgNetSalary.value} unit="€/mo" badge={{ kind: 'ne', text: '→ 50th percentile' }} source="CBS · 2025" />
+      <MetricCard label="📋 Minimum wage (21+)" value={data.stats.minWage.value} unit="€/mo"
+                  sub="Statutory monthly · Jan 2026" badge={{ kind: 'dn', text: '↑ 4th highest EU' }} source="SZW · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" sub="Apr 2026 · CBS"
+                  valueId="nl-unemp" badge={{ kind: 'dn', text: '↓ Near record low' }} source={data.stats.unemployment.source} variant="green" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" sub="Ages 15–24"
+                  valueId="nl-youth-unemp" badge={{ kind: 'dn', text: '↓ Well below EU avg' }} source="Eurostat · Q1 2026" variant="green" />
+      <MetricCard label="⏱ Weekly hours" value="29.5" unit="h" sub="World's highest part-time share (~50%)"
+                  badge={{ kind: 'ne', text: '→ Unique to NL' }} source="CBS · 2025" />
+      <MetricCard label="🏢 Labour participation" value="83.6" unit="%" badge={{ kind: 'dn', text: '↑ Highest in EU' }} source="CBS · Q1 2026" variant="green" />
+      <MetricCard label="📋 Box 3 wealth tax" value="36" unit="%" sub="Capital gains since 2023"
+                  badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Belastingdienst · 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="CBS / DNB · 2025–2026">
+    <Notice variant="ok" icon="📈">
+      The Netherlands is the <strong>5th largest economy in the EU</strong> despite only 17.9M
+      people. GDP per capita (~€58,500) is among the world's highest. Trade-driven (Port of
+      Rotterdam handles ~10% of EU goods); home to Shell, ASML, Heineken, Philips, ING.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: '5th in EU', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita (€)', badge: { text: '+68% above avg', kind: 'good' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'nl-gdp', badge: { text: '→ Near EU avg', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'nl-inflation', badge: { text: '↑ Above avg', kind: 'bad' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Well below avg', kind: 'good' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget balance 2025', badge: { text: '↓ Under Maastricht 3%', kind: 'good' } },
+    ]} />
+    <Cards>
+      <MetricCard label="🏦 ECB rate" value={data.stats.ecbRate.value} unit="%" sub="Apr 2026" valueId="nl-ecb-rate" badge={{ kind: 'dn', text: '↓ From 4.0% in 2024' }} source="ECB · Apr 2026" />
+      <MetricCard label="📊 Euribor 12m" value={data.stats.euribor12m.value} unit="%" sub="May 2026" valueId="nl-euribor"
+                  badge={{ kind: 'dn', text: '↓ From 4.1% in 2023' }} source="ECB · May 2026" variant="gold" />
+      <MetricCard label="🚢 Port of Rotterdam" value="436" unit="M tons" sub="Largest EU port"
+                  badge={{ kind: 'dn', text: '✓ #1 EU' }} source="HBR · 2024" variant="green" />
+      <MetricCard label="🔬 R&amp;D spending" value="2.3" unit="% GDP" sub="ASML, Philips lead" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="CBS · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="NBTC / CBS · 2024">
+    <Notice variant="warn" icon="🏛️">
+      Amsterdam suffers from severe overtourism. <strong>20M international arrivals nationally</strong>
+      vs ~900k residents in Amsterdam means visitors outnumber locals 22:1 in peak season.
+      The city has banned new hotels in the centre (2024) and limits Airbnb to 30 nights/year.
+    </Notice>
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="20" unit="M" sub="Record · +6% vs 2023"
+                  badge={{ kind: 'dn', text: '↑ Strong growth' }} source="NBTC · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="30" unit="B €" sub="~3% of GDP" badge={{ kind: 'dn', text: '↑ +9% YoY' }} source="NBTC · 2024" variant="gold" />
+      <MetricCard label="🇩🇪 Top market: Germany" value="5.6" unit="M" badge={{ kind: 'dn', text: '↑ +5%' }} source="CBS · 2024" />
+      <MetricCard label="🇧🇪 Belgium" value="2.7" unit="M" badge={{ kind: 'dn', text: '↑ +4%' }} source="CBS · 2024" />
+      <MetricCard label="🇺🇸 United States" value="1.8" unit="M" badge={{ kind: 'dn', text: '↑ +21%' }} source="CBS · 2024" />
+      <MetricCard label="🏛️ Amsterdam" value="20" unit="M" sub="Overtourism caps in place"
+                  badge={{ kind: 'up', text: '↑ Hotel moratorium' }} source="Gemeente A'dam · 2024" variant="red" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="RIVM / Eurostat · 2024">
+    <Notice variant="info" icon="🏥">
+      The Netherlands uses a <strong>regulated private insurance model</strong> — everyone must
+      buy basic insurance (~€140/mo) from competing private insurers, with government subsidies
+      for low income. Often cited as one of the world's best-performing systems.
+    </Notice>
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2023" variant="gold" />
+      <MetricCard label="💰 Health expenditure" value="10.2" unit="% GDP" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000 pop." value="3.8" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🛏 Hospital beds / 1000" value="3.0" badge={{ kind: 'up', text: '↓ Below EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🏥 Hospitals" value="~80" sub="Highly concentrated" source="NZa · 2024" />
+      <MetricCard label="👶 Infant mortality" value="3.5" unit="/1000" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🩺 Insurance coverage" value="100" unit="%" sub="Mandatory basic insurance"
+                  badge={{ kind: 'dn', text: '✓ Universal' }} source="Zorginstituut · 2024" />
+      <MetricCard label="🔬 Nurses / 1000" value="11.0" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2023" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP / CBS · 2024">
+    <Notice variant="ok" icon="🛡">
+      The Netherlands ranks <strong>21st in the Global Peace Index 2024</strong> — comfortably
+      safe. Bike theft is the most common crime; violent crime is very low by EU standards.
+      Drug-related organised crime (Mocro Mafia) is a structural concern but mostly insular.
+    </Notice>
+    <Cards>
+      <MetricCard label="🔒 Safety perception" value="79" unit="%" sub="Feel safe walking alone at night" badge={{ kind: 'dn', text: '↑ Top in EU' }} source="Eurobarometer · 2024" />
+      <MetricCard label="🚔 Homicide rate" value="0.6" unit="/100k" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🚗 Road fatalities" value="684" sub="2024 · per year" badge={{ kind: 'dn', text: '↓ Lowest per-capita EU' }} source="SWOV · 2024" />
+      <MetricCard label="🚲 Bike theft" value="487k" sub="2024 · most common offence"
+                  badge={{ kind: 'up', text: '↑ ~1 every minute' }} source="CBS · 2024" variant="red" />
+      <MetricCard label="🛡 Terrorism threat" value="Substantial" badge={{ kind: 'ne', text: '→ Level 3 of 5' }} source="NCTV · 2024" />
+      <MetricCard label="🛂 Police personnel" value="65k" sub="National police force" badge={{ kind: 'ne', text: '→ Stable' }} source="Politie · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="CBS / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Jan 2026 est. · slow growth via migration"
+                  badge={{ kind: 'ne', text: '→ +0.5% in 2025' }} source="CBS · 2026" />
+      <MetricCard label="🎓 University graduates" value="44" unit="%" sub="Share of 25–34 cohort"
+                  badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="👶 Birth rate" value="1.49" sub="Fertility · near EU avg"
+                  badge={{ kind: 'ne', text: '→ Near EU avg (1.46)' }} source="CBS · 2024" />
+      <MetricCard label="💰 Poverty risk (AROPE)" value="16.5" unit="%" sub="At-risk-of-poverty or social exclusion"
+                  badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2024" variant="green" />
+      <MetricCard label="👴 Population 65+" value="20.6" unit="%" sub="Ageing but slower than DE/IT"
+                  badge={{ kind: 'ne', text: '→ Mid EU' }} source="CBS · 2025" />
+      <MetricCard label="🌍 Foreign born" value="14.2" unit="%" sub="Share of population"
+                  badge={{ kind: 'ne', text: '→ Mid EU' }} source="CBS · 2025" />
+      <MetricCard label="📋 Retirement age 2026" value="67" unit="yrs" sub="+ Indexed to life expectancy"
+                  badge={{ kind: 'ne', text: '→ Among highest' }} source="SVB · 2026" />
+      <MetricCard label="⏱ Paid leave" value="20" unit="days/yr" sub="+ Many contract extras + 11 holidays"
+                  badge={{ kind: 'ne', text: '→ Mid EU' }} source="Burgerlijk Wetboek" variant="gold" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Netherlands vs Europe" tag="Eurostat · 2025–2026">
+    <Notice variant="info" icon="📊">
+      The Netherlands performs <strong>above EU average</strong> in: GDP per capita, fiscal
+      discipline, life expectancy, safety, education, labour participation. It falls
+      <strong>below</strong> in: housing affordability (severe crisis), fuel prices (highest in
+      EU), electricity prices, work hours (lowest in EU — by choice, via part-time culture).
+    </Notice>
+    <ComparisonTable countryLabel="Netherlands" rows={[
+      { indicator: 'GDP (total, 2025)',     country: '€1.05T',  eu: '—',       rank: 'good', note: '5th in EU' },
+      { indicator: 'GDP per capita',        country: '€58,500', eu: '€34,900', rank: 'good', note: '+68% above avg' },
+      { indicator: 'GDP growth 2026',       country: '+1.8%',   eu: '+1.5%',   rank: 'good', note: 'Slightly above avg' },
+      { indicator: 'Unemployment rate',     country: '3.9%',    eu: '6.0%',    rank: 'good', note: 'Near record low' },
+      { indicator: 'Youth unemployment',    country: '9.2%',    eu: '15.4%',   rank: 'good', note: 'Well below avg' },
+      { indicator: 'Inflation 2026',        country: '3.4%',    eu: '2.6%',    rank: 'bad',  note: 'Above EU avg' },
+      { indicator: 'Public debt',           country: '47% GDP', eu: '83% GDP', rank: 'good', note: 'Well below avg' },
+      { indicator: 'Life expectancy',       country: '82.0 yrs', eu: '81.2 yrs', rank: 'good', note: 'Above average' },
+      { indicator: 'Min. wage (monthly)',   country: '€2,070',  eu: '~€1,100', rank: 'good', note: '4th highest EU' },
+      { indicator: 'Petrol price',          country: '€2.39/L', eu: '~€1.85/L', rank: 'bad',  note: 'Highest in EU' },
+      { indicator: 'Housing avg price',     country: '€480k',   eu: '—',       rank: 'bad',  note: 'Severe shortage' },
+      { indicator: 'Avg weekly hours',      country: '29.5h',   eu: '36h',     rank: 'good', note: 'Part-time culture' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="nl" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (
+      <li><a href={s.url}>{s.name}</a> — {s.desc}</li>
+    ))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇳🇱 Netherlands · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">
+      CBS · DNB · Eurostat
+    </span>
+  </Fragment>
+</CountryLayout>

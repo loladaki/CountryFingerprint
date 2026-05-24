@@ -7,15 +7,17 @@ import es from '@data/es.json';
 import fr from '@data/fr.json';
 import de from '@data/de.json';
 import it from '@data/it.json';
+import nl from '@data/nl.json';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const countries = [
-  { ...pt, slug: 'portugal',  blurb: 'Lowest cost of living in W. Europe · safest big country in EU · rising tourism', highlights: { unemp: 5.8, gdp: '+2.4%', tax: 'IRS Jovem' } },
-  { ...es, slug: 'spain',     blurb: 'Fastest-growing big-EU economy · 94M tourists · 30 paid leave days · housing crisis',  highlights: { unemp: 10.3, gdp: '+2.9%', tax: 'Beckham law' } },
-  { ...fr, slug: 'france',    blurb: 'Highest fertility rate in EU · 35h workweek · best healthcare · costly fuel/taxes',   highlights: { unemp: 7.9, gdp: '+0.7%', tax: '€1,802 SMIC' } },
-  { ...de, slug: 'germany',   blurb: 'Largest EU economy · €2,222 min wage · top university system · sluggish growth',      highlights: { unemp: 4.0, gdp: '+0.3%', tax: '€12.82/hr' } },
-  { ...it, slug: 'italy',     blurb: '5th most-visited globally · highest life expectancy · no statutory min wage',         highlights: { unemp: 5.2, gdp: '+0.6%', tax: 'CCNL' } },
+  { ...pt, slug: 'portugal',    blurb: 'Lowest cost of living in W. Europe · safest big country in EU · rising tourism',     highlights: { unemp: 5.8, gdp: '+2.4%', tax: 'IRS Jovem' } },
+  { ...es, slug: 'spain',       blurb: 'Fastest-growing big-EU economy · 94M tourists · 30 paid leave days · housing crisis',  highlights: { unemp: 10.3, gdp: '+2.9%', tax: 'Beckham law' } },
+  { ...fr, slug: 'france',      blurb: 'Highest fertility rate in EU · 35h workweek · best healthcare · costly fuel/taxes',   highlights: { unemp: 7.9, gdp: '+0.7%', tax: '€1,802 SMIC' } },
+  { ...de, slug: 'germany',     blurb: 'Largest EU economy · €2,222 min wage · top university system · sluggish growth',      highlights: { unemp: 4.0, gdp: '+0.3%', tax: '€12.82/hr' } },
+  { ...it, slug: 'italy',       blurb: '5th most-visited globally · highest life expectancy · no statutory min wage',         highlights: { unemp: 5.2, gdp: '+0.6%', tax: 'CCNL' } },
+  { ...nl, slug: 'netherlands', blurb: '5th largest EU economy · part-time capital · severe housing crisis · highest fuel',  highlights: { unemp: 3.9, gdp: '+1.8%', tax: '€2,070 min' } },
 ];
 ---
 <BaseLayout
@@ -197,6 +199,7 @@ const countries = [
   .country-card[data-country="fr"]{--accent-mid:#002395}
   .country-card[data-country="de"]{--accent-mid:#1a1a1a}
   .country-card[data-country="it"]{--accent-mid:#008C45}
+  .country-card[data-country="nl"]{--accent-mid:#21468B}
 
   .cc-header{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem}
   .cc-flag{font-size:2.4rem;line-height:1}

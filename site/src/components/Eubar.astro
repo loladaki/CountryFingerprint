@@ -7,7 +7,7 @@
  *   <Eubar current="pt" />     // marks Portugal as active
  *   <Eubar current="home" />   // home page
  */
-type CountryKey = 'home' | 'pt' | 'es' | 'fr' | 'de' | 'it';
+type CountryKey = 'home' | 'pt' | 'es' | 'fr' | 'de' | 'it' | 'nl';
 interface Props { current: CountryKey }
 const { current } = Astro.props as Props;
 
@@ -25,6 +25,7 @@ const cls  = (k: CountryKey) => current === k ? 'current' : '';
       <a href={link('france')} class={cls('fr')}>🇫🇷 France</a>
       <a href={link('germany')} class={cls('de')}>🇩🇪 Germany</a>
       <a href={link('italy')} class={cls('it')}>🇮🇹 Italy</a>
+      <a href={link('netherlands')} class={cls('nl')}>🇳🇱 NL</a>
     </nav>
   </div>
 </div>
