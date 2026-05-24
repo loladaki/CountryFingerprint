@@ -1,0 +1,252 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import data from '@data/it.json';
+---
+<CountryLayout
+  country="it"
+  title={data.meta.title}
+  flag={data.meta.flag}
+  subtitle={data.meta.subtitle}
+  description={data.meta.description}
+  tickerItems={data.tickerItems}
+  sections={data.sections}
+  liveBadge="📌 Static data · loading…"
+>
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="warn" icon="⚡">
+      Italy has <strong>among the highest fuel taxes in Europe</strong> (accise) — more than
+      €0.73/L on petrol. Electricity prices are above EU average (~0.29 €/kWh) due to high
+      gas dependency. Renewables (solar + hydro) now provide ~42% of electricity generation
+      in 2025, but Italy still imports ~75% of its energy.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Benzina" value={data.fuelFallback.gasolina95.atual} unit="€/L" sub="Senza piombo · self-service"
+                  valueId="val-g95" badge={{ kind: 'ne', text: '→ Stable vs last week' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diesel (Gasolio)" value={data.fuelFallback.gasoleo.atual} unit="€/L" sub="Gasolio · national avg"
+                  valueId="val-gsl" badge={{ kind: 'ne', text: '→ Diesel > petrol (unusual EU)' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="⛽ GPL" value={data.fuelFallback.gpl.atual} unit="€/L" sub="GPL auto · widely available"
+                  badge={{ kind: 'dn', text: '↓ Cheapest fuel option' }} source="Static · May 2026" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" sub="ICE Brent · live"
+                  valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.29" unit="€/kWh" sub="Household · all-in tariff" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · Q1 2026" variant="red" />
+      <MetricCard label="🌬 Renewables" value="42" unit="%" sub="Solar + hydro lead"
+                  badge={{ kind: 'dn', text: '↑ Target: 65% by 2030' }} source="Terna · 2025" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Regione" tag="9 metrics · click a regione">
+    <InteractiveMap
+      regions={data.map.regions}
+      metrics={data.map.metrics}
+      metricButtons={data.map.buttons}
+      geojsonUrl={data.map.geojsonUrl}
+      projection={data.map.projection}
+      featureIdResolver={data.map.featureIdResolver}
+      viewBox={data.map.viewBox}
+      strokeOnSelect={data.map.strokeOnSelect}
+      unit={data.map.regionUnit}
+      country="it"
+    />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="OMI / Idealista · Q4 2025">
+    <Notice variant="info" icon="ℹ️">
+      <strong>🛒 Buy cards</strong> show <strong>sale price per m²</strong> (OMI — Osservatorio
+      del Mercato Immobiliare, transaction-based). <strong>🔑 Rent cards</strong> show
+      <strong>monthly rent for a ~T2 apartment (~70 m²)</strong>. The
+      <strong>North–South housing divide</strong> is striking: Milan is 5× more expensive
+      than Palermo.
+    </Notice>
+    <Notice variant="warn" icon="🏠">
+      <strong>The Italian housing paradox:</strong> Despite high prices in Milan and Rome, the
+      national average sale price is the <strong>lowest among large EU economies</strong> (~2,100
+      €/m²). The South has plenty of empty stock (depopulation, "1€ houses"), while the North
+      faces severe shortages. Home-ownership rate: ~73% — among the highest in EU.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · national median" value="2,100" unit="€/m²" sub="Sale price · houses + apartments"
+                  badge={{ kind: 'ne', text: '→ Stable' }} source="OMI · Q4 2025" />
+      <MetricCard label="🛒 Buy · Milano" value="5,600" unit="€/m²" sub="Sale price · highest in Italy"
+                  badge={{ kind: 'up', text: '↑ +4% vs 2024' }} source="OMI · Q4 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Roma"     value="3,200" unit="€/m²" sub="Sale price · €/m²"  badge={{ kind: 'ne', text: '→ Stable' }} source="OMI · Q4 2025" />
+      <MetricCard label="🛒 Buy · Firenze"  value="3,800" unit="€/m²" sub="Tourist premium"     badge={{ kind: 'up', text: '↑ +5% vs 2024' }} source="OMI · Q4 2025" />
+      <MetricCard label="🛒 Buy · Bologna"  value="3,200" unit="€/m²" sub="University hub"       badge={{ kind: 'up', text: '↑ +6% vs 2024' }} source="OMI · Q4 2025" />
+      <MetricCard label="🛒 Buy · Napoli"   value="2,500" unit="€/m²" sub="Sale price · €/m²"  badge={{ kind: 'up', text: '↑ +8% (fast)' }} source="OMI · Q4 2025" />
+      <MetricCard label="🔑 Rent · national T2" value="720"   unit="€/mo" sub="Monthly rental · ~T2" badge={{ kind: 'up', text: '↑ +6% vs 2024' }} source="Idealista · Q1 2026" variant="blue" />
+      <MetricCard label="🔑 Rent · Milano T2"   value="1,650" unit="€/mo" sub="Most expensive in IT" badge={{ kind: 'up', text: '↑ +9% vs 2024' }} source="Idealista · Q1 2026" variant="red" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="ISTAT / Eurostat · 2025–2026">
+    <Notice variant="warn" icon="⚠️">
+      <strong>Italy has NO statutory minimum wage.</strong> Wages are set via
+      <strong>CCNL</strong> (Contratto Collettivo Nazionale di Lavoro) — sector-specific
+      collective agreements covering ~80% of workers. De-facto minimum varies by sector: ~€6/hr
+      for food service, ~€9/hr for metalworking. A proposal for a €9/hr statutory minimum
+      was rejected by Parliament in 2023.
+    </Notice>
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" sub="Full-time · +2.5% YoY"
+                  badge={{ kind: 'ne', text: '→ Below big-EU avg' }} source="ISTAT · 2025" variant="gold" />
+      <MetricCard label="💶 Median net salary" value={data.stats.avgNetSalary.value} unit="€/mo" badge={{ kind: 'ne', text: '→ 50th percentile' }} source="ISTAT · 2025" />
+      <MetricCard label="📋 Minimum wage" value="N/A" sub="CCNL · sector-based, no statutory floor"
+                  badge={{ kind: 'ne', text: '→ EU exceptions: IT + AT + SE + DK + FI + CY' }} source="CGIL/CISL/UIL · 2025" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" sub="Multi-decade low"
+                  valueId="it-unemp" badge={{ kind: 'dn', text: '↓ vs 7.7% in 2023' }} source={data.stats.unemployment.source} variant="green" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" sub="Improving but high"
+                  valueId="it-youth-unemp" badge={{ kind: 'up', text: '↑ 2nd highest in big-5 EU' }} source="Eurostat · Mar 2026" variant="red" />
+      <MetricCard label="👥 Total employed" value="24.1" unit="M" sub="Record high" badge={{ kind: 'dn', text: '↑ +480k in 2025' }} source="ISTAT · Q1 2026" />
+      <MetricCard label="🏢 Labour participation" value="66.4" unit="%" sub="Female only 56%"
+                  badge={{ kind: 'up', text: '↓ One of lowest in EU' }} source="ISTAT · Q1 2026" variant="red" />
+      <MetricCard label="⏱ Avg. weekly hours" value="37.0" unit="hrs" sub="Part-time ~19%" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="ISTAT · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="ISTAT / Banca d'Italia · 2025–2026">
+    <Notice variant="warn" icon="⚠️">
+      Italy is the <strong>3rd largest economy in the EU</strong> but with
+      <strong>structurally low growth</strong> — GDP per capita is barely higher than in 2000
+      in real terms ("lost decades"). Public debt at <strong>~135% of GDP</strong> is the 2nd
+      highest in the EU after Greece. The NRRP (Next Generation EU, ~€194B) is the largest
+      stimulus plan since post-war reconstruction.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: '3rd in EU', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita (€)', badge: { text: 'Below EU avg', kind: 'bad' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'it-gdp', badge: { text: '↓ Below EU avg', kind: 'bad' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'it-inflation', badge: { text: '↓ Below EU avg', kind: 'good' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↑ 2nd highest EU', kind: 'bad' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget balance 2025', badge: { text: '↑ Above Maastricht 3%', kind: 'bad' } },
+    ]} />
+    <Cards>
+      <MetricCard label="🏦 ECB rate" value={data.stats.ecbRate.value} unit="%" sub="Apr 2026" valueId="it-ecb-rate" badge={{ kind: 'dn', text: '↓ From 4.0% in 2024' }} source="ECB · Apr 2026" />
+      <MetricCard label="📊 Euribor 12m" value={data.stats.euribor12m.value} unit="%" sub="May 2026" valueId="it-euribor"
+                  badge={{ kind: 'dn', text: '↓ From 4.1% in 2023' }} source="ECB · May 2026" variant="gold" />
+      <MetricCard label="🏛 Trade balance" value="+55" unit="B€" sub="Mech / luxury / food" badge={{ kind: 'dn', text: '→ Stable' }} source="ISTAT · 2025" variant="green" />
+      <MetricCard label="🛍 Luxury & fashion exports" value="+5" unit="%" sub={`"Made in Italy" premium`}
+                  badge={{ kind: 'dn', text: '↑ Global demand resilient' }} source="Confindustria · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="ISTAT / ENIT · 2024">
+    <Notice variant="ok" icon="✈">
+      Italy hit a record <strong>65M international arrivals in 2024</strong> — the
+      <strong>5th most-visited country globally</strong>. Tourism revenue reached €55B,
+      ~2.5% of GDP directly (~13% with multiplier). The Jubilee 2025 in Rome and Cortina
+      d'Ampezzo Winter Olympics 2026 will boost arrivals further.
+    </Notice>
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="65" unit="M" sub="Record · +15% vs 2023"
+                  badge={{ kind: 'dn', text: '↑ 5th most-visited' }} source="ISTAT · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="55" unit="B €" sub="~2.5% of GDP (direct)" badge={{ kind: 'dn', text: '↑ Well above 2019' }} source="ENIT · 2024" variant="gold" />
+      <MetricCard label="🇩🇪 Top market: Germany" value="14.0" unit="M" badge={{ kind: 'dn', text: '↑ +6%' }} source="ISTAT · 2024" />
+      <MetricCard label="🇺🇸 United States" value="6.8" unit="M" badge={{ kind: 'dn', text: '↑ +20%' }} source="ISTAT · 2024" />
+      <MetricCard label="🏛 Roma" value="35" unit="M" sub="Jubilee 2025 boost" badge={{ kind: 'dn', text: '↑ +9%' }} source="Roma Capitale · 2024" />
+      <MetricCard label="🚤 Venezia" value="21" unit="M" sub="Overtourism · €5 entry fee" badge={{ kind: 'up', text: '↑ Caps in place' }} source="Comune Venezia · 2024" variant="red" />
+      <MetricCard label="🍷 Firenze" value="16" unit="M" badge={{ kind: 'dn', text: '↑ +7%' }} source="Toscana Turismo · 2024" />
+      <MetricCard label="🏨 Total overnights" value="458" unit="M" sub="50% international" badge={{ kind: 'dn', text: '↑ +6%' }} source="ISTAT · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="SSN · Ministero della Salute · 2024">
+    <Notice variant="ok" icon="🏥">
+      Italy has the <strong>Servizio Sanitario Nazionale (SSN)</strong> — universal, mostly
+      tax-funded. Life expectancy of <strong>83.5 years is the highest in the EU</strong>,
+      but the system suffers from regional disparities (Northern regions outperform Southern
+      ones) and chronic underfunding.
+    </Notice>
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'dn', text: '↑ Highest in EU (81.2 avg)' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="💰 Health expenditure" value="9.0" unit="% GDP" badge={{ kind: 'ne', text: '→ Below big-EU avg' }} source="OECD · 2024" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000 pop." value="4.1" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🛏 Hospital beds / 1000" value="3.1" badge={{ kind: 'up', text: '↓ Below EU avg' }} source="Eurostat · 2023" variant="red" />
+      <MetricCard label="🏥 Hospitals" value="~1,000" sub="SSN public + private accredited" source="Min. Salute · 2024" />
+      <MetricCard label="👶 Infant mortality" value="2.5" unit="/1000" badge={{ kind: 'dn', text: '↓ Among lowest in EU' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🩺 SSN coverage" value="100" unit="%" sub="Universal · tax-funded"
+                  badge={{ kind: 'dn', text: '✓ Tax-funded' }} source="SSN · 2024" />
+      <MetricCard label="🔬 Nurses / 1000" value="6.5" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="Eurostat · 2023" variant="red" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP / ISTAT / Ministero dell'Interno · 2024">
+    <Notice variant="info" icon="🛡">
+      Italy is <strong>generally safe</strong> for everyday life. Petty crime (pickpocketing,
+      scams) is significant in tourist hubs. Organised crime (Mafia, Camorra, 'Ndrangheta,
+      Sacra Corona Unita) remains a structural issue, especially in the South — though direct
+      violence has fallen sharply since the 1990s peak.
+    </Notice>
+    <Cards>
+      <MetricCard label="🔒 Safety perception" value="62" unit="%" sub="Feel safe walking alone at night" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurobarometer · 2024" />
+      <MetricCard label="🚔 Homicide rate" value="0.6" unit="/100k" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🚗 Road fatalities" value="3,032" sub="2024 · per year" badge={{ kind: 'up', text: '↑ +1% vs 2023' }} source="ISTAT · 2024" variant="red" />
+      <MetricCard label="🛡 Terrorism threat" value="Low" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="DCPP · 2024" />
+      <MetricCard label="🎭 Organised crime" value="~80k" sub="Affiliates estimated" badge={{ kind: 'up', text: '↑ Structural' }} source="DIA · 2024" variant="red" />
+      <MetricCard label="🛂 Police personnel" value="~310k" sub="5 forces (Polizia/CC/GdF/PP/PL)" badge={{ kind: 'ne', text: '→ Stable' }} source="Min. Interno · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="ISTAT / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Jan 2026 · declining"
+                  badge={{ kind: 'up', text: '↓ −180k in 2025 (net)' }} source="ISTAT · 2026" variant="red" />
+      <MetricCard label="🎓 University graduates" value="22" unit="%" sub="25–64 cohort"
+                  badge={{ kind: 'up', text: '↓ Lowest in big-EU' }} source="Eurostat · 2024" variant="red" />
+      <MetricCard label="👶 Birth rate" value={data.stats.fertilityRate.value} sub="Fertility · lowest in EU"
+                  badge={{ kind: 'up', text: '↓ Demographic collapse' }} source="ISTAT · 2024" variant="red" />
+      <MetricCard label="💰 Poverty risk (AROPE)" value="23.5" unit="%" sub="At-risk-of-poverty or social exclusion"
+                  badge={{ kind: 'ne', text: '→ Above EU avg' }} source="Eurostat · 2024" />
+      <MetricCard label="👴 Population 65+" value="24.3" unit="%" sub="Oldest population in EU"
+                  badge={{ kind: 'up', text: '↑ Oldest in EU' }} source="ISTAT · 2025" variant="red" />
+      <MetricCard label="🌍 Foreign born" value="10.8" unit="%" sub="Share of population" badge={{ kind: 'ne', text: '→ Below big-EU avg' }} source="ISTAT · 2025" />
+      <MetricCard label="📋 Retirement age 2026" value="67" unit="yrs" sub="+ Quota 103 early option" badge={{ kind: 'ne', text: '→ Linked to life expectancy' }} source="INPS · 2026" />
+      <MetricCard label="⏱ Paid leave" value="26" unit="days/yr" sub="+ 11 public holidays"
+                  badge={{ kind: 'dn', text: '→ Above EU avg' }} source="CCNL standard" variant="gold" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Italy vs Europe" tag="Eurostat · 2025–2026">
+    <Notice variant="info" icon="📊">
+      Italy performs <strong>above EU average</strong> in: tourism, life expectancy, food/lifestyle,
+      trade surplus. It falls <strong>below</strong> in: GDP growth (chronic stagnation), public
+      debt, fertility (lowest in EU), university graduation, real wage trend (only EU country
+      with declining real wages over decade).
+    </Notice>
+    <ComparisonTable countryLabel="Italy" rows={[
+      { indicator: 'GDP (total, 2025)',     country: '€2.20T', eu: '—',       rank: 'ok',   note: '3rd in EU' },
+      { indicator: 'GDP per capita',        country: '€37,300', eu: '€34,900', rank: 'ok',   note: '+7% above avg' },
+      { indicator: 'GDP growth 2026',       country: '+0.6%',   eu: '+1.5%',   rank: 'bad',  note: 'Chronic underperformer' },
+      { indicator: 'Unemployment rate',     country: '5.2%',    eu: '6.0%',    rank: 'good', note: 'Multi-decade low' },
+      { indicator: 'Youth unemployment',    country: '19.0%',   eu: '15.4%',   rank: 'bad',  note: 'Above EU avg' },
+      { indicator: 'Inflation 2026',        country: '1.7%',    eu: '2.6%',    rank: 'good', note: 'Below EU avg' },
+      { indicator: 'Public debt',           country: '135% GDP', eu: '83% GDP', rank: 'bad',  note: '2nd highest in EU' },
+      { indicator: 'Budget deficit',        country: '3.5% GDP', eu: '~2.5% GDP', rank: 'bad', note: 'Above Maastricht 3%' },
+      { indicator: 'Life expectancy',       country: '83.5 yrs', eu: '81.2 yrs', rank: 'good', note: 'Highest in EU' },
+      { indicator: 'Min. wage',             country: 'None (CCNL)', eu: '~€1,100', rank: 'ok', note: 'Sector-based · ~80% coverage' },
+      { indicator: 'International tourism', country: '65M', eu: '—', rank: 'good', note: '5th globally' },
+      { indicator: 'Renewables share',      country: '42%', eu: '44%', rank: 'ok', note: 'Near average' },
+      { indicator: 'Fertility rate',        country: '1.20', eu: '1.46', rank: 'bad', note: 'Lowest in EU' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="it" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (
+      <li><a href={s.url}>{s.name}</a> — {s.desc}</li>
+    ))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇮🇹 Italy · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">
+      ISTAT · OMI · Banca d'Italia · Eurostat
+    </span>
+  </Fragment>
+</CountryLayout>

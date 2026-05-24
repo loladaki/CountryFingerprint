@@ -1,0 +1,231 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import data from '@data/fr.json';
+---
+<CountryLayout
+  country="fr"
+  title={data.meta.title}
+  flag={data.meta.flag}
+  subtitle={data.meta.subtitle}
+  description={data.meta.description}
+  tickerItems={data.tickerItems}
+  sections={data.sections}
+  liveBadge="📌 Static data · loading…"
+>
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="warn" icon="⚡">
+      France has <strong>among the highest fuel taxes in Europe</strong> (TICPE accounts for
+      ~60% of the price). On the upside, household electricity is the
+      <strong>cheapest in Western Europe</strong> (€0.21/kWh) thanks to nuclear (~70% of
+      electricity generation).
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ SP 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" sub="Sans plomb 95 · station avg"
+                  valueId="val-g95" badge={{ kind: 'ne', text: '→ Stable' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diesel (Gazole)" value={data.fuelFallback.gasoleo.atual} unit="€/L" sub="Gazole · national avg"
+                  valueId="val-gsl" badge={{ kind: 'dn', text: '↓ −0.039€' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="⛽ GPL" value={data.fuelFallback.gpl.atual} unit="€/L" sub="Auto GPL"
+                  badge={{ kind: 'ne', text: '→ Stable' }} source="Static · May 2026" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" sub="ICE Brent · live"
+                  valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.21" unit="€/kWh" sub="Tarif réglementé · household"
+                  badge={{ kind: 'dn', text: '↓ Cheapest in W. Europe' }} source="CRE · Q1 2026" variant="green" />
+      <MetricCard label="☢️ Nuclear share" value="70" unit="%" sub="Of electricity generation"
+                  badge={{ kind: 'dn', text: '✓ Unique in EU' }} source="RTE · 2024" variant="gold" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Région" tag="9 metrics · click a région">
+    <InteractiveMap
+      regions={data.map.regions}
+      metrics={data.map.metrics}
+      metricButtons={data.map.buttons}
+      geojsonUrl={data.map.geojsonUrl}
+      projection={data.map.projection}
+      featureIdResolver={data.map.featureIdResolver}
+      viewBox={data.map.viewBox}
+      strokeOnSelect={data.map.strokeOnSelect}
+      unit={data.map.regionUnit}
+      country="fr"
+    />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="INSEE / Notaires de France · Q4 2025">
+    <Notice variant="info" icon="ℹ️">
+      <strong>🛒 Buy cards</strong> show <strong>sale price per m²</strong> (notaire-recorded
+      transactions). <strong>🔑 Rent cards</strong> show <strong>monthly rental</strong> for a
+      T2 apartment. Construction cost is <em>not</em> shown here (~1,800 €/m² in FR).
+    </Notice>
+    <Notice variant="alert" icon="🚨">
+      <strong>Paris paradox:</strong> Sale prices declined <strong>−12%</strong> from the 2022
+      peak of ~11,200 €/m² to 9,800 €/m² in 2025, yet Paris remains the most expensive city in
+      Continental Europe. National median sale price: <strong>3,160 €/m²</strong>.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · national median" value="3,160" unit="€/m²" sub="Sale price · houses + apartments"
+                  badge={{ kind: 'ne', text: '→ Stabilising' }} source="Notaires de France · Q4 2025" />
+      <MetricCard label="🛒 Buy · Paris" value="9,800" unit="€/m²" sub="Sale price · €/m²"
+                  badge={{ kind: 'dn', text: '↓ −12% from 2022 peak' }} source="Notaires · Q4 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Lyon"     value="4,900" unit="€/m²" sub="Sale price · €/m²" badge={{ kind: 'ne', text: '→ −4% from peak' }} source="Notaires · Q4 2025" />
+      <MetricCard label="🛒 Buy · Nice"     value="4,700" unit="€/m²" sub="Sale price · €/m²" badge={{ kind: 'ne', text: '→ Stable' }} source="Notaires · Q4 2025" />
+      <MetricCard label="🛒 Buy · Bordeaux" value="4,200" unit="€/m²" sub="Sale price · €/m²" badge={{ kind: 'dn', text: '↓ −8% from 2022' }} source="Notaires · Q4 2025" />
+      <MetricCard label="🛒 Buy · Toulouse" value="3,400" unit="€/m²" sub="Sale price · €/m²" badge={{ kind: 'ne', text: '→ Stable · growing' }} source="Notaires · Q4 2025" />
+      <MetricCard label="🔑 Rent · national (T2)" value="820"   unit="€/mo" sub="Monthly rental · T2" badge={{ kind: 'up', text: '↑ +5% vs 2024' }} source="SeLoger · 2025" variant="blue" />
+      <MetricCard label="🔑 Rent · Paris (T2)"   value="1,680" unit="€/mo" sub="Monthly rental · T2" badge={{ kind: 'up', text: '↑ +7% vs 2024' }} source="SeLoger · 2025" variant="red" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Labour" tag="INSEE / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo"
+                  badge={{ kind: 'dn', text: '↑ +3% vs 2024' }} source="INSEE · 2025" variant="gold" />
+      <MetricCard label="💶 Average net salary" value={data.stats.avgNetSalary.value} unit="€/mo" badge={{ kind: 'ne', text: '→ 50th percentile' }} source="INSEE · 2025" />
+      <MetricCard label="📋 SMIC 2026" value={data.stats.minWage.value} unit="€/mo" sub="Jan 2026 · €11.88/hr"
+                  badge={{ kind: 'dn', text: '↑ +2% vs 2025' }} source="French gov · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" sub="INSEE BIT · Q1 2026"
+                  valueId="fr-unemp" badge={{ kind: 'ne', text: '→ Near big-EU avg' }} source="INSEE · Q1 2026" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" sub="Ages 15–24"
+                  valueId="fr-youth-unemp" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="INSEE · Q1 2026" variant="red" />
+      <MetricCard label="⏱ Weekly hours" value="35.0" unit="h" sub="Statutory 35h workweek"
+                  badge={{ kind: 'dn', text: '↓ Lowest in EU' }} source="INSEE · 2025" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="INSEE / Banque de France · 2025–2026">
+    <Notice variant="warn" icon="⚠️">
+      France's GDP growth has been <strong>structurally weak</strong> — averaging just ~1%
+      over the last decade. Public debt at <strong>113% of GDP</strong> and the budget deficit
+      at <strong>5.5%</strong> are well above Maastricht limits. The 2024 political turmoil
+      (3 PMs in 6 months) led to S&amp;P downgrading France's credit rating.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: '2nd in EU', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita (€)', badge: { text: 'Above avg', kind: 'good' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'fr-gdp', badge: { text: '↓ Below EU avg', kind: 'bad' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'fr-inflation', badge: { text: '↑ Above avg', kind: 'bad' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↑ Above avg', kind: 'bad' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget balance 2025', badge: { text: 'Excessive deficit', kind: 'bad' } },
+    ]} />
+    <Cards>
+      <MetricCard label="🏦 ECB rate" value={data.stats.ecbRate.value} unit="%" sub="Apr 2026" valueId="fr-ecb-rate" badge={{ kind: 'dn', text: '↓ From 4.0% in 2024' }} source="ECB · Apr 2026" />
+      <MetricCard label="📊 Euribor 12m" value={data.stats.euribor12m.value} unit="%" sub="May 2026" valueId="fr-euribor"
+                  badge={{ kind: 'dn', text: '↓ From 4.1% in 2023' }} source="ECB · May 2026" variant="gold" />
+      <MetricCard label="🏛 Public spending / GDP" value="58" unit="%" sub="Highest in EU"
+                  badge={{ kind: 'up', text: '↑ Highest in EU' }} source="INSEE · 2024" variant="red" />
+      <MetricCard label="🚂 SNCF infrastructure" value="29k km" sub="Rail network (3rd in EU)"
+                  badge={{ kind: 'dn', text: '✓ TGV leader' }} source="SNCF · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="ATOUT FRANCE · 2024">
+    <Notice variant="ok" icon="✈">
+      France remains the <strong>most-visited country in the world</strong> with
+      <strong>100M international arrivals in 2024</strong> (boosted by the Paris 2024 Olympic
+      Games). Tourism brings ~€70B per year — about 7% of GDP including indirect effects.
+    </Notice>
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="100" unit="M" sub="Olympic boost · +12% vs 2023"
+                  badge={{ kind: 'dn', text: '↑ #1 globally' }} source="ATOUT FRANCE · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="70" unit="B €" badge={{ kind: 'dn', text: '↑ +10% YoY' }} source="DGE · 2024" variant="gold" />
+      <MetricCard label="🗼 Paris arrivals" value="44" unit="M" badge={{ kind: 'dn', text: '↑ +20% Olympic year' }} source="OTCP · 2024" />
+      <MetricCard label="🌊 Côte d'Azur" value="11" unit="M" badge={{ kind: 'dn', text: '↑ +6%' }} source="CRT · 2024" />
+      <MetricCard label="🏰 Loire Valley" value="3" unit="M" badge={{ kind: 'ne', text: '→ Stable' }} source="CRT · 2024" />
+      <MetricCard label="👷 Tourism employment" value="2.1" unit="M" sub="~7.5% of total employment" badge={{ kind: 'ne', text: '→ Stable' }} source="ATOUT FRANCE · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="DREES / Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="💰 Health expenditure" value="11.9" unit="% GDP" badge={{ kind: 'dn', text: '↑ 3rd highest in EU' }} source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000 pop." value="3.3" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🛏 Hospital beds / 1000" value="5.7" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🏥 Hospitals" value="2,989" sub="Public + private + non-profit" source="DREES · 2024" />
+      <MetricCard label="👶 Infant mortality" value="3.5" unit="/1000" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🩺 Sécu coverage" value="100" unit="%" sub="Universal · Sécurité Sociale"
+                  badge={{ kind: 'dn', text: '✓ Universal' }} source="CNAM · 2024" />
+      <MetricCard label="🔬 Nurses / 1000" value="11.5" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2023" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP / ONISR / Ministère de l'Intérieur · 2024">
+    <Notice variant="info" icon="🛡">
+      France ranks <strong>87th in the Global Peace Index 2024</strong> — the lowest among
+      Western European countries, mainly due to ongoing terror threat assessment (Vigipirate at
+      "urgence attentat" level since Oct 2023) and high petty crime rate in big cities. Daily
+      life remains safe by global standards.
+    </Notice>
+    <Cards>
+      <MetricCard label="🔒 Safety perception" value="64" unit="%" sub="Feel safe walking alone at night"
+                  badge={{ kind: 'up', text: '↓ Below EU avg' }} source="Eurobarometer · 2024" variant="red" />
+      <MetricCard label="🚔 Homicide rate" value="1.4" unit="/100k" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🚗 Road fatalities" value="3,167" sub="2024 · per year" badge={{ kind: 'dn', text: '↓ −4% vs 2023' }} source="ONISR · 2024" />
+      <MetricCard label="🛡 Terror threat (Vigipirate)" value="Urgence" sub="Highest level since Oct 2023" badge={{ kind: 'up', text: '↑ Heightened' }} source="SGDSN · 2024" variant="red" />
+      <MetricCard label="💻 Cybercrime" value="+18" unit="%" badge={{ kind: 'up', text: '↑ Rising' }} source="ANSSI · 2024" />
+      <MetricCard label="🛂 Police personnel" value="250k" sub="Police + gendarmerie" badge={{ kind: 'ne', text: '→ Stable' }} source="Intérieur · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="INSEE / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Jan 2026 est. · 2nd largest EU"
+                  badge={{ kind: 'ne', text: '→ +0.3% in 2025' }} source="INSEE · 2026" />
+      <MetricCard label="🎓 University graduates" value="50" unit="%" sub="Share of 25–34 cohort · highest in big-EU"
+                  badge={{ kind: 'dn', text: '↑ Highest in big-EU' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="👶 Birth rate" value="1.62" sub="Fertility · highest in EU"
+                  badge={{ kind: 'dn', text: '↑ Best in EU (avg 1.46)' }} source="INSEE · 2024" variant="green" />
+      <MetricCard label="💰 Poverty risk (AROPE)" value="15.4" unit="%" sub="At-risk-of-poverty or social exclusion"
+                  badge={{ kind: 'dn', text: '↓ Below EU avg · strong safety net' }} source="Eurostat · 2024" variant="green" />
+      <MetricCard label="👴 Population 65+" value="21.5" unit="%" sub="Ageing slower than DE/IT" badge={{ kind: 'ne', text: '→ Mid EU' }} source="INSEE · 2025" />
+      <MetricCard label="🌍 Foreign born" value="13.5" unit="%" sub="Share of population" badge={{ kind: 'ne', text: '→ Mid EU' }} source="INSEE · 2025" />
+      <MetricCard label="📋 Retirement age 2026" value="64" unit="yrs" sub="Raised from 62 in 2023" badge={{ kind: 'up', text: '↑ Reform contested' }} source="DSS · 2026" />
+      <MetricCard label="⏱ Paid leave" value="25" unit="days/yr" sub="5 weeks + 11 public holidays"
+                  badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Code du travail" variant="gold" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="France vs Europe" tag="Eurostat · 2025–2026">
+    <Notice variant="info" icon="📊">
+      France performs <strong>above EU average</strong> in: tourism (#1 globally), nuclear/low-carbon
+      energy, fertility rate (best in EU), health system, paid leave, university graduation. It
+      falls <strong>below</strong> in: GDP growth, public spending efficiency, fiscal discipline,
+      youth unemployment.
+    </Notice>
+    <ComparisonTable countryLabel="France" rows={[
+      { indicator: 'GDP (total, 2025)',     country: '€2.95T', eu: '—',       rank: 'good', note: '2nd in EU' },
+      { indicator: 'GDP per capita',        country: '€43,000', eu: '€34,900', rank: 'good', note: 'Above avg (+23%)' },
+      { indicator: 'GDP growth 2026',       country: '+0.7%',   eu: '+1.5%',   rank: 'bad',  note: 'Below EU avg' },
+      { indicator: 'Unemployment rate',     country: '7.9%',    eu: '6.0%',    rank: 'ok',   note: 'Above avg' },
+      { indicator: 'Youth unemployment',    country: '21.1%',   eu: '15.4%',   rank: 'bad',  note: 'Above EU avg' },
+      { indicator: 'Inflation 2026',        country: '3.2%',    eu: '2.6%',    rank: 'bad',  note: 'Above avg' },
+      { indicator: 'Public debt',           country: '113% GDP', eu: '83% GDP', rank: 'bad',  note: 'Above avg, rising' },
+      { indicator: 'Budget deficit',        country: '5.5% GDP', eu: '~2.5% GDP', rank: 'bad', note: 'Excessive deficit procedure' },
+      { indicator: 'Life expectancy',       country: '82.5 yrs', eu: '81.2 yrs', rank: 'good', note: 'Above avg' },
+      { indicator: 'Min. wage (monthly)',   country: '€1,802',  eu: '~€1,100', rank: 'good', note: '3rd highest in EU' },
+      { indicator: 'International tourism', country: '100M',    eu: '—',       rank: 'good', note: '#1 globally' },
+      { indicator: 'Fertility rate',        country: '1.62',    eu: '1.46',    rank: 'good', note: 'Best in EU' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="fr" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (
+      <li><a href={s.url}>{s.name}</a> — {s.desc}</li>
+    ))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇫🇷 France · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">
+      INSEE · Banque de France · Eurostat
+    </span>
+  </Fragment>
+</CountryLayout>

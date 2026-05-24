@@ -1,0 +1,232 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import data from '@data/de.json';
+---
+<CountryLayout
+  country="de"
+  title={data.meta.title}
+  flag={data.meta.flag}
+  subtitle={data.meta.subtitle}
+  description={data.meta.description}
+  tickerItems={data.tickerItems}
+  sections={data.sections}
+  liveBadge="📌 Static data · loading…"
+>
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="warn" icon="⚡">
+      Germany pays <strong>among the highest electricity prices in Europe</strong> (~0.41 €/kWh
+      household). After the 2022–2023 gas crisis and the nuclear phase-out (Apr 2023), the
+      country has been rebuilding its energy mix around renewables (Energiewende) — wind +
+      solar reached <strong>~55% of electricity generation in 2025</strong>.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Super E5" value={data.fuelFallback.gasolina95.atual} unit="€/L" sub="Super E5 · national avg"
+                  valueId="val-g95" badge={{ kind: 'up', text: '↑ +0.253€ (large jump)' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diesel" value={data.fuelFallback.gasoleo.atual} unit="€/L" sub="Road diesel · national avg"
+                  valueId="val-gsl" badge={{ kind: 'up', text: '↑ +0.212€' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="⛽ Autogas (LPG)" value={data.fuelFallback.gpl.atual} unit="€/L" sub="Flüssiggas"
+                  badge={{ kind: 'dn', text: '↓ Cheapest fuel option' }} source="Static · May 2026" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" sub="ICE Brent · live"
+                  valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.41" unit="€/kWh" sub="Household · all-in tariff"
+                  badge={{ kind: 'up', text: '↑ Highest in EU-27' }} source="Eurostat · Q1 2026" variant="red" />
+      <MetricCard label="🔥 Natural Gas" value="0.115" unit="€/kWh" sub="Household · avg" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · Q1 2026" />
+      <MetricCard label="🌬 Renewables share" value="55" unit="%" sub="Wind + solar lead"
+                  badge={{ kind: 'dn', text: '↑ Target: 80% by 2030' }} source="BDEW · 2025" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Bundesland" tag="9 metrics · click a state">
+    <InteractiveMap
+      regions={data.map.regions}
+      metrics={data.map.metrics}
+      metricButtons={data.map.buttons}
+      geojsonUrl={data.map.geojsonUrl}
+      projection={data.map.projection}
+      featureIdResolver={data.map.featureIdResolver}
+      viewBox={data.map.viewBox}
+      strokeOnSelect={data.map.strokeOnSelect}
+      unit={data.map.regionUnit}
+      country="de"
+    />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="vdpResearch / ImmoScout24 · Q4 2025">
+    <Notice variant="info" icon="ℹ️">
+      <strong>🛒 Buy cards</strong> show <strong>sale price per m²</strong> (vdpResearch
+      transaction-based index). <strong>🔑 Rent cards</strong> show the
+      <strong>total monthly rent for a ~T2 apartment (70 m²)</strong>, derived from German
+      Angebotsmiete (€/m²/mo) so figures are comparable to PT/ES/FR/IT.
+    </Notice>
+    <Notice variant="warn" icon="🏠">
+      <strong>Munich paradox:</strong> Despite a <strong>−8% nationwide correction</strong> in
+      sale prices from the 2022 peak, Munich remains the most expensive city at ~10,200 €/m².
+      East–west gap: Leipzig at 2,600 €/m² vs Frankfurt at 6,100 €/m².
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · national median" value="3,600" unit="€/m²" sub="Sale price · houses + apartments"
+                  badge={{ kind: 'ne', text: '→ Stabilising' }} source="vdpResearch · Q4 2025" />
+      <MetricCard label="🛒 Buy · München" value="10,200" unit="€/m²" sub="Sale price · €/m²"
+                  badge={{ kind: 'dn', text: '↓ −7% from 2022 peak' }} source="vdpResearch · Q4 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Frankfurt" value="6,100" unit="€/m²" sub="Sale price · €/m²" badge={{ kind: 'dn', text: '↓ −9% from peak' }} source="vdpResearch · Q4 2025" />
+      <MetricCard label="🛒 Buy · Hamburg"   value="6,000" unit="€/m²" sub="Sale price · €/m²" badge={{ kind: 'dn', text: '↓ −6% from peak' }} source="vdpResearch · Q4 2025" />
+      <MetricCard label="🛒 Buy · Berlin"    value="5,500" unit="€/m²" sub="Sale price · €/m²" badge={{ kind: 'ne', text: '→ Stable · growing' }} source="vdpResearch · Q4 2025" />
+      <MetricCard label="🛒 Buy · Leipzig"   value="2,600" unit="€/m²" sub="Sale price · €/m²" badge={{ kind: 'up', text: '↑ +6% (fastest)' }} source="vdpResearch · Q4 2025" />
+      <MetricCard label="🔑 Rent · national T2 (~70m²)" value="805" unit="€/mo" sub="11.50 €/m² · new asking rent" badge={{ kind: 'up', text: '↑ +5.5% vs 2024' }} source="ImmoScout24 · 2025" variant="blue" />
+      <MetricCard label="🔑 Rent · München T2 (~70m²)"  value="1,596" unit="€/mo" sub="22.80 €/m² · new asking rent" badge={{ kind: 'up', text: '↑ +6% vs 2024' }} source="ImmoScout24 · 2025" variant="red" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="Destatis / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" sub="Full-time · +3.4% YoY"
+                  badge={{ kind: 'dn', text: '↑ Among top EU' }} source="Destatis · 2026" variant="gold" />
+      <MetricCard label="💶 Median net salary" value={data.stats.avgNetSalary.value} unit="€/mo" badge={{ kind: 'ne', text: '→ 50th percentile' }} source="Destatis · 2025" />
+      <MetricCard label="📋 Mindestlohn" value="12.82" unit="€/hr" sub="Jan 2026 · ~2,222 €/mo @ 40h"
+                  badge={{ kind: 'dn', text: '↑ +3.4% from 2025' }} source="BAG · Jan 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" sub="Feb 2026 · ~1.85M people"
+                  valueId="de-unemp" badge={{ kind: 'dn', text: '↓ Lowest among big EU' }} source="Eurostat · Feb 2026" variant="green" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" sub="Dual apprenticeship system"
+                  valueId="de-youth-unemp" badge={{ kind: 'dn', text: '↓ Lowest in EU' }} source="Destatis · Apr 2026" variant="green" />
+      <MetricCard label="👥 Total employed" value="46.1" unit="M" sub="Record high" badge={{ kind: 'dn', text: '↑ +320k in 2025' }} source="Destatis · Q1 2026" />
+      <MetricCard label="🏢 Labour participation" value="77.5" unit="%" badge={{ kind: 'dn', text: '↑ Among highest EU' }} source="Destatis · Q1 2026" />
+      <MetricCard label="⏱ Avg. weekly hours" value="34.4" unit="hrs" sub="High part-time share (28%)" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="Destatis · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="Destatis / Bundesbank / Eurostat · 2025–2026">
+    <Notice variant="warn" icon="⚠️">
+      Germany has been the <strong>EU's growth laggard</strong> for three consecutive years
+      (2023, 2024, 2025). Structural headwinds: weak Chinese demand for German cars, expensive
+      energy post-2022, ageing population, the constitutional debt brake (Schuldenbremse)
+      limiting fiscal stimulus.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Largest in EU', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita (€)', badge: { text: '+47% above avg', kind: 'good' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'de-gdp', badge: { text: '↓ Below EU avg', kind: 'bad' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'de-inflation', badge: { text: 'Near EU avg', kind: 'good' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Well under avg', kind: 'good' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget balance 2025', badge: { text: '↓ Below Maastricht', kind: 'good' } },
+    ]} />
+    <Cards>
+      <MetricCard label="🏦 ECB rate" value={data.stats.ecbRate.value} unit="%" sub="Apr 2026" valueId="de-ecb-rate" badge={{ kind: 'dn', text: '↓ From 4.0% in 2024' }} source="ECB · Apr 2026" />
+      <MetricCard label="📊 Euribor 12m" value={data.stats.euribor12m.value} unit="%" sub="May 2026" valueId="de-euribor"
+                  badge={{ kind: 'dn', text: '↓ From 4.1% in 2023' }} source="ECB · May 2026" variant="gold" />
+      <MetricCard label="🏛 Trade balance" value="+220" unit="B€" sub="Structural surplus · world #2"
+                  badge={{ kind: 'dn', text: '↑ Down from peak 2017' }} source="Destatis · 2025" variant="green" />
+      <MetricCard label="🚗 Automotive exports" value="−4" unit="%" sub="Lost ground to Chinese EVs"
+                  badge={{ kind: 'up', text: '↑ Sector under pressure' }} source="VDA · 2025" variant="red" />
+    </Cards>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="Destatis / DZT · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="39" unit="M" sub="Record · +12% vs 2023"
+                  badge={{ kind: 'dn', text: '↑ 8th most-visited globally' }} source="Destatis · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="61" unit="B €" sub="~1.5% of GDP" badge={{ kind: 'dn', text: '↑ Above 2019' }} source="DZT · 2024" variant="gold" />
+      <MetricCard label="🇳🇱 Top market: NL" value="5.6" unit="M" badge={{ kind: 'dn', text: '↑ +4%' }} source="Destatis · 2024" />
+      <MetricCard label="🇨🇭 Switzerland" value="3.0" unit="M" badge={{ kind: 'dn', text: '↑ +6%' }} source="Destatis · 2024" />
+      <MetricCard label="🇺🇸 United States" value="2.8" unit="M" badge={{ kind: 'dn', text: '↑ +18%' }} source="Destatis · 2024" />
+      <MetricCard label="🏛 Berlin"  value="13.5" unit="M" badge={{ kind: 'dn', text: '↑ +9%' }} source="visitBerlin · 2024" />
+      <MetricCard label="🍺 München (Oktoberfest)" value="9.0" unit="M" badge={{ kind: 'dn', text: '↑ +8%' }} source="DZT · 2024" />
+      <MetricCard label="🏨 Total overnights" value="496" unit="M" sub="75% domestic" badge={{ kind: 'dn', text: '↑ +5%' }} source="Destatis · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="GKV / Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2023" variant="gold" />
+      <MetricCard label="💰 Health expenditure" value="12.7" unit="% GDP" badge={{ kind: 'dn', text: '↑ Highest in EU' }} source="OECD · 2023" variant="green" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000 pop." value="4.5" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🛏 Hospital beds / 1000" value="7.8" badge={{ kind: 'dn', text: '↑ Highest in EU' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🏥 Hospitals" value="1,887" sub="Public + private + non-profit" source="Destatis · 2024" />
+      <MetricCard label="👶 Infant mortality" value="3.0" unit="/1000" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🩺 Coverage" value="100" unit="%" sub="GKV (90%) + PKV (10%)" badge={{ kind: 'dn', text: '✓ Universal' }} source="BMG · 2024" />
+      <MetricCard label="🔬 Nurses / 1000" value="12.1" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2023" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP / BKA · 2024">
+    <Notice variant="info" icon="🛡">
+      Germany ranks <strong>17th in the Global Peace Index 2024</strong> — solidly safe by
+      international standards. Crime levels declined steadily from 2017 to 2021, then rose
+      again post-pandemic, mainly driven by petty offences. Daily life remains very safe
+      across all major cities.
+    </Notice>
+    <Cards>
+      <MetricCard label="🔒 Safety perception" value="76" unit="%" sub="Feel safe walking alone at night" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurobarometer · 2024" />
+      <MetricCard label="🚔 Homicide rate" value="0.9" unit="/100k" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🚗 Road fatalities" value="2,839" sub="2024 · per year" badge={{ kind: 'dn', text: '↓ −7% vs 2023' }} source="Destatis · 2024" />
+      <MetricCard label="🛡 Terrorism threat" value="Medium" badge={{ kind: 'ne', text: '→ Heightened since 2024' }} source="BfV · 2024" />
+      <MetricCard label="💻 Cybercrime" value="+12" unit="%" badge={{ kind: 'up', text: '↑ Rising fast' }} source="BSI/BKA · 2024" variant="red" />
+      <MetricCard label="🛂 Police personnel" value="335k" sub="Federal + Länder" badge={{ kind: 'ne', text: '→ Stable' }} source="BKA · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="Destatis / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Jan 2026 · largest in EU"
+                  badge={{ kind: 'dn', text: '↑ +0.4% in 2025 (migration)' }} source="Destatis · 2026" />
+      <MetricCard label="🎓 University graduates" value="36" unit="%" sub="Share of 25–64 cohort"
+                  badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="👶 Birth rate" value="1.35" sub="Fertility · falling fast"
+                  badge={{ kind: 'up', text: '↓ Below EU avg' }} source="Destatis · 2024" variant="red" />
+      <MetricCard label="💰 Poverty risk (AROPE)" value="21.2" unit="%" sub="At-risk-of-poverty or social exclusion"
+                  badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2024" />
+      <MetricCard label="👴 Population 65+" value="22.7" unit="%" sub="Ageing population"
+                  badge={{ kind: 'up', text: '↑ One of EU\'s oldest' }} source="Destatis · 2025" variant="red" />
+      <MetricCard label="🌍 Foreign born" value="18.4" unit="%" sub="Share of population · highest in big-EU"
+                  badge={{ kind: 'up', text: '↑ Net +400k/yr' }} source="Destatis · 2025" />
+      <MetricCard label="📋 Retirement age 2026" value="66" unit="yrs" sub="Rising to 67 by 2031" badge={{ kind: 'ne', text: '→ Phased rise' }} source="DRV · 2026" />
+      <MetricCard label="⏱ Paid leave" value="20" unit="days/yr" sub="Often 25-30 by contract"
+                  badge={{ kind: 'ne', text: '→ Mid EU range' }} source="BUrlG" variant="gold" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Germany vs Europe" tag="Eurostat · 2025–2026">
+    <Notice variant="info" icon="📊">
+      Germany performs <strong>above EU average</strong> in: GDP size, GDP per capita, low
+      unemployment, fiscal discipline, healthcare resources, safety. It falls <strong>below</strong>
+      in: GDP growth (3 years stagnating), birth rate, electricity prices, and renewables share
+      (which is catching up fast).
+    </Notice>
+    <ComparisonTable countryLabel="Germany" rows={[
+      { indicator: 'GDP (total, 2025)',     country: '€4.30T', eu: '—',       rank: 'good', note: '1st in EU · 4th globally' },
+      { indicator: 'GDP per capita',        country: '€51,200', eu: '€34,900', rank: 'good', note: '+47% above avg' },
+      { indicator: 'GDP growth 2026',       country: '+0.3%',   eu: '+1.5%',   rank: 'bad',  note: 'Underperforming' },
+      { indicator: 'Unemployment rate',     country: '4.0%',    eu: '6.0%',    rank: 'good', note: 'Among lowest' },
+      { indicator: 'Youth unemployment',    country: '6.5%',    eu: '15.4%',   rank: 'good', note: 'Lowest in EU' },
+      { indicator: 'Inflation 2026',        country: '2.6%',    eu: '2.6%',    rank: 'good', note: 'EU average' },
+      { indicator: 'Public debt',           country: '63% GDP', eu: '83% GDP', rank: 'good', note: 'Well below avg' },
+      { indicator: 'Budget deficit',        country: '2.1% GDP', eu: '~2.5% GDP', rank: 'good', note: 'Under Maastricht 3%' },
+      { indicator: 'Life expectancy',       country: '81.1 yrs', eu: '81.2 yrs', rank: 'ok',   note: 'Near average' },
+      { indicator: 'Health expenditure',    country: '12.7% GDP', eu: '9.7% GDP', rank: 'good', note: 'Highest in EU' },
+      { indicator: 'Min. wage (monthly)',   country: '€2,222', eu: '~€1,100', rank: 'good', note: '2nd highest in EU' },
+      { indicator: 'International tourism', country: '39M', eu: '—', rank: 'good', note: '8th globally' },
+      { indicator: 'Fertility rate',        country: '1.35', eu: '1.46', rank: 'bad', note: 'Below avg · ageing' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="de" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (
+      <li><a href={s.url}>{s.name}</a> — {s.desc}</li>
+    ))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇩🇪 Germany · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">
+      Destatis · Bundesbank · Eurostat
+    </span>
+  </Fragment>
+</CountryLayout>

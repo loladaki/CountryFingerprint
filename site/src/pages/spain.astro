@@ -1,0 +1,232 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import data from '@data/es.json';
+---
+<CountryLayout
+  country="es"
+  title={data.meta.title}
+  flag={data.meta.flag}
+  subtitle={data.meta.subtitle}
+  description={data.meta.description}
+  tickerItems={data.tickerItems}
+  sections={data.sections}
+  liveBadge="📌 Static data · loading…"
+>
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="ok" icon="⛽">
+      Spain has <strong>one of the cheapest fuel markets in Western Europe</strong> thanks to
+      lower taxes than its neighbours. Petrol at <strong>€1.55/L</strong> is ~25% below the
+      French price. Diesel softened by 3 cents in mid-May.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Gasoline 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" sub="Self-service · national avg"
+                  valueId="val-g95" badge={{ kind: 'up', text: '↑ +0.007€' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diesel" value={data.fuelFallback.gasoleo.atual} unit="€/L" sub="Gasóleo A · national avg"
+                  valueId="val-gsl" badge={{ kind: 'dn', text: '↓ −0.033€' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="⛽ LPG" value={data.fuelFallback.gpl.atual} unit="€/L" sub="Auto GLP"
+                  badge={{ kind: 'ne', text: '→ Stable' }} source="Static · May 2026" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" sub="ICE Brent · live"
+                  valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.218" unit="€/kWh" sub="PVPC household"
+                  badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="REE · Q1 2026" />
+      <MetricCard label="🌬 Renewables" value="56" unit="%" sub="Share of electricity generation"
+                  badge={{ kind: 'dn', text: '↑ Wind + solar lead' }} source="REE · 2025" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Region" tag="9 metrics · click an autonomous community">
+    <InteractiveMap
+      regions={data.map.regions}
+      metrics={data.map.metrics}
+      metricButtons={data.map.buttons}
+      geojsonUrl={data.map.geojsonUrl}
+      projection={data.map.projection}
+      featureIdResolver={data.map.featureIdResolver}
+      viewBox={data.map.viewBox}
+      strokeOnSelect={data.map.strokeOnSelect}
+      unit={data.map.regionUnit}
+      country="es"
+    />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="INE / MIVAU · Q4 2025">
+    <Notice variant="info" icon="ℹ️">
+      <strong>🛒 Buy cards</strong> show <strong>sale price per m²</strong> (median of transactions).
+      <strong>🔑 Rent cards</strong> show <strong>monthly rental</strong> for a ~T2 apartment.
+      Construction cost is <em>not</em> shown here (~1,600 €/m² in ES).
+    </Notice>
+    <Notice variant="alert" icon="🚨">
+      <strong>2025:</strong> Median sale price reached <strong>2,230 €/m²</strong> (+13.1%), an
+      all-time record. Spain is facing a structural housing deficit of
+      <strong>500,000–800,000 units</strong>.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · national median" value="2,230" unit="€/m²" sub="Sale price · all-time high"
+                  badge={{ kind: 'up', text: '↑ +13.1% vs 2024' }} source="MIVAU · Q4 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Madrid"      value="5,100" unit="€/m²" sub="Sale price · €/m²"
+                  badge={{ kind: 'up', text: '↑ +15% vs 2024' }} source="INE · Q4 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Barcelona"   value="4,600" unit="€/m²" sub="Sale price · €/m²" badge={{ kind: 'up', text: '↑ +13% vs 2024' }} source="INE · Q4 2025" />
+      <MetricCard label="🛒 Buy · Costa del Sol" value="4,200" unit="€/m²" sub="Sale price · €/m²" badge={{ kind: 'up', text: '↑ +20% vs 2024' }} source="Idealista · 2025" />
+      <MetricCard label="🔑 Rent · national (T2)" value="1,320" unit="€/mo" sub="Monthly rental · ~T2" badge={{ kind: 'up', text: '↑ +9%' }} source="Idealista · Q1 2026" variant="blue" />
+      <MetricCard label="🔑 Rent · Madrid (T2)"   value="2,100" unit="€/mo" sub="Monthly rental · ~T2" badge={{ kind: 'up', text: '↑ +12%' }} source="Idealista · 2025" variant="blue" />
+      <MetricCard label="📊 Affordability ratio" value="~10" unit="× annual salary" sub="Worsening in all cities"
+                  badge={{ kind: 'up', text: '↑ Critical' }} source="OECD / BdE · 2025" variant="red" />
+      <MetricCard label="🔨 New build permits" value="132,000" badge={{ kind: 'dn', text: '↑ +13% vs 2024' }} source="INE · 2025" variant="gold" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Labour" tag="INE / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo"
+                  badge={{ kind: 'dn', text: '↑ +4% vs 2024' }} source="INE · 2025" variant="gold" />
+      <MetricCard label="💶 Average net salary" value={data.stats.avgNetSalary.value} unit="€/mo"
+                  badge={{ kind: 'ne', text: '→ 50th percentile' }} source="INE · 2025" />
+      <MetricCard label="📋 SMI (min. wage)" value={data.stats.minWage.value} unit="€" sub="Jan 2026 · 14 payments"
+                  badge={{ kind: 'dn', text: '↑ +4.4% vs 2025' }} source="BOE · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" sub="Q1 2026 · 2.71M people"
+                  valueId="es-unemp" badge={{ kind: 'up', text: '↑ 2nd highest in EU' }} source={data.stats.unemployment.source} variant="red" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" sub="Ages 15–24"
+                  valueId="es-youth-unemp" badge={{ kind: 'up', text: '↑ Highest in EU' }} source="INE · Q1 2026" variant="red" />
+      <MetricCard label="⏱ Weekly hours" value="38.5" unit="h" badge={{ kind: 'ne', text: '→ Reducing to 37.5h' }} source="INE · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="Banco de España / IMF · 2025–2026">
+    <Notice variant="ok" icon="📈">
+      Spain has been the <strong>fastest-growing big EU economy</strong> 3 years running
+      (2023-2025). GDP growth of <strong>+2.9% in 2026</strong> outpaces every G7 country
+      except the US. Drivers: tourism boom, EU funds, immigration boosting workforce.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: '4th in EU', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita (€)', badge: { text: 'Below avg', kind: 'bad' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'es-gdp', badge: { text: '↑ Fastest big-EU', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'es-inflation', badge: { text: '↓ Below avg', kind: 'good' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↑ Above avg', kind: 'bad' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget balance 2025', badge: { text: 'Still above Maastricht', kind: 'bad' } },
+    ]} />
+    <Cards>
+      <MetricCard label="🏦 ECB rate" value={data.stats.ecbRate.value} unit="%" sub="Apr 2026" valueId="es-ecb-rate" badge={{ kind: 'dn', text: '↓ From 4.0% in 2024' }} source="ECB · Apr 2026" />
+      <MetricCard label="📊 Euribor 12m" value={data.stats.euribor12m.value} unit="%" sub="May 2026" valueId="es-euribor"
+                  badge={{ kind: 'dn', text: '↓ From 4.1% in 2023' }} source="ECB · May 2026" variant="gold" />
+      <MetricCard label="🏛 Tourism share of GDP" value="13" unit="%" sub="Direct + indirect"
+                  badge={{ kind: 'dn', text: '↑ Record high' }} source="INE · 2024" variant="green" />
+      <MetricCard label="🔋 EU funds (NextGen)" value="80B" unit="€" sub="Largest single recipient"
+                  badge={{ kind: 'dn', text: '✓ Net beneficiary' }} source="EU Commission · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="TURESPAÑA / INE · 2024">
+    <Notice variant="ok" icon="✈">
+      Spain hit <strong>94M international arrivals in 2024</strong> — the <strong>2nd
+      most-visited country</strong> globally after France. Tourism contributes ~13% of GDP
+      directly and indirectly. The summer 2024 anti-tourism protests in Barcelona, Mallorca
+      and the Canaries have prompted local caps on short-term rentals.
+    </Notice>
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="94" unit="M" sub="Record · +10% vs 2023"
+                  badge={{ kind: 'dn', text: '↑ 2nd most-visited' }} source="TURESPAÑA · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="126" unit="B €" badge={{ kind: 'dn', text: '↑ +13% YoY' }} source="BdE · 2024" variant="gold" />
+      <MetricCard label="🇬🇧 Top market: UK" value="18.4" unit="M" badge={{ kind: 'dn', text: '↑ +6%' }} source="INE · 2024" />
+      <MetricCard label="🇫🇷 France"          value="12.6" unit="M" badge={{ kind: 'dn', text: '↑ +5%' }} source="INE · 2024" />
+      <MetricCard label="🇩🇪 Germany"         value="11.8" unit="M" badge={{ kind: 'dn', text: '↑ +4%' }} source="INE · 2024" />
+      <MetricCard label="🏝 Top region: Baleares" value="18.6" unit="M" badge={{ kind: 'up', text: '↑ Caps now in place' }} source="IBESTAT · 2024" variant="red" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="SNS · Ministerio de Sanidad · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs"
+                  badge={{ kind: 'dn', text: '↑ 3rd highest in EU' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="💰 Health expenditure" value="9.7" unit="% GDP" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000 pop." value="4.6" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🛏 Hospital beds / 1000" value="3.0" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🏥 Hospitals (SNS + private)" value="788" source="Sanidad · 2024" />
+      <MetricCard label="👶 Infant mortality" value="2.6" unit="/1000" badge={{ kind: 'dn', text: '↓ Among lowest in EU' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🩺 SNS coverage" value="100" unit="%" sub="Universal · regional management"
+                  badge={{ kind: 'dn', text: '✓ Universal' }} source="SNS · 2024" />
+      <MetricCard label="🔬 Nurses / 1000" value="6.4" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="Eurostat · 2023" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP / Ministerio del Interior · 2024">
+    <Notice variant="ok" icon="🛡">
+      Spain ranks <strong>23rd in the Global Peace Index 2024</strong> — solid mid-pack for
+      Europe. Homicide rate is among Europe's lowest (0.7/100k). Petty theft in tourist hubs
+      (Barcelona, Madrid) is the most common concern for visitors.
+    </Notice>
+    <Cards>
+      <MetricCard label="🔒 Safety perception" value="73" unit="%" sub="Feel safe walking alone at night" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurobarometer · 2024" />
+      <MetricCard label="🚔 Homicide rate" value="0.7" unit="/100k" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🚗 Road fatalities" value="1,154" sub="2024 · per year" badge={{ kind: 'dn', text: '↓ −3% vs 2023' }} source="DGT · 2024" />
+      <MetricCard label="🛡 Terrorism threat" value="Medium" badge={{ kind: 'ne', text: '→ ETA dormant; CT focus on jihadism' }} source="CITCO · 2024" />
+      <MetricCard label="💻 Cybercrime" value="+22" unit="%" sub="Incidents 2024" badge={{ kind: 'up', text: '↑ Rising fast' }} source="INCIBE · 2024" variant="red" />
+      <MetricCard label="🛂 Police personnel" value="245k" sub="Nacional + GC + locales" badge={{ kind: 'ne', text: '→ Stable' }} source="Interior · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="INE / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Jan 2026 est. · record high"
+                  badge={{ kind: 'dn', text: '↑ +0.8% in 2025 (migration)' }} source="INE · 2026" />
+      <MetricCard label="🎓 University graduates" value="42" unit="%" sub="Share of 25–34 cohort"
+                  badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="👶 Birth rate" value="1.16" sub="Fertility · 2nd lowest in EU"
+                  badge={{ kind: 'up', text: '↓ Demographic concern' }} source="INE · 2024" variant="red" />
+      <MetricCard label="💰 Poverty risk (AROPE)" value="26.5" unit="%" sub="At-risk-of-poverty or social exclusion"
+                  badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="red" />
+      <MetricCard label="👴 Population 65+" value="20.5" unit="%" sub="Ageing accelerating"
+                  badge={{ kind: 'up', text: '↑ Rising fast' }} source="INE · 2025" />
+      <MetricCard label="🌍 Foreign born" value="18.5" unit="%" sub="Share of population · highest in big-EU"
+                  badge={{ kind: 'up', text: '↑ Net +700k/yr (2024 record)' }} source="INE · 2025" />
+      <MetricCard label="📋 Retirement age 2026" value="66.5" unit="yrs" sub="Rising to 67 by 2027"
+                  badge={{ kind: 'ne', text: '→ Phased rise' }} source="MISSM · 2026" />
+      <MetricCard label="⏱ Paid leave" value="30" unit="days/yr" sub="22 days + 8 holidays + 14 regional"
+                  badge={{ kind: 'dn', text: '↑ Among most generous EU' }} source="ET" variant="gold" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Spain vs Europe" tag="Eurostat · 2025–2026">
+    <Notice variant="info" icon="📊">
+      Spain performs <strong>above EU average</strong> in: GDP growth (fastest big-EU), tourism,
+      life expectancy, university graduation, immigration intake. It falls <strong>below</strong>
+      in: unemployment (2nd highest), youth unemployment (highest), GDP per capita, public debt.
+    </Notice>
+    <ComparisonTable countryLabel="Spain" rows={[
+      { indicator: 'GDP (total, 2025)',     country: '€1.50T', eu: '—',       rank: 'good', note: '4th in EU' },
+      { indicator: 'GDP per capita',        country: '€31,500', eu: '€34,900', rank: 'bad',  note: 'Below avg (-10%)' },
+      { indicator: 'GDP growth 2026',       country: '+2.9%',  eu: '+1.5%',   rank: 'good', note: 'Fastest big-EU' },
+      { indicator: 'Unemployment rate',     country: '10.3%',  eu: '6.0%',    rank: 'bad',  note: '2nd highest in EU' },
+      { indicator: 'Youth unemployment',    country: '24.3%',  eu: '15.4%',   rank: 'bad',  note: 'Highest in EU' },
+      { indicator: 'Inflation 2026',        country: '2.0%',   eu: '2.6%',    rank: 'good', note: 'Below EU avg' },
+      { indicator: 'Public debt',           country: '106% GDP', eu: '83% GDP', rank: 'bad',  note: 'Above avg' },
+      { indicator: 'Life expectancy',       country: '83.2 yrs', eu: '81.2 yrs', rank: 'good', note: '3rd highest in EU' },
+      { indicator: 'Min. wage (monthly)',   country: '€1,184', eu: '~€1,100', rank: 'ok',   note: 'Near average' },
+      { indicator: 'International tourism', country: '94M',    eu: '—',       rank: 'good', note: '2nd globally' },
+      { indicator: 'Housing price growth',  country: '+13.1%', eu: '+5%',     rank: 'bad',  note: 'Severe deficit' },
+      { indicator: 'Fertility rate',        country: '1.16',   eu: '1.46',    rank: 'bad',  note: '2nd lowest in EU' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="es" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (
+      <li><a href={s.url}>{s.name}</a> — {s.desc}</li>
+    ))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇪🇸 Spain · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">
+      INE · Banco de España · Eurostat
+    </span>
+  </Fragment>
+</CountryLayout>
