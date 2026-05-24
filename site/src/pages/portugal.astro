@@ -1,0 +1,267 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import RegionCard from '@components/RegionCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import ChartCard from '@components/ChartCard.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import data from '@data/pt.json';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+// Build absolute /CountryFingerprint/data/pt.topojson.json from the relative
+// path stored in the JSON (which already includes /CountryFingerprint).
+const geojsonUrl = data.map.geojsonUrl.startsWith('http')
+  ? data.map.geojsonUrl
+  : data.map.geojsonUrl;
+---
+<CountryLayout
+  country="pt"
+  title={data.meta.title}
+  flag={data.meta.flag}
+  subtitle={data.meta.subtitle}
+  description={data.meta.description}
+  tickerItems={data.tickerItems}
+  sections={data.sections}
+  liveBadge="📌 Static data · loading…"
+>
+  <!-- ═══ ENERGY & FUEL ═══ -->
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="alert" icon="🚨">
+      Portuguese fuel is among the <strong>most expensive in Europe</strong> relative to wages.
+      Diesel hit a record €2.037/L in March 2026 amid Middle East tensions; the early-May
+      bulletin shows petrol still rising while diesel softened. Fuel taxes (ISP + VAT) account
+      for ~55% of the price at the pump.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Petrol 95"  value={data.fuelFallback.gasolina95.atual} unit="€/L" sub="Self-service · national avg"
+                  valueId="val-g95" badge={{ kind: 'up', text: '↑ +0.030€ vs last week' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Petrol 98"  value={data.fuelFallback.gasolina98.atual} unit="€/L" sub="Higher-octane premium"
+                  badge={{ kind: 'up', text: '↑ +0.020€' }} source="Static · May 2026" />
+      <MetricCard label="⛽ Diesel"     value={data.fuelFallback.gasoleo.atual}     unit="€/L" sub="Gasóleo · national avg"
+                  valueId="val-gsl" badge={{ kind: 'dn', text: '↓ −0.014€' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="⛽ LPG (GPL)" value={data.fuelFallback.gpl.atual}         unit="€/L" sub="Auto LPG · widely available"
+                  badge={{ kind: 'dn', text: '↓ Cheapest fuel option' }} source="Static · May 2026" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" sub="ICE Brent · live"
+                  valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.235" unit="€/kWh" sub="Household · all-in tariff"
+                  badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · Q1 2026" variant="red" />
+      <MetricCard label="🌬 Renewables"  value={data.stats.renewablesShare.value} unit="%" sub="Share of electricity generation"
+                  badge={{ kind: 'dn', text: '↑ Hydro + wind + solar lead' }} source="DGEG · 2025" variant="green" />
+    </Cards>
+  </Section>
+
+  <!-- ═══ INTERACTIVE MAP ═══ -->
+  <Section id="mapa" title="Interactive Map by District" tag="9 metrics · click a district to see all data">
+    <InteractiveMap
+      regions={data.map.regions}
+      metrics={data.map.metrics}
+      metricButtons={data.map.buttons}
+      geojsonUrl={geojsonUrl}
+      projection={data.map.projection}
+      featureIdResolver={data.map.featureIdResolver}
+      viewBox={data.map.viewBox}
+      strokeOnSelect={data.map.strokeOnSelect}
+      unit={data.map.regionUnit}
+      country="pt"
+    />
+  </Section>
+
+  <!-- ═══ HOUSING ═══ -->
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="INE · 2025 (published Apr 2026)">
+    <Notice variant="info" icon="ℹ️">
+      <strong>🛒 Buy cards</strong> show <strong>sale price per m²</strong> (median of recorded
+      property transactions). <strong>🔑 Rent cards</strong> show <strong>monthly rental</strong>
+      for a ~T2 apartment. Construction cost is <em>not</em> shown here (~1,300 €/m² in PT).
+    </Notice>
+    <Notice variant="alert" icon="🚨">
+      <strong>2025:</strong> Median sale price hit <strong>€2,076/m²</strong> (+16.8%), the
+      largest annual increase ever recorded. Portugal is the <strong>least affordable housing
+      market in the EU</strong> (price-to-income ratio, OECD 2023).
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · national median" value="2,076" unit="€/m²" sub="Sale price · all-time high"
+                  badge={{ kind: 'up', text: '↑ +16.8% vs 2024' }} source="INE · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Lisbon (Greater)" value="4,800" unit="€/m²" sub="Sale price · €/m²"
+                  badge={{ kind: 'up', text: '↑ +12% vs 2024' }} source="INE · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Porto"   value="3,500" unit="€/m²" sub="Sale price · €/m²" badge={{ kind: 'up', text: '↑ +10% vs 2024' }} source="INE · 2025" />
+      <MetricCard label="🛒 Buy · Algarve" value="3,800" unit="€/m²" sub="Sale price · €/m²" badge={{ kind: 'up', text: '↑ +14% vs 2024' }} source="INE · 2025" />
+      <MetricCard label="🔑 Rent · national (T2)" value="1,250" unit="€/mo" sub="Monthly rental · ~T2" badge={{ kind: 'up', text: '↑ +10%' }} source="INE · Q1 2025" variant="blue" />
+      <MetricCard label="🔑 Rent · Lisbon (T2)"   value="1,850" unit="€/mo" sub="Monthly rental · ~T2" badge={{ kind: 'up', text: '↑ +12%' }} source="Idealista · 2025" variant="blue" />
+      <MetricCard label="📊 Housing affordability" value="10.4" unit="× annual salary" sub="Worst in EU (OECD)"
+                  badge={{ kind: 'up', text: '↑ Worsening' }} source="OECD / BdP · 2025" variant="red" />
+      <MetricCard label="🔨 Building permits" value="25,470" sub="Up from 2023 trough"
+                  badge={{ kind: 'dn', text: '↑ +7.2% vs 2023' }} source="INE · 2024" variant="gold" />
+    </Cards>
+  </Section>
+
+  <!-- ═══ INCOME ═══ -->
+  <Section id="rendimentos" title="Income &amp; Labour" tag="INE / DGERT · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo"
+                  badge={{ kind: 'dn', text: '↑ +5.3% vs 2024' }} source="INE · 2025" variant="gold" />
+      <MetricCard label="💶 Average net salary" value={data.stats.avgNetSalary.value} unit="€/mo"
+                  badge={{ kind: 'dn', text: '↑ +4.5%' }} source="INE · 2025 (est)" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€"
+                  sub="RMMG · Jan 2026" badge={{ kind: 'dn', text: '↑ +5.7% vs €870' }} source="PT Government · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%"
+                  sub="Mar 2026 · lowest since 2002" valueId="pt-unemp"
+                  badge={{ kind: 'dn', text: '↓ −0.6pp vs Mar 2025' }} source={data.stats.unemployment.source} variant="green" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%"
+                  sub="Ages 15–24" valueId="pt-youth-unemp" badge={{ kind: 'dn', text: '↓ vs 21.3% in 2024' }} source="INE · Mar 2026" />
+      <MetricCard label="⏱ Weekly hours" value="39.5" unit="h" badge={{ kind: 'ne', text: '→ Stable' }} source="Eurostat · 2025" />
+      <MetricCard label="🧾 Labour tax wedge" value="36.8" unit="%" sub="Income tax + employer SS"
+                  badge={{ kind: 'ne', text: '→ Above EU average' }} source="OECD · 2025" />
+      <MetricCard label="🌍 Annual emigration" value="~85k" unit="people" sub="Permanent departures/year"
+                  badge={{ kind: 'up', text: '↑ Brain drain persists' }} source="INE / IOM · 2024" variant="red" />
+    </Cards>
+  </Section>
+
+  <!-- ═══ ECONOMY ═══ -->
+  <Section id="economia" title="Economy" tag="Banco de Portugal / IMF · 2025–2026">
+    <Notice variant="ok" icon="📈">
+      Portugal posted a budget surplus in 2024 for the first time in democracy (+0.4%) and
+      again in 2025 (+1.3%) — one of only a handful of EU countries doing so. Public debt is
+      falling fast (95% GDP, down from 138% in 2014). GDP growth has consistently beaten EU
+      average for 3 years running.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Modest size', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita (€)', badge: { text: 'Below EU avg', kind: 'bad' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'pt-gdp', badge: { text: '↑ Beats EU avg', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'pt-inflation', badge: { text: '↑ Above EU avg', kind: 'bad' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Falling fast', kind: 'good' } },
+      { value: '+' + data.stats.budgetBalance.value + '%', label: 'Budget balance 2025', badge: { text: '✓ Surplus', kind: 'good' } },
+    ]} />
+    <Cards>
+      <MetricCard label="🏦 ECB rate" value={data.stats.ecbRate.value} unit="%" sub="Apr 2026" valueId="pt-ecb-rate" badge={{ kind: 'dn', text: '↓ From 4.0% in 2024' }} source="ECB · Apr 2026" />
+      <MetricCard label="🏠 Euribor 12m" value={data.stats.euribor12m.value} unit="%" sub="Mortgage reference rate" valueId="pt-euribor"
+                  badge={{ kind: 'dn', text: '↓ vs 3.9% in 2024' }} source="ECB · May 2026" variant="gold" />
+      <MetricCard label="🏛 Tourism share of GDP" value="12.5" unit="%" sub="Direct + indirect"
+                  badge={{ kind: 'dn', text: '↑ Record high' }} source="INE / BP · 2024" variant="green" />
+      <MetricCard label="🔋 EU funds received" value="22B" unit="€" sub="PRR + 2030 framework"
+                  badge={{ kind: 'dn', text: '✓ Net beneficiary' }} source="EU Commission · 2024" />
+    </Cards>
+  </Section>
+
+  <!-- ═══ TOURISM ═══ -->
+  <Section id="turismo" title="Tourism" tag="Turismo de Portugal · 2024–2025">
+    <Notice variant="ok" icon="✈">
+      Portugal hit a record <strong>31.6 million international arrivals in 2024</strong> —
+      3.0× the country's population. Tourism revenue reached €26B, representing ~12.5% of
+      GDP (direct + indirect). Lisbon and the Algarve remain the top draws.
+    </Notice>
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="31.6" unit="M" sub="Record high · +9% vs 2023"
+                  badge={{ kind: 'dn', text: '↑ 18th globally' }} source="Turismo de Portugal · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="26" unit="B €" sub="Direct spending"
+                  badge={{ kind: 'dn', text: '↑ +11% YoY' }} source="BP · 2024" variant="gold" />
+      <MetricCard label="🇬🇧 Top market: UK" value="3.2" unit="M" badge={{ kind: 'dn', text: '↑ +5%' }} source="INE · 2024" />
+      <MetricCard label="🇪🇸 Spain"            value="2.8" unit="M" badge={{ kind: 'dn', text: '↑ +6%' }} source="INE · 2024" />
+      <MetricCard label="🇺🇸 United States"   value="1.8" unit="M" badge={{ kind: 'dn', text: '↑ +22%' }} source="INE · 2024" />
+      <MetricCard label="🇫🇷 France"           value="2.4" unit="M" badge={{ kind: 'dn', text: '↑ +7%' }} source="INE · 2024" />
+      <MetricCard label="🏨 Total overnights" value="79" unit="M" sub="70% international"
+                  badge={{ kind: 'dn', text: '↑ +8%' }} source="INE · 2024" />
+      <MetricCard label="👷 Tourism employment" value="430k" sub="~8.5% of total employment" badge={{ kind: 'ne', text: '→ Stable' }} source="INE · 2024" />
+    </Cards>
+  </Section>
+
+  <!-- ═══ HEALTHCARE ═══ -->
+  <Section id="saude" title="Healthcare" tag="SNS · Ministério da Saúde · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs"
+                  badge={{ kind: 'ne', text: '→ Above EU avg' }} source="Eurostat · 2023" variant="gold" />
+      <MetricCard label="💰 Health expenditure" value="10.5" unit="% GDP" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000 pop." value="5.6" badge={{ kind: 'dn', text: '↑ Above EU avg (3.9)' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🛏 Hospital beds / 1000" value="3.5" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🏥 SNS hospitals" value="123" sub="Public + 33 private under SNS contract" source="ACSS · 2024" />
+      <MetricCard label="👶 Infant mortality" value="2.6" unit="/1000" badge={{ kind: 'dn', text: '↓ Among lowest in EU' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🩺 SNS coverage" value="100" unit="%" sub="Universal · taxes funded"
+                  badge={{ kind: 'dn', text: '✓ Universal' }} source="SNS · 2024" />
+      <MetricCard label="🔬 Nurses / 1000" value="7.7" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="Eurostat · 2023" />
+    </Cards>
+  </Section>
+
+  <!-- ═══ SAFETY ═══ -->
+  <Section id="seguranca" title="Safety" tag="IEP Global Peace Index · 2024">
+    <Notice variant="ok" icon="🛡">
+      Portugal is the <strong>7th most peaceful country in the world</strong> according to the
+      2024 Global Peace Index — and the 3rd in the EU after Iceland and Ireland. Homicide rate
+      is among Europe's lowest at 0.6 per 100k. Pickpocketing in Lisbon trams remains the most
+      common tourist-targeted offence.
+    </Notice>
+    <Cards>
+      <MetricCard label="🔒 Safety perception" value="82" unit="%" sub="Feel safe walking alone at night"
+                  badge={{ kind: 'dn', text: '↑ Top 5 in EU' }} source="Eurobarometer · 2024" />
+      <MetricCard label="🚔 Homicide rate" value="0.6" unit="/100k" badge={{ kind: 'dn', text: '↓ Below EU avg (1.0)' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🚗 Road fatalities" value="495" sub="2024 · per year" badge={{ kind: 'dn', text: '↓ −9% vs 2023' }} source="ANSR · 2024" />
+      <MetricCard label="🛡 Terrorism threat" value="Low" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="SIS · 2024" />
+      <MetricCard label="💻 Cybercrime" value="+15" unit="%" sub="Incidents 2024" badge={{ kind: 'up', text: '↑ Rising' }} source="PJ · 2024" variant="red" />
+      <MetricCard label="🛂 Police personnel" value="47k" sub="PSP + GNR + PJ" badge={{ kind: 'ne', text: '→ Stable' }} source="MAI · 2024" />
+    </Cards>
+  </Section>
+
+  <!-- ═══ SOCIETY ═══ -->
+  <Section id="social" title="Society" tag="INE / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Jan 2026 est. · growing via migration"
+                  badge={{ kind: 'dn', text: '↑ +0.3% in 2025' }} source="INE · 2026" />
+      <MetricCard label="🎓 University graduates" value="40" unit="%" sub="Share of 25–34 cohort"
+                  badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="👶 Birth rate" value="1.42" sub="Fertility rate"
+                  badge={{ kind: 'up', text: '↓ Below replacement' }} source="INE · 2024" variant="red" />
+      <MetricCard label="💰 Poverty risk (AROPE)" value="19.7" unit="%" sub="At-risk-of-poverty or social exclusion"
+                  badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2024" variant="green" />
+      <MetricCard label="👴 Population 65+" value="23.4" unit="%" sub="Ageing population"
+                  badge={{ kind: 'up', text: '↑ Among oldest in EU' }} source="INE · 2025" variant="red" />
+      <MetricCard label="🌍 Foreign born" value="9.5" unit="%" sub="Share of population · doubled since 2018"
+                  badge={{ kind: 'up', text: '↑ Net +100k/yr' }} source="SEF / AIMA · 2025" />
+      <MetricCard label="📋 Retirement age 2026" value="66.5" unit="yrs" sub="+ Sustainability factor"
+                  badge={{ kind: 'ne', text: '→ Phased rise' }} source="Segurança Social · 2026" />
+      <MetricCard label="⏱ Paid leave" value="22" unit="days/yr" sub="Legal minimum + 13 public holidays"
+                  badge={{ kind: 'ne', text: '→ Mid EU range' }} source="Código do Trabalho" variant="gold" />
+    </Cards>
+  </Section>
+
+  <!-- ═══ vs EUROPE ═══ -->
+  <Section id="europa" title="Portugal vs Europe" tag="Eurostat · 2025–2026">
+    <Notice variant="info" icon="📊">
+      Portugal performs <strong>above EU average</strong> in: fiscal discipline (rare budget
+      surplus), low unemployment, safety, tourism share. It falls <strong>below</strong> in:
+      GDP per capita, average wages, housing affordability (worst in EU), and ageing
+      demographics.
+    </Notice>
+    <ComparisonTable countryLabel="Portugal" rows={[
+      { indicator: 'GDP per capita',          country: '€26,000', eu: '€34,900', rank: 'bad',  note: 'Below average (-25%)' },
+      { indicator: 'GDP growth 2026',         country: '+2.4%',   eu: '+1.5%',   rank: 'good', note: 'Above average' },
+      { indicator: 'Unemployment rate',       country: '5.8%',    eu: '6.0%',    rank: 'good', note: 'Near best in EU' },
+      { indicator: 'Youth unemployment',      country: '18.1%',   eu: '15.4%',   rank: 'ok',   note: 'Slightly above avg' },
+      { indicator: 'Inflation 2026',          country: '3.0%',    eu: '2.6%',    rank: 'bad',  note: 'Above EU avg' },
+      { indicator: 'Public debt',             country: '95% GDP', eu: '83% GDP', rank: 'ok',   note: 'Falling fast' },
+      { indicator: 'Budget balance',          country: '+1.3% GDP', eu: '-2.5% GDP', rank: 'good', note: 'Surplus · top-5 in EU' },
+      { indicator: 'Life expectancy',         country: '81.5 yrs', eu: '81.2 yrs', rank: 'good', note: 'Above average' },
+      { indicator: 'Minimum wage (monthly)',  country: '€920',    eu: '~€1,100', rank: 'bad',  note: 'Below big-EU avg' },
+      { indicator: 'International tourism',   country: '31.6M',   eu: '—',       rank: 'good', note: '18th globally' },
+      { indicator: 'Housing price/income ratio', country: '10.4×', eu: '~7×',   rank: 'bad',  note: 'Worst in EU (OECD)' },
+      { indicator: 'Renewables share',        country: '71%',     eu: '44%',    rank: 'good', note: 'Top-5 in EU' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="pt" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (
+      <li><a href={s.url}>{s.name}</a> — {s.desc}</li>
+    ))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇵🇹 Portugal · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">
+      INE · Banco de Portugal · Eurostat
+    </span>
+  </Fragment>
+</CountryLayout>
