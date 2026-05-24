@@ -66,6 +66,7 @@ const cacheGet = k => { const e = CACHE[k]; return (e && Date.now() - e.ts < TTL
 const cacheSet = (k, d) => { CACHE[k] = { data: d, ts: Date.now() }; };
 
 // ── Fallbacks ─────────────────────────────────
+// Fuel fallbacks reflect the latest EU Oil Bulletin (refreshed manually each week)
 const FB_FUEL = {
   gasolina95: { atual: 2.009, anterior: 1.979, variacao: +0.030 },
   gasoleo:    { atual: 1.954, anterior: 1.968, variacao: -0.014 },
@@ -479,12 +480,12 @@ async function fetchCombustiveis() {
       gasoleo:       mkFuel(parsed.pt.diesel, FB_FUEL.gasoleo.atual),
       gpl:           { ...FB_FUEL.gpl,        dataActual: parsed.date, serie: [] },
       gasolina98:    { ...FB_FUEL.gasolina98,  dataActual: parsed.date, serie: [] },
-      es_gasolina95: parsed.es ? mkFuel(parsed.es.petrol, 1.541) : { atual: 1.541, serie: [] },
-      es_gasoleo:    parsed.es ? mkFuel(parsed.es.diesel, 1.718) : { atual: 1.718, serie: [] },
+      es_gasolina95: parsed.es ? mkFuel(parsed.es.petrol, 1.548) : { atual: 1.548, serie: [] },
+      es_gasoleo:    parsed.es ? mkFuel(parsed.es.diesel, 1.685) : { atual: 1.685, serie: [] },
       fr_gasolina95: parsed.fr ? mkFuel(parsed.fr.petrol, 2.083) : { atual: 2.083, serie: [] },
-      fr_gasoleo:    parsed.fr ? mkFuel(parsed.fr.diesel, 2.157) : { atual: 2.157, serie: [] },
-      de_gasolina95: parsed.de ? mkFuel(parsed.de.petrol, 1.790) : { atual: 1.790, serie: [] },
-      de_gasoleo:    parsed.de ? mkFuel(parsed.de.diesel, 1.760) : { atual: 1.760, serie: [] },
+      fr_gasoleo:    parsed.fr ? mkFuel(parsed.fr.diesel, 2.118) : { atual: 2.118, serie: [] },
+      de_gasolina95: parsed.de ? mkFuel(parsed.de.petrol, 2.043) : { atual: 2.043, serie: [] },
+      de_gasoleo:    parsed.de ? mkFuel(parsed.de.diesel, 1.972) : { atual: 1.972, serie: [] },
       it_gasolina95: parsed.it ? mkFuel(parsed.it.petrol, 1.937) : { atual: 1.937, serie: [] },
       it_gasoleo:    parsed.it ? mkFuel(parsed.it.diesel, 1.983) : { atual: 1.983, serie: [] },
       de_gasoleo:    parsed.de ? mkFuel(parsed.de.diesel, 1.680) : { atual: 1.680, serie: [] },
@@ -496,12 +497,12 @@ async function fetchCombustiveis() {
     console.error('[Comb] Erro:', err.message, '— fallback');
     return {
       ...Object.fromEntries(Object.entries(FB_FUEL).map(([k, v]) => [k, { ...v, dataActual: '2026-05-11', serie: [] }])),
-      es_gasolina95: { atual: 1.541, serie: [] },
-      es_gasoleo:    { atual: 1.718, serie: [] },
+      es_gasolina95: { atual: 1.548, serie: [] },
+      es_gasoleo:    { atual: 1.685, serie: [] },
       fr_gasolina95: { atual: 2.083, serie: [] },
-      fr_gasoleo:    { atual: 2.157, serie: [] },
-      de_gasolina95: { atual: 1.790, serie: [] },
-      de_gasoleo:    { atual: 1.760, serie: [] },
+      fr_gasoleo:    { atual: 2.118, serie: [] },
+      de_gasolina95: { atual: 2.043, serie: [] },
+      de_gasoleo:    { atual: 1.972, serie: [] },
       it_gasolina95: { atual: 1.937, serie: [] },
       it_gasoleo:    { atual: 1.983, serie: [] },
       de_gasoleo:    { atual: 1.680, serie: [] },
@@ -526,7 +527,7 @@ async function fetchBrent() {
     return r;
   } catch(err) {
     console.error('[Brent] Erro:', err.message, '— fallback');
-    return { preco: 105.84, moeda: 'USD', fonte: 'fallback', data: new Date().toISOString() };
+    return { preco: 100.21, moeda: 'USD', fonte: 'fallback', data: new Date().toISOString() };
   }
 }
 

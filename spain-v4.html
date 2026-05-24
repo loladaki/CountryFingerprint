@@ -259,16 +259,16 @@ footer a:hover{text-decoration:underline}
 
 <div class="ticker-wrap" aria-hidden="true">
   <div class="ticker" id="ticker-inner">
-    <span class="ticker-item">⛽ Gasoline 95 <span class="val" id="tick-g95">1.905 €/L</span></span>
-    <span class="ticker-item">⛽ Diesel <span class="val" id="tick-gsl">1.952 €/L</span></span>
+    <span class="ticker-item">⛽ Gasoline 95 <span class="val" id="tick-g95">1.548 €/L</span></span>
+    <span class="ticker-item">⛽ Diesel <span class="val" id="tick-gsl">1.685 €/L</span></span>
     <span class="ticker-item">🛢 Brent <span class="val" id="tick-brent">108.17 $/bbl</span></span>
     <span class="ticker-item">💶 Min. wage <span class="val" id="tick-wage">1,221 €</span></span>
     <span class="ticker-item">🏠 Housing 2026 <span class="val">2,230 €/m²</span></span>
     <span class="ticker-item">📉 Unemployment <span class="val" id="tick-unemp">10.3%</span></span>
     <span class="ticker-item">✈ Tourists 2024 <span class="val">85M</span></span>
     <span class="ticker-item">🌍 GDP growth <span class="val" id="tick-gdp">+2.3%</span></span>
-    <span class="ticker-item">⛽ Gasoline 95 <span class="val" id="tick-g95b">1.905 €/L</span></span>
-    <span class="ticker-item">⛽ Diesel <span class="val" id="tick-gslb">1.952 €/L</span></span>
+    <span class="ticker-item">⛽ Gasoline 95 <span class="val" id="tick-g95b">1.548 €/L</span></span>
+    <span class="ticker-item">⛽ Diesel <span class="val" id="tick-gslb">1.685 €/L</span></span>
     <span class="ticker-item">🛢 Brent <span class="val" id="tick-brentb">108.17 $/bbl</span></span>
     <span class="ticker-item">💶 Min. wage <span class="val" id="tick-wageb">1,221 €</span></span>
     <span class="ticker-item">🏠 Housing 2026 <span class="val">2,230 €/m²</span></span>
@@ -311,7 +311,7 @@ footer a:hover{text-decoration:underline}
   <div class="cards fade">
     <div class="card gold" id="card-g95">
       <div class="c-lbl">⛽ Gasoline 95</div>
-      <div class="c-val" id="val-g95">1.905<span class="u">€/L</span></div>
+      <div class="c-val" id="val-g95">1.548<span class="u">€/L</span></div>
       <div class="c-sub">Unleaded · Spain mainland</div>
       <span class="c-badge badge-ne" id="badge-g95">→ Stable vs last week</span>
       <div class="c-src" id="src-g95">EU Oil Bulletin · May 2026</div>
@@ -325,7 +325,7 @@ footer a:hover{text-decoration:underline}
     </div>
     <div class="card red" id="card-gsl">
       <div class="c-lbl">⛽ Diesel</div>
-      <div class="c-val" id="val-gsl">1.952<span class="u">€/L</span></div>
+      <div class="c-val" id="val-gsl">1.685<span class="u">€/L</span></div>
       <div class="c-sub">Road diesel · hist. high: 2.037 €</div>
       <span class="c-badge badge-up" id="badge-gsl">↑ +0.016€ vs last week</span>
       <div class="c-src" id="src-gsl">EU Oil Bulletin · May 2026</div>
@@ -524,7 +524,7 @@ footer a:hover{text-decoration:underline}
     <button class="evo-tab" data-panel="economy-panel">📊 Economy</button>
   </div>
   <div class="evo-panel active" id="fuel-panel">
-    <div class="evo-insight">Gasoline 95 surged from 1.23 €/L in 2016 to <strong>1.905 €/L in April 2026</strong> — a +55% increase over a decade. The Iran conflict of early 2026 pushed diesel to an all-time high of 2.037 €/L in March 2026.</div>
+    <div class="evo-insight">Gasoline 95 surged from 1.23 €/L in 2016 to <strong>1.548 €/L in April 2026</strong> — a +55% increase over a decade. The Iran conflict of early 2026 pushed diesel to an all-time high of 2.037 €/L in March 2026.</div>
     <div class="chart-card fade"><div class="chart-lbl">Fuel price evolution (€/L)</div><div style="height:260px"><canvas id="fuelHistChart"></canvas></div></div>
   </div>
   <div class="evo-panel" id="housing-panel">
@@ -805,10 +805,10 @@ document.querySelectorAll('#upd-date,#upd-date-footer').forEach(e => { if(e) e.t
 
 // ── FALLBACK static data ──
 const FALLBACK = {
-  gasolina95: { atual:1.541, variacao:-0.364 },
-  gasoleo:    { atual:1.718, variacao:-0.234 },
+  gasolina95: { atual:1.548, variacao:+0.007 },
+  gasoleo:    { atual:1.685, variacao:-0.033 },
   gpl:        { atual:0.906, variacao: 0.000 },
-  gasolina98: { atual:1.641, variacao:-0.378 },
+  gasolina98: { atual:1.648, variacao:+0.007 },
 };
 
 function fmtPreco(v) { return v ? Number(v).toFixed(3) : '—'; }

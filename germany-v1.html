@@ -273,16 +273,16 @@ footer a:hover{text-decoration:underline}
 
 <div class="ticker-wrap" aria-hidden="true">
   <div class="ticker" id="ticker-inner">
-    <span class="ticker-item">⛽ Super E5 <span class="val" id="tick-g95">1.790 €/L</span></span>
-    <span class="ticker-item">⛽ Diesel <span class="val" id="tick-gsl">1.680 €/L</span></span>
+    <span class="ticker-item">⛽ Super E5 <span class="val" id="tick-g95">2.043 €/L</span></span>
+    <span class="ticker-item">⛽ Diesel <span class="val" id="tick-gsl">1.972 €/L</span></span>
     <span class="ticker-item">🛢 Brent <span class="val" id="tick-brent">—</span></span>
     <span class="ticker-item">💶 Min wage 2026 <span class="val" id="tick-wage">2,222 €</span></span>
     <span class="ticker-item">🏠 Housing <span class="val">3,600 €/m²</span></span>
     <span class="ticker-item">📉 Unemployment <span class="val" id="tick-unemp">4.0%</span></span>
     <span class="ticker-item">✈ Tourists 2024 <span class="val">39M</span></span>
     <span class="ticker-item">🌍 GDP growth <span class="val" id="tick-gdp">+0.3%</span></span>
-    <span class="ticker-item">⛽ Super E5 <span class="val" id="tick-g95b">1.790 €/L</span></span>
-    <span class="ticker-item">⛽ Diesel <span class="val" id="tick-gslb">1.680 €/L</span></span>
+    <span class="ticker-item">⛽ Super E5 <span class="val" id="tick-g95b">2.043 €/L</span></span>
+    <span class="ticker-item">⛽ Diesel <span class="val" id="tick-gslb">1.972 €/L</span></span>
     <span class="ticker-item">🛢 Brent <span class="val" id="tick-brentb">—</span></span>
     <span class="ticker-item">💶 Min wage 2026 <span class="val" id="tick-wageb">2,222 €</span></span>
     <span class="ticker-item">🏠 Housing <span class="val">3,600 €/m²</span></span>
@@ -325,7 +325,7 @@ footer a:hover{text-decoration:underline}
   <div class="cards fade">
     <div class="card gold" id="card-g95">
       <div class="c-lbl">⛽ Super E5 (Gasoline)</div>
-      <div class="c-val" id="val-g95">1.790<span class="u">€/L</span></div>
+      <div class="c-val" id="val-g95">2.043<span class="u">€/L</span></div>
       <div class="c-sub">Super E5 · national avg</div>
       <span class="c-badge badge-ne" id="badge-g95">→ Stable vs last week</span>
       <div class="c-src" id="src-g95">EU Oil Bulletin · May 2026</div>
@@ -899,12 +899,12 @@ function updateOfflineBanner() {
 
 // ── Fallback fuel data (Germany) ──
 const FALLBACK = {
-  gasolina95: { atual: 1.790, variacao: +0.050 },
-  gasoleo:    { atual: 1.680, variacao: +0.020 },
-  gpl:        { atual: 0.890, variacao:  0.000 },
-  gasolina98: { atual: 1.910, variacao: +0.040 },
+  gasolina95: { atual: 2.043, variacao: +0.253 },
+  gasoleo:    { atual: 1.972, variacao: +0.212 },
+  gpl:        { atual: 0.910, variacao: +0.020 },
+  gasolina98: { atual: 2.163, variacao: +0.253 },
 };
-const FALLBACK_BRENT = { preco: 105.84, moeda: 'USD' };
+const FALLBACK_BRENT = { preco: 100.21, moeda: 'USD' };
 
 function fmt(n, dec=3) { return n != null ? n.toFixed(dec) : '—'; }
 function set(id, txt)  { const e = document.getElementById(id); if(e) e.textContent = txt; }

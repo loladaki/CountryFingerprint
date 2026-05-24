@@ -260,16 +260,16 @@ footer a:hover{text-decoration:underline}
 <div class="ticker-wrap" aria-hidden="true">
   <div class="ticker" id="ticker-inner">
     <!-- filled via JS after fetch -->
-    <span class="ticker-item">⛽ Petrol 95 <span class="val" id="tick-g95">1.927 €/L</span></span>
-    <span class="ticker-item">⛽ Diesel <span class="val" id="tick-gsl">1.958 €/L</span></span>
+    <span class="ticker-item">⛽ Petrol 95 <span class="val" id="tick-g95">2.009 €/L</span></span>
+    <span class="ticker-item">⛽ Diesel <span class="val" id="tick-gsl">1.954 €/L</span></span>
     <span class="ticker-item">🛢 Brent <span class="val" id="tick-brent">110.85 $/bbl</span></span>
     <span class="ticker-item">💶 Min. wage <span class="val" id="tick-wage">€920</span></span>
     <span class="ticker-item">🏠 Housing 2025 <span class="val">2,076 €/m²</span></span>
     <span class="ticker-item">📉 Unemployment <span class="val" id="tick-unemp">5.8%</span></span>
     <span class="ticker-item">✈ Tourists 2024 <span class="val">30.7M</span></span>
     <span class="ticker-item">🌍 Global peace <span class="val">7th worldwide</span></span>
-    <span class="ticker-item">⛽ Petrol 95 <span class="val" id="tick-g95b">1.927 €/L</span></span>
-    <span class="ticker-item">⛽ Diesel <span class="val" id="tick-gslb">1.958 €/L</span></span>
+    <span class="ticker-item">⛽ Petrol 95 <span class="val" id="tick-g95b">2.009 €/L</span></span>
+    <span class="ticker-item">⛽ Diesel <span class="val" id="tick-gslb">1.954 €/L</span></span>
     <span class="ticker-item">🛢 Brent <span class="val" id="tick-brentb">110.85 $/bbl</span></span>
     <span class="ticker-item">💶 Min. wage <span class="val" id="tick-wageb">€920</span></span>
     <span class="ticker-item">🏠 Housing 2025 <span class="val">2,076 €/m²</span></span>
@@ -312,7 +312,7 @@ footer a:hover{text-decoration:underline}
   <div class="cards fade">
     <div class="card gold" id="card-g95">
       <div class="c-lbl">⛽ Petrol 95</div>
-      <div class="c-val" id="val-g95">1.927<span class="u">€/L</span></div>
+      <div class="c-val" id="val-g95">2.009<span class="u">€/L</span></div>
       <div class="c-sub">Unleaded · Mainland Portugal</div>
       <span class="c-badge badge-up" id="badge-g95">↑ +€0.006 vs previous week</span>
       <div class="c-src" id="src-g95">EU Oil Bulletin · May 2026</div>
@@ -326,7 +326,7 @@ footer a:hover{text-decoration:underline}
     </div>
     <div class="card red" id="card-gsl">
       <div class="c-lbl">⛽ Diesel</div>
-      <div class="c-val" id="val-gsl">1.958<span class="u">€/L</span></div>
+      <div class="c-val" id="val-gsl">1.954<span class="u">€/L</span></div>
       <div class="c-sub">Road · all-time high: €2.037</div>
       <span class="c-badge badge-up" id="badge-gsl">↑ +€0.030 vs previous week</span>
       <div class="c-src" id="src-gsl">EU Oil Bulletin · May 2026</div>
@@ -892,12 +892,12 @@ if (dateEl) dateEl.textContent = now.getDate() + ' ' + MONTHS[now.getMonth()] + 
 
 // ── Fallback combustíveis ──
 const FALLBACK = {
-  gasolina95: { atual:1.979, anterior:1.927, variacao:+0.052 },
-  gasolina98: { atual:2.099, anterior:2.049, variacao:+0.050 },
-  gasoleo:    { atual:1.968, anterior:1.958, variacao:+0.010 },
+  gasolina95: { atual:2.009, anterior:1.979, variacao:+0.030 },
+  gasolina98: { atual:2.119, anterior:2.099, variacao:+0.020 },
+  gasoleo:    { atual:1.954, anterior:1.968, variacao:-0.014 },
   gpl:        { atual:0.930, anterior:0.928, variacao:+0.002 },
 };
-const FALLBACK_BRENT = { preco: 105.84 };
+const FALLBACK_BRENT = { preco: 100.21 };
 const LIVE_FONTES    = ['eu_oil_bulletin','dgeg_live'];
 
 // ── Actualizar cards combustíveis ──
