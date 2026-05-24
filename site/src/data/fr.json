@@ -1,0 +1,128 @@
+{
+  "meta": {
+    "code": "fr",
+    "name": "France",
+    "flag": "🇫🇷",
+    "title": "France by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 13 régions métropolitaines",
+    "description": "France dashboard — fuel, housing, wages, unemployment, GDP, tourism and more. Official INSEE / Banque de France / Eurostat sources, updated automatically."
+  },
+
+  "tickerItems": [
+    { "icon": "⛽", "label": "SP 95",     "value": "2.083 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Diesel",    "value": "2.118 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",    "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "SMIC 2026", "value": "1,802 €" },
+    { "icon": "🏠", "label": "Housing",  "value": "3,160 €/m²" },
+    { "icon": "📉", "label": "Unemployment", "value": "7.9%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "100M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+0.7%", "id": "tick-gdp" }
+  ],
+
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "regions",      "label": "📋 Régions" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Historical" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "clima",        "label": "🌤 Climate" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+
+  "fuelFallback": {
+    "gasolina95": { "atual": 2.083, "anterior": 2.083, "variacao": 0.000 },
+    "gasolina98": { "atual": 2.183, "anterior": 2.183, "variacao": 0.000 },
+    "gasoleo":    { "atual": 2.118, "anterior": 2.157, "variacao": -0.039 },
+    "gpl":        { "atual": 0.820, "anterior": 0.820, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/gregoiredavid/france-geojson@master/regions.geojson",
+    "featureIdResolver": "(f) => f.properties?.code ?? f.id",
+    "regionUnit": "région",
+    "strokeOnSelect": "#001a75",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [2.5, 46.5], "scale": 1700, "translate": [275, 310] },
+
+    "buttons": [
+      { "key": "salary",       "label": "💶 Salary" },
+      { "key": "housing",      "label": "🛒 Buy €/m²" },
+      { "key": "rent",         "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population",   "label": "👥 Population" },
+      { "key": "crime",        "label": "🚨 Crime" },
+      { "key": "temperature",  "label": "🌡 Temperature" },
+      { "key": "doctors",      "label": "💊 Doctors" },
+      { "key": "gdp",          "label": "📊 GDP pc" }
+    ],
+
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#e6eaf8", "#001a75"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",            "format": "currencyPerM2",  "colors": ["#fdecd0", "#a51c30"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",    "format": "currencyPerMo",  "colors": ["#e6eaf8", "#1a3d8c"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecd0", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#e6eaf8", "#1a3d8c"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e8f4fb", "#a51c30"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f2eb", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#fff8e0", "#c9a84c"] }
+    },
+
+    "regions": {
+      "11": { "name": "Île-de-France",              "salary": 2800, "housing": 9800, "rent": 1400, "unemployment":  6.8, "population": 12200000, "crime": 65.0, "temperature": 11.5, "doctors": 4.2, "gdp": 60000 },
+      "24": { "name": "Centre-Val de Loire",        "salary": 2100, "housing": 1800, "rent":  650, "unemployment":  7.0, "population":  2570000, "crime": 35.0, "temperature": 12.0, "doctors": 2.8, "gdp": 31000 },
+      "27": { "name": "Bourgogne-Franche-Comté",    "salary": 2050, "housing": 1700, "rent":  600, "unemployment":  6.8, "population":  2790000, "crime": 32.0, "temperature": 11.0, "doctors": 2.9, "gdp": 30500 },
+      "28": { "name": "Normandie",                  "salary": 2100, "housing": 2300, "rent":  700, "unemployment":  7.5, "population":  3320000, "crime": 36.0, "temperature": 11.0, "doctors": 3.0, "gdp": 31000 },
+      "32": { "name": "Hauts-de-France",            "salary": 2050, "housing": 2100, "rent":  650, "unemployment": 11.2, "population":  6000000, "crime": 42.0, "temperature": 10.5, "doctors": 2.7, "gdp": 29000 },
+      "44": { "name": "Grand Est",                  "salary": 2150, "housing": 1900, "rent":  700, "unemployment":  8.9, "population":  5560000, "crime": 38.0, "temperature": 11.0, "doctors": 3.1, "gdp": 30500 },
+      "52": { "name": "Pays de la Loire",           "salary": 2200, "housing": 2800, "rent":  800, "unemployment":  6.2, "population":  3870000, "crime": 30.0, "temperature": 12.0, "doctors": 3.0, "gdp": 32000 },
+      "53": { "name": "Bretagne",                   "salary": 2150, "housing": 2500, "rent":  750, "unemployment":  6.5, "population":  3380000, "crime": 28.0, "temperature": 11.5, "doctors": 3.2, "gdp": 30500 },
+      "75": { "name": "Nouvelle-Aquitaine",         "salary": 2150, "housing": 3500, "rent":  800, "unemployment":  8.5, "population":  6020000, "crime": 36.0, "temperature": 13.0, "doctors": 3.2, "gdp": 31000 },
+      "76": { "name": "Occitanie",                  "salary": 2150, "housing": 3100, "rent":  800, "unemployment":  9.2, "population":  6080000, "crime": 38.0, "temperature": 14.0, "doctors": 3.4, "gdp": 28500 },
+      "84": { "name": "Auvergne-Rhône-Alpes",       "salary": 2400, "housing": 3800, "rent":  850, "unemployment":  6.5, "population":  8100000, "crime": 36.0, "temperature": 11.5, "doctors": 3.5, "gdp": 36000 },
+      "93": { "name": "Provence-Alpes-Côte d'Azur", "salary": 2300, "housing": 3900, "rent": 1000, "unemployment":  9.0, "population":  5100000, "crime": 48.0, "temperature": 14.5, "doctors": 3.6, "gdp": 32000 },
+      "94": { "name": "Corse",                      "salary": 2050, "housing": 3200, "rent":  900, "unemployment":  7.6, "population":   350000, "crime": 38.0, "temperature": 14.5, "doctors": 3.5, "gdp": 28500 }
+    }
+  },
+
+  "stats": {
+    "unemployment":  { "value": 7.9, "asOf": "Q1 2026", "source": "INSEE BIT · Q1 2026" },
+    "youthUnemp":    { "value": 21.1 },
+    "minWage":       { "value": 1802, "asOf": "Jan 2026", "source": "SMIC · 2026" },
+    "avgGrossSalary":{ "value": 3500 },
+    "avgNetSalary":  { "value": 2700 },
+    "gdp":           { "value": 0.7, "asOf": "2026" },
+    "gdpTotalEuro":  { "value": "2.95T" },
+    "gdpPerCapita":  { "value": "43,000" },
+    "inflation":     { "value": 3.2, "asOf": "Dec 2025" },
+    "publicDebt":    { "value": 113 },
+    "budgetBalance": { "value": -5.5 },
+    "ecbRate":       { "value": 2.25 },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 82.5 },
+    "tourists":      { "value": "100M", "asOf": "2024", "note": "Most-visited country worldwide" },
+    "tourismRevenue":{ "value": "70B €" },
+    "housingIdx":    { "value": 127.1 },
+    "housingYoY":    { "value": 1.1 },
+    "population":    { "value": "68.4M" }
+  },
+
+  "footerSources": [
+    { "name": "INSEE",          "url": "https://www.insee.fr",         "desc": "National statistics" },
+    { "name": "Eurostat",       "url": "https://ec.europa.eu/eurostat", "desc": "European data" },
+    { "name": "Banque de France", "url": "https://www.banque-france.fr", "desc": "Monetary & financial" },
+    { "name": "Notaires de France", "url": "https://www.notaires.fr",  "desc": "Housing transactions" },
+    { "name": "Météo-France",   "url": "https://meteofrance.com",      "desc": "Climate & weather" },
+    { "name": "ONISR",          "url": "https://www.securite-routiere.gouv.fr", "desc": "Road safety" },
+    { "name": "ATOUT FRANCE",   "url": "https://www.atout-france.fr",  "desc": "Tourism" },
+    { "name": "IEP",            "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance",  "url": "https://finance.yahoo.com",    "desc": "Brent (live)" }
+  ]
+}

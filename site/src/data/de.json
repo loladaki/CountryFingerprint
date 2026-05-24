@@ -1,0 +1,132 @@
+{
+  "meta": {
+    "code": "de",
+    "name": "Germany",
+    "flag": "🇩🇪",
+    "title": "Germany by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 16 Bundesländer",
+    "description": "Germany dashboard — fuel, housing, wages, unemployment, GDP, tourism and more. Official Destatis / Bundesbank / Eurostat sources, updated automatically."
+  },
+
+  "tickerItems": [
+    { "icon": "⛽", "label": "Super E5", "value": "2.043 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Diesel",   "value": "1.972 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",   "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage 2026", "value": "2,222 €" },
+    { "icon": "🏠", "label": "Housing", "value": "3,600 €/m²" },
+    { "icon": "📉", "label": "Unemployment", "value": "4.0%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "39M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+0.3%", "id": "tick-gdp" }
+  ],
+
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "regions",      "label": "📋 Bundesländer" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Historical" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "clima",        "label": "🌤 Climate" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+
+  "fuelFallback": {
+    "gasolina95": { "atual": 2.043, "anterior": 1.790, "variacao": 0.253 },
+    "gasolina98": { "atual": 2.163, "anterior": 1.910, "variacao": 0.253 },
+    "gasoleo":    { "atual": 1.972, "anterior": 1.760, "variacao": 0.212 },
+    "gpl":        { "atual": 0.910, "anterior": 0.890, "variacao": 0.020 },
+    "brent":      { "preco": 100.21 }
+  },
+
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/isellsoap/deutschlandGeoJSON@main/2_bundeslaender/1_sehr_hoch.geo.json",
+    "featureIdResolver": "(f) => String(f.properties?.id || f.properties?.ISO || f.id || '').replace(/^DE-/i, '').toUpperCase()",
+    "regionUnit": "Bundesland",
+    "strokeOnSelect": "#0a0a0a",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [10.5, 51.1], "scale": 2200, "translate": [275, 310] },
+
+    "buttons": [
+      { "key": "salary",       "label": "💶 Salary" },
+      { "key": "housing",      "label": "🛒 Buy €/m²" },
+      { "key": "rent",         "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population",   "label": "👥 Population" },
+      { "key": "crime",        "label": "🚨 Crime" },
+      { "key": "temperature",  "label": "🌡 Temperature" },
+      { "key": "doctors",      "label": "💊 Doctors" },
+      { "key": "gdp",          "label": "📊 GDP pc" }
+    ],
+
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#f0f0f0", "#0a0a0a"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",            "format": "currencyPerM2",  "colors": ["#fdecec", "#DD0000"] },
+      "rent":         { "label": "Monthly rent for a ~T2 apt (€/mo)",    "dpKey": "🔑 Monthly rent (T2)",    "format": "currencyPerMo",  "colors": ["#f0f0f0", "#3a3a8c"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#f0f0f0", "#1a1a1a"] },
+      "crime":        { "label": "Crime rate (per 1000)",                "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8d8", "#806800"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e8f4fb", "#DD0000"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f2eb", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#fff8d8", "#FFCE00"] }
+    },
+
+    "regions": {
+      "BW": { "name": "Baden-Württemberg",       "salary": 3050, "housing": 4500, "rent":  945, "unemployment":  3.4, "population": 11280000, "crime": 46.0, "temperature": 10.5, "doctors": 4.3, "gdp": 51200 },
+      "BY": { "name": "Bayern (Bavaria)",        "salary": 3100, "housing": 6200, "rent": 1155, "unemployment":  2.9, "population": 13390000, "crime": 42.0, "temperature":  9.7, "doctors": 4.4, "gdp": 54100 },
+      "BE": { "name": "Berlin",                  "salary": 2850, "housing": 5500, "rent": 1274, "unemployment":  8.9, "population":  3780000, "crime": 74.0, "temperature": 10.4, "doctors": 5.2, "gdp": 48400 },
+      "BB": { "name": "Brandenburg",             "salary": 2600, "housing": 2400, "rent":  728, "unemployment":  5.4, "population":  2540000, "crime": 50.0, "temperature": 10.1, "doctors": 3.6, "gdp": 34000 },
+      "HB": { "name": "Bremen",                  "salary": 2900, "housing": 3400, "rent":  854, "unemployment": 11.0, "population":   680000, "crime": 80.0, "temperature": 10.2, "doctors": 4.7, "gdp": 54900 },
+      "HH": { "name": "Hamburg",                 "salary": 3300, "housing": 6000, "rent": 1246, "unemployment":  6.8, "population":  1890000, "crime": 70.0, "temperature": 10.1, "doctors": 5.5, "gdp": 74900 },
+      "HE": { "name": "Hessen",                  "salary": 3200, "housing": 4200, "rent": 1036, "unemployment":  5.5, "population":  6310000, "crime": 50.0, "temperature": 11.0, "doctors": 4.3, "gdp": 53600 },
+      "MV": { "name": "Mecklenburg-Vorpommern",  "salary": 2500, "housing": 2100, "rent":  644, "unemployment":  6.7, "population":  1620000, "crime": 51.0, "temperature":  9.4, "doctors": 4.4, "gdp": 31300 },
+      "NI": { "name": "Niedersachsen",           "salary": 2800, "housing": 2600, "rent":  686, "unemployment":  5.6, "population":  8100000, "crime": 48.0, "temperature": 10.2, "doctors": 3.9, "gdp": 39400 },
+      "NW": { "name": "Nordrhein-Westfalen",     "salary": 2850, "housing": 3100, "rent":  812, "unemployment":  7.0, "population": 17920000, "crime": 54.0, "temperature": 10.7, "doctors": 4.4, "gdp": 44400 },
+      "RP": { "name": "Rheinland-Pfalz",         "salary": 2800, "housing": 2800, "rent":  735, "unemployment":  5.2, "population":  4140000, "crime": 46.0, "temperature": 11.0, "doctors": 4.2, "gdp": 39400 },
+      "SL": { "name": "Saarland",                "salary": 2750, "housing": 2200, "rent":  658, "unemployment":  7.1, "population":   980000, "crime": 48.0, "temperature": 10.8, "doctors": 4.5, "gdp": 39400 },
+      "SN": { "name": "Sachsen (Saxony)",        "salary": 2500, "housing": 1950, "rent":  637, "unemployment":  6.0, "population":  4090000, "crime": 54.0, "temperature": 10.0, "doctors": 4.5, "gdp": 33700 },
+      "ST": { "name": "Sachsen-Anhalt",          "salary": 2450, "housing": 1700, "rent":  574, "unemployment":  7.4, "population":  2160000, "crime": 54.0, "temperature":  9.8, "doctors": 4.6, "gdp": 31900 },
+      "SH": { "name": "Schleswig-Holstein",      "salary": 2750, "housing": 3100, "rent":  784, "unemployment":  5.8, "population":  2920000, "crime": 49.0, "temperature":  9.6, "doctors": 4.0, "gdp": 36200 },
+      "TH": { "name": "Thüringen (Thuringia)",   "salary": 2500, "housing": 1850, "rent":  595, "unemployment":  6.0, "population":  2100000, "crime": 43.0, "temperature":  9.5, "doctors": 4.5, "gdp": 32600 }
+    }
+  },
+
+  "stats": {
+    "unemployment":  { "value": 4.0, "asOf": "Feb 2026", "source": "Eurostat ILO · Feb 2026" },
+    "youthUnemp":    { "value": 6.5 },
+    "minWage":       { "value": 2222, "asOf": "Jan 2026", "source": "BAG · Jan 2026", "note": "12.82 €/hr × 40h/wk" },
+    "avgGrossSalary":{ "value": 4400 },
+    "avgNetSalary":  { "value": 2800 },
+    "gdp":           { "value": 0.3, "asOf": "2026" },
+    "gdpTotalEuro":  { "value": "4.30T" },
+    "gdpPerCapita":  { "value": "51,200" },
+    "inflation":     { "value": 2.6, "asOf": "Dec 2025" },
+    "publicDebt":    { "value": 63 },
+    "budgetBalance": { "value": -2.1 },
+    "ecbRate":       { "value": 2.25 },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 81.1 },
+    "tourists":      { "value": "39M", "asOf": "2024" },
+    "tourismRevenue":{ "value": "61B €" },
+    "renewablesShare":{"value": 55, "note": "Wind + solar lead" },
+    "population":    { "value": "84.5M" }
+  },
+
+  "footerSources": [
+    { "name": "Destatis",       "url": "https://www.destatis.de",      "desc": "Federal statistics" },
+    { "name": "Eurostat",       "url": "https://ec.europa.eu/eurostat", "desc": "European data" },
+    { "name": "Bundesbank",     "url": "https://www.bundesbank.de",    "desc": "Monetary & financial" },
+    { "name": "vdpResearch",    "url": "https://www.vdpresearch.de",   "desc": "Housing prices" },
+    { "name": "BDEW",           "url": "https://www.bdew.de",          "desc": "Energy industry" },
+    { "name": "DWD",            "url": "https://www.dwd.de",           "desc": "Climate & weather" },
+    { "name": "BKA",            "url": "https://www.bka.de",           "desc": "Crime statistics" },
+    { "name": "DZT",            "url": "https://www.germany.travel",   "desc": "Tourism Board" },
+    { "name": "UBA",            "url": "https://www.umweltbundesamt.de", "desc": "Environment Agency" },
+    { "name": "IEP",            "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance",  "url": "https://finance.yahoo.com",    "desc": "Brent (live)" }
+  ]
+}

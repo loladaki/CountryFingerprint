@@ -107,8 +107,9 @@ const {
   </div>
 </div>
 
-<!-- D3 loaded from CDN — only on pages that include this component -->
+<!-- D3 + topojson-client loaded from CDN — only on pages with the map -->
 <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js" is:inline></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js" is:inline></script>
 
 <script
   is:inline
@@ -192,9 +193,17 @@ const {
       panel.innerHTML = `<div class="dp-name">${data.name}</div>` + rows;
     }
 
-    // Load GeoJSON and draw
-    d3.json(geojsonUrl).then((geo) => {
-      const features = geo.features
+    // Load GeoJSON or TopoJSON and draw
+    d3.json(geojsonUrl).then((raw) => {
+      // Detect TopoJSON by presence of `.objects` and the topojson global
+      let geo;
+      if (raw && raw.objects && typeof topojson !== 'undefined') {
+        const objKey = Object.keys(raw.objects)[0];
+        geo = topojson.feature(raw, raw.objects[objKey]);
+      } else {
+        geo = raw;
+      }
+      const features = (geo.features || [])
         .map((f) => ({ ...f, id: resolveId(f) }))
         .filter((f) => REGIONS[f.id]);
 

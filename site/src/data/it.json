@@ -1,0 +1,137 @@
+{
+  "meta": {
+    "code": "it",
+    "name": "Italy",
+    "flag": "🇮🇹",
+    "title": "Italy by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 20 regioni",
+    "description": "Italy dashboard — fuel, housing, wages, unemployment, GDP, tourism and more. Official ISTAT / Bank of Italy / Eurostat sources, updated automatically."
+  },
+
+  "tickerItems": [
+    { "icon": "⛽", "label": "Benzina", "value": "1.937 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Diesel",  "value": "1.983 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",  "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage", "value": "CCNL (no statutory)" },
+    { "icon": "🏠", "label": "Housing","value": "2,100 €/m²" },
+    { "icon": "📉", "label": "Unemployment", "value": "5.2%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "65M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+0.6%", "id": "tick-gdp" }
+  ],
+
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "regions",      "label": "📋 Regioni" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Historical" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "clima",        "label": "🌤 Climate" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+
+  "fuelFallback": {
+    "gasolina95": { "atual": 1.937, "anterior": 1.937, "variacao": 0.000 },
+    "gasolina98": { "atual": 2.090, "anterior": 2.090, "variacao": 0.000 },
+    "gasoleo":    { "atual": 1.983, "anterior": 1.983, "variacao": 0.000 },
+    "gpl":        { "atual": 0.825, "anterior": 0.820, "variacao": 0.005 },
+    "brent":      { "preco": 100.21 }
+  },
+
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/openpolis/geojson-italy@master/geojson/limits_IT_regions.geojson",
+    "featureIdResolver": "(f) => String(f.properties?.reg_istat_code ?? f.properties?.COD_REG ?? f.id ?? '').padStart(2, '0')",
+    "regionUnit": "regione",
+    "strokeOnSelect": "#008C45",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [12.5, 42.5], "scale": 2200, "translate": [275, 310] },
+
+    "buttons": [
+      { "key": "salary",       "label": "💶 Salary" },
+      { "key": "housing",      "label": "🛒 Buy €/m²" },
+      { "key": "rent",         "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population",   "label": "👥 Population" },
+      { "key": "crime",        "label": "🚨 Crime" },
+      { "key": "temperature",  "label": "🌡 Temperature" },
+      { "key": "doctors",      "label": "💊 Doctors" },
+      { "key": "gdp",          "label": "📊 GDP pc" }
+    ],
+
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#e6f4ec", "#006B33"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",            "format": "currencyPerM2",  "colors": ["#fbe6e8", "#CD212A"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",    "format": "currencyPerMo",  "colors": ["#f0f0ff", "#3a3a8c"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fbe6e8", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#e6f4ec", "#006B33"] },
+      "crime":        { "label": "Crime rate (per 1000)",                "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8d8", "#806800"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e8f4fb", "#CD212A"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#fff8d8", "#C9A84C"] }
+    },
+
+    "regions": {
+      "01": { "name": "Piemonte",              "salary": 1780, "housing": 1800, "rent":  850, "unemployment":  6.0, "population": 4260000, "crime": 42.0, "temperature": 12.6, "doctors": 4.1, "gdp": 33500 },
+      "02": { "name": "Valle d'Aosta",         "salary": 1920, "housing": 2400, "rent":  900, "unemployment":  4.5, "population":  123000, "crime": 38.0, "temperature":  8.0, "doctors": 4.4, "gdp": 41000 },
+      "03": { "name": "Lombardia",             "salary": 1950, "housing": 2800, "rent": 1200, "unemployment":  4.0, "population": 9950000, "crime": 45.0, "temperature": 13.2, "doctors": 4.2, "gdp": 42500 },
+      "04": { "name": "Trentino-Alto Adige",   "salary": 1950, "housing": 3200, "rent": 1050, "unemployment":  3.0, "population": 1080000, "crime": 32.0, "temperature":  9.0, "doctors": 4.5, "gdp": 48000 },
+      "05": { "name": "Veneto",                "salary": 1750, "housing": 2000, "rent":  950, "unemployment":  4.5, "population": 4850000, "crime": 38.0, "temperature": 13.5, "doctors": 4.0, "gdp": 35500 },
+      "06": { "name": "Friuli-Venezia Giulia", "salary": 1800, "housing": 1800, "rent":  850, "unemployment":  4.5, "population": 1190000, "crime": 38.0, "temperature": 13.0, "doctors": 4.3, "gdp": 34000 },
+      "07": { "name": "Liguria",               "salary": 1750, "housing": 2400, "rent": 1000, "unemployment":  6.5, "population": 1500000, "crime": 40.0, "temperature": 14.7, "doctors": 4.5, "gdp": 33000 },
+      "08": { "name": "Emilia-Romagna",        "salary": 1800, "housing": 2300, "rent": 1050, "unemployment":  4.5, "population": 4440000, "crime": 48.0, "temperature": 13.8, "doctors": 4.4, "gdp": 38500 },
+      "09": { "name": "Toscana",               "salary": 1720, "housing": 2500, "rent": 1100, "unemployment":  5.5, "population": 3670000, "crime": 40.0, "temperature": 15.4, "doctors": 4.3, "gdp": 32500 },
+      "10": { "name": "Umbria",                "salary": 1650, "housing": 1500, "rent":  750, "unemployment":  6.5, "population":  850000, "crime": 35.0, "temperature": 13.5, "doctors": 4.2, "gdp": 26000 },
+      "11": { "name": "Marche",                "salary": 1650, "housing": 1500, "rent":  700, "unemployment":  5.5, "population": 1490000, "crime": 32.0, "temperature": 14.0, "doctors": 4.1, "gdp": 26800 },
+      "12": { "name": "Lazio",                 "salary": 1820, "housing": 2500, "rent": 1100, "unemployment":  6.8, "population": 5720000, "crime": 55.0, "temperature": 15.7, "doctors": 4.3, "gdp": 36000 },
+      "13": { "name": "Abruzzo",               "salary": 1600, "housing": 1500, "rent":  650, "unemployment":  7.5, "population": 1280000, "crime": 32.0, "temperature": 13.5, "doctors": 4.0, "gdp": 26500 },
+      "14": { "name": "Molise",                "salary": 1500, "housing": 1200, "rent":  550, "unemployment":  9.5, "population":  290000, "crime": 25.0, "temperature": 13.5, "doctors": 4.2, "gdp": 23000 },
+      "15": { "name": "Campania",              "salary": 1500, "housing": 1500, "rent":  750, "unemployment": 16.0, "population": 5580000, "crime": 55.0, "temperature": 16.0, "doctors": 3.6, "gdp": 21500 },
+      "16": { "name": "Puglia",                "salary": 1520, "housing": 1400, "rent":  600, "unemployment": 13.5, "population": 3920000, "crime": 42.0, "temperature": 16.5, "doctors": 3.6, "gdp": 21500 },
+      "17": { "name": "Basilicata",            "salary": 1500, "housing": 1100, "rent":  500, "unemployment":  9.5, "population":  540000, "crime": 28.0, "temperature": 14.5, "doctors": 4.0, "gdp": 23500 },
+      "18": { "name": "Calabria",              "salary": 1420, "housing": 1100, "rent":  500, "unemployment": 17.5, "population": 1860000, "crime": 42.0, "temperature": 16.5, "doctors": 3.7, "gdp": 19500 },
+      "19": { "name": "Sicilia",               "salary": 1450, "housing": 1200, "rent":  600, "unemployment": 17.0, "population": 4840000, "crime": 48.0, "temperature": 18.5, "doctors": 3.7, "gdp": 20000 },
+      "20": { "name": "Sardegna",              "salary": 1500, "housing": 1800, "rent":  750, "unemployment": 11.0, "population": 1580000, "crime": 32.0, "temperature": 17.2, "doctors": 4.1, "gdp": 23500 }
+    }
+  },
+
+  "stats": {
+    "unemployment":  { "value": 5.2, "asOf": "Mar 2026", "source": "Eurostat / ISTAT · Mar 2026" },
+    "youthUnemp":    { "value": 19.0 },
+    "minWage":       { "value": null, "note": "No statutory minimum wage — sector-based CCNL" },
+    "avgGrossSalary":{ "value": 2850 },
+    "avgNetSalary":  { "value": 1750 },
+    "gdp":           { "value": 0.6, "asOf": "2026" },
+    "gdpTotalEuro":  { "value": "2.20T" },
+    "gdpPerCapita":  { "value": "37,300" },
+    "inflation":     { "value": 1.7, "asOf": "Dec 2025" },
+    "publicDebt":    { "value": 135 },
+    "budgetBalance": { "value": -3.5 },
+    "ecbRate":       { "value": 2.25 },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 83.5, "note": "Highest in EU" },
+    "tourists":      { "value": "65M", "asOf": "2024", "note": "5th most-visited country" },
+    "tourismRevenue":{ "value": "55B €" },
+    "renewablesShare":{"value": 42, "note": "Solar + hydro lead" },
+    "fertilityRate": { "value": 1.20, "note": "Lowest in EU" },
+    "population":    { "value": "58.9M" }
+  },
+
+  "footerSources": [
+    { "name": "ISTAT",          "url": "https://www.istat.it",           "desc": "National statistics" },
+    { "name": "Eurostat",       "url": "https://ec.europa.eu/eurostat",   "desc": "European data" },
+    { "name": "Banca d'Italia", "url": "https://www.bancaditalia.it",     "desc": "Monetary & financial" },
+    { "name": "OMI · Agenzia delle Entrate", "url": "https://www.agenziaentrate.gov.it", "desc": "Housing prices" },
+    { "name": "Terna · GSE",    "url": "https://www.terna.it",            "desc": "Energy" },
+    { "name": "ISPRA",          "url": "https://www.isprambiente.gov.it", "desc": "Environment & climate" },
+    { "name": "Ministero dell'Interno", "url": "https://www.interno.gov.it", "desc": "Crime" },
+    { "name": "ENIT",           "url": "https://www.enit.it",             "desc": "Tourism Board" },
+    { "name": "Ministero della Salute", "url": "https://www.salute.gov.it", "desc": "SSN data" },
+    { "name": "IEP",            "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance",  "url": "https://finance.yahoo.com",       "desc": "Brent (live)" }
+  ]
+}

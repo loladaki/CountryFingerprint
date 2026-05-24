@@ -1,0 +1,132 @@
+{
+  "meta": {
+    "code": "pt",
+    "name": "Portugal",
+    "flag": "🇵🇹",
+    "title": "Portugal by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 18 districts",
+    "description": "Portugal dashboard — fuel, housing, wages, unemployment, GDP, tourism and more. Official INE / Banco de Portugal / Eurostat sources, updated automatically."
+  },
+
+  "tickerItems": [
+    { "icon": "⛽", "label": "Petrol 95", "value": "2.009 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Diesel",    "value": "1.954 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",    "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage 2026", "value": "920 €" },
+    { "icon": "🏠", "label": "Housing",  "value": "2,076 €/m²" },
+    { "icon": "📉", "label": "Unemployment", "value": "5.8%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "31.6M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+2.4%", "id": "tick-gdp" }
+  ],
+
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Fuel" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Historical" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "clima",        "label": "🌤 Climate" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+
+  "fuelFallback": {
+    "gasolina95": { "atual": 2.009, "anterior": 1.979, "variacao": 0.030 },
+    "gasolina98": { "atual": 2.119, "anterior": 2.099, "variacao": 0.020 },
+    "gasoleo":    { "atual": 1.954, "anterior": 1.968, "variacao": -0.014 },
+    "gpl":        { "atual": 0.930, "anterior": 0.928, "variacao": 0.002 },
+    "brent":      { "preco": 100.21 }
+  },
+
+  "map": {
+    "geojsonUrl": "/CountryFingerprint/data/pt.topojson.json",
+    "featureIdResolver": "(f) => f.id",
+    "regionUnit": "district",
+    "strokeOnSelect": "#1a3d2b",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [-7.5, 39.6], "scale": 3200, "translate": [275, 310] },
+
+    "buttons": [
+      { "key": "salary",       "label": "💶 Salary" },
+      { "key": "housing",      "label": "🛒 Buy €/m²" },
+      { "key": "rent",         "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population",   "label": "👥 Population" },
+      { "key": "crime",        "label": "🚨 Crime" },
+      { "key": "temperature",  "label": "🌡 Temperature" },
+      { "key": "doctors",      "label": "💊 Doctors" },
+      { "key": "gdp",          "label": "📊 GDP pc" }
+    ],
+
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",                "dpKey": "💶 Average net salary",    "format": "currency",        "colors": ["#cde8d8", "#1a3d2b"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)",     "dpKey": "🛒 Buy price",              "format": "currencyPerM2",   "colors": ["#fdecd0", "#a51c30"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",          "dpKey": "🔑 Monthly rent (T2)",      "format": "currencyPerMo",   "colors": ["#e8eef8", "#1a3d8c"] },
+      "unemployment": { "label": "Unemployment rate (%)",                    "dpKey": "📉 Unemployment",          "format": "percent",          "colors": ["#d8f0e2", "#7a3520"] },
+      "population":   { "label": "Resident population",                      "dpKey": "👥 Population",            "format": "population",       "colors": ["#e8eef8", "#1a3d8c"] },
+      "crime":        { "label": "Crime rate (‰)",                           "dpKey": "🚨 Crime rate",            "format": "permille",         "colors": ["#fdf8e8", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",             "dpKey": "🌡 Avg. temperature",      "format": "degrees",          "colors": ["#e8f4fb", "#a51c30"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",                   "dpKey": "💊 Doctors /1,000 pop.",   "format": "doctors",          "colors": ["#f0f8f0", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                    "dpKey": "📊 GDP per capita",        "format": "currency",         "colors": ["#f0f0f8", "#1a3d8c"] }
+    },
+
+    "regions": {
+      "PT.LI": { "name": "Lisboa",           "salary": 1520, "housing": 4800, "rent": 1850, "unemployment": 6.3, "population": 2871133, "crime": 38.2, "temperature": 17.4, "doctors": 8.2, "gdp": 28400 },
+      "PT.PO": { "name": "Porto",            "salary": 1290, "housing": 3500, "rent": 1200, "unemployment": 6.0, "population": 1737395, "crime": 35.1, "temperature": 14.8, "doctors": 5.8, "gdp": 18200 },
+      "PT.FA": { "name": "Faro (Algarve)",   "salary": 1180, "housing": 3800, "rent": 1100, "unemployment": 5.3, "population":  473062, "crime": 28.4, "temperature": 18.2, "doctors": 4.2, "gdp": 17800 },
+      "PT.SE": { "name": "Setúbal",          "salary": 1210, "housing": 2950, "rent":  950, "unemployment": 8.0, "population":  809980, "crime": 31.2, "temperature": 16.8, "doctors": 3.8, "gdp": 16400 },
+      "PT.BR": { "name": "Braga",            "salary": 1100, "housing": 2100, "rent":  800, "unemployment": 6.0, "population":  866085, "crime": 19.8, "temperature": 13.9, "doctors": 3.9, "gdp": 15800 },
+      "PT.AV": { "name": "Aveiro",           "salary": 1150, "housing": 2050, "rent":  750, "unemployment": 5.5, "population":  737113, "crime": 18.4, "temperature": 14.5, "doctors": 3.5, "gdp": 17100 },
+      "PT.CO": { "name": "Coimbra",          "salary": 1120, "housing": 2050, "rent":  800, "unemployment": 4.5, "population":  420054, "crime": 22.1, "temperature": 15.8, "doctors": 8.4, "gdp": 16900 },
+      "PT.LE": { "name": "Leiria",           "salary": 1080, "housing": 1900, "rent":  700, "unemployment": 6.2, "population":  467136, "crime": 17.3, "temperature": 15.2, "doctors": 3.2, "gdp": 16500 },
+      "PT.SA": { "name": "Santarém",         "salary": 1050, "housing": 1400, "rent":  600, "unemployment": 6.3, "population":  427099, "crime": 18.9, "temperature": 16.1, "doctors": 3.4, "gdp": 14800 },
+      "PT.VI": { "name": "Viseu",            "salary":  990, "housing": 1000, "rent":  550, "unemployment": 4.9, "population":  371096, "crime": 12.4, "temperature": 12.9, "doctors": 3.1, "gdp": 13900 },
+      "PT.VC": { "name": "Viana do Castelo", "salary":  980, "housing": 1200, "rent":  600, "unemployment": 6.3, "population":  244836, "crime": 14.2, "temperature": 13.5, "doctors": 3.0, "gdp": 14200 },
+      "PT.EV": { "name": "Évora",            "salary": 1020, "housing": 1550, "rent":  650, "unemployment": 5.9, "population":  164098, "crime": 17.6, "temperature": 16.5, "doctors": 4.1, "gdp": 14500 },
+      "PT.BE": { "name": "Beja",             "salary":  970, "housing":  950, "rent":  500, "unemployment": 9.0, "population":  147640, "crime": 15.8, "temperature": 17.1, "doctors": 2.8, "gdp": 11800 },
+      "PT.BA": { "name": "Bragança",         "salary":  930, "housing":  700, "rent":  480, "unemployment": 4.9, "population":  113884, "crime": 11.2, "temperature": 11.8, "doctors": 2.6, "gdp": 11400 },
+      "PT.CB": { "name": "Castelo Branco",   "salary":  960, "housing":  840, "rent":  520, "unemployment": 5.2, "population":  171644, "crime": 13.5, "temperature": 15.4, "doctors": 2.9, "gdp": 12100 },
+      "PT.GU": { "name": "Guarda",           "salary":  940, "housing":  780, "rent":  500, "unemployment": 5.1, "population":  141861, "crime": 11.8, "temperature": 10.2, "doctors": 2.7, "gdp": 11900 },
+      "PT.VR": { "name": "Vila Real",        "salary":  960, "housing":  850, "rent":  520, "unemployment": 5.9, "population":  193561, "crime": 13.2, "temperature": 13.1, "doctors": 3.0, "gdp": 12400 },
+      "PT.PA": { "name": "Portalegre",       "salary":  990, "housing":  880, "rent":  530, "unemployment": 5.6, "population":  104770, "crime": 14.1, "temperature": 14.8, "doctors": 2.9, "gdp": 12200 },
+      "PT.AC": { "name": "Açores",           "salary": 1050, "housing": 1400, "rent":  750, "unemployment": 4.9, "population":  243018, "crime": 16.4, "temperature": 17.5, "doctors": 3.3, "gdp": 14200 },
+      "PT.MA": { "name": "Madeira",          "salary": 1100, "housing": 3200, "rent": 1000, "unemployment": 4.9, "population":  253945, "crime": 19.2, "temperature": 20.8, "doctors": 3.8, "gdp": 16100 }
+    }
+  },
+
+  "stats": {
+    "unemployment":  { "value": 5.8,  "asOf": "Mar 2026", "source": "INE EPA · 29 Apr 2026" },
+    "youthUnemp":    { "value": 18.1, "asOf": "Mar 2026", "source": "INE · Mar 2026" },
+    "minWage":       { "value": 920,  "asOf": "Jan 2026", "source": "PT Government · 2026" },
+    "avgGrossSalary":{ "value": 1694, "asOf": "2025",     "source": "INE · 2025" },
+    "avgNetSalary":  { "value": 1230, "asOf": "2025 est", "source": "INE · 2025" },
+    "gdp":           { "value": 2.4,  "asOf": "2026",     "source": "Banco de Portugal · 2026" },
+    "gdpTotalEuro":  { "value": "270B" },
+    "gdpPerCapita":  { "value": "26,000" },
+    "inflation":     { "value": 3.0,  "asOf": "Dec 2025", "source": "Eurostat HICP · Dec 2025" },
+    "publicDebt":    { "value": 95,   "asOf": "2025" },
+    "budgetBalance": { "value": 1.3,  "asOf": "2025", "note": "Surplus" },
+    "ecbRate":       { "value": 2.25, "asOf": "Apr 2026" },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 81.5, "asOf": "2023" },
+    "tourists":      { "value": "31.6M", "asOf": "2024", "note": "Record high" },
+    "tourismRevenue":{ "value": "26B €", "asOf": "2024", "note": "~12.5% of GDP" },
+    "renewablesShare":{"value": 71, "asOf": "2025", "note": "Hydro + wind + solar lead" },
+    "population":    { "value": "10.6M" }
+  },
+
+  "footerSources": [
+    { "name": "INE",            "url": "https://www.ine.pt",          "desc": "National statistics" },
+    { "name": "Eurostat",       "url": "https://ec.europa.eu/eurostat", "desc": "European data" },
+    { "name": "Banco de Portugal", "url": "https://www.bportugal.pt", "desc": "Monetary & financial" },
+    { "name": "DGEG",           "url": "https://www.dgeg.gov.pt",      "desc": "Energy" },
+    { "name": "IPMA",           "url": "https://www.ipma.pt",          "desc": "Climate & weather" },
+    { "name": "Turismo de Portugal", "url": "https://www.turismodeportugal.pt", "desc": "Tourism Board" },
+    { "name": "IEP",            "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance",  "url": "https://finance.yahoo.com",    "desc": "Brent (live)" }
+  ]
+}
