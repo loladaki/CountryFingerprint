@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://loladaki.github.io/CountryFingerprint/sitemap-index.xml

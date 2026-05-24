@@ -11,45 +11,23 @@ const express = require('express');
 const cors    = require('cors');
 const https   = require('https');
 const http    = require('http');
-const path    = require('path');
-const fs      = require('fs');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// ── Servir HTML ───────────────────────────────
-function serveFile(res, ...candidates) {
-  for (const p of candidates) {
-    if (fs.existsSync(p)) return res.sendFile(p);
-  }
-  res.status(404).send('<h2>Ficheiro não encontrado.</h2>');
-}
-
-app.get('/',               (req, res) => serveFile(res, path.join(__dirname, 'index.html')));
-app.get('/index.html',     (req, res) => serveFile(res, path.join(__dirname, 'index.html')));
-app.get('/portugal',       (req, res) => serveFile(res, path.join(__dirname, 'portugal-v4.html')));
-app.get('/portugal-v4.html', (req, res) => serveFile(res, path.join(__dirname, 'portugal-v4.html')));
-app.get('/spain',          (req, res) => serveFile(res, path.join(__dirname, 'spain-v4.html')));
-app.get('/spain-v4.html',  (req, res) => serveFile(res, path.join(__dirname, 'spain-v4.html')));
-app.get('/france',         (req, res) => serveFile(res, path.join(__dirname, 'france-v1.html')));
-app.get('/france-v1.html', (req, res) => serveFile(res, path.join(__dirname, 'france-v1.html')));
-app.get('/germany',         (req, res) => serveFile(res, path.join(__dirname, 'germany-v1.html')));
-app.get('/germany-v1.html', (req, res) => serveFile(res, path.join(__dirname, 'germany-v1.html')));
-app.get('/italy',           (req, res) => serveFile(res, path.join(__dirname, 'italy-v1.html')));
-app.get('/italy-v1.html',   (req, res) => serveFile(res, path.join(__dirname, 'italy-v1.html')));
-
-// ── Bibliotecas JS locais ─────────────────────
-app.get('/libs/d3.min.js',        (req, res) => res.sendFile(path.join(__dirname,'node_modules','d3','dist','d3.min.js')));
-app.get('/libs/chart.umd.js',     (req, res) => res.sendFile(path.join(__dirname,'node_modules','chart.js','dist','chart.umd.min.js')));
-app.get('/libs/topojson.min.js',  (req, res) => res.sendFile(path.join(__dirname,'node_modules','topojson-client','dist','topojson-client.min.js')));
-app.get('/libs/prt.topo.json',    (req, res) => res.sendFile(path.join(__dirname,'node_modules','datamaps','src','js','data','prt.topo.json')));
-app.get('/libs/esp.topo.json',    (req, res) => res.sendFile(path.join(__dirname,'node_modules','datamaps','src','js','data','esp.topo.json')));
-
-// ── SEO ───────────────────────────────────────
-app.get('/robots.txt', (req, res) => res.sendFile(path.join(__dirname, 'robots.txt')));
-app.get('/sitemap.xml', (req, res) => res.type('application/xml').sendFile(path.join(__dirname, 'sitemap.xml')));
+// ── Root + landing ────────────────────────────
+// The HTML site moved to GitHub Pages (Astro build in /site).
+// This Express backend now serves ONLY /api/* endpoints — everything else
+// redirects users to the new frontend.
+const FRONTEND = 'https://loladaki.github.io/CountryFingerprint';
+app.get('/', (req, res) => res.redirect(302, FRONTEND));
+app.get('/portugal', (req, res) => res.redirect(302, `${FRONTEND}/portugal`));
+app.get('/spain',    (req, res) => res.redirect(302, `${FRONTEND}/spain`));
+app.get('/france',   (req, res) => res.redirect(302, `${FRONTEND}/france`));
+app.get('/germany',  (req, res) => res.redirect(302, `${FRONTEND}/germany`));
+app.get('/italy',    (req, res) => res.redirect(302, `${FRONTEND}/italy`));
 
 // ── Cache ─────────────────────────────────────
 const CACHE = {};

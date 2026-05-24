@@ -34,6 +34,53 @@ const {
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImageUrl = ogImage ? `${Astro.site}${base}/${ogImage.replace(/^\//, '')}` : null;
+
+// JSON-LD structured data — helps search engines understand the page
+const COUNTRY_NAMES = { pt: 'Portugal', es: 'Spain', fr: 'France', de: 'Germany', it: 'Italy' };
+const isCountryPage = current !== 'home' && country;
+const jsonLd = isCountryPage
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Dataset',
+      name: title,
+      description,
+      url: canonical,
+      keywords: [
+        COUNTRY_NAMES[country!],
+        'cost of living',
+        'fuel prices',
+        'housing prices',
+        'wages',
+        'unemployment',
+        'GDP',
+        'EU statistics',
+      ],
+      spatialCoverage: {
+        '@type': 'Country',
+        name: COUNTRY_NAMES[country!],
+      },
+      isAccessibleForFree: true,
+      license: 'https://creativecommons.org/licenses/by/4.0/',
+      creator: {
+        '@type': 'Organization',
+        name: 'EU Stats',
+        url: `${Astro.site}${base}/`,
+      },
+    }
+  : {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'EU Stats — Europe by the Numbers',
+      url: `${Astro.site}${base}/`,
+      description,
+      inLanguage: 'en',
+      keywords: 'EU statistics, cost of living, fuel prices, housing, wages, unemployment, GDP, comparison',
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: `${Astro.site}${base}/{country}`,
+        'query-input': 'required name=country',
+      },
+    };
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -65,6 +112,9 @@ const ogImageUrl = ogImage ? `${Astro.site}${base}/${ogImage.replace(/^\//, '')}
     href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap"
     rel="stylesheet"
   />
+
+  <!-- JSON-LD structured data (schema.org) -->
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </head>
 <body data-country={country}>
   <Eubar current={current} />
