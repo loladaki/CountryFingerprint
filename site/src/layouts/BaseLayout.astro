@@ -1,0 +1,85 @@
+---
+/**
+ * BaseLayout — HTML shell shared by every route.
+ * Handles <head> meta, fonts, global CSS, and renders an <Eubar> + slot.
+ *
+ * Country pages should extend this via CountryLayout instead.
+ * Use this directly only for the home page and special pages (404).
+ */
+import '@styles/global.css';
+import Eubar from '@components/Eubar.astro';
+import Footer from '@components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  current: 'home' | 'pt' | 'es' | 'fr' | 'de' | 'it';
+  /** Per-country palette key applied to <body data-country="..."> */
+  country?: 'pt' | 'es' | 'fr' | 'de' | 'it';
+  /** Emoji used for the favicon */
+  flagEmoji?: string;
+  /** Override site-level Open Graph image (relative to BASE_URL) */
+  ogImage?: string;
+}
+
+const {
+  title,
+  description,
+  current,
+  country,
+  flagEmoji = '🇪🇺',
+  ogImage,
+} = Astro.props as Props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImageUrl = ogImage ? `${Astro.site}${base}/${ogImage.replace(/^\//, '')}` : null;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+
+  <!-- Favicon (emoji-as-SVG, zero bytes of asset) -->
+  <link
+    rel="icon"
+    href={`data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>${flagEmoji}</text></svg>`}
+  />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body data-country={country}>
+  <Eubar current={current} />
+  <slot />
+  <Footer><slot name="footer-sources" slot="sources" /><slot name="footer-badge" slot="badge" /></Footer>
+
+  <!-- Fade-in observer (progressive enhancement) -->
+  <script is:inline>
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      }),
+      { threshold: 0.08 },
+    );
+    document.querySelectorAll('.fade').forEach((el) => obs.observe(el));
+  </script>
+</body>
+</html>

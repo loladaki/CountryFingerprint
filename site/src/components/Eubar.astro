@@ -1,0 +1,30 @@
+---
+/**
+ * Top sticky bar — shared across every page.
+ * Highlights the current country in --gold.
+ *
+ * Usage:
+ *   <Eubar current="pt" />     // marks Portugal as active
+ *   <Eubar current="home" />   // home page
+ */
+type CountryKey = 'home' | 'pt' | 'es' | 'fr' | 'de' | 'it';
+interface Props { current: CountryKey }
+const { current } = Astro.props as Props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const link = (slug: string) => `${base}/${slug}`;
+const cls  = (k: CountryKey) => current === k ? 'current' : '';
+---
+<div class="eubar">
+  <div class="eubar-inner">
+    <a href={link('')} class="eubar-home">🇪🇺 <strong>EU Stats</strong></a>
+    <nav class="eubar-nav">
+      <a href={link('')} class={cls('home')}>Home</a>
+      <a href={link('portugal')} class={cls('pt')}>🇵🇹 Portugal</a>
+      <a href={link('spain')} class={cls('es')}>🇪🇸 Spain</a>
+      <a href={link('france')} class={cls('fr')}>🇫🇷 France</a>
+      <a href={link('germany')} class={cls('de')}>🇩🇪 Germany</a>
+      <a href={link('italy')} class={cls('it')}>🇮🇹 Italy</a>
+    </nav>
+  </div>
+</div>

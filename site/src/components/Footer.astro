@@ -1,0 +1,38 @@
+---
+/**
+ * Site footer — sources list (per-country slot) + brand badge.
+ *
+ * Usage:
+ *   <Footer>
+ *     <li slot="sources"><a href="...">ISTAT</a> — National statistics</li>
+ *     ...
+ *     <Fragment slot="badge">v2.0 · 🇮🇹 Italy · Live API</Fragment>
+ *   </Footer>
+ */
+interface Props { version?: string }
+const { version = 'v2.0' } = Astro.props as Props;
+const year = new Date().getFullYear();
+---
+<footer>
+  <div class="foot-inner">
+    <div>
+      <h4>Data Sources</h4>
+      <ul>
+        <slot name="sources">
+          <li><a href="https://ec.europa.eu/eurostat">Eurostat</a> — European statistics</li>
+          <li><a href="https://www.ecb.europa.eu">ECB</a> — Monetary policy</li>
+          <li><a href="https://finance.yahoo.com">Yahoo Finance</a> — Brent (live)</li>
+        </slot>
+      </ul>
+    </div>
+    <div class="foot-badge">
+      <strong>{version}</strong>
+      <slot name="badge">EU Stats · 5 countries · Live API</slot>
+    </div>
+  </div>
+  <p class="foot-disc">
+    © {year} EU Stats · Independent project, not affiliated with the European Union ·
+    Data updates from official sources. Static values reflect their reference dates.
+    For informational purposes only.
+  </p>
+</footer>

@@ -1,14 +1,24 @@
 ---
-// Placeholder — full home page comes in Phase G
+import BaseLayout from '@layouts/BaseLayout.astro';
 ---
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>EU Stats — Astro scaffold</title>
-</head>
-<body>
-  <h1>EU Stats (Astro scaffold)</h1>
-  <p>Phase A complete. Layouts and components arrive in Phase B.</p>
-</body>
-</html>
+<BaseLayout
+  title="EU Stats — Country comparison for living, moving & investing"
+  description="Side-by-side statistics for 5 EU countries: fuel, housing, wages, unemployment, GDP, tourism, climate, healthcare and more. Data sourced from Eurostat, ECB and national statistical institutes."
+  current="home"
+>
+  <main class="main" style="padding-top:3rem">
+    <section class="section">
+      <h1 style="font-family:var(--font-d);font-size:3rem;font-weight:600;letter-spacing:-.02em;margin-bottom:.5rem">
+        Europe <em style="font-style:italic;color:var(--gold);font-weight:300">by the Numbers</em>
+      </h1>
+      <p style="font-size:1.1rem;color:var(--muted);max-width:680px;line-height:1.6">
+        Compare 5 European countries side-by-side. Live data from Eurostat,
+        ECB, INSEE, INE, ISTAT and Destatis. The full home page comes back
+        in Phase G — for now, use the bar above to navigate to a country.
+      </p>
+      <p style="margin-top:1.5rem;color:var(--dim);font-size:.85rem">
+        v2 architecture · Phase B scaffolding · {new Date().toISOString().slice(0, 10)}
+      </p>
+    </section>
+  </main>
+</BaseLayout>

@@ -1,0 +1,120 @@
+---
+/**
+ * Drop-in <script> that fetches live data from the Render API and patches
+ * any element matching the configured target IDs.
+ *
+ * Designed to be included once at the bottom of each country page (or the
+ * home page). When the API is unreachable it leaves the static values in
+ * place and flips the `#live-badge` to the "offline" state.
+ *
+ * Country pages typically pass the country key — the loader then knows
+ * which Eurostat slice to read from (json.eurostat[country]) and which
+ * fuel field to prefer (json.combustiveis[`${country}_gasolina95`]).
+ *
+ * Usage:
+ *   <LiveDataLoader country="pt" />
+ */
+interface Props {
+  /** Country key — controls which API slice is read */
+  country: 'pt' | 'es' | 'fr' | 'de' | 'it';
+  /** Endpoint base. Defaults to the Render production URL */
+  apiBase?: string;
+}
+
+const { country, apiBase = 'https://countryfingerprint.onrender.com' } = Astro.props as Props;
+---
+<script is:inline define:vars={{ country, apiBase }}>
+  (function () {
+    'use strict';
+    const set = (id, txt) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = txt;
+    };
+    const setAll = (ids, txt) => ids.forEach((id) => set(id, txt));
+    const fmt3 = (n) => (typeof n === 'number' ? n.toFixed(3) : '—');
+
+    let fuelOK = false, statsOK = false;
+    const flipBadge = () => {
+      const b = document.getElementById('live-badge');
+      if (!b) return;
+      if (fuelOK || statsOK) {
+        b.className = 'live-badge live';
+        b.textContent = '⬤ Live data · refreshed';
+      } else {
+        b.className = 'live-badge offline';
+        b.textContent = '📌 Backend offline · static data';
+      }
+    };
+
+    const loadFuel = async () => {
+      try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 6000);
+        const r = await fetch(`${apiBase}/api/combustiveis`, { signal: ctrl.signal });
+        clearTimeout(t);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const j = await r.json();
+        if (!j.ok) throw new Error('not ok');
+
+        const c = j.combustiveis || {};
+        const g95 = c[`${country}_gasolina95`] || c.gasolina95;
+        const gsl = c[`${country}_gasoleo`]   || c.gasoleo;
+
+        if (g95) {
+          setAll(['val-g95', 'tick-g95', 'tick-g95b'], fmt3(g95.atual) + ' €/L');
+        }
+        if (gsl) {
+          setAll(['val-gsl', 'tick-gsl', 'tick-gslb'], fmt3(gsl.atual) + ' €/L');
+        }
+        if (j.brent?.preco) {
+          const bp = j.brent.preco.toFixed(2) + ' $/bbl';
+          setAll(['val-brent', 'tick-brent', 'tick-brentb'], bp);
+        }
+        fuelOK = true;
+      } catch (e) {
+        console.warn('[fuel] offline:', e.message);
+        fuelOK = false;
+      }
+      flipBadge();
+    };
+
+    const loadStats = async () => {
+      try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 8000);
+        const r = await fetch(`${apiBase}/api/stats`, { signal: ctrl.signal });
+        clearTimeout(t);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const j = await r.json();
+        if (!j.ok) throw new Error('not ok');
+
+        const c = j.eurostat?.[country];
+        if (c?.unemp?.value != null) {
+          const v = c.unemp.value;
+          setAll([`${country}-unemp`, 'tick-unemp', 'tick-unempb'], v + '%');
+        }
+        if (c?.youth_unemp?.value != null) set(`${country}-youth-unemp`, c.youth_unemp.value + '%');
+        if (c?.gdp?.value != null) {
+          const v = c.gdp.value;
+          const txt = (v >= 0 ? '+' : '') + v + '%';
+          setAll([`${country}-gdp`, 'tick-gdp', 'tick-gdpb'], txt);
+        }
+        if (c?.inflation?.value != null) set(`${country}-inflation`, c.inflation.value + '%');
+
+        if (j.ecb?.rate != null) set(`${country}-ecb-rate`, j.ecb.rate + '%');
+        if (j.euribor?.rate != null) set(`${country}-euribor`, j.euribor.rate + '%');
+
+        statsOK = true;
+      } catch (e) {
+        console.warn('[stats] offline:', e.message);
+        statsOK = false;
+      }
+      flipBadge();
+    };
+
+    loadFuel();
+    loadStats();
+    setInterval(loadFuel,  10 * 60 * 1000);
+    setInterval(loadStats, 30 * 60 * 1000);
+  })();
+</script>

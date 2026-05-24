@@ -1,0 +1,127 @@
+---
+/**
+ * CountryLayout — extends BaseLayout with the country-specific
+ * top section (flag stripe + title + ticker + sticky in-page nav).
+ *
+ * Sections are listed declaratively via the `sections` prop; the
+ * matching anchors must exist in the page body (id="combustiveis"…).
+ *
+ *   <CountryLayout
+ *     country="pt"
+ *     title="Portugal by the Numbers"
+ *     flag="🇵🇹"
+ *     subtitle="Economic, social and territorial indicators · 18 districts"
+ *     description="Portugal dashboard — fuel, housing, wages, …"
+ *     tickerItems={[…]}
+ *     sections={[{id:'combustiveis', label:'⛽ Fuel'}, …]}
+ *     liveBadge="📌 Static data · May 2026"
+ *   >
+ *     <section id="combustiveis">…</section>
+ *     …
+ *   </CountryLayout>
+ */
+import BaseLayout from './BaseLayout.astro';
+
+export interface TickerItem { icon?: string; label: string; value: string; id?: string }
+export interface NavSection { id: string; label: string }
+
+interface Props {
+  country: 'pt' | 'es' | 'fr' | 'de' | 'it';
+  title: string;
+  flag: string;
+  subtitle: string;
+  description: string;
+  tickerItems: TickerItem[];
+  sections: NavSection[];
+  liveBadge?: string;
+  ogImage?: string;
+}
+
+const {
+  country,
+  title,
+  flag,
+  subtitle,
+  description,
+  tickerItems,
+  sections,
+  liveBadge = '📌 Static data',
+  ogImage,
+} = Astro.props as Props;
+
+// Ticker is duplicated so the CSS marquee loops seamlessly
+const tickerLoop = [...tickerItems, ...tickerItems];
+---
+<BaseLayout
+  title={title + ' — EU Stats'}
+  description={description}
+  current={country}
+  country={country}
+  flagEmoji={flag}
+  ogImage={ogImage}
+>
+  <header class="hdr">
+    <div class="hdr-stripe"></div>
+    <div class="hdr-inner">
+      <div>
+        <div class="hdr-flag">{flag}</div>
+        <h1 class="hdr-title" set:html={title.replace(/by the Numbers/, '<em>by the Numbers</em>')} />
+        <p class="hdr-sub">{subtitle}</p>
+      </div>
+      <div class="hdr-meta">
+        <span class="lbl">Last updated</span>
+        <div class="dt" id="upd-date">—</div>
+        <div id="live-badge" class="live-badge cached">{liveBadge}</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="ticker-wrap" aria-hidden="true">
+    <div class="ticker" id="ticker-inner">
+      {tickerLoop.map((it, i) => (
+        <span class="ticker-item">
+          {it.icon} {it.label} <span class="val" id={i < tickerItems.length ? it.id : (it.id ? it.id + 'b' : undefined)}>{it.value}</span>
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      {sections.map((s, i) => (
+        <a href={`#${s.id}`} class={`nav-link${i === 0 ? ' active' : ''}`}>{s.label}</a>
+      ))}
+    </div>
+  </nav>
+
+  <main class="main">
+    <slot />
+  </main>
+
+  <slot slot="footer-sources" name="footer-sources" />
+  <slot slot="footer-badge" name="footer-badge" />
+
+  <!-- Scroll spy: highlights the current section anchor in the nav -->
+  <script is:inline>
+    {
+      const links = document.querySelectorAll('.nav .nav-link');
+      const sections = document.querySelectorAll('main .section');
+      const update = () => {
+        let current = '';
+        sections.forEach((s) => {
+          if (window.scrollY >= s.offsetTop - 100) current = s.id;
+        });
+        links.forEach((l) => l.classList.toggle('active', l.getAttribute('href') === '#' + current));
+      };
+      window.addEventListener('scroll', update, { passive: true });
+
+      // Update the "Last updated" timestamp on page load
+      const dateEl = document.getElementById('upd-date');
+      if (dateEl) {
+        const m = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        const d = new Date();
+        dateEl.textContent = `${d.getDate()} ${m[d.getMonth()]} ${d.getFullYear()}`;
+      }
+    }
+  </script>
+</BaseLayout>
