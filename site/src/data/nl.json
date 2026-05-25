@@ -43,8 +43,8 @@
   },
 
   "map": {
-    "geojsonUrl": "https://cdn.jsdelivr.net/gh/cartomap/nl@master/topojson/provincie.topojson",
-    "featureIdResolver": "(f) => String(f.properties?.statcode ?? f.id ?? '').replace(/^PV/, '').padStart(2, '0')",
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_2.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
     "regionUnit": "provincie",
     "strokeOnSelect": "#AE1C28",
     "viewBox": "0 0 550 620",
@@ -75,18 +75,18 @@
     },
 
     "regions": {
-      "20": { "name": "Groningen",     "salary": 2350, "housing": 2900, "rent": 1100, "unemployment": 4.4, "population":  587000, "crime": 60.0, "temperature":  9.8, "doctors": 4.0, "gdp": 39500 },
-      "21": { "name": "Friesland",     "salary": 2200, "housing": 2700, "rent":  950, "unemployment": 4.2, "population":  660000, "crime": 50.0, "temperature":  9.7, "doctors": 3.5, "gdp": 35200 },
-      "22": { "name": "Drenthe",       "salary": 2250, "housing": 2900, "rent":  900, "unemployment": 4.0, "population":  500000, "crime": 47.0, "temperature":  9.5, "doctors": 3.4, "gdp": 35800 },
-      "23": { "name": "Overijssel",    "salary": 2300, "housing": 3100, "rent": 1000, "unemployment": 3.6, "population": 1180000, "crime": 50.0, "temperature":  9.8, "doctors": 3.6, "gdp": 38000 },
-      "24": { "name": "Flevoland",     "salary": 2400, "housing": 3800, "rent": 1150, "unemployment": 4.1, "population":  445000, "crime": 65.0, "temperature": 10.0, "doctors": 3.0, "gdp": 36500 },
-      "25": { "name": "Gelderland",    "salary": 2400, "housing": 3700, "rent": 1100, "unemployment": 3.5, "population": 2120000, "crime": 50.0, "temperature": 10.0, "doctors": 3.8, "gdp": 41500 },
-      "26": { "name": "Utrecht",       "salary": 2700, "housing": 4900, "rent": 1500, "unemployment": 3.4, "population": 1390000, "crime": 65.0, "temperature": 10.1, "doctors": 4.5, "gdp": 53000 },
-      "27": { "name": "Noord-Holland", "salary": 2750, "housing": 5800, "rent": 1750, "unemployment": 3.8, "population": 2960000, "crime": 80.0, "temperature": 10.5, "doctors": 4.8, "gdp": 58500 },
-      "28": { "name": "Zuid-Holland",  "salary": 2550, "housing": 4200, "rent": 1400, "unemployment": 4.1, "population": 3850000, "crime": 75.0, "temperature": 10.5, "doctors": 4.4, "gdp": 47000 },
-      "29": { "name": "Zeeland",       "salary": 2300, "housing": 3000, "rent":  900, "unemployment": 3.5, "population":  395000, "crime": 45.0, "temperature": 10.5, "doctors": 3.2, "gdp": 38000 },
-      "30": { "name": "Noord-Brabant", "salary": 2500, "housing": 3800, "rent": 1150, "unemployment": 3.4, "population": 2620000, "crime": 55.0, "temperature": 10.4, "doctors": 3.8, "gdp": 46000 },
-      "31": { "name": "Limburg",       "salary": 2400, "housing": 2800, "rent":  950, "unemployment": 4.0, "population": 1110000, "crime": 60.0, "temperature": 10.3, "doctors": 4.1, "gdp": 38500 }
+      "NL11": { "name": "Groningen",     "salary": 2350, "housing": 2900, "rent": 1100, "unemployment": 4.4, "population":  587000, "crime": 60.0, "temperature":  9.8, "doctors": 4.0, "gdp": 39500 },
+      "NL12": { "name": "Friesland",     "salary": 2200, "housing": 2700, "rent":  950, "unemployment": 4.2, "population":  660000, "crime": 50.0, "temperature":  9.7, "doctors": 3.5, "gdp": 35200 },
+      "NL13": { "name": "Drenthe",       "salary": 2250, "housing": 2900, "rent":  900, "unemployment": 4.0, "population":  500000, "crime": 47.0, "temperature":  9.5, "doctors": 3.4, "gdp": 35800 },
+      "NL21": { "name": "Overijssel",    "salary": 2300, "housing": 3100, "rent": 1000, "unemployment": 3.6, "population": 1180000, "crime": 50.0, "temperature":  9.8, "doctors": 3.6, "gdp": 38000 },
+      "NL22": { "name": "Gelderland",    "salary": 2400, "housing": 3700, "rent": 1100, "unemployment": 3.5, "population": 2120000, "crime": 50.0, "temperature": 10.0, "doctors": 3.8, "gdp": 41500 },
+      "NL23": { "name": "Flevoland",     "salary": 2400, "housing": 3800, "rent": 1150, "unemployment": 4.1, "population":  445000, "crime": 65.0, "temperature": 10.0, "doctors": 3.0, "gdp": 36500 },
+      "NL31": { "name": "Utrecht",       "salary": 2700, "housing": 4900, "rent": 1500, "unemployment": 3.4, "population": 1390000, "crime": 65.0, "temperature": 10.1, "doctors": 4.5, "gdp": 53000 },
+      "NL32": { "name": "Noord-Holland", "salary": 2750, "housing": 5800, "rent": 1750, "unemployment": 3.8, "population": 2960000, "crime": 80.0, "temperature": 10.5, "doctors": 4.8, "gdp": 58500 },
+      "NL33": { "name": "Zuid-Holland",  "salary": 2550, "housing": 4200, "rent": 1400, "unemployment": 4.1, "population": 3850000, "crime": 75.0, "temperature": 10.5, "doctors": 4.4, "gdp": 47000 },
+      "NL34": { "name": "Zeeland",       "salary": 2300, "housing": 3000, "rent":  900, "unemployment": 3.5, "population":  395000, "crime": 45.0, "temperature": 10.5, "doctors": 3.2, "gdp": 38000 },
+      "NL41": { "name": "Noord-Brabant", "salary": 2500, "housing": 3800, "rent": 1150, "unemployment": 3.4, "population": 2620000, "crime": 55.0, "temperature": 10.4, "doctors": 3.8, "gdp": 46000 },
+      "NL42": { "name": "Limburg",       "salary": 2400, "housing": 2800, "rent":  950, "unemployment": 4.0, "population": 1110000, "crime": 60.0, "temperature": 10.3, "doctors": 4.1, "gdp": 38500 }
     }
   },
 
