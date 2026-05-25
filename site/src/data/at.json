@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "code": "at",
+    "name": "Austria",
+    "flag": "🇦🇹",
+    "title": "Austria by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 9 Bundesländer",
+    "description": "Austria dashboard — fuel, housing, wages, unemployment, GDP, tourism. Official Statistik Austria / OeNB / Eurostat sources."
+  },
+
+  "tickerItems": [
+    { "icon": "⛽", "label": "Super",   "value": "1.813 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Diesel",  "value": "1.914 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",  "value": "—", "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage", "value": "Sectoral (no statutory)" },
+    { "icon": "🏠", "label": "Housing","value": "5,400 €/m²" },
+    { "icon": "📉", "label": "Unemployment", "value": "5.0%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "32M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+0.8%", "id": "tick-gdp" }
+  ],
+
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+
+  "fuelFallback": {
+    "gasolina95": { "atual": 1.813, "anterior": 1.810, "variacao": 0.003 },
+    "gasolina98": { "atual": 1.913, "anterior": 1.910, "variacao": 0.003 },
+    "gasoleo":    { "atual": 1.914, "anterior": 1.920, "variacao": -0.006 },
+    "gpl":        { "atual": 0.910, "anterior": 0.910, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_2.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
+    "regionUnit": "Bundesland",
+    "strokeOnSelect": "#ED2939",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [13.5, 47.6], "scale": 5500, "translate": [275, 310] },
+
+    "buttons": [
+      { "key": "salary",       "label": "💶 Salary" },
+      { "key": "housing",      "label": "🛒 Buy €/m²" },
+      { "key": "rent",         "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population",   "label": "👥 Population" },
+      { "key": "crime",        "label": "🚨 Crime" },
+      { "key": "temperature",  "label": "🌡 Temperature" },
+      { "key": "doctors",      "label": "💊 Doctors" },
+      { "key": "gdp",          "label": "📊 GDP pc" }
+    ],
+
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#fdecec", "#ED2939"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",            "format": "currencyPerM2",  "colors": ["#fdecec", "#c01c2a"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",    "format": "currencyPerMo",  "colors": ["#e6eaf8", "#1a3d8c"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#fdecec", "#ED2939"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e8f4fb", "#ED2939"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#fdecec", "#c01c2a"] }
+    },
+
+    "regions": {
+      "AT11": { "name": "Burgenland",          "salary": 2300, "housing": 2500, "rent":  900, "unemployment": 5.5, "population":  295000, "crime": 35.0, "temperature": 10.5, "doctors": 3.8, "gdp": 36000 },
+      "AT12": { "name": "Niederösterreich",    "salary": 2500, "housing": 3200, "rent": 1000, "unemployment": 4.6, "population": 1700000, "crime": 38.0, "temperature": 10.0, "doctors": 4.0, "gdp": 43000 },
+      "AT13": { "name": "Wien (Vienna)",       "salary": 2750, "housing": 5400, "rent": 1300, "unemployment": 9.8, "population": 1990000, "crime": 70.0, "temperature": 10.5, "doctors": 6.8, "gdp": 58000 },
+      "AT21": { "name": "Kärnten",             "salary": 2400, "housing": 3100, "rent":  950, "unemployment": 5.2, "population":  565000, "crime": 35.0, "temperature": 8.5, "doctors": 4.4, "gdp": 38000 },
+      "AT22": { "name": "Steiermark",          "salary": 2450, "housing": 3000, "rent":  950, "unemployment": 4.5, "population": 1260000, "crime": 35.0, "temperature": 8.5, "doctors": 4.5, "gdp": 42000 },
+      "AT31": { "name": "Oberösterreich",      "salary": 2600, "housing": 3300, "rent": 1050, "unemployment": 3.8, "population": 1510000, "crime": 38.0, "temperature": 9.0, "doctors": 4.3, "gdp": 47000 },
+      "AT32": { "name": "Salzburg",            "salary": 2650, "housing": 4200, "rent": 1200, "unemployment": 3.5, "population":  565000, "crime": 35.0, "temperature": 8.5, "doctors": 4.7, "gdp": 52000 },
+      "AT33": { "name": "Tirol",               "salary": 2500, "housing": 4800, "rent": 1300, "unemployment": 3.5, "population":  770000, "crime": 35.0, "temperature": 7.5, "doctors": 5.0, "gdp": 47000 },
+      "AT34": { "name": "Vorarlberg",          "salary": 2700, "housing": 4500, "rent": 1250, "unemployment": 4.0, "population":  410000, "crime": 32.0, "temperature": 8.5, "doctors": 4.5, "gdp": 51000 }
+    }
+  },
+
+  "stats": {
+    "unemployment":  { "value": 5.0, "asOf": "Apr 2026", "source": "Eurostat / Statistik Austria" },
+    "youthUnemp":    { "value": 11.5 },
+    "minWage":       { "value": null, "note": "No statutory minimum — sectoral collective agreements (Kollektivverträge), typically ~€1,500-2,000/mo" },
+    "avgGrossSalary":{ "value": 3800 },
+    "avgNetSalary":  { "value": 2400 },
+    "gdp":           { "value": 0.8 },
+    "gdpTotalEuro":  { "value": "490B" },
+    "gdpPerCapita":  { "value": "53,000" },
+    "inflation":     { "value": 2.8 },
+    "publicDebt":    { "value": 78 },
+    "budgetBalance": { "value": -3.4 },
+    "ecbRate":       { "value": 2.25 },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 81.6 },
+    "tourists":      { "value": "32M", "asOf": "2024" },
+    "tourismRevenue":{ "value": "30B €" },
+    "population":    { "value": "9.1M" }
+  },
+
+  "footerSources": [
+    { "name": "Statistik Austria", "url": "https://www.statistik.at",      "desc": "National statistics" },
+    { "name": "Eurostat",          "url": "https://ec.europa.eu/eurostat", "desc": "European data" },
+    { "name": "OeNB",              "url": "https://www.oenb.at",           "desc": "National Bank" },
+    { "name": "Immobilienpreisspiegel", "url": "https://www.wko.at",      "desc": "Housing prices" },
+    { "name": "ZAMG",              "url": "https://www.zamg.ac.at",        "desc": "Climate & weather" },
+    { "name": "Österreich Werbung", "url": "https://www.austriatourism.com", "desc": "Tourism" },
+    { "name": "IEP",               "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance",     "url": "https://finance.yahoo.com",     "desc": "Brent (live)" }
+  ]
+}

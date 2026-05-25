@@ -1,0 +1,195 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import data from '@data/ie.json';
+---
+<CountryLayout
+  country="ie"
+  title={data.meta.title}
+  flag={data.meta.flag}
+  subtitle={data.meta.subtitle}
+  description={data.meta.description}
+  tickerItems={data.tickerItems}
+  sections={data.sections}
+  liveBadge="📌 Static data · loading…"
+>
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="ok" icon="⛽">
+      Ireland has <strong>some of the cheaper fuel in Western Europe</strong> — taxes are
+      moderate vs NL/DE. Electricity is expensive (~€0.36/kWh, among EU's highest) due to gas
+      dependency. Wind power covers ~35% of electricity in 2025.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Petrol" value={data.fuelFallback.gasolina95.atual} unit="€/L"
+                  valueId="val-g95" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diesel" value={data.fuelFallback.gasoleo.atual} unit="€/L"
+                  valueId="val-gsl" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent"
+                  badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.36" unit="€/kWh" badge={{ kind: 'up', text: '↑ 4th highest EU' }} source="Eurostat · Q1 2026" variant="red" />
+      <MetricCard label="💨 Wind share" value="35" unit="%" sub="Of electricity generation"
+                  badge={{ kind: 'dn', text: '↑ Among EU leaders' }} source="EirGrid · 2025" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Region" tag="9 metrics · click a region">
+    <InteractiveMap
+      regions={data.map.regions}
+      metrics={data.map.metrics}
+      metricButtons={data.map.buttons}
+      geojsonUrl={data.map.geojsonUrl}
+      projection={data.map.projection}
+      featureIdResolver={data.map.featureIdResolver}
+      viewBox={data.map.viewBox}
+      strokeOnSelect={data.map.strokeOnSelect}
+      unit={data.map.regionUnit}
+      country="ie"
+    />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="Daft.ie / CSO · Q4 2025">
+    <Notice variant="alert" icon="🚨">
+      <strong>Ireland's housing crisis is one of Europe's worst.</strong> Dublin average sale
+      price reached <strong>€450,000+ in 2025</strong>, up from €280k in 2018. The country
+      builds ~30,000 homes/year but demand is ~50,000. Annual rents have doubled in a decade.
+      Homelessness hit record highs in 2024-2025.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · national avg" value="4,800" unit="€/m²" badge={{ kind: 'up', text: '↑ +8% vs 2024' }} source="Daft.ie · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Dublin"      value="6,500" unit="€/m²" badge={{ kind: 'up', text: '↑ +6% vs 2024' }} source="CSO · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Cork"        value="3,600" unit="€/m²" badge={{ kind: 'up', text: '↑ +7% vs 2024' }} source="Daft.ie · 2025" />
+      <MetricCard label="🛒 Buy · Galway"      value="2,700" unit="€/m²" badge={{ kind: 'up', text: '↑ +9% vs 2024' }} source="Daft.ie · 2025" />
+      <MetricCard label="🔑 Rent · Dublin (T2)" value="2,200" unit="€/mo" badge={{ kind: 'up', text: '↑ Record high' }} source="Daft.ie · Q1 2026" variant="red" />
+      <MetricCard label="🔑 Rent · national (T2)" value="1,650" unit="€/mo" badge={{ kind: 'up', text: '↑ +9% YoY' }} source="Daft.ie · Q1 2026" variant="blue" />
+      <MetricCard label="🏘 Homelessness" value="14k+" sub="Record high · 2024–2025" badge={{ kind: 'up', text: '↑ Crisis' }} source="DRHE · 2025" variant="red" />
+      <MetricCard label="🔨 Housing completions" value="30k" sub="vs ~50k annual demand" badge={{ kind: 'up', text: '↓ Deficit' }} source="CSO · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="CSO / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo"
+                  badge={{ kind: 'dn', text: '↑ Top-5 in EU' }} source="CSO · 2025" variant="gold" />
+      <MetricCard label="💶 Median net salary" value={data.stats.avgNetSalary.value} unit="€/mo" badge={{ kind: 'ne', text: '→ 50th percentile' }} source="CSO · 2025" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€/mo"
+                  sub="€13.50/hr × 40h" badge={{ kind: 'dn', text: '↑ Among highest EU' }} source="WRC · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" sub="Apr 2026"
+                  valueId="ie-unemp" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source={data.stats.unemployment.source} variant="green" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%"
+                  valueId="ie-youth-unemp" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · Q1 2026" variant="green" />
+      <MetricCard label="🧾 Income tax rate" value="20–40" unit="%" sub="Progressive · plus USC + PRSI" badge={{ kind: 'ne', text: '→ Effective ~30%' }} source="Revenue · 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="CSO / Central Bank of Ireland · 2025–2026">
+    <Notice variant="warn" icon="⚠️">
+      Ireland's headline GDP per capita (€108k) is the <strong>highest in the world</strong> —
+      but this is heavily distorted by multinational transfer pricing. The Modified GNI*
+      (which strips out MNC distortion) is around €55,000 per capita — still high but more
+      realistic. The corporate tax rate jumped from 12.5% to 15% (2024 OECD minimum).
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'MNC-inflated', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: '#1 in world (gross)', kind: 'good' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'ie-gdp', badge: { text: '↑ Above EU avg', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'ie-inflation', badge: { text: '→ Near avg', kind: 'good' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '→ Near avg', kind: 'good' } },
+      { value: '+' + data.stats.budgetBalance.value + '%', label: 'Budget balance 2025', badge: { text: '✓ Surplus', kind: 'good' } },
+    ]} />
+    <Cards>
+      <MetricCard label="🏦 ECB rate" value={data.stats.ecbRate.value} unit="%" valueId="ie-ecb-rate" source="ECB · Apr 2026" />
+      <MetricCard label="📊 Euribor 12m" value={data.stats.euribor12m.value} unit="%" valueId="ie-euribor" source="ECB · May 2026" variant="gold" />
+      <MetricCard label="🏛 Corporate tax" value="15" unit="%" sub="Up from 12.5% in 2024" badge={{ kind: 'up', text: '↑ OECD minimum' }} source="Revenue · 2024" />
+      <MetricCard label="💻 Foreign direct investment" value="48B" unit="€" sub="2024 · Pfizer, Apple, Google, Meta…"
+                  badge={{ kind: 'dn', text: '↑ FDI hub' }} source="IDA Ireland · 2024" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="Fáilte Ireland · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="11" unit="M" sub="+6% vs 2023" badge={{ kind: 'dn', text: '↑ Recovery complete' }} source="Fáilte Ireland · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="5" unit="B €" badge={{ kind: 'dn', text: '↑ +8% YoY' }} source="Fáilte Ireland · 2024" variant="gold" />
+      <MetricCard label="🇺🇸 Top market: US" value="2.0" unit="M" badge={{ kind: 'dn', text: '↑ Strong USD' }} source="CSO · 2024" />
+      <MetricCard label="🇬🇧 UK" value="3.6" unit="M" badge={{ kind: 'dn', text: '↑ +4%' }} source="CSO · 2024" />
+      <MetricCard label="🏛 Dublin" value="6.0" unit="M" badge={{ kind: 'dn', text: '↑ Main gateway' }} source="DTC · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="HSE / Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="💰 Health expenditure" value="7.5" unit="% GDP" sub="Lower due to MNC-inflated GDP" badge={{ kind: 'ne', text: '→ Per capita is high' }} source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000 pop." value="3.5" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🛏 Hospital beds / 1000" value="3.0" badge={{ kind: 'up', text: '↓ Below avg' }} source="Eurostat · 2023" variant="red" />
+      <MetricCard label="🏥 Public + private mix" value="HSE" sub="Public + ~45% have private insurance" source="HSE · 2024" />
+      <MetricCard label="👶 Infant mortality" value="3.2" unit="/1000" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2023" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP / CSO · 2024">
+    <Notice variant="ok" icon="🛡">
+      Ireland ranks <strong>3rd in the Global Peace Index 2024</strong> — among the safest
+      countries on Earth. Homicide rate of 0.7/100k is among the lowest in the EU. Petty
+      crime in Dublin city centre has risen post-pandemic but remains modest by European
+      standards.
+    </Notice>
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="3" sub="3rd safest in the world (IEP 2024)" badge={{ kind: 'dn', text: '↑ Top-3' }} source="IEP · 2024" variant="green" />
+      <MetricCard label="🚔 Homicide rate" value="0.7" unit="/100k" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🚗 Road fatalities" value="174" sub="2024" badge={{ kind: 'dn', text: '↓ Among lowest' }} source="RSA · 2024" />
+      <MetricCard label="🛡 Terrorism threat" value="Low" badge={{ kind: 'dn', text: '↓ Stable' }} source="Garda · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="CSO / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Jan 2026 · growing fast"
+                  badge={{ kind: 'dn', text: '↑ +1.2% in 2025 (immigration)' }} source="CSO · 2026" />
+      <MetricCard label="🎓 University graduates" value="55" unit="%" sub="25–34 cohort · highest in EU"
+                  badge={{ kind: 'dn', text: '↑ #1 in EU' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="👶 Birth rate" value="1.55" sub="Fertility · above EU avg"
+                  badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="CSO · 2024" variant="green" />
+      <MetricCard label="🌍 Foreign born" value="19" unit="%" sub="Share of population" badge={{ kind: 'up', text: '↑ Highest in big-EU' }} source="CSO · 2025" />
+      <MetricCard label="📋 Retirement age" value="66" unit="yrs" sub="Rising to 68 by 2028" source="DSP · 2026" />
+      <MetricCard label="⏱ Paid leave" value="20" unit="days/yr" sub="+ 10 public holidays" source="Org. of Working Time Act" variant="gold" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Ireland vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Ireland" rows={[
+      { indicator: 'GDP per capita',         country: '€108,000', eu: '€34,900', rank: 'good', note: 'MNC-inflated · real ≈ €55k' },
+      { indicator: 'GDP growth 2026',        country: '+4.5%',    eu: '+1.5%',   rank: 'good', note: 'Fastest in EU' },
+      { indicator: 'Unemployment rate',      country: '4.5%',     eu: '6.0%',    rank: 'good', note: 'Below avg' },
+      { indicator: 'Youth unemployment',     country: '10.8%',    eu: '15.4%',   rank: 'good', note: 'Below avg' },
+      { indicator: 'Inflation 2026',         country: '2.5%',     eu: '2.6%',    rank: 'good', note: 'Near avg' },
+      { indicator: 'Public debt',            country: '80% GDP',  eu: '83% GDP', rank: 'good', note: 'Near avg' },
+      { indicator: 'Budget balance',         country: '+1.5% GDP', eu: '-2.5%',  rank: 'good', note: 'Surplus (CT windfall)' },
+      { indicator: 'Life expectancy',        country: '82.5 yrs', eu: '81.2 yrs', rank: 'good', note: 'Above avg' },
+      { indicator: 'University graduates',   country: '55%',      eu: '~42%',    rank: 'good', note: '#1 in EU' },
+      { indicator: 'Min. wage (monthly)',    country: '€2,340',   eu: '~€1,100', rank: 'good', note: '3rd highest EU' },
+      { indicator: 'Housing affordability',  country: '8.5×',     eu: '~7×',     rank: 'bad',  note: 'Severe Dublin crisis' },
+      { indicator: 'Fertility rate',         country: '1.55',     eu: '1.46',    rank: 'good', note: 'Above avg' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="ie" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (
+      <li><a href={s.url}>{s.name}</a> — {s.desc}</li>
+    ))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇮🇪 Ireland · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">
+      CSO · Central Bank · Eurostat
+    </span>
+  </Fragment>
+</CountryLayout>

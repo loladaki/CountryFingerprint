@@ -58,6 +58,10 @@ const FB_STATS = {
   de: { unemp: 4.0,  youth_unemp: 6.5,  gdp: 0.3, inflation: 2.6, min_wage: 2222 },
   it: { unemp: 5.2,  youth_unemp: 19.0, gdp: 0.6, inflation: 1.7, min_wage: null /* No statutory min wage — CCNL */ },
   nl: { unemp: 3.9,  youth_unemp: 9.2,  gdp: 1.8, inflation: 3.4, min_wage: 2070 },
+  ie: { unemp: 4.5,  youth_unemp: 10.8, gdp: 4.5, inflation: 2.5, min_wage: 2340 },
+  be: { unemp: 5.5,  youth_unemp: 17.2, gdp: 1.2, inflation: 3.0, min_wage: 2070 },
+  at: { unemp: 5.0,  youth_unemp: 11.5, gdp: 0.8, inflation: 2.8, min_wage: null /* CCNL-equivalent: sectoral collective agreements */ },
+  se: { unemp: 8.0,  youth_unemp: 23.0, gdp: 1.6, inflation: 2.2, min_wage: null /* No statutory min wage — collective agreements */ },
 };
 
 // ── HTTP fetch com redirects ──────────────────
@@ -355,11 +359,11 @@ async function fetchEurostatStats() {
   console.log('[Eurostat] A buscar dados...');
 
   const [unemp, youthUnemp, gdp, infl, minWage] = await Promise.allSettled([
-    fetchEurostatJSON('une_rt_m',    { s_adj: 'SA', age: 'TOTAL',  sex: 'T', unit: 'PC_ACT', geo: ['PT','ES','FR','DE','IT','NL'], lastTimePeriod: 3 }),
-    fetchEurostatJSON('une_rt_m',    { s_adj: 'SA', age: 'Y15-24', sex: 'T', unit: 'PC_ACT', geo: ['PT','ES','FR','DE','IT','NL'], lastTimePeriod: 3 }),
-    fetchEurostatJSON('namq_10_gdp', { unit: 'CLV_PCH_A', na_item: 'B1GQ', s_adj: 'SCA', geo: ['PT','ES','FR','DE','IT','NL'], lastTimePeriod: 2 }),
-    fetchEurostatJSON('prc_hicp_manr', { unit: 'RCH_A', coicop: 'CP00', geo: ['PT','ES','FR','DE','IT','NL'], lastTimePeriod: 3 }),
-    fetchEurostatJSON('earn_mw_cur', { currency: 'EUR', geo: ['PT','ES','FR','DE','IT','NL'], lastTimePeriod: 2 }),
+    fetchEurostatJSON('une_rt_m',    { s_adj: 'SA', age: 'TOTAL',  sex: 'T', unit: 'PC_ACT', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE'], lastTimePeriod: 3 }),
+    fetchEurostatJSON('une_rt_m',    { s_adj: 'SA', age: 'Y15-24', sex: 'T', unit: 'PC_ACT', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE'], lastTimePeriod: 3 }),
+    fetchEurostatJSON('namq_10_gdp', { unit: 'CLV_PCH_A', na_item: 'B1GQ', s_adj: 'SCA', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE'], lastTimePeriod: 2 }),
+    fetchEurostatJSON('prc_hicp_manr', { unit: 'RCH_A', coicop: 'CP00', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE'], lastTimePeriod: 3 }),
+    fetchEurostatJSON('earn_mw_cur', { currency: 'EUR', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE'], lastTimePeriod: 2 }),
   ]);
 
   const ok  = r => r.status === 'fulfilled' ? r.value : null;
@@ -414,6 +418,10 @@ async function fetchEurostatStats() {
       inflation:   ext(inflD, 'NL', FB_STATS.nl.inflation),
       min_wage:    ext(wageD, 'NL', FB_STATS.nl.min_wage),
     },
+    ie: { unemp: ext(unD,'IE',FB_STATS.ie.unemp), youth_unemp: ext(yuD,'IE',FB_STATS.ie.youth_unemp), gdp: ext(gdpD,'IE',FB_STATS.ie.gdp), inflation: ext(inflD,'IE',FB_STATS.ie.inflation), min_wage: ext(wageD,'IE',FB_STATS.ie.min_wage) },
+    be: { unemp: ext(unD,'BE',FB_STATS.be.unemp), youth_unemp: ext(yuD,'BE',FB_STATS.be.youth_unemp), gdp: ext(gdpD,'BE',FB_STATS.be.gdp), inflation: ext(inflD,'BE',FB_STATS.be.inflation), min_wage: ext(wageD,'BE',FB_STATS.be.min_wage) },
+    at: { unemp: ext(unD,'AT',FB_STATS.at.unemp), youth_unemp: ext(yuD,'AT',FB_STATS.at.youth_unemp), gdp: ext(gdpD,'AT',FB_STATS.at.gdp), inflation: ext(inflD,'AT',FB_STATS.at.inflation), min_wage: ext(wageD,'AT',FB_STATS.at.min_wage) },
+    se: { unemp: ext(unD,'SE',FB_STATS.se.unemp), youth_unemp: ext(yuD,'SE',FB_STATS.se.youth_unemp), gdp: ext(gdpD,'SE',FB_STATS.se.gdp), inflation: ext(inflD,'SE',FB_STATS.se.inflation), min_wage: ext(wageD,'SE',FB_STATS.se.min_wage) },
     fonte: 'eurostat',
     data:  new Date().toISOString(),
   };
@@ -443,6 +451,10 @@ function parseWeeklyTable(text) {
       if (cols[0] === 'Germany')  result.de = { petrol: n(cols[1]), diesel: n(cols[2]) };
       if (cols[0] === 'Italy')    result.it = { petrol: n(cols[1]), diesel: n(cols[2]) };
       if (cols[0] === 'Netherlands') result.nl = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Ireland')  result.ie = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Belgium')  result.be = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Austria')  result.at = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Sweden')   result.se = { petrol: n(cols[1]), diesel: n(cols[2]) };
     }
   }
   if (!result.pt?.petrol) throw new Error('Portugal não encontrado na tabela');
@@ -478,6 +490,14 @@ async function fetchCombustiveis() {
       it_gasoleo:    parsed.it ? mkFuel(parsed.it.diesel, 1.983) : { atual: 1.983, serie: [] },
       nl_gasolina95: parsed.nl ? mkFuel(parsed.nl.petrol, 2.388) : { atual: 2.388, serie: [] },
       nl_gasoleo:    parsed.nl ? mkFuel(parsed.nl.diesel, 2.285) : { atual: 2.285, serie: [] },
+      ie_gasolina95: parsed.ie ? mkFuel(parsed.ie.petrol, 1.826) : { atual: 1.826, serie: [] },
+      ie_gasoleo:    parsed.ie ? mkFuel(parsed.ie.diesel, 1.950) : { atual: 1.950, serie: [] },
+      be_gasolina95: parsed.be ? mkFuel(parsed.be.petrol, 1.889) : { atual: 1.889, serie: [] },
+      be_gasoleo:    parsed.be ? mkFuel(parsed.be.diesel, 2.112) : { atual: 2.112, serie: [] },
+      at_gasolina95: parsed.at ? mkFuel(parsed.at.petrol, 1.813) : { atual: 1.813, serie: [] },
+      at_gasoleo:    parsed.at ? mkFuel(parsed.at.diesel, 1.914) : { atual: 1.914, serie: [] },
+      se_gasolina95: parsed.se ? mkFuel(parsed.se.petrol, 1.716) : { atual: 1.716, serie: [] },
+      se_gasoleo:    parsed.se ? mkFuel(parsed.se.diesel, 1.896) : { atual: 1.896, serie: [] },
       de_gasoleo:    parsed.de ? mkFuel(parsed.de.diesel, 1.680) : { atual: 1.680, serie: [] },
       fonte: 'eu_oil_bulletin', data: new Date().toISOString(),
     };
@@ -497,6 +517,14 @@ async function fetchCombustiveis() {
       it_gasoleo:    { atual: 1.983, serie: [] },
       nl_gasolina95: { atual: 2.388, serie: [] },
       nl_gasoleo:    { atual: 2.285, serie: [] },
+      ie_gasolina95: { atual: 1.826, serie: [] },
+      ie_gasoleo:    { atual: 1.950, serie: [] },
+      be_gasolina95: { atual: 1.889, serie: [] },
+      be_gasoleo:    { atual: 2.112, serie: [] },
+      at_gasolina95: { atual: 1.813, serie: [] },
+      at_gasoleo:    { atual: 1.914, serie: [] },
+      se_gasolina95: { atual: 1.716, serie: [] },
+      se_gasoleo:    { atual: 1.896, serie: [] },
       de_gasoleo:    { atual: 1.680, serie: [] },
       fonte: 'fallback', erro: err.message, data: new Date().toISOString(),
     };

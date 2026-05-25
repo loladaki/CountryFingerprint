@@ -1,0 +1,173 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import data from '@data/at.json';
+---
+<CountryLayout
+  country="at"
+  title={data.meta.title}
+  flag={data.meta.flag}
+  subtitle={data.meta.subtitle}
+  description={data.meta.description}
+  tickerItems={data.tickerItems}
+  sections={data.sections}
+  liveBadge="📌 Static data · loading…"
+>
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="ok" icon="⛽">
+      Austria has <strong>below-average fuel taxes</strong> compared to most of Western Europe.
+      Hydro power covers ~60% of electricity generation — among the highest in the EU.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Super 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diesel" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.27" unit="€/kWh" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · Q1 2026" />
+      <MetricCard label="💧 Hydro share" value="60" unit="%" sub="Of electricity generation" badge={{ kind: 'dn', text: '↑ Among highest EU' }} source="E-Control · 2025" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Bundesland" tag="9 metrics · click a state">
+    <InteractiveMap
+      regions={data.map.regions}
+      metrics={data.map.metrics}
+      metricButtons={data.map.buttons}
+      geojsonUrl={data.map.geojsonUrl}
+      projection={data.map.projection}
+      featureIdResolver={data.map.featureIdResolver}
+      viewBox={data.map.viewBox}
+      strokeOnSelect={data.map.strokeOnSelect}
+      unit={data.map.regionUnit}
+      country="at"
+    />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="Statistik Austria · Q4 2025">
+    <Notice variant="info" icon="🏠">
+      Vienna has been the <strong>world's most-liveable city</strong> (Economist EIU) for most
+      of the 2010s and 2020s — partly thanks to its <strong>Gemeindebau</strong> social
+      housing model. ~60% of Viennese live in city-owned or subsidised housing, keeping rents
+      moderate vs other capitals.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · national avg" value="3,400" unit="€/m²" badge={{ kind: 'up', text: '↑ +5% vs 2024' }} source="Statistik Austria · 2025" />
+      <MetricCard label="🛒 Buy · Wien"     value="5,400" unit="€/m²" badge={{ kind: 'up', text: '↑ +6% vs 2024' }} source="ÖNB · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Salzburg" value="4,200" unit="€/m²" badge={{ kind: 'up', text: '↑ Tourism premium' }} source="WKO · 2025" />
+      <MetricCard label="🛒 Buy · Innsbruck (Tirol)" value="5,000" unit="€/m²" badge={{ kind: 'up', text: '↑ Alpine premium' }} source="WKO · 2025" />
+      <MetricCard label="🔑 Rent · Wien (T2)" value="1,300" unit="€/mo" sub="Free market · much cheaper if Gemeindebau" badge={{ kind: 'ne', text: '→ Lowest big-EU capital' }} source="ImmoScout · Q1 2026" variant="blue" />
+      <MetricCard label="🔑 Rent · national (T2)" value="1,050" unit="€/mo" badge={{ kind: 'up', text: '↑ +4% YoY' }} source="ImmoScout · Q1 2026" />
+      <MetricCard label="🏘 Gemeindebau (Vienna)" value="220k" unit="units" sub="City-owned social housing"
+                  badge={{ kind: 'dn', text: '✓ Unique model in EU' }} source="Wiener Wohnen · 2024" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="Statistik Austria / Eurostat · 2025–2026">
+    <Notice variant="warn" icon="⚠️">
+      Austria has <strong>no statutory minimum wage</strong>. Wages are set by
+      <strong>Kollektivverträge</strong> (sectoral collective agreements) — these cover ~98%
+      of workers. De facto minimums range from ~€1,500 (retail) to ~€2,200 (metal).
+    </Notice>
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" source="Statistik Austria · 2025" variant="gold" />
+      <MetricCard label="💶 Median net salary" value={data.stats.avgNetSalary.value} unit="€/mo" source="Statistik Austria · 2025" />
+      <MetricCard label="📋 Minimum wage" value="N/A" sub="Sectoral collective agreements"
+                  badge={{ kind: 'ne', text: '→ ~98% coverage' }} source="WKO · 2025" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" valueId="at-unemp" badge={{ kind: 'ne', text: '→ Near EU avg' }} source={data.stats.unemployment.source} />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" sub="Dual apprenticeship like Germany"
+                  valueId="at-youth-unemp" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · Q1 2026" variant="green" />
+      <MetricCard label="⏱ Weekly hours" value="38.0" unit="h" sub="Reducing in some sectors" source="Statistik Austria · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="Statistik Austria / OeNB · 2025–2026">
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: '9th in EU', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: '+52% above avg', kind: 'good' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'at-gdp', badge: { text: '↓ Below avg', kind: 'bad' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'at-inflation', badge: { text: '↑ Above avg', kind: 'bad' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '→ Near avg', kind: 'good' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget balance 2025', badge: { text: '↑ Above Maastricht', kind: 'bad' } },
+    ]} />
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="Österreich Werbung · 2024">
+    <Notice variant="ok" icon="⛷">
+      Austria is the <strong>EU's tourism powerhouse per capita</strong> — 32M arrivals for
+      9.1M residents = 3.5 visitors/resident, highest in the EU. Winter sports drive the
+      Alpine regions (Tirol, Salzburg, Vorarlberg); Vienna draws year-round city tourism.
+    </Notice>
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="32" unit="M" sub="Record · 3.5 visitors/resident" badge={{ kind: 'dn', text: '↑ EU per-capita leader' }} source="Statistik AT · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="30" unit="B €" sub="~6% of GDP" badge={{ kind: 'dn', text: '↑ Highest share in big-EU' }} source="ÖW · 2024" variant="gold" />
+      <MetricCard label="⛷ Winter sports" value="50M" unit="overnights" sub="Largest ski market in EU" badge={{ kind: 'dn', text: '↑ Despite warming' }} source="ÖW · 2024" />
+      <MetricCard label="🏛 Vienna"   value="8.0" unit="M" badge={{ kind: 'dn', text: '↑ +9%' }} source="WienTourismus · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="Sozialversicherung / Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="💰 Health expenditure" value="11.4" unit="% GDP" badge={{ kind: 'dn', text: '↑ Top-5 in EU' }} source="OECD · 2023" variant="green" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="5.4" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🛏 Hospital beds / 1000" value="7.2" badge={{ kind: 'dn', text: '↑ Top-3 in EU' }} source="Eurostat · 2023" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP / Statistik Austria · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="5" sub="5th safest in the world" badge={{ kind: 'dn', text: '↑ Top-5' }} source="IEP · 2024" variant="green" />
+      <MetricCard label="🚔 Homicide rate" value="0.8" unit="/100k" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🚗 Road fatalities" value="370" sub="2024" badge={{ kind: 'dn', text: '↓ Low' }} source="Statistik AT · 2024" />
+      <MetricCard label="🛡 Terror threat" value="Low" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="BVT · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="Statistik Austria / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Jan 2026 · growing" source="Statistik AT · 2026" />
+      <MetricCard label="🎓 University graduates" value="40" unit="%" sub="25–34 cohort" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2024" />
+      <MetricCard label="👶 Birth rate" value="1.32" badge={{ kind: 'up', text: '↓ Below EU avg' }} source="Statistik AT · 2024" variant="red" />
+      <MetricCard label="🌍 Foreign born" value="20" unit="%" sub="Among highest in big-EU" source="Statistik AT · 2025" />
+      <MetricCard label="📋 Retirement age" value="65" unit="yrs" sub="62 for women (rising)" source="PVA · 2026" />
+      <MetricCard label="⏱ Paid leave" value="25" unit="days/yr" sub="+ 13 public holidays" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Urlaubsgesetz" variant="gold" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Austria vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Austria" rows={[
+      { indicator: 'GDP per capita',         country: '€53,000',  eu: '€34,900', rank: 'good', note: '+52% above avg' },
+      { indicator: 'GDP growth 2026',        country: '+0.8%',    eu: '+1.5%',   rank: 'bad',  note: 'Below avg' },
+      { indicator: 'Unemployment',           country: '5.0%',     eu: '6.0%',    rank: 'good', note: 'Below avg' },
+      { indicator: 'Youth unemployment',     country: '11.5%',    eu: '15.4%',   rank: 'good', note: 'Dual apprenticeship works' },
+      { indicator: 'Inflation',              country: '2.8%',     eu: '2.6%',    rank: 'ok',   note: 'Near avg' },
+      { indicator: 'Public debt',            country: '78% GDP',  eu: '83% GDP', rank: 'good', note: 'Below avg' },
+      { indicator: 'Life expectancy',        country: '81.6 yrs', eu: '81.2 yrs', rank: 'good', note: 'Above avg' },
+      { indicator: 'Health expenditure',     country: '11.4% GDP', eu: '9.7%',   rank: 'good', note: 'Top-5 in EU' },
+      { indicator: 'Min. wage',              country: 'None (CCNL)', eu: '~€1,100', rank: 'ok', note: 'Sectoral · 98% coverage' },
+      { indicator: 'Tourism per capita',     country: '3.5×',     eu: '~1.5×',   rank: 'good', note: '#1 in EU' },
+      { indicator: 'Hydro electricity',      country: '60%',      eu: '~12%',    rank: 'good', note: '#1 in big-EU' },
+      { indicator: 'Fertility rate',         country: '1.32',     eu: '1.46',    rank: 'bad',  note: 'Below avg' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="at" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (
+      <li><a href={s.url}>{s.name}</a> — {s.desc}</li>
+    ))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇦🇹 Austria · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">
+      Statistik Austria · OeNB · Eurostat
+    </span>
+  </Fragment>
+</CountryLayout>

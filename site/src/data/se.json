@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "code": "se",
+    "name": "Sweden",
+    "flag": "🇸🇪",
+    "title": "Sweden by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 8 NUTS2 regions (uses SEK)",
+    "description": "Sweden dashboard — fuel, housing, wages, unemployment, GDP, tourism. Values shown in EUR (1 SEK ≈ €0.087). Official SCB / Riksbank / Eurostat sources."
+  },
+
+  "tickerItems": [
+    { "icon": "⛽", "label": "Petrol 95", "value": "1.716 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Diesel",    "value": "1.896 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",    "value": "—", "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage", "value": "Collective (no statutory)" },
+    { "icon": "🏠", "label": "Housing",  "value": "4,200 €/m²" },
+    { "icon": "📉", "label": "Unemployment", "value": "8.0%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "8M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+1.6%", "id": "tick-gdp" }
+  ],
+
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+
+  "fuelFallback": {
+    "gasolina95": { "atual": 1.716, "anterior": 1.720, "variacao": -0.004 },
+    "gasolina98": { "atual": 1.816, "anterior": 1.820, "variacao": -0.004 },
+    "gasoleo":    { "atual": 1.896, "anterior": 1.900, "variacao": -0.004 },
+    "gpl":        { "atual": 0.890, "anterior": 0.890, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_2.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
+    "regionUnit": "NUTS2 region",
+    "strokeOnSelect": "#006AA7",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [15.5, 62.5], "scale": 800, "translate": [275, 310] },
+
+    "buttons": [
+      { "key": "salary",       "label": "💶 Salary" },
+      { "key": "housing",      "label": "🛒 Buy €/m²" },
+      { "key": "rent",         "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population",   "label": "👥 Population" },
+      { "key": "crime",        "label": "🚨 Crime" },
+      { "key": "temperature",  "label": "🌡 Temperature" },
+      { "key": "doctors",      "label": "💊 Doctors" },
+      { "key": "gdp",          "label": "📊 GDP pc" }
+    ],
+
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#e6eef5", "#006AA7"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",            "format": "currencyPerM2",  "colors": ["#fdecd0", "#a51c30"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",    "format": "currencyPerMo",  "colors": ["#fff8d8", "#806800"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#e6eef5", "#006AA7"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e8f4fb", "#006AA7"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#fff8d8", "#FECC00"] }
+    },
+
+    "regions": {
+      "SE11": { "name": "Stockholm",              "salary": 3100, "housing": 6800, "rent": 1450, "unemployment": 8.2, "population": 2440000, "crime": 90.0, "temperature":  7.5, "doctors": 4.5, "gdp": 78000 },
+      "SE12": { "name": "Östra Mellansverige",    "salary": 2700, "housing": 3400, "rent":  900, "unemployment": 8.5, "population": 1700000, "crime": 75.0, "temperature":  6.5, "doctors": 4.0, "gdp": 50000 },
+      "SE21": { "name": "Småland med öarna",      "salary": 2600, "housing": 2400, "rent":  800, "unemployment": 7.0, "population":  850000, "crime": 65.0, "temperature":  7.0, "doctors": 3.8, "gdp": 48000 },
+      "SE22": { "name": "Sydsverige",             "salary": 2700, "housing": 3500, "rent":  950, "unemployment": 9.0, "population": 1550000, "crime": 90.0, "temperature":  8.5, "doctors": 4.2, "gdp": 50000 },
+      "SE23": { "name": "Västsverige",            "salary": 2750, "housing": 4000, "rent": 1000, "unemployment": 7.5, "population": 2100000, "crime": 85.0, "temperature":  8.0, "doctors": 4.2, "gdp": 52000 },
+      "SE31": { "name": "Norra Mellansverige",    "salary": 2600, "housing": 2200, "rent":  750, "unemployment": 8.5, "population":  840000, "crime": 70.0, "temperature":  5.0, "doctors": 4.0, "gdp": 47000 },
+      "SE32": { "name": "Mellersta Norrland",     "salary": 2600, "housing": 2100, "rent":  750, "unemployment": 7.0, "population":  370000, "crime": 60.0, "temperature":  4.0, "doctors": 4.5, "gdp": 49000 },
+      "SE33": { "name": "Övre Norrland",          "salary": 2750, "housing": 2200, "rent":  750, "unemployment": 6.8, "population":  520000, "crime": 65.0, "temperature":  2.0, "doctors": 4.8, "gdp": 56000 }
+    }
+  },
+
+  "stats": {
+    "unemployment":  { "value": 8.0, "asOf": "Apr 2026", "source": "Eurostat / SCB", "note": "High for Nordic — structural" },
+    "youthUnemp":    { "value": 23.0, "note": "Highest among Nordics" },
+    "minWage":       { "value": null, "note": "No statutory minimum — collective agreements (Kollektivavtal) cover ~90% of workers" },
+    "avgGrossSalary":{ "value": 3800, "note": "Converted from SEK at €0.087/kr" },
+    "avgNetSalary":  { "value": 2700 },
+    "gdp":           { "value": 1.6 },
+    "gdpTotalEuro":  { "value": "560B" },
+    "gdpPerCapita":  { "value": "54,000" },
+    "inflation":     { "value": 2.2 },
+    "publicDebt":    { "value": 32, "note": "Lowest in big-EU" },
+    "budgetBalance": { "value": -0.5 },
+    "ecbRate":       { "value": 2.25, "note": "Sweden uses Riksbank rate (not ECB) — currently ~3.0%" },
+    "euribor12m":    { "value": 2.222, "note": "Sweden uses STIBOR; this is shown for EU context" },
+    "lifeExpectancy":{ "value": 83.1 },
+    "tourists":      { "value": "8M" },
+    "tourismRevenue":{ "value": "12B €" },
+    "renewablesShare":{"value": 68, "note": "Hydro + wind lead; nuclear ~30%" },
+    "population":    { "value": "10.6M" }
+  },
+
+  "footerSources": [
+    { "name": "SCB",           "url": "https://www.scb.se",              "desc": "National statistics" },
+    { "name": "Eurostat",      "url": "https://ec.europa.eu/eurostat",    "desc": "European data" },
+    { "name": "Riksbank",      "url": "https://www.riksbank.se",         "desc": "Central bank" },
+    { "name": "Hemnet",        "url": "https://www.hemnet.se",           "desc": "Housing market" },
+    { "name": "SMHI",          "url": "https://www.smhi.se",             "desc": "Climate & weather" },
+    { "name": "Visit Sweden",  "url": "https://visitsweden.com",         "desc": "Tourism" },
+    { "name": "IEP",           "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance", "url": "https://finance.yahoo.com",       "desc": "Brent (live)" }
+  ]
+}

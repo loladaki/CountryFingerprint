@@ -1,0 +1,192 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import data from '@data/se.json';
+---
+<CountryLayout
+  country="se"
+  title={data.meta.title}
+  flag={data.meta.flag}
+  subtitle={data.meta.subtitle}
+  description={data.meta.description}
+  tickerItems={data.tickerItems}
+  sections={data.sections}
+  liveBadge="📌 Static data · loading…"
+>
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="info" icon="💱">
+      Sweden uses the <strong>Swedish krona (SEK), not euros</strong>. Values shown here are
+      converted (1 SEK ≈ €0.087 in 2025). Electricity is among the cheapest in EU (€0.18/kWh)
+      thanks to <strong>hydro + nuclear</strong> dominance (~80% of generation between them).
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Petrol 95" value={data.fuelFallback.gasolina95.atual} unit="€/L"
+                  valueId="val-g95" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diesel" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.18" unit="€/kWh" badge={{ kind: 'dn', text: '↓ Among cheapest EU' }} source="Eurostat · Q1 2026" variant="green" />
+      <MetricCard label="💧 Hydro + nuclear" value="80" unit="%" sub="Of electricity generation" badge={{ kind: 'dn', text: '↑ #1 mix in EU' }} source="SCB · 2025" variant="green" />
+      <MetricCard label="💨 Wind share" value="20" unit="%" sub="Growing fast" badge={{ kind: 'dn', text: '↑ Expansion' }} source="SCB · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Region" tag="9 metrics · click a NUTS2 region">
+    <InteractiveMap
+      regions={data.map.regions}
+      metrics={data.map.metrics}
+      metricButtons={data.map.buttons}
+      geojsonUrl={data.map.geojsonUrl}
+      projection={data.map.projection}
+      featureIdResolver={data.map.featureIdResolver}
+      viewBox={data.map.viewBox}
+      strokeOnSelect={data.map.strokeOnSelect}
+      unit={data.map.regionUnit}
+      country="se"
+    />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="SCB / Hemnet · Q4 2025">
+    <Notice variant="warn" icon="🏠">
+      Sweden's housing market is <strong>tightly regulated</strong>. Rental contracts in
+      central Stockholm have queues of <strong>20+ years</strong> through the housing
+      authority. Most new tenants use sublet "andrahand" contracts. Buying is expensive but
+      financing is generous (interest-only loans common).
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · national avg" value="4,200" unit="€/m²" badge={{ kind: 'ne', text: '→ Stable after 2022 correction' }} source="SCB · 2025" />
+      <MetricCard label="🛒 Buy · Stockholm" value="6,800" unit="€/m²" badge={{ kind: 'ne', text: '→ Stable' }} source="Hemnet · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Göteborg" value="4,800" unit="€/m²" badge={{ kind: 'ne', text: '→ Stable' }} source="Hemnet · 2025" />
+      <MetricCard label="🛒 Buy · Malmö" value="3,800" unit="€/m²" badge={{ kind: 'ne', text: '→ Stable' }} source="Hemnet · 2025" />
+      <MetricCard label="🔑 Rent · Stockholm (T2)" value="1,450" unit="€/mo" sub="Free market · 1st-hand much cheaper"
+                  badge={{ kind: 'up', text: '↑ 20+ year queue for 1st-hand' }} source="Bostadsförmedlingen · 2025" variant="red" />
+      <MetricCard label="🔑 Rent · national (T2)" value="950" unit="€/mo" badge={{ kind: 'up', text: '↑ +4% YoY' }} source="SCB · Q1 2026" variant="blue" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="SCB / Eurostat · 2025–2026">
+    <Notice variant="warn" icon="⚠️">
+      Sweden has <strong>no statutory minimum wage</strong>. Wages are set entirely by
+      <strong>Kollektivavtal</strong> (collective agreements between unions and employers).
+      Union coverage is ~70% of workers; agreements effectively cover ~90% via "allmänning"
+      extension. De facto minimums range from ~SEK 24,000/mo (~€2,100).
+    </Notice>
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" sub="~SEK 43k/mo · converted" source="SCB · 2025" variant="gold" />
+      <MetricCard label="💶 Median net salary" value={data.stats.avgNetSalary.value} unit="€/mo" source="SCB · 2025" />
+      <MetricCard label="📋 Minimum wage" value="N/A" sub="Collective agreements only (Kollektivavtal)"
+                  badge={{ kind: 'ne', text: '→ ~90% coverage' }} source="SCB · 2025" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" sub="High for Nordic — structural" valueId="se-unemp"
+                  badge={{ kind: 'up', text: '↑ Above EU avg' }} source={data.stats.unemployment.source} variant="red" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" sub="Highest among Nordics"
+                  valueId="se-youth-unemp" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · Q1 2026" variant="red" />
+      <MetricCard label="⏱ Weekly hours" value="36.0" unit="h" sub="High part-time + parental leave" source="SCB · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="SCB / Riksbank · 2025–2026">
+    <Notice variant="info" icon="💱">
+      Sweden is the <strong>5th largest EU economy</strong> by GDP. Riksbank uses its own
+      currency policy (SEK floats), with policy rate currently ~3.0%. Public debt at
+      <strong>32% of GDP is the lowest in big-EU</strong>. Pension system (premium pension +
+      occupational) is widely studied as a model.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: '5th in EU', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: '+55% above avg', kind: 'good' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'se-gdp', badge: { text: '→ Near avg', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'se-inflation', badge: { text: '↓ Below avg', kind: 'good' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Lowest big-EU', kind: 'good' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget balance 2025', badge: { text: '↓ Below Maastricht', kind: 'good' } },
+    ]} />
+    <Cards>
+      <MetricCard label="🏦 Riksbank rate" value="3.0" unit="%" sub="Sweden's own central bank policy" badge={{ kind: 'ne', text: '→ Independent path' }} source="Riksbank · Apr 2026" />
+      <MetricCard label="💱 SEK / EUR" value="11.5" sub="2026 average" badge={{ kind: 'ne', text: '→ Volatile' }} source="Riksbank · 2026" />
+      <MetricCard label="🏛 Trade balance" value="+45" unit="B€" sub="Volvo, Ericsson, IKEA, H&M, Spotify…" badge={{ kind: 'dn', text: '✓ Export-driven' }} source="SCB · 2025" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="Visit Sweden / SCB · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="8" unit="M" badge={{ kind: 'ne', text: '→ Less tourism than south EU' }} source="Visit Sweden · 2024" />
+      <MetricCard label="💶 Tourism revenue" value="12" unit="B €" badge={{ kind: 'dn', text: '↑ Steady' }} source="SCB · 2024" />
+      <MetricCard label="🏛 Stockholm" value="3.0" unit="M" badge={{ kind: 'dn', text: '↑ Main hub' }} source="Visit Stockholm · 2024" />
+      <MetricCard label="✨ Northern Lights" value="200k" unit="visitors" sub="Lapland (Kiruna, Abisko)" badge={{ kind: 'dn', text: '↑ Niche but growing' }} source="Visit SE · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="Socialstyrelsen / Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="💰 Health expenditure" value="10.7" unit="% GDP" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="OECD · 2023" variant="green" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="4.3" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🛏 Hospital beds / 1000" value="2.0" badge={{ kind: 'up', text: '↓ Lowest in EU' }} source="Eurostat · 2023" variant="red" />
+      <MetricCard label="🏥 Public system" value="Sjukvård" sub="Tax-funded · regional admin" badge={{ kind: 'dn', text: '✓ Universal' }} source="SKL · 2024" />
+      <MetricCard label="👶 Infant mortality" value="2.1" unit="/1000" badge={{ kind: 'dn', text: '↓ Among lowest globally' }} source="Eurostat · 2023" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP / Brå · 2024">
+    <Notice variant="warn" icon="🛡">
+      Sweden's reputation has shifted: still safe by global standards but
+      <strong>gang violence</strong> rose sharply in 2018-2024. Gun homicides went from
+      ~20/year (2010) to ~60/year (2023). Government has invested heavily in police +
+      prevention; trends started easing in 2024-2025.
+    </Notice>
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="29" sub="Down from #15 in 2018" badge={{ kind: 'up', text: '↑ Worsening' }} source="IEP · 2024" variant="red" />
+      <MetricCard label="🚔 Homicide rate" value="1.2" unit="/100k" sub="Higher than Nordic neighbours" badge={{ kind: 'up', text: '↑ Gang violence' }} source="Brå · 2024" variant="red" />
+      <MetricCard label="🚗 Road fatalities" value="240" sub="2024 · per year" badge={{ kind: 'dn', text: '↓ Vision Zero leader' }} source="Trafikverket · 2024" variant="green" />
+      <MetricCard label="🛡 Terror threat" value="Elevated" sub="Level 4 of 5 since 2023" badge={{ kind: 'up', text: '↑ Quran burnings response' }} source="Säpo · 2024" variant="red" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="SCB / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Jan 2026 est." source="SCB · 2026" />
+      <MetricCard label="🎓 University graduates" value="48" unit="%" sub="25–34 cohort" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="👶 Birth rate" value="1.45" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="SCB · 2024" />
+      <MetricCard label="🌍 Foreign born" value="20" unit="%" sub="Highest in Nordics" source="SCB · 2025" />
+      <MetricCard label="👨‍👩‍👧 Parental leave" value="480" unit="days" sub="Per child · shared between parents"
+                  badge={{ kind: 'dn', text: '✓ Most generous in EU' }} source="Försäkringskassan · 2026" variant="green" />
+      <MetricCard label="📋 Retirement age" value="63" unit="yrs" sub="Flexible · pension reform 2023" source="Pensionsmyndigheten · 2026" />
+      <MetricCard label="⏱ Paid leave" value="25" unit="days/yr" sub="+ 13 public holidays" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Semesterlagen" variant="gold" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Sweden vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Sweden" rows={[
+      { indicator: 'GDP per capita',         country: '€54,000',  eu: '€34,900', rank: 'good', note: '+55% above avg' },
+      { indicator: 'GDP growth 2026',        country: '+1.6%',    eu: '+1.5%',   rank: 'good', note: 'Near avg' },
+      { indicator: 'Unemployment',           country: '8.0%',     eu: '6.0%',    rank: 'bad',  note: 'High for Nordic' },
+      { indicator: 'Youth unemployment',     country: '23.0%',    eu: '15.4%',   rank: 'bad',  note: 'Highest among Nordics' },
+      { indicator: 'Inflation',              country: '2.2%',     eu: '2.6%',    rank: 'good', note: 'Below avg' },
+      { indicator: 'Public debt',            country: '32% GDP',  eu: '83% GDP', rank: 'good', note: 'Lowest in big-EU' },
+      { indicator: 'Life expectancy',        country: '83.1 yrs', eu: '81.2 yrs', rank: 'good', note: 'Above avg' },
+      { indicator: 'Min. wage',              country: 'None (CCA)', eu: '~€1,100', rank: 'ok', note: 'Collective agreements' },
+      { indicator: 'Renewables (electricity)', country: '80%',    eu: '~44%',    rank: 'good', note: 'Hydro + nuclear lead' },
+      { indicator: 'Parental leave',         country: '480 days', eu: '~120 days', rank: 'good', note: 'Most generous in EU' },
+      { indicator: 'Homicide rate',          country: '1.2/100k', eu: '1.0/100k', rank: 'bad', note: 'Gang violence (worsening)' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="se" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (
+      <li><a href={s.url}>{s.name}</a> — {s.desc}</li>
+    ))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇸🇪 Sweden · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">
+      SCB · Riksbank · Eurostat
+    </span>
+  </Fragment>
+</CountryLayout>

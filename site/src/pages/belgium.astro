@@ -1,0 +1,173 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import data from '@data/be.json';
+---
+<CountryLayout
+  country="be"
+  title={data.meta.title}
+  flag={data.meta.flag}
+  subtitle={data.meta.subtitle}
+  description={data.meta.description}
+  tickerItems={data.tickerItems}
+  sections={data.sections}
+  liveBadge="📌 Static data · loading…"
+>
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="info" icon="⛽">
+      Belgium uniquely shows <strong>diesel notably more expensive than petrol</strong> —
+      reflecting the gradual alignment of diesel tax (historically lower) to petrol levels
+      under the EU climate package. Diesel ratio is now 1.12× petrol vs ~1.05 in 2018.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Petrol" value={data.fuelFallback.gasolina95.atual} unit="€/L"
+                  valueId="val-g95" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diesel" value={data.fuelFallback.gasoleo.atual} unit="€/L" sub="Tax-aligned w/ petrol"
+                  valueId="val-gsl" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.41" unit="€/kWh" badge={{ kind: 'up', text: '↑ Among highest EU' }} source="Eurostat · Q1 2026" variant="red" />
+      <MetricCard label="☢️ Nuclear share" value="35" unit="%" sub="Of electricity · phase-out reversed 2022"
+                  badge={{ kind: 'ne', text: '→ Reversal locked in' }} source="Elia · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Province" tag="9 metrics · click a province">
+    <InteractiveMap
+      regions={data.map.regions}
+      metrics={data.map.metrics}
+      metricButtons={data.map.buttons}
+      geojsonUrl={data.map.geojsonUrl}
+      projection={data.map.projection}
+      featureIdResolver={data.map.featureIdResolver}
+      viewBox={data.map.viewBox}
+      strokeOnSelect={data.map.strokeOnSelect}
+      unit={data.map.regionUnit}
+      country="be"
+    />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="Statbel / Notaris.be · Q4 2025">
+    <Notice variant="info" icon="🏠">
+      Housing is <strong>notably cheaper in Wallonia</strong> than in Flanders or Brussels.
+      Mons or Charleroi (Hainaut) average ~€1,900/m² vs Antwerp at €3,300 and Brussels at
+      €4,100. Brussels' housing pressure comes from EU institutions + diplomats.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · national avg" value="3,100" unit="€/m²" badge={{ kind: 'up', text: '↑ +4% vs 2024' }} source="Statbel · 2025" />
+      <MetricCard label="🛒 Buy · Brussels"  value="4,100" unit="€/m²" badge={{ kind: 'up', text: '↑ +5% vs 2024' }} source="Notaris · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Antwerp"   value="3,300" unit="€/m²" badge={{ kind: 'up', text: '↑ +4% vs 2024' }} source="Notaris · 2025" />
+      <MetricCard label="🛒 Buy · Ghent"     value="3,100" unit="€/m²" badge={{ kind: 'up', text: '↑ +4% vs 2024' }} source="Notaris · 2025" />
+      <MetricCard label="🛒 Buy · Wallonia avg" value="1,900" unit="€/m²" badge={{ kind: 'dn', text: '↓ Cheapest in BE' }} source="Notaris · 2025" variant="green" />
+      <MetricCard label="🔑 Rent · Brussels (T2)" value="1,400" unit="€/mo" badge={{ kind: 'up', text: '↑ EU institutions push up' }} source="Immoweb · Q1 2026" variant="red" />
+      <MetricCard label="🔑 Rent · national (T2)" value="1,050" unit="€/mo" badge={{ kind: 'up', text: '↑ +5% YoY' }} source="Immoweb · Q1 2026" variant="blue" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="Statbel / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" source="Statbel · 2025" variant="gold" />
+      <MetricCard label="💶 Median net salary" value={data.stats.avgNetSalary.value} unit="€/mo" sub="High taxes" badge={{ kind: 'up', text: '↑ Highest tax wedge in EU' }} source="Statbel · 2025" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€" sub="+ index automatic" badge={{ kind: 'ne', text: '→ Inflation-indexed' }} source="FOD WASO · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" valueId="be-unemp" badge={{ kind: 'ne', text: '→ Near EU avg' }} source={data.stats.unemployment.source} />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" valueId="be-youth-unemp" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · Q1 2026" variant="red" />
+      <MetricCard label="🧾 Tax wedge" value="53" unit="%" sub="Income tax + SS · highest in OECD"
+                  badge={{ kind: 'up', text: '↑ #1 in OECD' }} source="OECD · 2024" variant="red" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="Statbel / NBB · 2025–2026">
+    <Notice variant="warn" icon="⚠️">
+      Belgium has <strong>one of EU's highest public debts</strong> (108% GDP) and
+      <strong>highest tax wedges</strong> (53%). The structural North-South divide between
+      Flemish (rich) and Walloon (post-industrial) regions remains political and economic
+      reality 50+ years after deindustrialisation.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: '7th in EU', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: '+45% above avg', kind: 'good' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'be-gdp', badge: { text: '↓ Below avg', kind: 'bad' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'be-inflation', badge: { text: '↑ Above avg', kind: 'bad' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↑ High', kind: 'bad' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget balance 2025', badge: { text: '↑ Above Maastricht', kind: 'bad' } },
+    ]} />
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="visit.brussels / Statbel · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="10" unit="M" badge={{ kind: 'ne', text: '→ Stable' }} source="Statbel · 2024" />
+      <MetricCard label="🏛 Brussels (EU capital)" value="3.5" unit="M" sub="Mix of leisure + business + EU"
+                  badge={{ kind: 'dn', text: '↑ EU institutions draw' }} source="visit.brussels · 2024" />
+      <MetricCard label="🏺 Bruges (UNESCO)" value="1.8" unit="M" badge={{ kind: 'ne', text: '→ Overtourism concerns' }} source="VisitFlanders · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="INAMI / Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="💰 Health expenditure" value="11.0" unit="% GDP" badge={{ kind: 'dn', text: '↑ Top-5 in EU' }} source="OECD · 2023" variant="green" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="3.6" badge={{ kind: 'ne', text: '→ Near avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🛏 Hospital beds / 1000" value="5.5" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2023" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP / Statbel · 2024">
+    <Notice variant="info" icon="🛡">
+      Belgium ranks <strong>18th in the Global Peace Index 2024</strong>. Brussels has higher
+      petty crime than typical European capitals. The 2016 terror attacks remain in collective
+      memory but threat is now classified as "moderate".
+    </Notice>
+    <Cards>
+      <MetricCard label="🚔 Homicide rate" value="1.0" unit="/100k" badge={{ kind: 'ne', text: '→ Near avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🚗 Road fatalities" value="495" sub="2024" badge={{ kind: 'dn', text: '↓ Improving' }} source="Statbel · 2024" />
+      <MetricCard label="🛡 Terror threat" value="Moderate" badge={{ kind: 'ne', text: '→ Level 2 of 4' }} source="OCAM · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="Statbel / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Jan 2026 est." source="Statbel · 2026" />
+      <MetricCard label="🎓 University graduates" value="50" unit="%" sub="25–34 cohort" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="👶 Birth rate" value="1.55" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Statbel · 2024" variant="green" />
+      <MetricCard label="🌍 Foreign born" value="18" unit="%" sub="Highest in big-EU after IE/SE" source="Statbel · 2025" />
+      <MetricCard label="📋 Retirement age" value="66" unit="yrs" sub="Rising to 67 by 2030" source="SFPD · 2026" />
+      <MetricCard label="⏱ Paid leave" value="20" unit="days/yr" sub="+ 10 holidays + extra by sector" variant="gold" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Belgium vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Belgium" rows={[
+      { indicator: 'GDP per capita',         country: '€50,500',  eu: '€34,900', rank: 'good', note: '+45% above avg' },
+      { indicator: 'GDP growth 2026',        country: '+1.2%',    eu: '+1.5%',   rank: 'ok',   note: 'Slightly below' },
+      { indicator: 'Unemployment',           country: '5.5%',     eu: '6.0%',    rank: 'good', note: 'Near avg' },
+      { indicator: 'Youth unemployment',     country: '17.2%',    eu: '15.4%',   rank: 'bad',  note: 'Above avg' },
+      { indicator: 'Inflation',              country: '3.0%',     eu: '2.6%',    rank: 'bad',  note: 'Above avg' },
+      { indicator: 'Public debt',            country: '108% GDP', eu: '83% GDP', rank: 'bad',  note: 'High debt' },
+      { indicator: 'Budget deficit',         country: '4.6% GDP', eu: '~2.5%',   rank: 'bad',  note: 'Above Maastricht' },
+      { indicator: 'Tax wedge',              country: '53%',      eu: '~40%',    rank: 'bad',  note: '#1 in OECD' },
+      { indicator: 'Life expectancy',        country: '81.8 yrs', eu: '81.2 yrs', rank: 'good', note: 'Above avg' },
+      { indicator: 'Min. wage (monthly)',    country: '€2,070',   eu: '~€1,100', rank: 'good', note: '5th highest EU' },
+      { indicator: 'Fertility rate',         country: '1.55',     eu: '1.46',    rank: 'good', note: 'Above avg' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="be" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (
+      <li><a href={s.url}>{s.name}</a> — {s.desc}</li>
+    ))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇧🇪 Belgium · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">
+      Statbel · NBB · Eurostat
+    </span>
+  </Fragment>
+</CountryLayout>

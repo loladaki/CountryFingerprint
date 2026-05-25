@@ -7,7 +7,7 @@
  *   <Eubar current="pt" />     // marks Portugal as active
  *   <Eubar current="home" />   // home page
  */
-type CountryKey = 'home' | 'pt' | 'es' | 'fr' | 'de' | 'it' | 'nl';
+type CountryKey = 'home' | 'pt' | 'es' | 'fr' | 'de' | 'it' | 'nl' | 'ie' | 'be' | 'at' | 'se';
 interface Props { current: CountryKey }
 const { current } = Astro.props as Props;
 
@@ -20,12 +20,16 @@ const cls  = (k: CountryKey) => current === k ? 'current' : '';
     <a href={link('')} class="eubar-home">🇪🇺 <strong>EU Stats</strong></a>
     <nav class="eubar-nav">
       <a href={link('')} class={cls('home')}>Home</a>
-      <a href={link('portugal')} class={cls('pt')}>🇵🇹 Portugal</a>
-      <a href={link('spain')} class={cls('es')}>🇪🇸 Spain</a>
-      <a href={link('france')} class={cls('fr')}>🇫🇷 France</a>
-      <a href={link('germany')} class={cls('de')}>🇩🇪 Germany</a>
-      <a href={link('italy')} class={cls('it')}>🇮🇹 Italy</a>
+      <a href={link('portugal')} class={cls('pt')}>🇵🇹 PT</a>
+      <a href={link('spain')} class={cls('es')}>🇪🇸 ES</a>
+      <a href={link('france')} class={cls('fr')}>🇫🇷 FR</a>
+      <a href={link('germany')} class={cls('de')}>🇩🇪 DE</a>
+      <a href={link('italy')} class={cls('it')}>🇮🇹 IT</a>
       <a href={link('netherlands')} class={cls('nl')}>🇳🇱 NL</a>
+      <a href={link('ireland')} class={cls('ie')}>🇮🇪 IE</a>
+      <a href={link('belgium')} class={cls('be')}>🇧🇪 BE</a>
+      <a href={link('austria')} class={cls('at')}>🇦🇹 AT</a>
+      <a href={link('sweden')} class={cls('se')}>🇸🇪 SE</a>
     </nav>
   </div>
 </div>

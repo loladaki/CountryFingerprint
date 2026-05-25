@@ -13,9 +13,9 @@ import Footer from '@components/Footer.astro';
 interface Props {
   title: string;
   description: string;
-  current: 'home' | 'pt' | 'es' | 'fr' | 'de' | 'it' | 'nl';
+  current: 'home' | 'pt' | 'es' | 'fr' | 'de' | 'it' | 'nl' | 'ie' | 'be' | 'at' | 'se';
   /** Per-country palette key applied to <body data-country="..."> */
-  country?: 'pt' | 'es' | 'fr' | 'de' | 'it' | 'nl';
+  country?: 'pt' | 'es' | 'fr' | 'de' | 'it' | 'nl' | 'ie' | 'be' | 'at' | 'se';
   /** Emoji used for the favicon */
   flagEmoji?: string;
   /** Override site-level Open Graph image (relative to BASE_URL) */
@@ -36,7 +36,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImageUrl = ogImage ? `${Astro.site}${base}/${ogImage.replace(/^\//, '')}` : null;
 
 // JSON-LD structured data — helps search engines understand the page
-const COUNTRY_NAMES = { pt: 'Portugal', es: 'Spain', fr: 'France', de: 'Germany', it: 'Italy', nl: 'Netherlands' };
+const COUNTRY_NAMES = { pt: 'Portugal', es: 'Spain', fr: 'France', de: 'Germany', it: 'Italy', nl: 'Netherlands', ie: 'Ireland', be: 'Belgium', at: 'Austria', se: 'Sweden' };
 const isCountryPage = current !== 'home' && country;
 const jsonLd = isCountryPage
   ? {

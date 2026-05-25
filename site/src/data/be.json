@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "code": "be",
+    "name": "Belgium",
+    "flag": "🇧🇪",
+    "title": "Belgium by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 11 provinces + Brussels-Capital",
+    "description": "Belgium dashboard — fuel, housing, wages, unemployment, GDP, tourism. Official Statbel / NBB / Eurostat sources."
+  },
+
+  "tickerItems": [
+    { "icon": "⛽", "label": "Petrol",  "value": "1.889 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Diesel",  "value": "2.112 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",  "value": "—", "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage 2026", "value": "2,070 €" },
+    { "icon": "🏠", "label": "Housing","value": "3,100 €/m²" },
+    { "icon": "📉", "label": "Unemployment", "value": "5.5%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "10M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+1.2%", "id": "tick-gdp" }
+  ],
+
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+
+  "fuelFallback": {
+    "gasolina95": { "atual": 1.889, "anterior": 1.880, "variacao": 0.009 },
+    "gasolina98": { "atual": 1.989, "anterior": 1.980, "variacao": 0.009 },
+    "gasoleo":    { "atual": 2.112, "anterior": 2.120, "variacao": -0.008 },
+    "gpl":        { "atual": 0.690, "anterior": 0.690, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_2.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
+    "regionUnit": "province",
+    "strokeOnSelect": "#000000",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [4.5, 50.6], "scale": 8500, "translate": [275, 310] },
+
+    "buttons": [
+      { "key": "salary",       "label": "💶 Salary" },
+      { "key": "housing",      "label": "🛒 Buy €/m²" },
+      { "key": "rent",         "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population",   "label": "👥 Population" },
+      { "key": "crime",        "label": "🚨 Crime" },
+      { "key": "temperature",  "label": "🌡 Temperature" },
+      { "key": "doctors",      "label": "💊 Doctors" },
+      { "key": "gdp",          "label": "📊 GDP pc" }
+    ],
+
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#f5f3e7", "#000000"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",            "format": "currencyPerM2",  "colors": ["#fdecec", "#ED2939"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",    "format": "currencyPerMo",  "colors": ["#fff8d8", "#806800"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#f5f3e7", "#000000"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e8f4fb", "#ED2939"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#fff8d8", "#FAE042"] }
+    },
+
+    "regions": {
+      "BE10": { "name": "Brussels-Capital",   "salary": 2900, "housing": 4100, "rent": 1400, "unemployment": 11.5, "population": 1230000, "crime": 95.0, "temperature": 10.8, "doctors": 5.0, "gdp": 78000 },
+      "BE21": { "name": "Antwerpen",          "salary": 2700, "housing": 3300, "rent": 1100, "unemployment": 5.2,  "population": 1900000, "crime": 60.0, "temperature": 10.5, "doctors": 3.6, "gdp": 51000 },
+      "BE22": { "name": "Limburg (BE)",       "salary": 2500, "housing": 2700, "rent":  900, "unemployment": 5.0,  "population":  900000, "crime": 45.0, "temperature": 10.3, "doctors": 3.3, "gdp": 41000 },
+      "BE23": { "name": "Oost-Vlaanderen",    "salary": 2650, "housing": 3100, "rent": 1000, "unemployment": 4.0,  "population": 1550000, "crime": 50.0, "temperature": 10.6, "doctors": 3.5, "gdp": 45000 },
+      "BE24": { "name": "Vlaams-Brabant",     "salary": 2900, "housing": 3500, "rent": 1100, "unemployment": 3.5,  "population": 1170000, "crime": 45.0, "temperature": 10.7, "doctors": 4.0, "gdp": 50000 },
+      "BE25": { "name": "West-Vlaanderen",    "salary": 2550, "housing": 2900, "rent": 1000, "unemployment": 3.8,  "population": 1210000, "crime": 50.0, "temperature": 10.7, "doctors": 3.4, "gdp": 43000 },
+      "BE31": { "name": "Brabant Wallon",     "salary": 2900, "housing": 3400, "rent": 1100, "unemployment": 5.0,  "population":  410000, "crime": 50.0, "temperature": 10.5, "doctors": 4.0, "gdp": 55000 },
+      "BE32": { "name": "Hainaut",            "salary": 2350, "housing": 1900, "rent":  750, "unemployment": 9.5,  "population": 1340000, "crime": 70.0, "temperature": 10.4, "doctors": 3.3, "gdp": 28000 },
+      "BE33": { "name": "Liège",              "salary": 2450, "housing": 2300, "rent":  800, "unemployment": 8.0,  "population": 1110000, "crime": 65.0, "temperature": 10.3, "doctors": 3.6, "gdp": 33000 },
+      "BE34": { "name": "Luxembourg (BE)",    "salary": 2400, "housing": 2100, "rent":  800, "unemployment": 5.5,  "population":  290000, "crime": 35.0, "temperature": 9.7, "doctors": 2.9, "gdp": 32000 },
+      "BE35": { "name": "Namur",              "salary": 2400, "housing": 2100, "rent":  800, "unemployment": 7.0,  "population":  500000, "crime": 50.0, "temperature": 10.0, "doctors": 3.5, "gdp": 31000 }
+    }
+  },
+
+  "stats": {
+    "unemployment":  { "value": 5.5, "asOf": "Apr 2026", "source": "Eurostat / Statbel" },
+    "youthUnemp":    { "value": 17.2 },
+    "minWage":       { "value": 2070, "asOf": "Jan 2026", "source": "FOD WASO · 2026" },
+    "avgGrossSalary":{ "value": 3800 },
+    "avgNetSalary":  { "value": 2400 },
+    "gdp":           { "value": 1.2 },
+    "gdpTotalEuro":  { "value": "590B" },
+    "gdpPerCapita":  { "value": "50,500" },
+    "inflation":     { "value": 3.0 },
+    "publicDebt":    { "value": 108 },
+    "budgetBalance": { "value": -4.6 },
+    "ecbRate":       { "value": 2.25 },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 81.8 },
+    "tourists":      { "value": "10M" },
+    "population":    { "value": "11.7M" }
+  },
+
+  "footerSources": [
+    { "name": "Statbel",       "url": "https://statbel.fgov.be",         "desc": "National statistics" },
+    { "name": "Eurostat",      "url": "https://ec.europa.eu/eurostat",    "desc": "European data" },
+    { "name": "NBB",           "url": "https://www.nbb.be",              "desc": "National Bank" },
+    { "name": "Notaris.be",    "url": "https://www.notaris.be",          "desc": "Housing transactions" },
+    { "name": "IRM/KMI",       "url": "https://www.meteo.be",            "desc": "Climate & weather" },
+    { "name": "visit.brussels", "url": "https://visit.brussels",         "desc": "Tourism" },
+    { "name": "IEP",           "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance", "url": "https://finance.yahoo.com",       "desc": "Brent (live)" }
+  ]
+}
