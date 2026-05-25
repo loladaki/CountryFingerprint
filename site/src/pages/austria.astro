@@ -8,7 +8,11 @@ import KPIRow from '@components/KPIRow.astro';
 import InteractiveMap from '@components/InteractiveMap.astro';
 import ComparisonTable from '@components/ComparisonTable.astro';
 import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
 import data from '@data/at.json';
+
+const h = data.history;
+const flagColor = '#ED2939';
 ---
 <CountryLayout
   country="at"
@@ -138,6 +142,33 @@ import data from '@data/at.json';
       <MetricCard label="📋 Retirement age" value="65" unit="yrs" sub="62 for women (rising)" source="PVA · 2026" />
       <MetricCard label="⏱ Paid leave" value="25" unit="days/yr" sub="+ 13 public holidays" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Urlaubsgesetz" variant="gold" />
     </Cards>
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="warn" icon="📈">
+      Austria has gone through a <strong>painful 2023-2024 recession</strong> (-0.8%, -1.0%
+      GDP) — among the worst in the EU big economies. Inflation peaked at 8.6% in 2022 and is
+      still above EU average. Unemployment remains low (~5%) thanks to the dual apprenticeship
+      system. Public debt steady at 78%.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="at-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[
+        { key: 'at', label: 'Austria', color: flagColor, data: h.gdp },
+        { key: 'eu', label: 'EU avg', color: '#888', data: h.euAvg.gdp, dashed: true },
+      ]} />
+      <TimeChart id="at-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[
+        { key: 'at', label: 'Austria', color: flagColor, data: h.unemployment },
+        { key: 'eu', label: 'EU avg', color: '#888', data: h.euAvg.unemployment, dashed: true },
+      ]} />
+      <TimeChart id="at-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[
+        { key: 'at', label: 'Austria', color: flagColor, data: h.inflation },
+        { key: 'eu', label: 'EU avg', color: '#888', data: h.euAvg.inflation, dashed: true },
+      ]} />
+      <TimeChart id="at-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[
+        { key: 'at', label: 'Austria', color: flagColor, data: h.publicDebt },
+        { key: 'eu', label: 'EU avg', color: '#888', data: h.euAvg.publicDebt, dashed: true },
+      ]} />
+    </div>
   </Section>
 
   <Section id="europa" title="Austria vs Europe" tag="Eurostat · 2025–2026">

@@ -26,7 +26,7 @@
     { "id": "habitacao",    "label": "🏠 Housing" },
     { "id": "rendimentos",  "label": "💶 Income" },
     { "id": "economia",     "label": "📊 Economy" },
-    { "id": "evolucao",     "label": "📈 Historical" },
+    { "id": "evolucao",     "label": "📈 Trends" },
     { "id": "turismo",      "label": "✈ Tourism" },
     { "id": "clima",        "label": "🌤 Climate" },
     { "id": "saude",        "label": "🏥 Health" },
@@ -121,6 +121,19 @@
     "population":    { "value": "58.9M" }
   },
 
+  "history": {
+    "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "gdp":          [1.4, 1.7, 0.9, 0.5, -8.9, 8.3, 4.1, 0.7, 0.5, 0.6],
+    "unemployment": [11.7, 11.2, 10.6, 10.0, 9.3, 9.5, 8.1, 7.7, 6.5, 5.2],
+    "inflation":    [0.0, 1.4, 1.2, 0.6, -0.1, 1.9, 8.7, 5.9, 0.9, 1.7],
+    "publicDebt":   [135, 134, 134, 134, 155, 145, 138, 137, 136, 135],
+    "euAvg": {
+      "gdp":          [2.0, 2.7, 2.0, 1.6, -5.6, 5.9, 3.4, 0.4, 0.8, 1.5],
+      "unemployment": [8.6, 7.6, 6.8, 6.7, 7.1, 7.0, 6.2, 6.1, 6.0, 6.0],
+      "inflation":    [0.3, 1.5, 1.9, 1.4, 0.7, 2.9, 9.2, 6.4, 2.6, 2.3],
+      "publicDebt":   [83, 82, 80, 78, 90, 88, 84, 82, 82, 83]
+    }
+  },
   "footerSources": [
     { "name": "ISTAT",          "url": "https://www.istat.it",           "desc": "National statistics" },
     { "name": "Eurostat",       "url": "https://ec.europa.eu/eurostat",   "desc": "European data" },

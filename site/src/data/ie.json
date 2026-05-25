@@ -25,6 +25,7 @@
     { "id": "habitacao",    "label": "🏠 Housing" },
     { "id": "rendimentos",  "label": "💶 Income" },
     { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Trends" },
     { "id": "turismo",      "label": "✈ Tourism" },
     { "id": "saude",        "label": "🏥 Health" },
     { "id": "seguranca",    "label": "🛡 Safety" },
@@ -104,6 +105,19 @@
     "population":    { "value": "5.4M" }
   },
 
+  "history": {
+    "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "gdp":          [25.0, 9.5, 8.5, 5.2, 6.2, 13.6, 8.6, 0.5, 1.2, 4.5],
+    "unemployment": [8.4, 6.7, 5.8, 5.0, 5.7, 6.2, 4.5, 4.3, 4.2, 4.5],
+    "inflation":    [-0.2, 0.3, 0.7, 0.9, -0.5, 2.4, 8.1, 5.2, 1.7, 2.5],
+    "publicDebt":   [74, 67, 63, 58, 58, 55, 44, 43, 80, 80],
+    "euAvg": {
+      "gdp":          [2.0, 2.7, 2.0, 1.6, -5.6, 5.9, 3.4, 0.4, 0.8, 1.5],
+      "unemployment": [8.6, 7.6, 6.8, 6.7, 7.1, 7.0, 6.2, 6.1, 6.0, 6.0],
+      "inflation":    [0.3, 1.5, 1.9, 1.4, 0.7, 2.9, 9.2, 6.4, 2.6, 2.3],
+      "publicDebt":   [83, 82, 80, 78, 90, 88, 84, 82, 82, 83]
+    }
+  },
   "footerSources": [
     { "name": "CSO Ireland",   "url": "https://www.cso.ie",              "desc": "National statistics" },
     { "name": "Eurostat",      "url": "https://ec.europa.eu/eurostat",    "desc": "European data" },

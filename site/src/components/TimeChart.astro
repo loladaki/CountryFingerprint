@@ -1,0 +1,126 @@
+---
+/**
+ * <TimeChart> — Chart.js line chart with multiple series.
+ *
+ * Each series:
+ *   { key, label, color, data: number[], unit?: string }
+ *
+ *   <TimeChart
+ *     id="pt-evo-gdp"
+ *     title="GDP growth (%)"
+ *     years={[2016, 2017, ..., 2025]}
+ *     series={[
+ *       { key: 'country', label: 'Portugal', color: '#1a6b40', data: [2.0, ..., 2.4] },
+ *       { key: 'eu',      label: 'EU avg',   color: '#888',    data: [2.0, ..., 1.5], dashed: true },
+ *     ]}
+ *     unit="%"
+ *     height={220}
+ *   />
+ */
+interface Series {
+  key: string;
+  label: string;
+  color: string;
+  data: number[];
+  /** Render this series as a dashed line */
+  dashed?: boolean;
+}
+
+interface Props {
+  id: string;
+  title: string;
+  years: number[];
+  series: Series[];
+  unit?: string;
+  height?: number;
+  /** When true, render a bar chart instead of a line */
+  type?: 'line' | 'bar';
+  /** Highlight rule for values < this threshold (e.g. crisis years) */
+  highlightBelow?: number;
+}
+
+const {
+  id,
+  title,
+  years,
+  series,
+  unit = '%',
+  height = 220,
+  type = 'line',
+  highlightBelow,
+} = Astro.props as Props;
+---
+<div class="chart-card fade">
+  <div class="chart-lbl">{title}</div>
+  {series.length > 1 && (
+    <div class="legend">
+      {series.map((s) => (
+        <span class="leg-item">
+          <span class="leg-dot" style={`background:${s.color}`}></span>{s.label}
+        </span>
+      ))}
+    </div>
+  )}
+  <div style={`position:relative;width:100%;height:${height}px`}>
+    <canvas id={id}></canvas>
+  </div>
+</div>
+
+<script
+  is:inline
+  define:vars={{ id, type, years, series, unit, highlightBelow }}
+>
+  // Wait until Chart.js is available — it is loaded once per page in BaseLayout
+  (function waitForChart() {
+    if (typeof Chart === 'undefined') {
+      setTimeout(waitForChart, 80);
+      return;
+    }
+    const ctx = document.getElementById(id);
+    if (!ctx) return;
+
+    const datasets = series.map((s) => {
+      const base = {
+        label: s.label,
+        data: s.data,
+        borderColor: s.color,
+        backgroundColor: type === 'bar'
+          ? (s.dashed ? 'rgba(150,150,150,.6)' : s.color)
+          : (s.color + '14'),
+        borderWidth: 2,
+        tension: 0.3,
+        pointRadius: 2,
+        fill: type === 'line' && !s.dashed,
+      };
+      if (type === 'line' && s.dashed) base.borderDash = [5, 3];
+      if (type === 'bar' && highlightBelow != null) {
+        base.backgroundColor = (c) => c.raw < highlightBelow ? 'rgba(165,28,48,.7)' : 'rgba(26,107,64,.7)';
+        base.borderColor = (c) => c.raw < highlightBelow ? '#a51c30' : '#1a6b40';
+      }
+      return base;
+    });
+
+    new Chart(ctx, {
+      type,
+      data: { labels: years, datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: (c) => ' ' + c.parsed.y + unit } },
+        },
+        scales: {
+          x: { ticks: { font: { family: 'DM Mono', size: 11 } }, grid: { display: false } },
+          y: {
+            ticks: {
+              font: { family: 'DM Mono', size: 11 },
+              callback: (v) => v + unit,
+            },
+            grid: { color: 'rgba(0,0,0,.05)' },
+          },
+        },
+      },
+    });
+  })();
+</script>

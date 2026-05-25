@@ -8,7 +8,11 @@ import KPIRow from '@components/KPIRow.astro';
 import InteractiveMap from '@components/InteractiveMap.astro';
 import ComparisonTable from '@components/ComparisonTable.astro';
 import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
 import data from '@data/de.json';
+
+const h = data.history;
+const flagColor = '#1a1a1a';
 ---
 <CountryLayout
   country="de"
@@ -190,6 +194,33 @@ import data from '@data/de.json';
       <MetricCard label="⏱ Paid leave" value="20" unit="days/yr" sub="Often 25-30 by contract"
                   badge={{ kind: 'ne', text: '→ Mid EU range' }} source="BUrlG" variant="gold" />
     </Cards>
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="warn" icon="📈">
+      Germany has been the <strong>EU's growth laggard</strong> for years — the only big EU
+      economy with -0.3% GDP contraction in 2023. Unemployment is rising (3.0% → 4.0%) as
+      industrial weakness bites. Public debt remains the lowest of the G7 (63%) — the
+      Schuldenbremse keeping fiscal discipline tight.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="de-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[
+        { key: 'de', label: 'Germany', color: flagColor, data: h.gdp },
+        { key: 'eu', label: 'EU avg', color: '#888', data: h.euAvg.gdp, dashed: true },
+      ]} />
+      <TimeChart id="de-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[
+        { key: 'de', label: 'Germany', color: flagColor, data: h.unemployment },
+        { key: 'eu', label: 'EU avg', color: '#888', data: h.euAvg.unemployment, dashed: true },
+      ]} />
+      <TimeChart id="de-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[
+        { key: 'de', label: 'Germany', color: flagColor, data: h.inflation },
+        { key: 'eu', label: 'EU avg', color: '#888', data: h.euAvg.inflation, dashed: true },
+      ]} />
+      <TimeChart id="de-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[
+        { key: 'de', label: 'Germany', color: flagColor, data: h.publicDebt },
+        { key: 'eu', label: 'EU avg', color: '#888', data: h.euAvg.publicDebt, dashed: true },
+      ]} />
+    </div>
   </Section>
 
   <Section id="europa" title="Germany vs Europe" tag="Eurostat · 2025–2026">

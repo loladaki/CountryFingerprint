@@ -10,7 +10,11 @@ import ChartCard from '@components/ChartCard.astro';
 import InteractiveMap from '@components/InteractiveMap.astro';
 import ComparisonTable from '@components/ComparisonTable.astro';
 import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
 import data from '@data/pt.json';
+
+const h = data.history;
+const flagColor = '#1a6b40';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 // Build absolute /CountryFingerprint/data/pt.topojson.json from the relative
@@ -225,6 +229,33 @@ const geojsonUrl = data.map.geojsonUrl.startsWith('http')
       <MetricCard label="⏱ Paid leave" value="22" unit="days/yr" sub="Legal minimum + 13 public holidays"
                   badge={{ kind: 'ne', text: '→ Mid EU range' }} source="Código do Trabalho" variant="gold" />
     </Cards>
+  </Section>
+
+  <!-- ═══ TRENDS OVER TIME ═══ -->
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat / national sources">
+    <Notice variant="info" icon="📈">
+      How is Portugal evolving over a decade? GDP growth has consistently <strong>beaten EU
+      average</strong> since 2022 (post-Covid recovery). Unemployment fell to historic lows.
+      Public debt dropped from 131% to 95% of GDP — one of the EU's best fiscal turnarounds.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="pt-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[
+        { key: 'pt', label: 'Portugal', color: flagColor, data: h.gdp },
+        { key: 'eu', label: 'EU avg',   color: '#888',    data: h.euAvg.gdp, dashed: true },
+      ]} />
+      <TimeChart id="pt-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[
+        { key: 'pt', label: 'Portugal', color: flagColor, data: h.unemployment },
+        { key: 'eu', label: 'EU avg',   color: '#888',    data: h.euAvg.unemployment, dashed: true },
+      ]} />
+      <TimeChart id="pt-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[
+        { key: 'pt', label: 'Portugal', color: flagColor, data: h.inflation },
+        { key: 'eu', label: 'EU avg',   color: '#888',    data: h.euAvg.inflation, dashed: true },
+      ]} />
+      <TimeChart id="pt-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[
+        { key: 'pt', label: 'Portugal', color: flagColor, data: h.publicDebt },
+        { key: 'eu', label: 'EU avg',   color: '#888',    data: h.euAvg.publicDebt, dashed: true },
+      ]} />
+    </div>
   </Section>
 
   <!-- ═══ vs EUROPE ═══ -->

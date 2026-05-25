@@ -8,7 +8,11 @@ import KPIRow from '@components/KPIRow.astro';
 import InteractiveMap from '@components/InteractiveMap.astro';
 import ComparisonTable from '@components/ComparisonTable.astro';
 import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
 import data from '@data/be.json';
+
+const h = data.history;
+const flagColor = '#000000';
 ---
 <CountryLayout
   country="be"
@@ -139,6 +143,33 @@ import data from '@data/be.json';
       <MetricCard label="📋 Retirement age" value="66" unit="yrs" sub="Rising to 67 by 2030" source="SFPD · 2026" />
       <MetricCard label="⏱ Paid leave" value="20" unit="days/yr" sub="+ 10 holidays + extra by sector" variant="gold" />
     </Cards>
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="info" icon="📈">
+      Belgium has shown <strong>steady but slow growth</strong> — averaging ~1.5% over the
+      decade. Unemployment fell from 7.8% to 5.5% in early 2020s, where it has stabilised.
+      Inflation spiked to 10.3% in 2022 (Belgium's automatic wage indexation amplified the
+      impact). Public debt remains stubbornly high above 100%.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="be-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[
+        { key: 'be', label: 'Belgium', color: flagColor, data: h.gdp },
+        { key: 'eu', label: 'EU avg', color: '#888', data: h.euAvg.gdp, dashed: true },
+      ]} />
+      <TimeChart id="be-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[
+        { key: 'be', label: 'Belgium', color: flagColor, data: h.unemployment },
+        { key: 'eu', label: 'EU avg', color: '#888', data: h.euAvg.unemployment, dashed: true },
+      ]} />
+      <TimeChart id="be-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[
+        { key: 'be', label: 'Belgium', color: flagColor, data: h.inflation },
+        { key: 'eu', label: 'EU avg', color: '#888', data: h.euAvg.inflation, dashed: true },
+      ]} />
+      <TimeChart id="be-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[
+        { key: 'be', label: 'Belgium', color: flagColor, data: h.publicDebt },
+        { key: 'eu', label: 'EU avg', color: '#888', data: h.euAvg.publicDebt, dashed: true },
+      ]} />
+    </div>
   </Section>
 
   <Section id="europa" title="Belgium vs Europe" tag="Eurostat · 2025–2026">

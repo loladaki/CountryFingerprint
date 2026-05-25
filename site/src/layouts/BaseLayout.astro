@@ -115,6 +115,10 @@ const jsonLd = isCountryPage
 
   <!-- JSON-LD structured data (schema.org) -->
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <!-- Chart.js (used by <TimeChart>) — defer + module load is fine since
+       each chart waits for the global to be ready -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
 </head>
 <body data-country={country}>
   <Eubar current={current} />
