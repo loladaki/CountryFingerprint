@@ -77,10 +77,15 @@ a{color:inherit;text-decoration:none}
   display:inline-flex; align-items:center; gap:.4rem;
 }
 .eubar-home:hover{color:#fff}
-.eubar-nav{display:flex; gap:1.2rem; align-items:center}
-.eubar-nav a{color:rgba(255,255,255,.5); font-size:.76rem; transition:color .15s}
-.eubar-nav a:hover{color:#fff}
-.eubar-nav a.current{color:var(--gold); font-weight:500}
+.eubar-nav{display:flex; gap:.6rem; align-items:center}
+.eubar-nav a{color:rgba(255,255,255,.5); font-size:.76rem; transition:opacity .15s, transform .12s; padding:0 .25rem}
+.eubar-nav a:hover{color:#fff; transform:scale(1.15)}
+/* Flag-only links: make the emoji larger and dim non-current ones */
+.eubar-nav a[title]{font-size:1.25rem; line-height:1; filter:grayscale(.35); opacity:.7}
+.eubar-nav a[title]:hover{filter:none; opacity:1}
+.eubar-nav a.current{color:var(--gold); font-weight:500; filter:none; opacity:1}
+.eubar-nav a.current[title]{position:relative}
+.eubar-nav a.current[title]::after{content:"";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);width:18px;height:2px;background:var(--gold);border-radius:2px}
 
 /* ── Country header ──────────────────────────────────────────────── */
 .hdr{background:var(--hdr-bg,#0e2519); color:#fff}
