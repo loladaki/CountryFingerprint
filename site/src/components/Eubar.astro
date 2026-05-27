@@ -1,7 +1,11 @@
 ---
 /**
  * Top sticky bar — shared across every page.
- * Highlights the current country in --gold.
+ * Shows: brand · Home link · country switcher (dropdown).
+ *
+ * The dropdown groups countries by region and scales to 27 EU member
+ * states (and beyond). Uses native <details>/<summary> for zero-JS
+ * basic behaviour, with a small enhancement to close on outside click.
  *
  * Usage:
  *   <Eubar current="pt" />     // marks Portugal as active
@@ -13,23 +17,144 @@ const { current } = Astro.props as Props;
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const link = (slug: string) => `${base}/${slug}`;
-const cls  = (k: CountryKey) => current === k ? 'current' : '';
+
+// Country catalogue — single place to add new countries
+interface CountryEntry { key: CountryKey; name: string; slug: string; flag: string }
+const SOUTHERN: CountryEntry[] = [
+  { key: 'pt', name: 'Portugal', slug: 'portugal', flag: '🇵🇹' },
+  { key: 'es', name: 'Spain',    slug: 'spain',    flag: '🇪🇸' },
+  { key: 'it', name: 'Italy',    slug: 'italy',    flag: '🇮🇹' },
+];
+const WESTERN: CountryEntry[] = [
+  { key: 'fr', name: 'France',      slug: 'france',      flag: '🇫🇷' },
+  { key: 'de', name: 'Germany',     slug: 'germany',     flag: '🇩🇪' },
+  { key: 'nl', name: 'Netherlands', slug: 'netherlands', flag: '🇳🇱' },
+  { key: 'be', name: 'Belgium',     slug: 'belgium',     flag: '🇧🇪' },
+  { key: 'at', name: 'Austria',     slug: 'austria',     flag: '🇦🇹' },
+  { key: 'ie', name: 'Ireland',     slug: 'ireland',     flag: '🇮🇪' },
+];
+const NORDIC: CountryEntry[] = [
+  { key: 'se', name: 'Sweden',  slug: 'sweden',  flag: '🇸🇪' },
+];
+
+const REGIONS = [
+  { label: 'Southern Europe',     items: SOUTHERN },
+  { label: 'Western & Central',   items: WESTERN  },
+  { label: 'Northern Europe',     items: NORDIC   },
+];
+
+// Find the currently-selected country (or null on home)
+const allCountries = [...SOUTHERN, ...WESTERN, ...NORDIC];
+const activeCountry = allCountries.find((c) => c.key === current) ?? null;
 ---
 <div class="eubar">
   <div class="eubar-inner">
     <a href={link('')} class="eubar-home">🇪🇺 <strong>EU Stats</strong></a>
-    <nav class="eubar-nav">
-      <a href={link('')} class={cls('home')}>Home</a>
-      <a href={link('portugal')}    class={cls('pt')} title="Portugal">🇵🇹</a>
-      <a href={link('spain')}       class={cls('es')} title="Spain">🇪🇸</a>
-      <a href={link('france')}      class={cls('fr')} title="France">🇫🇷</a>
-      <a href={link('germany')}     class={cls('de')} title="Germany">🇩🇪</a>
-      <a href={link('italy')}       class={cls('it')} title="Italy">🇮🇹</a>
-      <a href={link('netherlands')} class={cls('nl')} title="Netherlands">🇳🇱</a>
-      <a href={link('ireland')}     class={cls('ie')} title="Ireland">🇮🇪</a>
-      <a href={link('belgium')}     class={cls('be')} title="Belgium">🇧🇪</a>
-      <a href={link('austria')}     class={cls('at')} title="Austria">🇦🇹</a>
-      <a href={link('sweden')}      class={cls('se')} title="Sweden">🇸🇪</a>
-    </nav>
+
+    <div class="eubar-right">
+      <a href={link('')} class={`eubar-link${current === 'home' ? ' current' : ''}`}>Home</a>
+
+      <details class="cswitch">
+        <summary class="cswitch-trigger" aria-label="Select country">
+          {activeCountry ? (
+            <>
+              <span class="cs-flag">{activeCountry.flag}</span>
+              <span class="cs-name">{activeCountry.name}</span>
+            </>
+          ) : (
+            <>
+              <span class="cs-flag">🗺</span>
+              <span class="cs-name">Browse {allCountries.length} countries</span>
+            </>
+          )}
+          <span class="cs-caret" aria-hidden="true">▾</span>
+        </summary>
+
+        <div class="cswitch-menu" role="menu">
+          <input
+            type="search"
+            class="cs-search"
+            placeholder="Search country…"
+            aria-label="Search country"
+          />
+          {REGIONS.map((reg) => (
+            <div class="cs-group">
+              <div class="cs-group-label">{reg.label}</div>
+              {reg.items.map((c) => (
+                <a
+                  href={link(c.slug)}
+                  class={`cs-item${c.key === current ? ' current' : ''}`}
+                  data-name={c.name.toLowerCase()}
+                  role="menuitem"
+                >
+                  <span class="cs-flag">{c.flag}</span>
+                  <span class="cs-name">{c.name}</span>
+                  {c.key === current && <span class="cs-check" aria-hidden="true">✓</span>}
+                </a>
+              ))}
+            </div>
+          ))}
+        </div>
+      </details>
+    </div>
   </div>
 </div>
+
+<!-- Outside-click close + keyboard / search filter — tiny inline script -->
+<script is:inline>
+  (function () {
+    const root = document.querySelector('details.cswitch');
+    if (!root) return;
+    const search = root.querySelector('.cs-search');
+    const items  = root.querySelectorAll('.cs-item');
+    const groups = root.querySelectorAll('.cs-group');
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!root.contains(e.target)) root.removeAttribute('open');
+    });
+
+    // Close with Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && root.open) {
+        root.removeAttribute('open');
+        root.querySelector('summary')?.focus();
+      }
+    });
+
+    // Auto-focus the search field when the menu opens
+    root.addEventListener('toggle', () => {
+      if (root.open && search) {
+        search.value = '';
+        // Reveal all items again
+        items.forEach((it) => (it.style.display = ''));
+        groups.forEach((g) => (g.style.display = ''));
+        setTimeout(() => search.focus(), 30);
+      }
+    });
+
+    // Simple filter — substring match against country name
+    if (search) {
+      search.addEventListener('input', () => {
+        const q = search.value.trim().toLowerCase();
+        items.forEach((it) => {
+          const match = !q || (it.dataset.name || '').includes(q);
+          it.style.display = match ? '' : 'none';
+        });
+        // Hide groups whose all items are filtered out
+        groups.forEach((g) => {
+          const visible = g.querySelectorAll('.cs-item:not([style*="none"])').length;
+          g.style.display = visible ? '' : 'none';
+        });
+      });
+
+      // Enter on search → navigate to first visible result
+      search.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const first = root.querySelector('.cs-item:not([style*="none"])');
+          if (first) window.location.href = first.href;
+        }
+      });
+    }
+  })();
+</script>

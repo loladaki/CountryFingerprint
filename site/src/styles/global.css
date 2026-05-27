@@ -77,15 +77,84 @@ a{color:inherit;text-decoration:none}
   display:inline-flex; align-items:center; gap:.4rem;
 }
 .eubar-home:hover{color:#fff}
-.eubar-nav{display:flex; gap:.6rem; align-items:center}
-.eubar-nav a{color:rgba(255,255,255,.5); font-size:.76rem; transition:opacity .15s, transform .12s; padding:0 .25rem}
-.eubar-nav a:hover{color:#fff; transform:scale(1.15)}
-/* Flag-only links: make the emoji larger and dim non-current ones */
-.eubar-nav a[title]{font-size:1.25rem; line-height:1; filter:grayscale(.35); opacity:.7}
-.eubar-nav a[title]:hover{filter:none; opacity:1}
-.eubar-nav a.current{color:var(--gold); font-weight:500; filter:none; opacity:1}
-.eubar-nav a.current[title]{position:relative}
-.eubar-nav a.current[title]::after{content:"";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);width:18px;height:2px;background:var(--gold);border-radius:2px}
+/* ── Right side of the eubar: Home link + country switcher ──────── */
+.eubar-right{display:flex; align-items:center; gap:1rem}
+.eubar-link{color:rgba(255,255,255,.55); font-size:.78rem; transition:color .15s}
+.eubar-link:hover{color:#fff}
+.eubar-link.current{color:var(--gold); font-weight:500}
+
+/* ── Country switcher (native <details>) ─────────────────────────── */
+.cswitch{position:relative}
+.cswitch-trigger{
+  list-style:none;
+  display:inline-flex; align-items:center; gap:.45rem;
+  padding:.35rem .75rem;
+  font-size:.78rem; font-weight:500;
+  color:rgba(255,255,255,.92);
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:99px;
+  cursor:pointer;
+  transition:background .12s, border-color .12s;
+  user-select:none;
+}
+.cswitch-trigger:hover{background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.22)}
+.cswitch-trigger::-webkit-details-marker{display:none}
+.cswitch[open] .cswitch-trigger{background:rgba(255,255,255,.14); border-color:rgba(255,255,255,.25)}
+.cswitch-trigger .cs-flag{font-size:1.1rem; line-height:1}
+.cs-caret{font-size:.7rem; opacity:.7; transition:transform .15s}
+.cswitch[open] .cs-caret{transform:rotate(180deg)}
+
+/* Dropdown panel */
+.cswitch-menu{
+  position:absolute; right:0; top:calc(100% + 8px);
+  width:300px; max-width:calc(100vw - 2rem);
+  background:#0f0f0f;
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;
+  box-shadow:0 12px 32px rgba(0,0,0,.5);
+  padding:.5rem;
+  z-index:200;
+  animation:cswitchIn .14s ease-out;
+}
+@keyframes cswitchIn{
+  from{opacity:0; transform:translateY(-4px)}
+  to{opacity:1; transform:none}
+}
+
+.cs-search{
+  width:100%; padding:.55rem .75rem;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:6px;
+  color:#fff;
+  font-family:var(--font-u); font-size:.82rem;
+  margin-bottom:.4rem;
+  outline:none;
+}
+.cs-search::placeholder{color:rgba(255,255,255,.35)}
+.cs-search:focus{border-color:var(--gold); background:rgba(255,255,255,.08)}
+
+.cs-group{padding:.3rem 0}
+.cs-group-label{
+  font-size:.65rem; text-transform:uppercase; letter-spacing:.08em;
+  color:rgba(255,255,255,.4);
+  padding:.4rem .55rem .25rem;
+}
+.cs-item{
+  display:flex; align-items:center; gap:.55rem;
+  padding:.45rem .55rem;
+  font-size:.82rem;
+  color:rgba(255,255,255,.85);
+  border-radius:6px;
+  transition:background .1s;
+}
+.cs-item:hover{background:rgba(255,255,255,.07); color:#fff}
+.cs-item .cs-flag{font-size:1.1rem; line-height:1; width:1.4rem; text-align:center}
+.cs-item .cs-name{flex:1}
+.cs-item.current{background:rgba(201,168,76,.12); color:var(--gold)}
+.cs-item.current:hover{background:rgba(201,168,76,.18)}
+.cs-check{color:var(--gold); font-size:.85rem}
 
 /* ── Country header ──────────────────────────────────────────────── */
 .hdr{background:var(--hdr-bg,#0e2519); color:#fff}
