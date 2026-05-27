@@ -11,7 +11,7 @@
  *   <Eubar current="pt" />     // marks Portugal as active
  *   <Eubar current="home" />   // home page
  */
-type CountryKey = 'home' | 'pt' | 'es' | 'fr' | 'de' | 'it' | 'nl' | 'ie' | 'be' | 'at' | 'se';
+type CountryKey = 'home' | 'pt' | 'es' | 'fr' | 'de' | 'it' | 'nl' | 'ie' | 'be' | 'at' | 'se' | 'pl' | 'cz' | 'gr' | 'dk' | 'fi';
 interface Props { current: CountryKey }
 const { current } = Astro.props as Props;
 
@@ -24,6 +24,7 @@ const SOUTHERN: CountryEntry[] = [
   { key: 'pt', name: 'Portugal', slug: 'portugal', flag: '🇵🇹' },
   { key: 'es', name: 'Spain',    slug: 'spain',    flag: '🇪🇸' },
   { key: 'it', name: 'Italy',    slug: 'italy',    flag: '🇮🇹' },
+  { key: 'gr', name: 'Greece',   slug: 'greece',   flag: '🇬🇷' },
 ];
 const WESTERN: CountryEntry[] = [
   { key: 'fr', name: 'France',      slug: 'france',      flag: '🇫🇷' },
@@ -33,18 +34,25 @@ const WESTERN: CountryEntry[] = [
   { key: 'at', name: 'Austria',     slug: 'austria',     flag: '🇦🇹' },
   { key: 'ie', name: 'Ireland',     slug: 'ireland',     flag: '🇮🇪' },
 ];
+const CENTRAL_EASTERN: CountryEntry[] = [
+  { key: 'pl', name: 'Poland',   slug: 'poland',  flag: '🇵🇱' },
+  { key: 'cz', name: 'Czechia',  slug: 'czechia', flag: '🇨🇿' },
+];
 const NORDIC: CountryEntry[] = [
-  { key: 'se', name: 'Sweden',  slug: 'sweden',  flag: '🇸🇪' },
+  { key: 'se', name: 'Sweden',   slug: 'sweden',  flag: '🇸🇪' },
+  { key: 'dk', name: 'Denmark',  slug: 'denmark', flag: '🇩🇰' },
+  { key: 'fi', name: 'Finland',  slug: 'finland', flag: '🇫🇮' },
 ];
 
 const REGIONS = [
-  { label: 'Southern Europe',     items: SOUTHERN },
-  { label: 'Western & Central',   items: WESTERN  },
-  { label: 'Northern Europe',     items: NORDIC   },
+  { label: 'Southern Europe',     items: SOUTHERN        },
+  { label: 'Western Europe',      items: WESTERN         },
+  { label: 'Central & Eastern',   items: CENTRAL_EASTERN },
+  { label: 'Northern Europe',     items: NORDIC          },
 ];
 
 // Find the currently-selected country (or null on home)
-const allCountries = [...SOUTHERN, ...WESTERN, ...NORDIC];
+const allCountries = [...SOUTHERN, ...WESTERN, ...CENTRAL_EASTERN, ...NORDIC];
 const activeCountry = allCountries.find((c) => c.key === current) ?? null;
 ---
 <div class="eubar">

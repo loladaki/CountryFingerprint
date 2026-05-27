@@ -1,0 +1,160 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
+import data from '@data/gr.json';
+
+const h = data.history;
+const flagColor = '#0D5EAF';
+---
+<CountryLayout country="gr" title={data.meta.title} flag={data.meta.flag} subtitle={data.meta.subtitle} description={data.meta.description} tickerItems={data.tickerItems} sections={data.sections} liveBadge="📌 Static data · loading…">
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="warn" icon="⛽">
+      Greece has <strong>high fuel prices</strong> due to heavy taxation. Diesel is unusually
+      cheaper than petrol (€1.81 vs €2.12) — a relic of policy. Solar capacity grew rapidly post-2020
+      and now covers ~25% of electricity generation in summer.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Petrol 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diesel" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.22" unit="€/kWh" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · Q1 2026" />
+      <MetricCard label="☀️ Solar share" value="25" unit="%" sub="Of electricity · grew 4× since 2020" badge={{ kind: 'dn', text: '↑ Fast growth' }} source="ADMIE · 2025" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Region" tag="9 metrics · click a region">
+    <InteractiveMap regions={data.map.regions} metrics={data.map.metrics} metricButtons={data.map.buttons} geojsonUrl={data.map.geojsonUrl} projection={data.map.projection} featureIdResolver={data.map.featureIdResolver} viewBox={data.map.viewBox} strokeOnSelect={data.map.strokeOnSelect} unit={data.map.regionUnit} country="gr" />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="ELSTAT / BoG · Q4 2025">
+    <Notice variant="info" icon="🏠">
+      Greek housing <strong>recovered from a 40% post-crisis crash</strong> and is now rising
+      again — driven by tourism + Golden Visa scheme (now restricted). Athens up +50% in 5 years.
+      Outside major cities + islands, rural housing remains cheap.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · national avg" value="1,800" unit="€/m²" badge={{ kind: 'up', text: '↑ +8% vs 2024' }} source="ELSTAT · 2025" />
+      <MetricCard label="🛒 Buy · Athens" value="2,400" unit="€/m²" badge={{ kind: 'up', text: '↑ +9% vs 2024' }} source="BoG · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Thessaloniki" value="1,500" unit="€/m²" badge={{ kind: 'up', text: '↑ +7%' }} source="ELSTAT · 2025" />
+      <MetricCard label="🛒 Buy · Cyclades (islands)" value="3,500" unit="€/m²" badge={{ kind: 'up', text: '↑ Tourism premium' }} source="Spitogatos · 2025" variant="red" />
+      <MetricCard label="🔑 Rent · Athens (T2)" value="750" unit="€/mo" badge={{ kind: 'up', text: '↑ +12% YoY' }} source="Spitogatos · Q1 2026" variant="red" />
+      <MetricCard label="🔑 Rent · national (T2)" value="550" unit="€/mo" badge={{ kind: 'up', text: '↑ +8% YoY' }} source="Spitogatos · Q1 2026" variant="blue" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="ELSTAT / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" source="ELSTAT · 2025" variant="gold" />
+      <MetricCard label="💶 Median net salary" value={data.stats.avgNetSalary.value} unit="€/mo" badge={{ kind: 'up', text: '↓ Lowest in big-EU after PL' }} source="ELSTAT · 2025" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€" sub="14 payments/year · gross €11,620 annual" badge={{ kind: 'dn', text: '↑ +30% since 2022' }} source="MoL · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" sub="Down from 27.5% peak in 2013" valueId="gr-unemp" badge={{ kind: 'dn', text: '↓ Halved since 2013' }} source={data.stats.unemployment.source} />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" sub="Down from 60% peak" valueId="gr-youth-unemp" badge={{ kind: 'up', text: '↑ Still above EU avg' }} source="Eurostat · Q1 2026" variant="red" />
+      <MetricCard label="🌍 Emigration" value="~500k" sub={`Lost since 2010 ("brain drain")`} badge={{ kind: 'up', text: '↑ Slowing but persistent' }} source="ELSTAT · 2024" variant="red" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="ELSTAT / BoG · 2025–2026">
+    <Notice variant="ok" icon="📈">
+      Greece's <strong>fiscal recovery is one of the EU's most remarkable</strong>. Debt down from
+      207% peak to 142% in 2025 — still highest in EU but trajectory is right. Now runs a primary
+      surplus consistently. Investment-grade rating restored (2023, S&P). Tourism boom continues.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Recovering', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: 'Below avg', kind: 'bad' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'gr-gdp', badge: { text: '↑ Above avg', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'gr-inflation', badge: { text: '→ Near avg', kind: 'good' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Still highest EU', kind: 'bad' } },
+      { value: '+' + data.stats.budgetBalance.value + '%', label: 'Budget surplus 2025', badge: { text: '✓ Surplus', kind: 'good' } },
+    ]} />
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="ok" icon="📈">
+      The <strong>most dramatic recovery in the EU</strong>. Unemployment fell from 23.6% (2016) to
+      9.5% (2025). Public debt down from 207% peak to 142%. GDP growth has consistently beaten EU
+      average since the post-Covid bounce.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="gr-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[{key:'gr',label:'Greece',color:flagColor,data:h.gdp},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.gdp,dashed:true}]} />
+      <TimeChart id="gr-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[{key:'gr',label:'Greece',color:flagColor,data:h.unemployment},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.unemployment,dashed:true}]} />
+      <TimeChart id="gr-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[{key:'gr',label:'Greece',color:flagColor,data:h.inflation},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.inflation,dashed:true}]} />
+      <TimeChart id="gr-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[{key:'gr',label:'Greece',color:flagColor,data:h.publicDebt},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.publicDebt,dashed:true}]} />
+    </div>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="GNTO / ELSTAT · 2024">
+    <Notice variant="ok" icon="✈">
+      Greece hit <strong>36M arrivals in 2024</strong> — tripled in a decade. Tourism is the
+      country's main economic engine: ~10% of GDP directly, ~25% with multiplier effects.
+      Overtourism is a growing concern on islands (Mykonos, Santorini).
+    </Notice>
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="36" unit="M" sub="Record · 3.5 per resident" badge={{ kind: 'dn', text: '↑ Top-15 globally' }} source="GNTO · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="22" unit="B €" sub="~10% of GDP direct" badge={{ kind: 'dn', text: '↑ +9% YoY' }} source="BoG · 2024" variant="gold" />
+      <MetricCard label="🏛 Athens" value="6" unit="M" badge={{ kind: 'dn', text: '↑ Acropolis caps in place' }} source="GNTO · 2024" />
+      <MetricCard label="🏝 Cyclades" value="3.5" unit="M" sub="Santorini, Mykonos · overtourism" badge={{ kind: 'up', text: '↑ Caps debated' }} source="GNTO · 2024" variant="red" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="ESY / Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="💰 Health expenditure" value="9.5" unit="% GDP" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="6.3" badge={{ kind: 'dn', text: '↑ Highest in EU' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🩺 ESY coverage" value="100" unit="%" sub="National Health System (Tax-funded)" badge={{ kind: 'dn', text: '✓ Universal' }} source="ESY · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="56" badge={{ kind: 'ne', text: '→ Mid EU' }} source="IEP · 2024" />
+      <MetricCard label="🚔 Homicide rate" value="0.8" unit="/100k" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🚗 Road fatalities" value="640" sub="2024" badge={{ kind: 'dn', text: '↓ Below per capita avg' }} source="ELSTAT · 2024" />
+      <MetricCard label="🛡 Border tensions" value="Moderate" sub="Migration flows from Turkey" badge={{ kind: 'ne', text: '→ Frontex active' }} source="ECG · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="ELSTAT / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Declining · emigration + low births" badge={{ kind: 'up', text: '↓ −150k in 2025' }} source="ELSTAT · 2026" variant="red" />
+      <MetricCard label="🎓 University graduates" value="44" unit="%" sub="25–34 cohort" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="👶 Birth rate" value="1.30" badge={{ kind: 'up', text: '↓ Below EU avg' }} source="ELSTAT · 2024" variant="red" />
+      <MetricCard label="🌍 Foreign born" value="11" unit="%" sub="High refugee flows since 2015" source="ELSTAT · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Greece vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Greece" rows={[
+      { indicator: 'GDP per capita',     country: '€22,100', eu: '€34,900', rank: 'bad',  note: 'Below avg (-37%)' },
+      { indicator: 'GDP growth 2026',    country: '+2.1%',   eu: '+1.5%',   rank: 'good', note: 'Above avg' },
+      { indicator: 'Unemployment',       country: '9.5%',    eu: '6.0%',    rank: 'bad',  note: 'Above avg (but down from 27.5%)' },
+      { indicator: 'Youth unemployment', country: '22.5%',   eu: '15.4%',   rank: 'bad',  note: 'Above avg' },
+      { indicator: 'Inflation 2026',     country: '2.8%',    eu: '2.6%',    rank: 'ok',   note: 'Near avg' },
+      { indicator: 'Public debt',        country: '142% GDP', eu: '83% GDP', rank: 'bad',  note: 'Highest in EU' },
+      { indicator: 'Budget balance',     country: '+1.5% GDP', eu: '-2.5%', rank: 'good', note: 'Surplus · among best EU' },
+      { indicator: 'Life expectancy',    country: '81.8 yrs', eu: '81.2 yrs', rank: 'good', note: 'Above avg' },
+      { indicator: 'Min. wage',          country: '€830',    eu: '~€1,100', rank: 'bad',  note: 'Below avg' },
+      { indicator: 'Tourism per capita', country: '3.5×',    eu: '~1.5×',   rank: 'good', note: 'Among top in EU' },
+      { indicator: 'Doctors per 1000',   country: '6.3',     eu: '3.9',     rank: 'good', note: 'Highest in EU' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="gr" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (<li><a href={s.url}>{s.name}</a> — {s.desc}</li>))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇬🇷 Greece · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">ELSTAT · BoG · Eurostat</span>
+  </Fragment>
+</CountryLayout>

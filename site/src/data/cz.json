@@ -1,0 +1,120 @@
+{
+  "meta": {
+    "code": "cz",
+    "name": "Czechia",
+    "flag": "🇨🇿",
+    "title": "Czechia by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 8 NUTS2 regions (uses CZK)",
+    "description": "Czechia dashboard — fuel, housing, wages, unemployment, GDP, tourism. CEE manufacturing powerhouse. Official ČSÚ / ČNB / Eurostat sources."
+  },
+  "tickerItems": [
+    { "icon": "⛽", "label": "Benzín 95", "value": "1.743 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Diesel",    "value": "1.673 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",    "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage 2026", "value": "CZK 18,900 (~€760)" },
+    { "icon": "🏠", "label": "Housing",  "value": "€3,200/m²" },
+    { "icon": "📉", "label": "Unemployment", "value": "2.5%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "20M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+2.4%", "id": "tick-gdp" }
+  ],
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Trends" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+  "fuelFallback": {
+    "gasolina95": { "atual": 1.743, "anterior": 1.740, "variacao": 0.003 },
+    "gasolina98": { "atual": 1.843, "anterior": 1.840, "variacao": 0.003 },
+    "gasoleo":    { "atual": 1.673, "anterior": 1.680, "variacao": -0.007 },
+    "gpl":        { "atual": 0.690, "anterior": 0.690, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_2.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
+    "regionUnit": "region",
+    "strokeOnSelect": "#11457E",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [15.5, 49.8], "scale": 5500, "translate": [275, 310] },
+    "buttons": [
+      { "key": "salary", "label": "💶 Salary" },
+      { "key": "housing", "label": "🛒 Buy €/m²" },
+      { "key": "rent", "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population", "label": "👥 Population" },
+      { "key": "crime", "label": "🚨 Crime" },
+      { "key": "temperature", "label": "🌡 Temperature" },
+      { "key": "doctors", "label": "💊 Doctors" },
+      { "key": "gdp", "label": "📊 GDP pc" }
+    ],
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#e6eaf8", "#11457E"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",           "format": "currencyPerM2",  "colors": ["#fdecec", "#D7141A"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",   "format": "currencyPerMo",  "colors": ["#e6eaf8", "#11457E"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#e6eaf8", "#11457E"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e8f4fb", "#D7141A"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#e6eaf8", "#11457E"] }
+    },
+    "regions": {
+      "CZ01": { "name": "Praha (Prague)",      "salary": 1900, "housing": 5800, "rent": 1300, "unemployment": 2.0, "population": 1380000, "crime": 50.0, "temperature": 9.0, "doctors": 5.5, "gdp": 49000 },
+      "CZ02": { "name": "Střední Čechy",       "salary": 1450, "housing": 3200, "rent":  850, "unemployment": 2.2, "population": 1430000, "crime": 30.0, "temperature": 8.5, "doctors": 3.6, "gdp": 26500 },
+      "CZ03": { "name": "Jihozápad",           "salary": 1300, "housing": 2400, "rent":  700, "unemployment": 2.4, "population": 1240000, "crime": 28.0, "temperature": 8.0, "doctors": 3.5, "gdp": 22000 },
+      "CZ04": { "name": "Severozápad",         "salary": 1250, "housing": 1900, "rent":  600, "unemployment": 3.6, "population": 1110000, "crime": 35.0, "temperature": 8.5, "doctors": 3.0, "gdp": 19500 },
+      "CZ05": { "name": "Severovýchod",        "salary": 1280, "housing": 2200, "rent":  650, "unemployment": 2.4, "population": 1500000, "crime": 24.0, "temperature": 8.0, "doctors": 3.4, "gdp": 22500 },
+      "CZ06": { "name": "Jihovýchod (Brno)",   "salary": 1400, "housing": 3500, "rent":  900, "unemployment": 2.5, "population": 1690000, "crime": 26.0, "temperature": 8.5, "doctors": 4.2, "gdp": 26000 },
+      "CZ07": { "name": "Střední Morava",      "salary": 1300, "housing": 2200, "rent":  650, "unemployment": 2.6, "population": 1200000, "crime": 24.0, "temperature": 8.0, "doctors": 3.8, "gdp": 21000 },
+      "CZ08": { "name": "Moravskoslezsko",     "salary": 1300, "housing": 2100, "rent":  650, "unemployment": 3.4, "population": 1190000, "crime": 32.0, "temperature": 8.0, "doctors": 3.6, "gdp": 21500 }
+    }
+  },
+  "stats": {
+    "unemployment":  { "value": 2.5, "asOf": "Apr 2026", "source": "Eurostat / ČSÚ", "note": "Frequently EU's lowest" },
+    "youthUnemp":    { "value": 6.8 },
+    "minWage":       { "value": 760, "asOf": "Jan 2026", "source": "MPSV · 2026", "note": "CZK 18,900 ≈ €760" },
+    "avgGrossSalary":{ "value": 1850 },
+    "avgNetSalary":  { "value": 1450 },
+    "gdp":           { "value": 2.4 },
+    "gdpTotalEuro":  { "value": "330B" },
+    "gdpPerCapita":  { "value": "30,200" },
+    "inflation":     { "value": 2.6 },
+    "publicDebt":    { "value": 44 },
+    "budgetBalance": { "value": -2.4 },
+    "ecbRate":       { "value": 2.25, "note": "Czechia uses ČNB rate (currently ~4.0%)" },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 79.5 },
+    "tourists":      { "value": "20M" },
+    "tourismRevenue":{ "value": "10B €" },
+    "population":    { "value": "10.9M" }
+  },
+  "history": {
+    "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "gdp":          [2.5, 5.2, 3.2, 3.0, -5.5, 3.5, 2.4, -0.4, 1.4, 2.4],
+    "unemployment": [4.0, 2.9, 2.2, 2.0, 2.6, 2.8, 2.2, 2.6, 2.5, 2.5],
+    "inflation":    [0.6, 2.4, 2.0, 2.6, 3.3, 3.3, 14.8, 12.0, 2.6, 2.6],
+    "publicDebt":   [37, 35, 32, 30, 38, 42, 44, 44, 44, 44],
+    "euAvg": {
+      "gdp":          [2.0, 2.7, 2.0, 1.6, -5.6, 5.9, 3.4, 0.4, 0.8, 1.5],
+      "unemployment": [8.6, 7.6, 6.8, 6.7, 7.1, 7.0, 6.2, 6.1, 6.0, 6.0],
+      "inflation":    [0.3, 1.5, 1.9, 1.4, 0.7, 2.9, 9.2, 6.4, 2.6, 2.3],
+      "publicDebt":   [83, 82, 80, 78, 90, 88, 84, 82, 82, 83]
+    }
+  },
+  "footerSources": [
+    { "name": "ČSÚ",          "url": "https://www.czso.cz",            "desc": "National statistics" },
+    { "name": "Eurostat",     "url": "https://ec.europa.eu/eurostat",  "desc": "European data" },
+    { "name": "ČNB",          "url": "https://www.cnb.cz",             "desc": "National Bank" },
+    { "name": "CzechTourism", "url": "https://www.czechtourism.com",   "desc": "Tourism" },
+    { "name": "IEP",          "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance", "url": "https://finance.yahoo.com",     "desc": "Brent (live)" }
+  ]
+}

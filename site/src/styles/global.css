@@ -48,6 +48,11 @@ body[data-country="ie"]{ --accent:#169B62; --accent-mid:#11824f; --accent-light:
 body[data-country="be"]{ --accent:#000000; --accent-mid:#222; --accent-light:#f5f3e7; --hdr-bg:#0a0a0a; --stripe:linear-gradient(90deg,#000 0%,#000 33.3%,#FAE042 33.3%,#FAE042 66.6%,#ED2939 66.6%); }
 body[data-country="at"]{ --accent:#ED2939; --accent-mid:#c01c2a; --accent-light:#fdecec; --hdr-bg:#2a0d10; --stripe:linear-gradient(180deg,#ED2939 0%,#ED2939 33.3%,#fff 33.3%,#fff 66.6%,#ED2939 66.6%); }
 body[data-country="se"]{ --accent:#006AA7; --accent-mid:#005386; --accent-light:#e6eef5; --hdr-bg:#0a1f30; --stripe:linear-gradient(180deg,#006AA7 0%,#006AA7 30%,#FECC00 30%,#FECC00 50%,#006AA7 50%); }
+body[data-country="pl"]{ --accent:#dc143c; --accent-mid:#b30f30; --accent-light:#fde6ea; --hdr-bg:#2a0d10; --stripe:linear-gradient(180deg,#fff 0%,#fff 50%,#dc143c 50%,#dc143c 100%); }
+body[data-country="cz"]{ --accent:#11457E; --accent-mid:#0c365f; --accent-light:#e6eaf5; --hdr-bg:#0a1530; --stripe:linear-gradient(90deg,#11457E 0%,#11457E 20%,#fff 20%,#fff 60%,#D7141A 60%); }
+body[data-country="gr"]{ --accent:#0D5EAF; --accent-mid:#0a4a8a; --accent-light:#e6eef5; --hdr-bg:#0a1a30; --stripe:repeating-linear-gradient(180deg,#0D5EAF 0,#0D5EAF 11%,#fff 11%,#fff 22%); }
+body[data-country="dk"]{ --accent:#C8102E; --accent-mid:#a30c25; --accent-light:#fde6e9; --hdr-bg:#2a0d10; --stripe:linear-gradient(180deg,#C8102E 0%,#C8102E 40%,#fff 40%,#fff 60%,#C8102E 60%); }
+body[data-country="fi"]{ --accent:#003580; --accent-mid:#002962; --accent-light:#e6eaf5; --hdr-bg:#0a1530; --stripe:linear-gradient(180deg,#fff 0%,#fff 40%,#003580 40%,#003580 60%,#fff 60%); }
 
 body{
   font-family:var(--font-u);

@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "code": "fi",
+    "name": "Finland",
+    "flag": "🇫🇮",
+    "title": "Finland by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 5 NUTS2 regions",
+    "description": "Finland dashboard — fuel, housing, wages, unemployment, GDP, tourism. World's happiest country (7 years running). Official Tilastokeskus / Suomen Pankki / Eurostat sources."
+  },
+  "tickerItems": [
+    { "icon": "⛽", "label": "Bensiini 95", "value": "2.025 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Diesel",      "value": "2.140 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",      "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage",   "value": "Collective (no statutory)" },
+    { "icon": "🏠", "label": "Housing",    "value": "€2,800/m²" },
+    { "icon": "📉", "label": "Unemployment", "value": "7.5%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "9M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+1.0%", "id": "tick-gdp" }
+  ],
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Trends" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+  "fuelFallback": {
+    "gasolina95": { "atual": 2.025, "anterior": 2.020, "variacao": 0.005 },
+    "gasolina98": { "atual": 2.125, "anterior": 2.120, "variacao": 0.005 },
+    "gasoleo":    { "atual": 2.140, "anterior": 2.145, "variacao": -0.005 },
+    "gpl":        { "atual": 1.150, "anterior": 1.150, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_2.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
+    "regionUnit": "region",
+    "strokeOnSelect": "#003580",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [26.0, 64.0], "scale": 900, "translate": [275, 310] },
+    "buttons": [
+      { "key": "salary", "label": "💶 Salary" },
+      { "key": "housing", "label": "🛒 Buy €/m²" },
+      { "key": "rent", "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population", "label": "👥 Population" },
+      { "key": "crime", "label": "🚨 Crime" },
+      { "key": "temperature", "label": "🌡 Temperature" },
+      { "key": "doctors", "label": "💊 Doctors" },
+      { "key": "gdp", "label": "📊 GDP pc" }
+    ],
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#e6eaf8", "#003580"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",           "format": "currencyPerM2",  "colors": ["#fdecd0", "#a51c30"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",   "format": "currencyPerMo",  "colors": ["#e6eaf8", "#003580"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#e6eaf8", "#003580"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e6eaf8", "#003580"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#e6eaf8", "#003580"] }
+    },
+    "regions": {
+      "FI19": { "name": "Länsi-Suomi (West)",        "salary": 2700, "housing": 2200, "rent":  900, "unemployment": 7.5, "population": 1370000, "crime": 60.0, "temperature":  5.0, "doctors": 3.8, "gdp": 41000 },
+      "FI1B": { "name": "Helsinki-Uusimaa",          "salary": 3200, "housing": 4500, "rent": 1300, "unemployment": 7.0, "population": 1700000, "crime": 75.0, "temperature":  5.5, "doctors": 4.5, "gdp": 60000 },
+      "FI1C": { "name": "Etelä-Suomi (South)",       "salary": 2700, "housing": 1900, "rent":  800, "unemployment": 8.0, "population":  690000, "crime": 60.0, "temperature":  5.0, "doctors": 3.8, "gdp": 40000 },
+      "FI1D": { "name": "Pohjois- ja Itä-Suomi",     "salary": 2700, "housing": 1700, "rent":  750, "unemployment": 9.0, "population": 1280000, "crime": 60.0, "temperature":  3.0, "doctors": 4.5, "gdp": 39000 },
+      "FI20": { "name": "Åland",                     "salary": 2900, "housing": 2800, "rent": 1000, "unemployment": 4.5, "population":   30000, "crime": 30.0, "temperature":  6.0, "doctors": 4.0, "gdp": 49000 }
+    }
+  },
+  "stats": {
+    "unemployment":  { "value": 7.5, "asOf": "Apr 2026", "source": "Eurostat / Tilastokeskus" },
+    "youthUnemp":    { "value": 17.5 },
+    "minWage":       { "value": null, "note": "No statutory minimum — collective agreements (Työehtosopimukset) cover ~90% of workers" },
+    "avgGrossSalary":{ "value": 3700 },
+    "avgNetSalary":  { "value": 2600 },
+    "gdp":           { "value": 1.0 },
+    "gdpTotalEuro":  { "value": "270B" },
+    "gdpPerCapita":  { "value": "48,200" },
+    "inflation":     { "value": 1.5 },
+    "publicDebt":    { "value": 78 },
+    "budgetBalance": { "value": -3.5 },
+    "ecbRate":       { "value": 2.25 },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 82.0 },
+    "tourists":      { "value": "9M" },
+    "tourismRevenue":{ "value": "5B €", "note": "Lapland + saunas + Nordic nature" },
+    "renewablesShare":{"value": 55, "note": "Hydro + bio + nuclear + wind" },
+    "happinessRank": { "value": 1, "note": "World Happiness Report — 7th year #1" },
+    "population":    { "value": "5.6M" }
+  },
+  "history": {
+    "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "gdp":          [2.5, 3.2, 1.6, 1.2, -2.4, 2.8, 1.3, -1.2, 0.4, 1.0],
+    "unemployment": [8.8, 8.6, 7.4, 6.7, 7.8, 7.7, 6.8, 7.2, 7.8, 7.5],
+    "inflation":    [0.4, 0.8, 1.2, 1.1, 0.4, 2.1, 7.2, 4.3, 1.0, 1.5],
+    "publicDebt":   [63, 61, 59, 64, 75, 73, 73, 75, 77, 78],
+    "euAvg": {
+      "gdp":          [2.0, 2.7, 2.0, 1.6, -5.6, 5.9, 3.4, 0.4, 0.8, 1.5],
+      "unemployment": [8.6, 7.6, 6.8, 6.7, 7.1, 7.0, 6.2, 6.1, 6.0, 6.0],
+      "inflation":    [0.3, 1.5, 1.9, 1.4, 0.7, 2.9, 9.2, 6.4, 2.6, 2.3],
+      "publicDebt":   [83, 82, 80, 78, 90, 88, 84, 82, 82, 83]
+    }
+  },
+  "footerSources": [
+    { "name": "Tilastokeskus", "url": "https://www.stat.fi",           "desc": "National statistics" },
+    { "name": "Eurostat",      "url": "https://ec.europa.eu/eurostat", "desc": "European data" },
+    { "name": "Suomen Pankki", "url": "https://www.suomenpankki.fi",   "desc": "Central bank" },
+    { "name": "Visit Finland", "url": "https://www.visitfinland.com",  "desc": "Tourism" },
+    { "name": "IEP",           "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance", "url": "https://finance.yahoo.com",     "desc": "Brent (live)" }
+  ]
+}

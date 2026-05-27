@@ -1,0 +1,161 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
+import data from '@data/fi.json';
+
+const h = data.history;
+const flagColor = '#003580';
+---
+<CountryLayout country="fi" title={data.meta.title} flag={data.meta.flag} subtitle={data.meta.subtitle} description={data.meta.description} tickerItems={data.tickerItems} sections={data.sections} liveBadge="📌 Static data · loading…">
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="info" icon="⛽">
+      Finland has <strong>fuel prices above EU average</strong> but uses the Euro (unlike its
+      Nordic neighbours). Electricity is among <strong>EU's cheapest</strong> thanks to nuclear +
+      hydro + wind mix. Olkiluoto-3 (started 2022) is one of the world's largest reactors.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Bensiini 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diesel" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.18" unit="€/kWh" badge={{ kind: 'dn', text: '↓ Among cheapest EU' }} source="Eurostat · Q1 2026" variant="green" />
+      <MetricCard label="☢️ Nuclear share" value="35" unit="%" sub="Olkiluoto-3 + Loviisa" badge={{ kind: 'dn', text: '↑ Self-sufficient since 2023' }} source="Fingrid · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Region" tag="9 metrics · click a region">
+    <InteractiveMap regions={data.map.regions} metrics={data.map.metrics} metricButtons={data.map.buttons} geojsonUrl={data.map.geojsonUrl} projection={data.map.projection} featureIdResolver={data.map.featureIdResolver} viewBox={data.map.viewBox} strokeOnSelect={data.map.strokeOnSelect} unit={data.map.regionUnit} country="fi" />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="Tilastokeskus · Q4 2025">
+    <Notice variant="info" icon="🏠">
+      Helsinki housing is <strong>expensive but manageable</strong> relative to salaries. Outside
+      the capital, prices fall sharply — many post-industrial cities (Lahti, Tampere outskirts)
+      have extremely cheap property. Saunas in 99% of homes (yes, really).
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · national avg" value="2,800" unit="€/m²" badge={{ kind: 'ne', text: '→ Stable' }} source="Tilastokeskus · 2025" />
+      <MetricCard label="🛒 Buy · Helsinki" value="4,500" unit="€/m²" badge={{ kind: 'ne', text: '→ Stable' }} source="Etuovi · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Tampere" value="2,800" unit="€/m²" badge={{ kind: 'ne', text: '→ Stable' }} source="Etuovi · 2025" />
+      <MetricCard label="🔑 Rent · Helsinki (T2)" value="1,300" unit="€/mo" badge={{ kind: 'up', text: '↑ +5% YoY' }} source="Vuokraovi · Q1 2026" variant="red" />
+      <MetricCard label="🔑 Rent · national (T2)" value="850" unit="€/mo" badge={{ kind: 'up', text: '↑ +4% YoY' }} source="Vuokraovi · Q1 2026" variant="blue" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="Tilastokeskus / Eurostat · 2025–2026">
+    <Notice variant="warn" icon="⚠️">
+      Finland has <strong>no statutory minimum wage</strong>. Wages set by
+      <strong>collective agreements (Työehtosopimukset)</strong> with ~90% coverage. Union
+      membership ~60% — one of EU's highest.
+    </Notice>
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" source="Tilastokeskus · 2025" variant="gold" />
+      <MetricCard label="💶 Median net salary" value={data.stats.avgNetSalary.value} unit="€/mo" source="Tilastokeskus · 2025" />
+      <MetricCard label="📋 Minimum wage" value="N/A" sub="Sectoral collective agreements" badge={{ kind: 'ne', text: '→ ~90% coverage' }} source="STTK · 2025" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" valueId="fi-unemp" badge={{ kind: 'up', text: '↑ Above EU avg' }} source={data.stats.unemployment.source} variant="red" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" valueId="fi-youth-unemp" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · Q1 2026" variant="red" />
+      <MetricCard label="⏱ Avg weekly hours" value="36.5" unit="h" sub="Strong work-life balance" source="Tilastokeskus · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="Tilastokeskus / Suomen Pankki · 2025–2026">
+    <Notice variant="warn" icon="⚠️">
+      Finland's economy <strong>stagnated 2023–2024</strong>, hit by lost trade with Russia (post-
+      2022 sanctions) + tech sector weakness. Public debt rising fast (78%). Strong recovery
+      potential via Olkiluoto-3 (energy independence) + tech (Supercell, Rovio, Nokia
+      reinventing).
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Mid EU', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: 'Above avg', kind: 'good' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'fi-gdp', badge: { text: '↓ Below avg', kind: 'bad' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'fi-inflation', badge: { text: '↓ Below avg', kind: 'good' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '→ Rising fast', kind: 'bad' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget deficit', badge: { text: '↑ Above Maastricht', kind: 'bad' } },
+    ]} />
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="warn" icon="📈">
+      Finland struggled with <strong>2023 recession (-1.2%)</strong> as the loss of Russian trade
+      hit hard. Unemployment ticking back up after multi-year decline. Public debt rose from 63%
+      to 78% over the decade — among the largest increases in the Nordics.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="fi-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[{key:'fi',label:'Finland',color:flagColor,data:h.gdp},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.gdp,dashed:true}]} />
+      <TimeChart id="fi-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[{key:'fi',label:'Finland',color:flagColor,data:h.unemployment},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.unemployment,dashed:true}]} />
+      <TimeChart id="fi-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[{key:'fi',label:'Finland',color:flagColor,data:h.inflation},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.inflation,dashed:true}]} />
+      <TimeChart id="fi-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[{key:'fi',label:'Finland',color:flagColor,data:h.publicDebt},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.publicDebt,dashed:true}]} />
+    </div>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="Visit Finland · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="9" unit="M" badge={{ kind: 'ne', text: '→ Stable' }} source="Tilastokeskus · 2024" />
+      <MetricCard label="💶 Tourism revenue" value="5" unit="B €" badge={{ kind: 'dn', text: '↑ +5%' }} source="Visit Finland · 2024" variant="gold" />
+      <MetricCard label="🦌 Lapland" value="3" unit="M" sub="Santa Claus Village + Aurora chasers" badge={{ kind: 'dn', text: '↑ Aurora boom' }} source="House of Lapland · 2024" />
+      <MetricCard label="🧖 Saunas" value="3.3" unit="M" sub="More saunas than cars" badge={{ kind: 'ne', text: '→ Cultural identity' }} source="Finnish Sauna Society" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="THL / Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="💰 Health expenditure" value="9.6" unit="% GDP" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="3.8" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🩺 Coverage" value="100" unit="%" sub="Kela · public + employer + private mix" badge={{ kind: 'dn', text: '✓ Universal' }} source="Kela · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="14" badge={{ kind: 'dn', text: '↑ Top-15' }} source="IEP · 2024" variant="green" />
+      <MetricCard label="🚔 Homicide rate" value="1.4" unit="/100k" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🚗 Road fatalities" value="190" sub="2024" badge={{ kind: 'dn', text: '↓ Among lowest' }} source="Tilastokeskus · 2024" variant="green" />
+      <MetricCard label="🛡 Russia border" value="1,340 km" sub="Closed since 2023" badge={{ kind: 'up', text: '↑ NATO front line' }} source="Rajavartiolaitos · 2024" variant="red" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="Tilastokeskus / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Slow growth via migration" source="Tilastokeskus · 2026" />
+      <MetricCard label="🎓 University graduates" value="42" unit="%" sub="25–34 cohort" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="👶 Birth rate" value="1.32" badge={{ kind: 'up', text: '↓ Below EU avg' }} source="Tilastokeskus · 2024" variant="red" />
+      <MetricCard label="🌍 Foreign born" value="9" unit="%" source="Tilastokeskus · 2025" />
+      <MetricCard label="😊 Happiness rank" value="1" sub="World Happiness Report — 7th year #1" badge={{ kind: 'dn', text: '✓ Happiest country' }} source="WHR · 2024" variant="green" />
+      <MetricCard label="🌐 Press freedom" value="2" sub="RSF 2024 World Index" badge={{ kind: 'dn', text: '✓ Among best' }} source="RSF · 2024" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Finland vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Finland" rows={[
+      { indicator: 'GDP per capita',     country: '€48,200', eu: '€34,900', rank: 'good', note: '+38% above avg' },
+      { indicator: 'GDP growth 2026',    country: '+1.0%',   eu: '+1.5%',   rank: 'bad',  note: 'Below avg' },
+      { indicator: 'Unemployment',       country: '7.5%',    eu: '6.0%',    rank: 'bad',  note: 'Above avg' },
+      { indicator: 'Youth unemployment', country: '17.5%',   eu: '15.4%',   rank: 'bad',  note: 'Above avg' },
+      { indicator: 'Inflation 2026',     country: '1.5%',    eu: '2.6%',    rank: 'good', note: 'Below avg' },
+      { indicator: 'Public debt',        country: '78% GDP', eu: '83% GDP', rank: 'good', note: 'Slightly below avg' },
+      { indicator: 'Min. wage',          country: 'None',    eu: '~€1,100', rank: 'ok',   note: 'Collective agreements' },
+      { indicator: 'Life expectancy',    country: '82.0 yrs', eu: '81.2 yrs', rank: 'good', note: 'Above avg' },
+      { indicator: 'Happiness rank',     country: '#1',      eu: '—',       rank: 'good', note: 'Happiest country' },
+      { indicator: 'Renewables',         country: '55%',     eu: '~44%',    rank: 'good', note: 'Above avg' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="fi" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (<li><a href={s.url}>{s.name}</a> — {s.desc}</li>))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇫🇮 Finland · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">Tilastokeskus · Suomen Pankki · Eurostat</span>
+  </Fragment>
+</CountryLayout>

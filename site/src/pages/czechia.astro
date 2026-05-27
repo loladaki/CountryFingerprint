@@ -1,0 +1,148 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
+import data from '@data/cz.json';
+
+const h = data.history;
+const flagColor = '#11457E';
+---
+<CountryLayout country="cz" title={data.meta.title} flag={data.meta.flag} subtitle={data.meta.subtitle} description={data.meta.description} tickerItems={data.tickerItems} sections={data.sections} liveBadge="📌 Static data · loading…">
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="info" icon="⛽">
+      Czechia has <strong>fuel near EU average</strong>. Uses CZK (not Euro) — ČNB sets policy
+      rate independently. Mostly nuclear + coal electricity, with renewables growing slowly.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Benzín 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diesel" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.23" unit="€/kWh" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · Q1 2026" />
+      <MetricCard label="☢️ Nuclear share" value="36" unit="%" sub="Plus 40% coal · diversifying" badge={{ kind: 'ne', text: '→ Plans for new reactors' }} source="ČEZ · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Region" tag="9 metrics · click a region">
+    <InteractiveMap regions={data.map.regions} metrics={data.map.metrics} metricButtons={data.map.buttons} geojsonUrl={data.map.geojsonUrl} projection={data.map.projection} featureIdResolver={data.map.featureIdResolver} viewBox={data.map.viewBox} strokeOnSelect={data.map.strokeOnSelect} unit={data.map.regionUnit} country="cz" />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="ČSÚ · Q4 2025">
+    <Notice variant="warn" icon="🏠">
+      Prague's housing is <strong>one of Europe's least affordable</strong> in price-to-income terms
+      — sale prices doubled since 2017 while wages rose ~50%. Rural and Moravian regions remain
+      among the cheapest places to live in the EU.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · national avg" value="3,200" unit="€/m²" badge={{ kind: 'up', text: '↑ +6% vs 2024' }} source="ČSÚ · 2025" />
+      <MetricCard label="🛒 Buy · Prague" value="5,800" unit="€/m²" badge={{ kind: 'up', text: '↑ Highest in CZ' }} source="Sreality · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Brno" value="3,500" unit="€/m²" badge={{ kind: 'up', text: '↑ +7% vs 2024' }} source="Sreality · 2025" />
+      <MetricCard label="🔑 Rent · Prague (T2)" value="1,300" unit="€/mo" badge={{ kind: 'up', text: '↑ Highest in CZ' }} source="Sreality · Q1 2026" variant="red" />
+      <MetricCard label="🔑 Rent · national (T2)" value="800" unit="€/mo" badge={{ kind: 'up', text: '↑ +5% YoY' }} source="Sreality · Q1 2026" variant="blue" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="ČSÚ / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" sub="CZK 46k/mo" source="ČSÚ · 2025" variant="gold" />
+      <MetricCard label="💶 Median net salary" value={data.stats.avgNetSalary.value} unit="€/mo" source="ČSÚ · 2025" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€/mo" sub="CZK 18,900" badge={{ kind: 'dn', text: '↑ +8% from 2025' }} source="MPSV · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" sub="Frequently EU's lowest" valueId="cz-unemp" badge={{ kind: 'dn', text: '↓ Lowest in EU' }} source={data.stats.unemployment.source} variant="green" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" valueId="cz-youth-unemp" badge={{ kind: 'dn', text: '↓ Best in EU' }} source="Eurostat · Q1 2026" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="ČSÚ / ČNB · 2025–2026">
+    <Notice variant="info" icon="📊">
+      Czechia is the EU's <strong>most industrialised economy</strong> — manufacturing is ~25% of
+      GDP (Škoda, Continental, Bosch). Heavy automotive supply chain exposure caused the 2023
+      recession. Public debt is low (44%), giving fiscal room.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Top-15 EU', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: 'Below avg', kind: 'bad' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'cz-gdp', badge: { text: '↑ Above avg', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'cz-inflation', badge: { text: '→ Near avg', kind: 'good' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Below avg', kind: 'good' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget deficit', badge: { text: '→ Within rules', kind: 'good' } },
+    ]} />
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="info" icon="📈">
+      Czechia's unemployment has been <strong>the lowest in the EU for years</strong> (2.5%).
+      Inflation peaked at <strong>14.8% in 2022</strong> — among Europe's worst — but has
+      normalised. The 2023 recession (-0.4%) reflected automotive sector weakness.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="cz-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[{key:'cz',label:'Czechia',color:flagColor,data:h.gdp},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.gdp,dashed:true}]} />
+      <TimeChart id="cz-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[{key:'cz',label:'Czechia',color:flagColor,data:h.unemployment},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.unemployment,dashed:true}]} />
+      <TimeChart id="cz-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[{key:'cz',label:'Czechia',color:flagColor,data:h.inflation},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.inflation,dashed:true}]} />
+      <TimeChart id="cz-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[{key:'cz',label:'Czechia',color:flagColor,data:h.publicDebt},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.publicDebt,dashed:true}]} />
+    </div>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="CzechTourism · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="20" unit="M" badge={{ kind: 'dn', text: '↑ Record post-Covid' }} source="ČSÚ · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="10" unit="B €" badge={{ kind: 'dn', text: '↑ ~3% of GDP' }} source="CzechTourism · 2024" variant="gold" />
+      <MetricCard label="🏛 Prague" value="8" unit="M" badge={{ kind: 'up', text: '↑ Overtourism concerns' }} source="Praha · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="ÚZIS / Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="Eurostat · 2024" />
+      <MetricCard label="💰 Health expenditure" value="9.2" unit="% GDP" source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="4.2" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🩺 Coverage" value="100" unit="%" sub="Public + multi-payer" badge={{ kind: 'dn', text: '✓ Universal' }} source="VZP · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="13" sub="13th safest globally" badge={{ kind: 'dn', text: '↑ Top-15' }} source="IEP · 2024" variant="green" />
+      <MetricCard label="🚔 Homicide rate" value="0.6" unit="/100k" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🚗 Road fatalities" value="455" sub="2024" badge={{ kind: 'ne', text: '→ Stable' }} source="ČSÚ · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="ČSÚ / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Slow growth via Ukrainian inflow" source="ČSÚ · 2026" />
+      <MetricCard label="🎓 University graduates" value="38" unit="%" sub="25–34 cohort" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2024" />
+      <MetricCard label="👶 Birth rate" value="1.45" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="ČSÚ · 2024" />
+      <MetricCard label="🌍 Foreign born" value="7" unit="%" sub="Plus ~400k Ukrainians" badge={{ kind: 'ne', text: '→ Below big-EU avg' }} source="ČSÚ · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Czechia vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Czechia" rows={[
+      { indicator: 'GDP per capita',     country: '€30,200', eu: '€34,900', rank: 'ok',   note: 'Catching up (-13%)' },
+      { indicator: 'GDP growth 2026',    country: '+2.4%',   eu: '+1.5%',   rank: 'good', note: 'Above avg' },
+      { indicator: 'Unemployment',       country: '2.5%',    eu: '6.0%',    rank: 'good', note: 'Lowest in EU' },
+      { indicator: 'Youth unemployment', country: '6.8%',    eu: '15.4%',   rank: 'good', note: 'Best in EU' },
+      { indicator: 'Inflation 2026',     country: '2.6%',    eu: '2.6%',    rank: 'good', note: 'EU average' },
+      { indicator: 'Public debt',        country: '44% GDP', eu: '83% GDP', rank: 'good', note: 'Well below avg' },
+      { indicator: 'Min. wage',          country: '€760',    eu: '~€1,100', rank: 'bad',  note: 'Below avg' },
+      { indicator: 'Petrol price',       country: '€1.74/L', eu: '€1.82/L', rank: 'good', note: 'Slightly below avg' },
+      { indicator: 'Life expectancy',    country: '79.5 yrs', eu: '81.2 yrs', rank: 'bad', note: 'Below avg' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="cz" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (<li><a href={s.url}>{s.name}</a> — {s.desc}</li>))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇨🇿 Czechia · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">ČSÚ · ČNB · Eurostat</span>
+  </Fragment>
+</CountryLayout>

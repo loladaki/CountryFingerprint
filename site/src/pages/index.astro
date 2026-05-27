@@ -12,6 +12,11 @@ import ie from '@data/ie.json';
 import be from '@data/be.json';
 import at from '@data/at.json';
 import se from '@data/se.json';
+import pl from '@data/pl.json';
+import cz from '@data/cz.json';
+import gr from '@data/gr.json';
+import dk from '@data/dk.json';
+import fi from '@data/fi.json';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
@@ -26,6 +31,11 @@ const countries = [
   { ...be, slug: 'belgium',     blurb: 'EU capital · highest tax wedge in OECD (53%) · 3 languages · strong public services',     highlights: { unemp: 5.5, gdp: '+1.2%', tax: '€2,070 min' } },
   { ...at, slug: 'austria',     blurb: 'Vienna = world\'s most-liveable city · hydro-powered grid · dual apprenticeship',         highlights: { unemp: 5.0, gdp: '+0.8%', tax: 'CCNL' } },
   { ...se, slug: 'sweden',      blurb: '5th biggest EU economy · 80% clean electricity · 480 days parental leave · gang concerns', highlights: { unemp: 8.0, gdp: '+1.6%', tax: 'CCNL' } },
+  { ...pl, slug: 'poland',      blurb: 'Largest CEE economy · fastest big-EU growth · cheapest fuel · housing still affordable',  highlights: { unemp: 2.8, gdp: '+3.3%', tax: 'NBP rate' } },
+  { ...cz, slug: 'czechia',     blurb: 'Most industrialised EU economy · lowest unemployment · Prague rivals Madrid in housing',   highlights: { unemp: 2.5, gdp: '+2.4%', tax: 'CZK' } },
+  { ...gr, slug: 'greece',      blurb: 'EU\'s greatest recovery story · 207% → 142% debt · 36M tourists · brain drain slowing',   highlights: { unemp: 9.5, gdp: '+2.1%', tax: '€830 min' } },
+  { ...dk, slug: 'denmark',     blurb: 'Highest GDP/capita in EU · world wind-power leader · #2 happiest globally',                highlights: { unemp: 5.5, gdp: '+2.5%', tax: 'CCNL' } },
+  { ...fi, slug: 'finland',     blurb: 'Happiest country in the world (7y in a row) · cheap electricity · post-Russia transition', highlights: { unemp: 7.5, gdp: '+1.0%', tax: 'CCNL' } },
 ];
 ---
 <BaseLayout
@@ -212,6 +222,11 @@ const countries = [
   .country-card[data-country="be"]{--accent-mid:#000000}
   .country-card[data-country="at"]{--accent-mid:#ED2939}
   .country-card[data-country="se"]{--accent-mid:#006AA7}
+  .country-card[data-country="pl"]{--accent-mid:#dc143c}
+  .country-card[data-country="cz"]{--accent-mid:#11457E}
+  .country-card[data-country="gr"]{--accent-mid:#0D5EAF}
+  .country-card[data-country="dk"]{--accent-mid:#C8102E}
+  .country-card[data-country="fi"]{--accent-mid:#003580}
 
   .cc-header{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem}
   .cc-flag{font-size:2.4rem;line-height:1}

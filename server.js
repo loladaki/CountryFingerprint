@@ -62,6 +62,11 @@ const FB_STATS = {
   be: { unemp: 5.5,  youth_unemp: 17.2, gdp: 1.2, inflation: 3.0, min_wage: 2070 },
   at: { unemp: 5.0,  youth_unemp: 11.5, gdp: 0.8, inflation: 2.8, min_wage: null /* CCNL-equivalent: sectoral collective agreements */ },
   se: { unemp: 8.0,  youth_unemp: 23.0, gdp: 1.6, inflation: 2.2, min_wage: null /* No statutory min wage — collective agreements */ },
+  pl: { unemp: 2.8,  youth_unemp:  9.5, gdp: 3.3, inflation: 4.5, min_wage: 1070 /* PLN 4,666/mo at 0.23 EUR/PLN */ },
+  cz: { unemp: 2.5,  youth_unemp:  6.8, gdp: 2.4, inflation: 2.6, min_wage:  760 /* CZK 18,900/mo */ },
+  gr: { unemp: 9.5,  youth_unemp: 22.5, gdp: 2.1, inflation: 2.8, min_wage:  830 },
+  dk: { unemp: 5.5,  youth_unemp: 11.0, gdp: 2.5, inflation: 1.8, min_wage: null /* Collective agreements only */ },
+  fi: { unemp: 7.5,  youth_unemp: 17.5, gdp: 1.0, inflation: 1.5, min_wage: null /* Collective agreements only */ },
 };
 
 // ── HTTP fetch com redirects ──────────────────
@@ -359,11 +364,11 @@ async function fetchEurostatStats() {
   console.log('[Eurostat] A buscar dados...');
 
   const [unemp, youthUnemp, gdp, infl, minWage] = await Promise.allSettled([
-    fetchEurostatJSON('une_rt_m',    { s_adj: 'SA', age: 'TOTAL',  sex: 'T', unit: 'PC_ACT', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE'], lastTimePeriod: 3 }),
-    fetchEurostatJSON('une_rt_m',    { s_adj: 'SA', age: 'Y15-24', sex: 'T', unit: 'PC_ACT', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE'], lastTimePeriod: 3 }),
-    fetchEurostatJSON('namq_10_gdp', { unit: 'CLV_PCH_A', na_item: 'B1GQ', s_adj: 'SCA', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE'], lastTimePeriod: 2 }),
-    fetchEurostatJSON('prc_hicp_manr', { unit: 'RCH_A', coicop: 'CP00', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE'], lastTimePeriod: 3 }),
-    fetchEurostatJSON('earn_mw_cur', { currency: 'EUR', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE'], lastTimePeriod: 2 }),
+    fetchEurostatJSON('une_rt_m',    { s_adj: 'SA', age: 'TOTAL',  sex: 'T', unit: 'PC_ACT', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE','PL','CZ','EL','DK','FI'], lastTimePeriod: 3 }),
+    fetchEurostatJSON('une_rt_m',    { s_adj: 'SA', age: 'Y15-24', sex: 'T', unit: 'PC_ACT', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE','PL','CZ','EL','DK','FI'], lastTimePeriod: 3 }),
+    fetchEurostatJSON('namq_10_gdp', { unit: 'CLV_PCH_A', na_item: 'B1GQ', s_adj: 'SCA', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE','PL','CZ','EL','DK','FI'], lastTimePeriod: 2 }),
+    fetchEurostatJSON('prc_hicp_manr', { unit: 'RCH_A', coicop: 'CP00', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE','PL','CZ','EL','DK','FI'], lastTimePeriod: 3 }),
+    fetchEurostatJSON('earn_mw_cur', { currency: 'EUR', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE','PL','CZ','EL','DK','FI'], lastTimePeriod: 2 }),
   ]);
 
   const ok  = r => r.status === 'fulfilled' ? r.value : null;
@@ -422,6 +427,11 @@ async function fetchEurostatStats() {
     be: { unemp: ext(unD,'BE',FB_STATS.be.unemp), youth_unemp: ext(yuD,'BE',FB_STATS.be.youth_unemp), gdp: ext(gdpD,'BE',FB_STATS.be.gdp), inflation: ext(inflD,'BE',FB_STATS.be.inflation), min_wage: ext(wageD,'BE',FB_STATS.be.min_wage) },
     at: { unemp: ext(unD,'AT',FB_STATS.at.unemp), youth_unemp: ext(yuD,'AT',FB_STATS.at.youth_unemp), gdp: ext(gdpD,'AT',FB_STATS.at.gdp), inflation: ext(inflD,'AT',FB_STATS.at.inflation), min_wage: ext(wageD,'AT',FB_STATS.at.min_wage) },
     se: { unemp: ext(unD,'SE',FB_STATS.se.unemp), youth_unemp: ext(yuD,'SE',FB_STATS.se.youth_unemp), gdp: ext(gdpD,'SE',FB_STATS.se.gdp), inflation: ext(inflD,'SE',FB_STATS.se.inflation), min_wage: ext(wageD,'SE',FB_STATS.se.min_wage) },
+    pl: { unemp: ext(unD,'PL',FB_STATS.pl.unemp), youth_unemp: ext(yuD,'PL',FB_STATS.pl.youth_unemp), gdp: ext(gdpD,'PL',FB_STATS.pl.gdp), inflation: ext(inflD,'PL',FB_STATS.pl.inflation), min_wage: ext(wageD,'PL',FB_STATS.pl.min_wage) },
+    cz: { unemp: ext(unD,'CZ',FB_STATS.cz.unemp), youth_unemp: ext(yuD,'CZ',FB_STATS.cz.youth_unemp), gdp: ext(gdpD,'CZ',FB_STATS.cz.gdp), inflation: ext(inflD,'CZ',FB_STATS.cz.inflation), min_wage: ext(wageD,'CZ',FB_STATS.cz.min_wage) },
+    gr: { unemp: ext(unD,'EL',FB_STATS.gr.unemp), youth_unemp: ext(yuD,'EL',FB_STATS.gr.youth_unemp), gdp: ext(gdpD,'EL',FB_STATS.gr.gdp), inflation: ext(inflD,'EL',FB_STATS.gr.inflation), min_wage: ext(wageD,'EL',FB_STATS.gr.min_wage) },
+    dk: { unemp: ext(unD,'DK',FB_STATS.dk.unemp), youth_unemp: ext(yuD,'DK',FB_STATS.dk.youth_unemp), gdp: ext(gdpD,'DK',FB_STATS.dk.gdp), inflation: ext(inflD,'DK',FB_STATS.dk.inflation), min_wage: ext(wageD,'DK',FB_STATS.dk.min_wage) },
+    fi: { unemp: ext(unD,'FI',FB_STATS.fi.unemp), youth_unemp: ext(yuD,'FI',FB_STATS.fi.youth_unemp), gdp: ext(gdpD,'FI',FB_STATS.fi.gdp), inflation: ext(inflD,'FI',FB_STATS.fi.inflation), min_wage: ext(wageD,'FI',FB_STATS.fi.min_wage) },
     fonte: 'eurostat',
     data:  new Date().toISOString(),
   };
@@ -455,6 +465,11 @@ function parseWeeklyTable(text) {
       if (cols[0] === 'Belgium')  result.be = { petrol: n(cols[1]), diesel: n(cols[2]) };
       if (cols[0] === 'Austria')  result.at = { petrol: n(cols[1]), diesel: n(cols[2]) };
       if (cols[0] === 'Sweden')   result.se = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Poland')   result.pl = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Czechia' || cols[0] === 'Czech Republic') result.cz = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Greece')   result.gr = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Denmark')  result.dk = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Finland')  result.fi = { petrol: n(cols[1]), diesel: n(cols[2]) };
     }
   }
   if (!result.pt?.petrol) throw new Error('Portugal não encontrado na tabela');
@@ -498,6 +513,16 @@ async function fetchCombustiveis() {
       at_gasoleo:    parsed.at ? mkFuel(parsed.at.diesel, 1.914) : { atual: 1.914, serie: [] },
       se_gasolina95: parsed.se ? mkFuel(parsed.se.petrol, 1.716) : { atual: 1.716, serie: [] },
       se_gasoleo:    parsed.se ? mkFuel(parsed.se.diesel, 1.896) : { atual: 1.896, serie: [] },
+      pl_gasolina95: parsed.pl ? mkFuel(parsed.pl.petrol, 1.490) : { atual: 1.490, serie: [] },
+      pl_gasoleo:    parsed.pl ? mkFuel(parsed.pl.diesel, 1.576) : { atual: 1.576, serie: [] },
+      cz_gasolina95: parsed.cz ? mkFuel(parsed.cz.petrol, 1.743) : { atual: 1.743, serie: [] },
+      cz_gasoleo:    parsed.cz ? mkFuel(parsed.cz.diesel, 1.673) : { atual: 1.673, serie: [] },
+      gr_gasolina95: parsed.gr ? mkFuel(parsed.gr.petrol, 2.119) : { atual: 2.119, serie: [] },
+      gr_gasoleo:    parsed.gr ? mkFuel(parsed.gr.diesel, 1.815) : { atual: 1.815, serie: [] },
+      dk_gasolina95: parsed.dk ? mkFuel(parsed.dk.petrol, 2.339) : { atual: 2.339, serie: [] },
+      dk_gasoleo:    parsed.dk ? mkFuel(parsed.dk.diesel, 2.181) : { atual: 2.181, serie: [] },
+      fi_gasolina95: parsed.fi ? mkFuel(parsed.fi.petrol, 2.025) : { atual: 2.025, serie: [] },
+      fi_gasoleo:    parsed.fi ? mkFuel(parsed.fi.diesel, 2.140) : { atual: 2.140, serie: [] },
       de_gasoleo:    parsed.de ? mkFuel(parsed.de.diesel, 1.680) : { atual: 1.680, serie: [] },
       fonte: 'eu_oil_bulletin', data: new Date().toISOString(),
     };
@@ -525,6 +550,16 @@ async function fetchCombustiveis() {
       at_gasoleo:    { atual: 1.914, serie: [] },
       se_gasolina95: { atual: 1.716, serie: [] },
       se_gasoleo:    { atual: 1.896, serie: [] },
+      pl_gasolina95: { atual: 1.490, serie: [] },
+      pl_gasoleo:    { atual: 1.576, serie: [] },
+      cz_gasolina95: { atual: 1.743, serie: [] },
+      cz_gasoleo:    { atual: 1.673, serie: [] },
+      gr_gasolina95: { atual: 2.119, serie: [] },
+      gr_gasoleo:    { atual: 1.815, serie: [] },
+      dk_gasolina95: { atual: 2.339, serie: [] },
+      dk_gasoleo:    { atual: 2.181, serie: [] },
+      fi_gasolina95: { atual: 2.025, serie: [] },
+      fi_gasoleo:    { atual: 2.140, serie: [] },
       de_gasoleo:    { atual: 1.680, serie: [] },
       fonte: 'fallback', erro: err.message, data: new Date().toISOString(),
     };

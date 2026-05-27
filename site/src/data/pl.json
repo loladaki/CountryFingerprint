@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "code": "pl",
+    "name": "Poland",
+    "flag": "🇵🇱",
+    "title": "Poland by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 16 voivodeships (uses PLN)",
+    "description": "Poland dashboard — fuel, housing, wages, unemployment, GDP, tourism. Largest CEE economy. Official GUS / NBP / Eurostat sources."
+  },
+  "tickerItems": [
+    { "icon": "⛽", "label": "Benzyna 95", "value": "1.490 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Diesel",     "value": "1.576 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",     "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage 2026", "value": "PLN 4,666 (~€1,070)" },
+    { "icon": "🏠", "label": "Housing",   "value": "€1,800/m²" },
+    { "icon": "📉", "label": "Unemployment", "value": "2.8%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "24M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+3.3%", "id": "tick-gdp" }
+  ],
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Trends" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+  "fuelFallback": {
+    "gasolina95": { "atual": 1.490, "anterior": 1.480, "variacao": 0.010 },
+    "gasolina98": { "atual": 1.590, "anterior": 1.580, "variacao": 0.010 },
+    "gasoleo":    { "atual": 1.576, "anterior": 1.590, "variacao": -0.014 },
+    "gpl":        { "atual": 0.660, "anterior": 0.660, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_2.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
+    "regionUnit": "voivodeship",
+    "strokeOnSelect": "#dc143c",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [19.5, 52.0], "scale": 2200, "translate": [275, 310] },
+    "buttons": [
+      { "key": "salary", "label": "💶 Salary" },
+      { "key": "housing", "label": "🛒 Buy €/m²" },
+      { "key": "rent", "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population", "label": "👥 Population" },
+      { "key": "crime", "label": "🚨 Crime" },
+      { "key": "temperature", "label": "🌡 Temperature" },
+      { "key": "doctors", "label": "💊 Doctors" },
+      { "key": "gdp", "label": "📊 GDP pc" }
+    ],
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#fdecec", "#dc143c"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",           "format": "currencyPerM2",  "colors": ["#fdecec", "#b30f30"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",   "format": "currencyPerMo",  "colors": ["#e6eaf8", "#1a3d8c"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#fdecec", "#dc143c"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e8f4fb", "#dc143c"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#fdecec", "#dc143c"] }
+    },
+    "regions": {
+      "PL21": { "name": "Małopolskie (Kraków)",       "salary": 1200, "housing": 2400, "rent": 850, "unemployment": 3.5, "population": 3420000, "crime": 25.0, "temperature": 9.0,  "doctors": 3.5, "gdp": 18500 },
+      "PL22": { "name": "Śląskie",                    "salary": 1180, "housing": 1700, "rent": 600, "unemployment": 2.8, "population": 4400000, "crime": 28.0, "temperature": 9.0,  "doctors": 3.3, "gdp": 17800 },
+      "PL41": { "name": "Wielkopolskie (Poznań)",     "salary": 1250, "housing": 2100, "rent": 700, "unemployment": 2.4, "population": 3500000, "crime": 24.0, "temperature": 8.5,  "doctors": 3.2, "gdp": 19500 },
+      "PL42": { "name": "Zachodniopomorskie",         "salary": 1150, "housing": 1900, "rent": 650, "unemployment": 4.0, "population": 1700000, "crime": 25.0, "temperature": 8.5,  "doctors": 3.0, "gdp": 16500 },
+      "PL43": { "name": "Lubuskie",                   "salary": 1080, "housing": 1700, "rent": 600, "unemployment": 3.0, "population":  990000, "crime": 25.0, "temperature": 9.0,  "doctors": 2.8, "gdp": 15800 },
+      "PL51": { "name": "Dolnośląskie (Wrocław)",     "salary": 1280, "housing": 2300, "rent": 750, "unemployment": 2.5, "population": 2900000, "crime": 27.0, "temperature": 9.0,  "doctors": 3.5, "gdp": 19800 },
+      "PL52": { "name": "Opolskie",                   "salary": 1100, "housing": 1800, "rent": 600, "unemployment": 2.8, "population":  950000, "crime": 22.0, "temperature": 9.0,  "doctors": 3.0, "gdp": 16000 },
+      "PL61": { "name": "Kujawsko-Pomorskie",         "salary": 1120, "housing": 1700, "rent": 600, "unemployment": 3.0, "population": 2050000, "crime": 24.0, "temperature": 8.5,  "doctors": 3.0, "gdp": 16800 },
+      "PL62": { "name": "Warmińsko-Mazurskie",        "salary": 1080, "housing": 1600, "rent": 550, "unemployment": 4.5, "population": 1400000, "crime": 26.0, "temperature": 7.5,  "doctors": 2.8, "gdp": 15000 },
+      "PL63": { "name": "Pomorskie (Gdańsk)",         "salary": 1280, "housing": 2700, "rent": 900, "unemployment": 3.0, "population": 2350000, "crime": 28.0, "temperature": 8.5,  "doctors": 3.3, "gdp": 19500 },
+      "PL71": { "name": "Łódzkie",                    "salary": 1150, "housing": 1700, "rent": 600, "unemployment": 3.0, "population": 2440000, "crime": 26.0, "temperature": 8.5,  "doctors": 3.4, "gdp": 16800 },
+      "PL72": { "name": "Świętokrzyskie",             "salary": 1080, "housing": 1500, "rent": 500, "unemployment": 4.0, "population": 1200000, "crime": 22.0, "temperature": 8.5,  "doctors": 2.9, "gdp": 14800 },
+      "PL81": { "name": "Lubelskie",                  "salary": 1080, "housing": 1500, "rent": 500, "unemployment": 4.5, "population": 2080000, "crime": 22.0, "temperature": 8.0,  "doctors": 3.1, "gdp": 14500 },
+      "PL82": { "name": "Podkarpackie",               "salary": 1100, "housing": 1500, "rent": 550, "unemployment": 4.5, "population": 2120000, "crime": 20.0, "temperature": 8.0,  "doctors": 3.0, "gdp": 14800 },
+      "PL84": { "name": "Podlaskie",                  "salary": 1100, "housing": 1500, "rent": 550, "unemployment": 4.5, "population": 1170000, "crime": 22.0, "temperature": 7.5,  "doctors": 3.2, "gdp": 15000 },
+      "PL91": { "name": "Warszawski stołeczny",       "salary": 1700, "housing": 3500, "rent":1100, "unemployment": 2.0, "population": 3170000, "crime": 35.0, "temperature": 9.0,  "doctors": 4.2, "gdp": 33000 },
+      "PL92": { "name": "Mazowiecki regionalny",      "salary": 1200, "housing": 1900, "rent": 650, "unemployment": 3.5, "population": 2240000, "crime": 26.0, "temperature": 8.5,  "doctors": 3.0, "gdp": 16500 }
+    }
+  },
+  "stats": {
+    "unemployment":  { "value": 2.8, "asOf": "Apr 2026", "source": "Eurostat / GUS", "note": "One of EU's lowest" },
+    "youthUnemp":    { "value": 9.5 },
+    "minWage":       { "value": 1070, "asOf": "Jan 2026", "source": "MRPiPS · 2026", "note": "PLN 4,666 ≈ €1,070 at 0.23 EUR/PLN" },
+    "avgGrossSalary":{ "value": 2050 },
+    "avgNetSalary":  { "value": 1450 },
+    "gdp":           { "value": 3.3 },
+    "gdpTotalEuro":  { "value": "780B" },
+    "gdpPerCapita":  { "value": "20,800" },
+    "inflation":     { "value": 4.5 },
+    "publicDebt":    { "value": 53 },
+    "budgetBalance": { "value": -5.5 },
+    "ecbRate":       { "value": 2.25, "note": "Poland uses NBP rate (currently ~5.75%) — ECB shown for EU context" },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 78.0 },
+    "tourists":      { "value": "24M" },
+    "tourismRevenue":{ "value": "15B €" },
+    "population":    { "value": "37.6M" }
+  },
+  "history": {
+    "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "gdp":          [3.1, 5.0, 5.4, 4.5, -2.0, 6.9, 5.5, 0.1, 2.9, 3.3],
+    "unemployment": [6.2, 4.9, 3.9, 3.3, 3.2, 3.4, 2.9, 2.8, 2.8, 2.8],
+    "inflation":    [-0.7, 1.6, 1.2, 2.1, 3.7, 5.2, 13.2, 10.9, 3.6, 4.5],
+    "publicDebt":   [54, 51, 49, 46, 57, 54, 49, 49, 53, 53],
+    "euAvg": {
+      "gdp":          [2.0, 2.7, 2.0, 1.6, -5.6, 5.9, 3.4, 0.4, 0.8, 1.5],
+      "unemployment": [8.6, 7.6, 6.8, 6.7, 7.1, 7.0, 6.2, 6.1, 6.0, 6.0],
+      "inflation":    [0.3, 1.5, 1.9, 1.4, 0.7, 2.9, 9.2, 6.4, 2.6, 2.3],
+      "publicDebt":   [83, 82, 80, 78, 90, 88, 84, 82, 82, 83]
+    }
+  },
+  "footerSources": [
+    { "name": "GUS",           "url": "https://stat.gov.pl",             "desc": "National statistics" },
+    { "name": "Eurostat",      "url": "https://ec.europa.eu/eurostat",    "desc": "European data" },
+    { "name": "NBP",           "url": "https://www.nbp.pl",              "desc": "National Bank" },
+    { "name": "IMGW",          "url": "https://www.imgw.pl",             "desc": "Climate & weather" },
+    { "name": "Polish Tourism", "url": "https://www.polska.travel",      "desc": "Tourism" },
+    { "name": "IEP",           "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance", "url": "https://finance.yahoo.com",       "desc": "Brent (live)" }
+  ]
+}

@@ -1,0 +1,159 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
+import data from '@data/dk.json';
+
+const h = data.history;
+const flagColor = '#C8102E';
+---
+<CountryLayout country="dk" title={data.meta.title} flag={data.meta.flag} subtitle={data.meta.subtitle} description={data.meta.description} tickerItems={data.tickerItems} sections={data.sections} liveBadge="📌 Static data · loading…">
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="warn" icon="⛽">
+      Denmark has <strong>among the highest fuel prices in Europe</strong> (€2.34/L petrol).
+      Uses DKK (pegged to EUR within ±2.25%). <strong>World leader in wind power</strong>:
+      ~57% of electricity from wind alone, 67% renewable total.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Petrol 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'up', text: '↑ Top-3 in EU' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diesel" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.42" unit="€/kWh" sub="Tax-heavy" badge={{ kind: 'up', text: '↑ Top-3 in EU' }} source="Eurostat · Q1 2026" variant="red" />
+      <MetricCard label="💨 Wind share" value="57" unit="%" sub="Of electricity · world leader" badge={{ kind: 'dn', text: '✓ Global #1' }} source="Energinet · 2025" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Region" tag="9 metrics · click a region">
+    <InteractiveMap regions={data.map.regions} metrics={data.map.metrics} metricButtons={data.map.buttons} geojsonUrl={data.map.geojsonUrl} projection={data.map.projection} featureIdResolver={data.map.featureIdResolver} viewBox={data.map.viewBox} strokeOnSelect={data.map.strokeOnSelect} unit={data.map.regionUnit} country="dk" />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="Boliga / DST · Q4 2025">
+    <Notice variant="info" icon="🏠">
+      Copenhagen housing is <strong>among Europe's most expensive</strong> per square metre.
+      Outside the capital, prices fall sharply. Denmark has a unique housing co-op model
+      ("andelsbolig") covering ~7% of housing — heavily-regulated, cheap shares.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · national avg" value="3,500" unit="€/m²" badge={{ kind: 'up', text: '↑ +5% vs 2024' }} source="DST · 2025" />
+      <MetricCard label="🛒 Buy · Copenhagen" value="5,200" unit="€/m²" badge={{ kind: 'up', text: '↑ Highest in DK' }} source="Boliga · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Aarhus" value="3,300" unit="€/m²" badge={{ kind: 'up', text: '↑ +6%' }} source="Boliga · 2025" />
+      <MetricCard label="🔑 Rent · Copenhagen (T2)" value="1,800" unit="€/mo" badge={{ kind: 'up', text: '↑ Top-tier EU' }} source="Boligportal · Q1 2026" variant="red" />
+      <MetricCard label="🔑 Rent · national (T2)" value="1,100" unit="€/mo" badge={{ kind: 'up', text: '↑ +5% YoY' }} source="Boligportal · Q1 2026" variant="blue" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="DST / Eurostat · 2025–2026">
+    <Notice variant="warn" icon="⚠️">
+      Denmark has <strong>no statutory minimum wage</strong>. Wages set entirely by
+      <strong>collective agreements (overenskomst)</strong> between unions + employers.
+      Union coverage ~67%, but de facto extension covers ~80% of workers. Income tax
+      progressive up to ~56% top rate.
+    </Notice>
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" sub="Highest in EU" badge={{ kind: 'dn', text: '↑ #1 EU' }} source="DST · 2025" variant="gold" />
+      <MetricCard label="💶 Median net salary" value={data.stats.avgNetSalary.value} unit="€/mo" sub="High taxes" source="DST · 2025" />
+      <MetricCard label="📋 Minimum wage" value="N/A" sub="Collective agreements only"  badge={{ kind: 'ne', text: '→ De facto ~€2,800' }} source="LO · 2025" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" valueId="dk-unemp" badge={{ kind: 'ne', text: '→ Near EU avg' }} source={data.stats.unemployment.source} />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" valueId="dk-youth-unemp" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · Q1 2026" variant="green" />
+      <MetricCard label="⏱ Avg weekly hours" value="33.5" unit="h" sub="Strong work-life balance culture" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="DST · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="DST / Nationalbanken · 2025–2026">
+    <Notice variant="ok" icon="📈">
+      Denmark consistently ranks <strong>top 5 in EU GDP per capita</strong>. Diversified economy:
+      pharma (Novo Nordisk = ~14% of GDP alone via Ozempic boom), maritime (Maersk), wind tech
+      (Vestas). Public debt at 30% — among EU's lowest.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Mid EU', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: '#1 in EU', kind: 'good' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'dk-gdp', badge: { text: '↑ Above avg', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'dk-inflation', badge: { text: '↓ Below avg', kind: 'good' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '✓ Among EU\'s lowest', kind: 'good' } },
+      { value: '+' + data.stats.budgetBalance.value + '%', label: 'Budget surplus 2025', badge: { text: '✓ Surplus', kind: 'good' } },
+    ]} />
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="info" icon="📈">
+      Denmark has had <strong>steady, moderate growth</strong> — pharma boom (Novo Nordisk's
+      Ozempic) added significantly to GDP from 2022. Unemployment hovers around 5-6%. Inflation
+      spiked to 8.5% in 2022 but normalised quickly. Public debt remains among EU's lowest.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="dk-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[{key:'dk',label:'Denmark',color:flagColor,data:h.gdp},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.gdp,dashed:true}]} />
+      <TimeChart id="dk-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[{key:'dk',label:'Denmark',color:flagColor,data:h.unemployment},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.unemployment,dashed:true}]} />
+      <TimeChart id="dk-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[{key:'dk',label:'Denmark',color:flagColor,data:h.inflation},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.inflation,dashed:true}]} />
+      <TimeChart id="dk-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[{key:'dk',label:'Denmark',color:flagColor,data:h.publicDebt},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.publicDebt,dashed:true}]} />
+    </div>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="VisitDenmark · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="13" unit="M" badge={{ kind: 'ne', text: '→ Stable' }} source="DST · 2024" />
+      <MetricCard label="💶 Tourism revenue" value="10" unit="B €" badge={{ kind: 'dn', text: '↑ +6% YoY' }} source="VisitDenmark · 2024" variant="gold" />
+      <MetricCard label="🏛 Copenhagen" value="6" unit="M" sub="Main hub" badge={{ kind: 'dn', text: '↑ +8%' }} source="Wonderful Copenhagen · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="Sundhedsdatastyrelsen / Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="💰 Health expenditure" value="10.5" unit="% GDP" badge={{ kind: 'dn', text: '↑ Top-5 EU' }} source="OECD · 2023" variant="green" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="4.4" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🩺 Tax-funded coverage" value="100" unit="%" sub="Public · regional administration" badge={{ kind: 'dn', text: '✓ Universal' }} source="Sundhedsstyrelsen · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="2" sub="2nd safest globally" badge={{ kind: 'dn', text: '✓ Top-3' }} source="IEP · 2024" variant="green" />
+      <MetricCard label="🚔 Homicide rate" value="0.5" unit="/100k" badge={{ kind: 'dn', text: '↓ Among lowest globally' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🚗 Road fatalities" value="158" sub="2024" badge={{ kind: 'dn', text: '↓ Vision Zero progress' }} source="DST · 2024" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="DST / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Slow growth" source="DST · 2026" />
+      <MetricCard label="🎓 University graduates" value="50" unit="%" sub="25–34 cohort" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="👶 Birth rate" value="1.50" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="DST · 2024" variant="green" />
+      <MetricCard label="🌍 Foreign born" value="14" unit="%" source="DST · 2025" />
+      <MetricCard label="😊 Happiness rank" value="2" sub="World Happiness Report 2024" badge={{ kind: 'dn', text: '✓ #2 globally' }} source="WHR · 2024" variant="green" />
+      <MetricCard label="⏱ Paid leave" value="25" unit="days/yr" sub="+ 11 public holidays" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Ferieloven" variant="gold" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Denmark vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Denmark" rows={[
+      { indicator: 'GDP per capita',     country: '€68,500', eu: '€34,900', rank: 'good', note: '#1 in EU (+96%)' },
+      { indicator: 'GDP growth 2026',    country: '+2.5%',   eu: '+1.5%',   rank: 'good', note: 'Above avg' },
+      { indicator: 'Unemployment',       country: '5.5%',    eu: '6.0%',    rank: 'good', note: 'Near avg' },
+      { indicator: 'Youth unemployment', country: '11.0%',   eu: '15.4%',   rank: 'good', note: 'Below avg' },
+      { indicator: 'Inflation 2026',     country: '1.8%',    eu: '2.6%',    rank: 'good', note: 'Below avg' },
+      { indicator: 'Public debt',        country: '30% GDP', eu: '83% GDP', rank: 'good', note: 'Among EU\'s lowest' },
+      { indicator: 'Min. wage',          country: 'None',    eu: '~€1,100', rank: 'ok', note: 'Collective agreements' },
+      { indicator: 'Wind share',         country: '57%',     eu: '~17%',    rank: 'good', note: 'World leader' },
+      { indicator: 'Life expectancy',    country: '81.7 yrs', eu: '81.2 yrs', rank: 'good', note: 'Above avg' },
+      { indicator: 'Happiness rank',     country: '#2',      eu: '—',       rank: 'good', note: 'Top globally' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="dk" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (<li><a href={s.url}>{s.name}</a> — {s.desc}</li>))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇩🇰 Denmark · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">DST · Nationalbanken · Eurostat</span>
+  </Fragment>
+</CountryLayout>

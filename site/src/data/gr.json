@@ -1,0 +1,125 @@
+{
+  "meta": {
+    "code": "gr",
+    "name": "Greece",
+    "flag": "🇬🇷",
+    "title": "Greece by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 13 NUTS2 regions",
+    "description": "Greece dashboard — fuel, housing, wages, unemployment, GDP, tourism. Mediterranean recovery story. Official ELSTAT / BoG / Eurostat sources."
+  },
+  "tickerItems": [
+    { "icon": "⛽", "label": "Petrol 95", "value": "2.119 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Diesel",    "value": "1.815 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",    "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage 2026", "value": "830 €" },
+    { "icon": "🏠", "label": "Housing",  "value": "€1,800/m²" },
+    { "icon": "📉", "label": "Unemployment", "value": "9.5%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "36M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+2.1%", "id": "tick-gdp" }
+  ],
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Trends" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+  "fuelFallback": {
+    "gasolina95": { "atual": 2.119, "anterior": 2.110, "variacao": 0.009 },
+    "gasolina98": { "atual": 2.219, "anterior": 2.210, "variacao": 0.009 },
+    "gasoleo":    { "atual": 1.815, "anterior": 1.820, "variacao": -0.005 },
+    "gpl":        { "atual": 0.950, "anterior": 0.950, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_2.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
+    "regionUnit": "region",
+    "strokeOnSelect": "#0D5EAF",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [23.0, 38.5], "scale": 3500, "translate": [275, 310] },
+    "buttons": [
+      { "key": "salary", "label": "💶 Salary" },
+      { "key": "housing", "label": "🛒 Buy €/m²" },
+      { "key": "rent", "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population", "label": "👥 Population" },
+      { "key": "crime", "label": "🚨 Crime" },
+      { "key": "temperature", "label": "🌡 Temperature" },
+      { "key": "doctors", "label": "💊 Doctors" },
+      { "key": "gdp", "label": "📊 GDP pc" }
+    ],
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#e6eef5", "#0D5EAF"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",           "format": "currencyPerM2",  "colors": ["#fdecd0", "#a51c30"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",   "format": "currencyPerMo",  "colors": ["#e6eef5", "#0a4a8a"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#e6eef5", "#0D5EAF"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e8f4fb", "#0D5EAF"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#e6eef5", "#0D5EAF"] }
+    },
+    "regions": {
+      "EL30": { "name": "Attikí (Athens)",         "salary": 1100, "housing": 2400, "rent":  750, "unemployment":  8.5, "population": 3700000, "crime": 55.0, "temperature": 18.5, "doctors": 6.5, "gdp": 25000 },
+      "EL41": { "name": "Voreio Aigaio",           "salary":  950, "housing": 2200, "rent":  650, "unemployment": 12.0, "population":  200000, "crime": 25.0, "temperature": 18.5, "doctors": 4.5, "gdp": 16500 },
+      "EL42": { "name": "Notio Aigaio",            "salary": 1050, "housing": 3200, "rent": 1100, "unemployment":  6.5, "population":  340000, "crime": 28.0, "temperature": 19.5, "doctors": 4.0, "gdp": 23000 },
+      "EL43": { "name": "Kriti (Crete)",           "salary":  990, "housing": 2400, "rent":  800, "unemployment":  9.5, "population":  620000, "crime": 26.0, "temperature": 19.0, "doctors": 5.0, "gdp": 19500 },
+      "EL51": { "name": "Anatoliki Makedonia",     "salary":  870, "housing": 1300, "rent":  500, "unemployment": 13.5, "population":  580000, "crime": 22.0, "temperature": 14.5, "doctors": 4.0, "gdp": 14500 },
+      "EL52": { "name": "Kentriki Makedonia",      "salary":  980, "housing": 1800, "rent":  600, "unemployment": 10.5, "population": 1860000, "crime": 35.0, "temperature": 16.0, "doctors": 5.5, "gdp": 17500 },
+      "EL53": { "name": "Dytiki Makedonia",        "salary":  900, "housing": 1300, "rent":  500, "unemployment": 14.0, "population":  270000, "crime": 22.0, "temperature": 13.5, "doctors": 4.5, "gdp": 16000 },
+      "EL54": { "name": "Ipeiros",                 "salary":  900, "housing": 1500, "rent":  550, "unemployment": 11.0, "population":  330000, "crime": 22.0, "temperature": 15.0, "doctors": 4.5, "gdp": 16500 },
+      "EL61": { "name": "Thessalia",               "salary":  950, "housing": 1500, "rent":  550, "unemployment": 11.5, "population":  720000, "crime": 24.0, "temperature": 16.0, "doctors": 4.5, "gdp": 16800 },
+      "EL62": { "name": "Ionia Nisia",             "salary":  920, "housing": 2400, "rent":  800, "unemployment":  7.5, "population":  205000, "crime": 25.0, "temperature": 18.5, "doctors": 4.0, "gdp": 18500 },
+      "EL63": { "name": "Dytiki Ellada",           "salary":  920, "housing": 1500, "rent":  550, "unemployment": 12.5, "population":  640000, "crime": 26.0, "temperature": 17.0, "doctors": 4.8, "gdp": 15800 },
+      "EL64": { "name": "Sterea Ellada",           "salary":  980, "housing": 1500, "rent":  550, "unemployment": 12.0, "population":  540000, "crime": 24.0, "temperature": 16.5, "doctors": 3.5, "gdp": 17500 },
+      "EL65": { "name": "Peloponnisos",            "salary":  920, "housing": 1700, "rent":  600, "unemployment": 12.0, "population":  570000, "crime": 24.0, "temperature": 17.0, "doctors": 4.0, "gdp": 16800 }
+    }
+  },
+  "stats": {
+    "unemployment":  { "value": 9.5, "asOf": "Apr 2026", "source": "Eurostat / ELSTAT", "note": "Down from 27.5% peak in 2013" },
+    "youthUnemp":    { "value": 22.5 },
+    "minWage":       { "value": 830, "asOf": "Jan 2026", "source": "MoL · 2026" },
+    "avgGrossSalary":{ "value": 1450 },
+    "avgNetSalary":  { "value": 1050 },
+    "gdp":           { "value": 2.1 },
+    "gdpTotalEuro":  { "value": "230B" },
+    "gdpPerCapita":  { "value": "22,100" },
+    "inflation":     { "value": 2.8 },
+    "publicDebt":    { "value": 142, "note": "Highest in EU, but down from 207% peak in 2020" },
+    "budgetBalance": { "value": 1.5 },
+    "ecbRate":       { "value": 2.25 },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 81.8 },
+    "tourists":      { "value": "36M", "asOf": "2024", "note": "Record · tripled in a decade" },
+    "tourismRevenue":{ "value": "22B €", "note": "~10% of GDP" },
+    "population":    { "value": "10.4M" }
+  },
+  "history": {
+    "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "gdp":          [-0.5, 1.1, 1.7, 1.9, -9.3, 8.4, 5.6, 2.0, 2.3, 2.1],
+    "unemployment": [23.6, 21.5, 19.3, 17.3, 16.3, 14.7, 12.5, 11.1, 10.4, 9.5],
+    "inflation":    [0.0, 1.1, 0.8, 0.5, -1.3, 0.6, 9.3, 4.2, 3.0, 2.8],
+    "publicDebt":   [180, 178, 184, 180, 207, 196, 173, 162, 152, 142],
+    "euAvg": {
+      "gdp":          [2.0, 2.7, 2.0, 1.6, -5.6, 5.9, 3.4, 0.4, 0.8, 1.5],
+      "unemployment": [8.6, 7.6, 6.8, 6.7, 7.1, 7.0, 6.2, 6.1, 6.0, 6.0],
+      "inflation":    [0.3, 1.5, 1.9, 1.4, 0.7, 2.9, 9.2, 6.4, 2.6, 2.3],
+      "publicDebt":   [83, 82, 80, 78, 90, 88, 84, 82, 82, 83]
+    }
+  },
+  "footerSources": [
+    { "name": "ELSTAT",       "url": "https://www.statistics.gr",       "desc": "National statistics" },
+    { "name": "Eurostat",     "url": "https://ec.europa.eu/eurostat",   "desc": "European data" },
+    { "name": "Bank of Greece", "url": "https://www.bankofgreece.gr",   "desc": "Monetary & financial" },
+    { "name": "GNTO",         "url": "https://www.visitgreece.gr",      "desc": "Tourism" },
+    { "name": "IEP",          "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance", "url": "https://finance.yahoo.com",      "desc": "Brent (live)" }
+  ]
+}

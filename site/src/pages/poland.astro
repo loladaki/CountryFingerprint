@@ -1,0 +1,168 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
+import data from '@data/pl.json';
+
+const h = data.history;
+const flagColor = '#dc143c';
+---
+<CountryLayout country="pl" title={data.meta.title} flag={data.meta.flag} subtitle={data.meta.subtitle} description={data.meta.description} tickerItems={data.tickerItems} sections={data.sections} liveBadge="📌 Static data · loading…">
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="ok" icon="⛽">
+      Poland has <strong>among the cheapest fuel in Europe</strong> — €1.49/L petrol is ~25% below
+      EU average. The country uses PLN (not Euro). Energy mix still relies heavily on coal (~60% of
+      electricity), but renewables are growing fast.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Benzyna 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'dn', text: '↓ Among cheapest EU' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diesel" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'dn', text: '↓ Among cheapest EU' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.20" unit="€/kWh" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · Q1 2026" />
+      <MetricCard label="🔥 Coal share" value="60" unit="%" sub="Of electricity · declining" badge={{ kind: 'up', text: '↑ EU\'s most coal-heavy' }} source="PSE · 2025" variant="red" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Voivodeship" tag="9 metrics · click a region">
+    <InteractiveMap regions={data.map.regions} metrics={data.map.metrics} metricButtons={data.map.buttons} geojsonUrl={data.map.geojsonUrl} projection={data.map.projection} featureIdResolver={data.map.featureIdResolver} viewBox={data.map.viewBox} strokeOnSelect={data.map.strokeOnSelect} unit={data.map.regionUnit} country="pl" />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="GUS · Q4 2025">
+    <Notice variant="info" icon="🏠">
+      Polish housing has <strong>nearly doubled in price</strong> since 2018, but is still affordable
+      vs Western Europe. Warsaw alone now rivals Madrid for €/m². Rural and eastern regions remain
+      among the cheapest places to live in the EU.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · national avg" value="1,800" unit="€/m²" badge={{ kind: 'up', text: '↑ +9% vs 2024' }} source="GUS · 2025" />
+      <MetricCard label="🛒 Buy · Warsaw" value="3,500" unit="€/m²" badge={{ kind: 'up', text: '↑ +7% vs 2024' }} source="GUS · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Kraków" value="2,400" unit="€/m²" badge={{ kind: 'up', text: '↑ +8% vs 2024' }} source="GUS · 2025" />
+      <MetricCard label="🛒 Buy · Wrocław" value="2,300" unit="€/m²" badge={{ kind: 'up', text: '↑ +8%' }} source="GUS · 2025" />
+      <MetricCard label="🔑 Rent · Warsaw (T2)" value="1,100" unit="€/mo" badge={{ kind: 'up', text: '↑ Highest in PL' }} source="OtoDom · Q1 2026" variant="red" />
+      <MetricCard label="🔑 Rent · national (T2)" value="650" unit="€/mo" badge={{ kind: 'up', text: '↑ +6% YoY' }} source="OtoDom · Q1 2026" variant="blue" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="GUS / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" sub="PLN 8,900 / mo" source="GUS · 2025" variant="gold" />
+      <MetricCard label="💶 Median net salary" value={data.stats.avgNetSalary.value} unit="€/mo" source="GUS · 2025" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€" sub="PLN 4,666/mo" badge={{ kind: 'dn', text: '↑ +9% from 2025' }} source="MRPiPS · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" sub="Multi-year low" valueId="pl-unemp" badge={{ kind: 'dn', text: '↓ One of EU\'s lowest' }} source={data.stats.unemployment.source} variant="green" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" valueId="pl-youth-unemp" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · Q1 2026" variant="green" />
+      <MetricCard label="🏗 Wage growth" value="+12" unit="% YoY" sub="Nominal · ~7% real" badge={{ kind: 'dn', text: '↑ Catching up fast' }} source="GUS · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="GUS / NBP · 2025–2026">
+    <Notice variant="ok" icon="📈">
+      Poland is the <strong>fastest-growing EU big economy of the decade</strong> — real GDP per
+      capita doubled since 2004 (EU accession). Currently 6th largest EU economy by GDP. Major
+      manufacturing + tech hub (CD Projekt, Allegro, Żabka). PLN currency floats — NBP rate ~5.75%.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: '6th in EU', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: 'Below EU avg', kind: 'bad' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'pl-gdp', badge: { text: '↑ Fastest big-EU', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'pl-inflation', badge: { text: '↑ Above avg', kind: 'bad' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Well below avg', kind: 'good' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget deficit', badge: { text: '↑ High deficit', kind: 'bad' } },
+    ]} />
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="info" icon="📈">
+      Poland is a <strong>convergence success story</strong> — GDP growth consistently beat EU avg
+      since 2016. Unemployment fell from 6.2% to 2.8% (one of EU's lowest). Inflation peaked at
+      13.2% in 2022 (one of EU's worst) but normalised. Debt remains low.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="pl-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[
+        { key: 'pl', label: 'Poland', color: flagColor, data: h.gdp },
+        { key: 'eu', label: 'EU avg', color: '#888', data: h.euAvg.gdp, dashed: true },
+      ]} />
+      <TimeChart id="pl-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[
+        { key: 'pl', label: 'Poland', color: flagColor, data: h.unemployment },
+        { key: 'eu', label: 'EU avg', color: '#888', data: h.euAvg.unemployment, dashed: true },
+      ]} />
+      <TimeChart id="pl-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[
+        { key: 'pl', label: 'Poland', color: flagColor, data: h.inflation },
+        { key: 'eu', label: 'EU avg', color: '#888', data: h.euAvg.inflation, dashed: true },
+      ]} />
+      <TimeChart id="pl-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[
+        { key: 'pl', label: 'Poland', color: flagColor, data: h.publicDebt },
+        { key: 'eu', label: 'EU avg', color: '#888', data: h.euAvg.publicDebt, dashed: true },
+      ]} />
+    </div>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="POT · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="24" unit="M" badge={{ kind: 'dn', text: '↑ Growing fast' }} source="GUS · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="15" unit="B €" badge={{ kind: 'dn', text: '↑ +12% YoY' }} source="POT · 2024" variant="gold" />
+      <MetricCard label="🏛 Warsaw" value="3.5" unit="M" badge={{ kind: 'dn', text: '↑ Hub' }} source="POT · 2024" />
+      <MetricCard label="🏰 Kraków" value="14" unit="M" sub="Most-visited city" badge={{ kind: 'dn', text: '↑ Overtourism concerns' }} source="UMK · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="NFZ / Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'up', text: '↓ Below EU avg' }} source="Eurostat · 2024" variant="red" />
+      <MetricCard label="💰 Health expenditure" value="6.8" unit="% GDP" badge={{ kind: 'up', text: '↓ Lowest in big-EU' }} source="OECD · 2023" variant="red" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="2.4" badge={{ kind: 'up', text: '↓ Lowest in EU' }} source="Eurostat · 2023" variant="red" />
+      <MetricCard label="🩺 NFZ coverage" value="100" unit="%" sub="National Health Fund" badge={{ kind: 'dn', text: '✓ Universal' }} source="NFZ · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="34" badge={{ kind: 'ne', text: '→ Solid' }} source="IEP · 2024" />
+      <MetricCard label="🚔 Homicide rate" value="0.7" unit="/100k" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🚗 Road fatalities" value="1,890" sub="2024" badge={{ kind: 'up', text: '↑ Above EU avg per capita' }} source="GUS · 2024" variant="red" />
+      <MetricCard label="🛡 Border tensions" value="Elevated" sub="Russia/Belarus border" badge={{ kind: 'ne', text: '→ Security focus' }} source="ABW · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="GUS / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Declining slowly" badge={{ kind: 'up', text: '↓ Demographic decline' }} source="GUS · 2026" />
+      <MetricCard label="🎓 University graduates" value="44" unit="%" sub="25–34 cohort" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="gold" />
+      <MetricCard label="👶 Birth rate" value="1.16" sub="Among EU's lowest" badge={{ kind: 'up', text: '↓ Demographic crisis' }} source="GUS · 2024" variant="red" />
+      <MetricCard label="🌍 Foreign born" value="3.5" unit="%" sub="Plus ~1M Ukrainians (war)" badge={{ kind: 'ne', text: '→ Historically low' }} source="GUS · 2025" />
+      <MetricCard label="📋 Retirement age" value="65/60" sub="Men/Women · disputed reform" source="ZUS · 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Poland vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Poland" rows={[
+      { indicator: 'GDP (total, 2025)',  country: '€780B',  eu: '—', rank: 'good', note: '6th in EU' },
+      { indicator: 'GDP per capita',     country: '€20,800', eu: '€34,900', rank: 'bad',  note: 'Below avg (-40%)' },
+      { indicator: 'GDP growth 2026',    country: '+3.3%',   eu: '+1.5%',   rank: 'good', note: 'Fastest big-EU' },
+      { indicator: 'Unemployment',       country: '2.8%',    eu: '6.0%',    rank: 'good', note: 'One of EU\'s lowest' },
+      { indicator: 'Youth unemployment', country: '9.5%',    eu: '15.4%',   rank: 'good', note: 'Well below avg' },
+      { indicator: 'Inflation 2026',     country: '4.5%',    eu: '2.6%',    rank: 'bad',  note: 'Above EU avg' },
+      { indicator: 'Public debt',        country: '53% GDP', eu: '83% GDP', rank: 'good', note: 'Well below avg' },
+      { indicator: 'Min. wage (monthly)', country: '€1,070', eu: '~€1,100', rank: 'ok', note: 'Near EU mean' },
+      { indicator: 'Petrol price',       country: '€1.49/L', eu: '€1.82/L', rank: 'good', note: 'Among cheapest EU' },
+      { indicator: 'Life expectancy',    country: '78 yrs',  eu: '81 yrs',  rank: 'bad',  note: 'Below EU avg' },
+      { indicator: 'Fertility rate',     country: '1.16',    eu: '1.46',    rank: 'bad',  note: 'Among EU\'s lowest' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="pl" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (<li><a href={s.url}>{s.name}</a> — {s.desc}</li>))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇵🇱 Poland · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">GUS · NBP · Eurostat</span>
+  </Fragment>
+</CountryLayout>

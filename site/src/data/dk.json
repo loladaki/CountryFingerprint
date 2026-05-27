@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "code": "dk",
+    "name": "Denmark",
+    "flag": "🇩🇰",
+    "title": "Denmark by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 5 NUTS2 regions (uses DKK)",
+    "description": "Denmark dashboard — fuel, housing, wages, unemployment, GDP, tourism. Top-tier social model. Official DST / Nationalbanken / Eurostat sources."
+  },
+  "tickerItems": [
+    { "icon": "⛽", "label": "Petrol",   "value": "2.339 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Diesel",   "value": "2.181 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",   "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage", "value": "Collective (no statutory)" },
+    { "icon": "🏠", "label": "Housing",  "value": "€3,500/m²" },
+    { "icon": "📉", "label": "Unemployment", "value": "5.5%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "13M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+2.5%", "id": "tick-gdp" }
+  ],
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Trends" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+  "fuelFallback": {
+    "gasolina95": { "atual": 2.339, "anterior": 2.330, "variacao": 0.009 },
+    "gasolina98": { "atual": 2.439, "anterior": 2.430, "variacao": 0.009 },
+    "gasoleo":    { "atual": 2.181, "anterior": 2.190, "variacao": -0.009 },
+    "gpl":        { "atual": 0.000, "anterior": 0.000, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_2.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
+    "regionUnit": "region",
+    "strokeOnSelect": "#C8102E",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [10.0, 55.8], "scale": 5500, "translate": [275, 310] },
+    "buttons": [
+      { "key": "salary", "label": "💶 Salary" },
+      { "key": "housing", "label": "🛒 Buy €/m²" },
+      { "key": "rent", "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population", "label": "👥 Population" },
+      { "key": "crime", "label": "🚨 Crime" },
+      { "key": "temperature", "label": "🌡 Temperature" },
+      { "key": "doctors", "label": "💊 Doctors" },
+      { "key": "gdp", "label": "📊 GDP pc" }
+    ],
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#fdecec", "#C8102E"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",           "format": "currencyPerM2",  "colors": ["#fdecec", "#a30c25"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",   "format": "currencyPerMo",  "colors": ["#fff8e0", "#806800"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#fdecec", "#C8102E"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e8f4fb", "#C8102E"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#fdecec", "#C8102E"] }
+    },
+    "regions": {
+      "DK01": { "name": "Hovedstaden (Copenhagen)",  "salary": 3500, "housing": 5200, "rent": 1800, "unemployment": 5.5, "population": 1880000, "crime": 70.0, "temperature": 8.5, "doctors": 4.5, "gdp": 75000 },
+      "DK02": { "name": "Sjælland",                  "salary": 2900, "housing": 2800, "rent": 1100, "unemployment": 5.5, "population":  840000, "crime": 50.0, "temperature": 8.5, "doctors": 3.8, "gdp": 48000 },
+      "DK03": { "name": "Syddanmark",                "salary": 2900, "housing": 2500, "rent": 1000, "unemployment": 5.0, "population": 1230000, "crime": 50.0, "temperature": 8.5, "doctors": 4.0, "gdp": 51000 },
+      "DK04": { "name": "Midtjylland",               "salary": 2950, "housing": 2700, "rent": 1050, "unemployment": 5.0, "population": 1340000, "crime": 50.0, "temperature": 8.0, "doctors": 4.0, "gdp": 54000 },
+      "DK05": { "name": "Nordjylland",               "salary": 2850, "housing": 2400, "rent": 1000, "unemployment": 6.0, "population":  590000, "crime": 50.0, "temperature": 8.0, "doctors": 3.8, "gdp": 49500 }
+    }
+  },
+  "stats": {
+    "unemployment":  { "value": 5.5, "asOf": "Apr 2026", "source": "Eurostat / DST" },
+    "youthUnemp":    { "value": 11.0 },
+    "minWage":       { "value": null, "note": "No statutory minimum — collective agreements cover ~80% of workers, de facto floor ~€2,800/mo" },
+    "avgGrossSalary":{ "value": 4900 },
+    "avgNetSalary":  { "value": 3100 },
+    "gdp":           { "value": 2.5 },
+    "gdpTotalEuro":  { "value": "405B" },
+    "gdpPerCapita":  { "value": "68,500", "note": "Highest in EU" },
+    "inflation":     { "value": 1.8 },
+    "publicDebt":    { "value": 30, "note": "Among EU's lowest" },
+    "budgetBalance": { "value": 1.5 },
+    "ecbRate":       { "value": 2.25, "note": "DKK pegged to EUR; Nationalbanken follows ECB closely" },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 81.7 },
+    "tourists":      { "value": "13M" },
+    "tourismRevenue":{ "value": "10B €" },
+    "renewablesShare":{"value": 67, "note": "World leader in wind power" },
+    "population":    { "value": "5.9M" }
+  },
+  "history": {
+    "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "gdp":          [3.2, 2.8, 2.0, 1.5, -2.4, 6.8, 1.5, 2.5, 3.5, 2.5],
+    "unemployment": [6.0, 5.7, 5.0, 5.0, 5.6, 5.1, 4.5, 5.1, 5.3, 5.5],
+    "inflation":    [0.0, 1.1, 0.7, 0.7, 0.3, 1.9, 8.5, 3.4, 1.4, 1.8],
+    "publicDebt":   [38, 36, 34, 34, 43, 36, 30, 30, 30, 30],
+    "euAvg": {
+      "gdp":          [2.0, 2.7, 2.0, 1.6, -5.6, 5.9, 3.4, 0.4, 0.8, 1.5],
+      "unemployment": [8.6, 7.6, 6.8, 6.7, 7.1, 7.0, 6.2, 6.1, 6.0, 6.0],
+      "inflation":    [0.3, 1.5, 1.9, 1.4, 0.7, 2.9, 9.2, 6.4, 2.6, 2.3],
+      "publicDebt":   [83, 82, 80, 78, 90, 88, 84, 82, 82, 83]
+    }
+  },
+  "footerSources": [
+    { "name": "DST",          "url": "https://www.dst.dk",              "desc": "National statistics" },
+    { "name": "Eurostat",     "url": "https://ec.europa.eu/eurostat",   "desc": "European data" },
+    { "name": "Nationalbanken", "url": "https://www.nationalbanken.dk", "desc": "Central bank" },
+    { "name": "Boliga",       "url": "https://www.boliga.dk",           "desc": "Housing market" },
+    { "name": "VisitDenmark", "url": "https://www.visitdenmark.com",    "desc": "Tourism" },
+    { "name": "IEP",          "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance", "url": "https://finance.yahoo.com",      "desc": "Brent (live)" }
+  ]
+}
