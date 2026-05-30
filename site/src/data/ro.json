@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "code": "ro",
+    "name": "Romania",
+    "flag": "🇷🇴",
+    "title": "Romania by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 8 NUTS2 regions (uses RON)",
+    "description": "Romania dashboard — fuel, housing, wages, unemployment, GDP, tourism. A fast-growing IT and manufacturing economy with a booming Bucharest and lagging rural east. Official INS / BNR / Eurostat sources."
+  },
+  "tickerItems": [
+    { "icon": "⛽", "label": "Benzină 95", "value": "1.785 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Motorină",   "value": "1.820 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",     "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage 2026", "value": "RON 4,050 (~€820)" },
+    { "icon": "🏠", "label": "Housing",   "value": "€2,000/m² (Bucharest)" },
+    { "icon": "📉", "label": "Unemployment", "value": "5.5%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "2.5M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+2.8%", "id": "tick-gdp" }
+  ],
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Trends" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+  "fuelFallback": {
+    "gasolina95": { "atual": 1.785, "anterior": 1.780, "variacao": 0.005 },
+    "gasolina98": { "atual": 1.885, "anterior": 1.880, "variacao": 0.005 },
+    "gasoleo":    { "atual": 1.820, "anterior": 1.827, "variacao": -0.007 },
+    "gpl":        { "atual": 0.780, "anterior": 0.780, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_2.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
+    "regionUnit": "region",
+    "strokeOnSelect": "#002B7F",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [25.0, 45.9], "scale": 4200, "translate": [275, 310] },
+    "buttons": [
+      { "key": "salary", "label": "💶 Salary" },
+      { "key": "housing", "label": "🛒 Buy €/m²" },
+      { "key": "rent", "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population", "label": "👥 Population" },
+      { "key": "crime", "label": "🚨 Crime" },
+      { "key": "temperature", "label": "🌡 Temperature" },
+      { "key": "doctors", "label": "💊 Doctors" },
+      { "key": "gdp", "label": "📊 GDP pc" }
+    ],
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#e6eaf5", "#002B7F"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",           "format": "currencyPerM2",  "colors": ["#fdf6e0", "#CE1126"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",   "format": "currencyPerMo",  "colors": ["#e6eaf5", "#002B7F"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#e6eaf5", "#002B7F"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e6eaf5", "#002B7F"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#e6eaf5", "#002B7F"] }
+    },
+    "regions": {
+      "RO32": { "name": "București-Ilfov",       "salary": 1250, "housing": 2000, "rent": 550, "unemployment": 2.5, "population": 2280000, "crime": 30.0, "temperature": 11.0, "doctors": 6.5, "gdp": 42000 },
+      "RO11": { "name": "Nord-Vest (Cluj)",      "salary": 950,  "housing": 1900, "rent": 480, "unemployment": 3.5, "population": 2540000, "crime": 18.0, "temperature": 9.5,  "doctors": 3.4, "gdp": 19000 },
+      "RO12": { "name": "Centru (Brașov)",       "salary": 920,  "housing": 1500, "rent": 420, "unemployment": 5.0, "population": 2310000, "crime": 17.0, "temperature": 9.0,  "doctors": 3.0, "gdp": 17500 },
+      "RO42": { "name": "Vest (Timișoara)",      "salary": 980,  "housing": 1600, "rent": 450, "unemployment": 4.0, "population": 1750000, "crime": 18.0, "temperature": 11.0, "doctors": 3.2, "gdp": 20000 },
+      "RO22": { "name": "Sud-Est (Constanța)",   "salary": 850,  "housing": 1300, "rent": 400, "unemployment": 6.5, "population": 2350000, "crime": 19.0, "temperature": 11.5, "doctors": 2.8, "gdp": 14500 },
+      "RO31": { "name": "Sud-Muntenia",          "salary": 820,  "housing": 950,  "rent": 320, "unemployment": 7.0, "population": 2840000, "crime": 16.0, "temperature": 11.0, "doctors": 2.4, "gdp": 13000 },
+      "RO41": { "name": "Sud-Vest Oltenia",      "salary": 800,  "housing": 900,  "rent": 300, "unemployment": 7.5, "population": 1900000, "crime": 15.0, "temperature": 11.0, "doctors": 2.6, "gdp": 12500 },
+      "RO21": { "name": "Nord-Est (Iași)",       "salary": 800,  "housing": 1100, "rent": 340, "unemployment": 8.0, "population": 3200000, "crime": 16.0, "temperature": 9.5,  "doctors": 3.0, "gdp": 11500 }
+    }
+  },
+  "stats": {
+    "unemployment":  { "value": 5.5, "asOf": "Apr 2026", "source": "Eurostat / INS" },
+    "youthUnemp":    { "value": 21.0 },
+    "minWage":       { "value": 820, "asOf": "Jan 2026", "source": "Government · 2026", "note": "RON ~4,050/mo" },
+    "avgGrossSalary":{ "value": 1300 },
+    "avgNetSalary":  { "value": 900 },
+    "gdp":           { "value": 2.8 },
+    "gdpTotalEuro":  { "value": "330B" },
+    "gdpPerCapita":  { "value": "16,500" },
+    "inflation":     { "value": 5.0, "note": "Among EU's highest" },
+    "publicDebt":    { "value": 52 },
+    "budgetBalance": { "value": -7.0, "note": "EU excessive-deficit procedure" },
+    "ecbRate":       { "value": 2.25, "note": "Romania uses BNR rate (currently ~6.5%)" },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 76.0 },
+    "tourists":      { "value": "2.5M" },
+    "tourismRevenue":{ "value": "5B €", "note": "Transylvania, Black Sea, Danube Delta" },
+    "happinessRank": { "value": 32 },
+    "population":    { "value": "19.0M", "note": "Large diaspora (~4M abroad)" }
+  },
+  "history": {
+    "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "gdp":          [4.7, 8.2, 6.0, 3.9, -3.7, 5.7, 4.1, 2.1, 1.0, 2.8],
+    "unemployment": [5.9, 4.9, 4.2, 3.9, 5.0, 5.6, 5.6, 5.6, 5.4, 5.5],
+    "inflation":    [-1.1, 1.1, 4.1, 3.9, 2.3, 4.1, 12.0, 9.7, 5.5, 5.0],
+    "publicDebt":   [37, 35, 35, 35, 47, 48, 47, 49, 52, 52],
+    "euAvg": {
+      "gdp":          [2.0, 2.7, 2.0, 1.6, -5.6, 5.9, 3.4, 0.4, 0.8, 1.5],
+      "unemployment": [8.6, 7.6, 6.8, 6.7, 7.1, 7.0, 6.2, 6.1, 6.0, 6.0],
+      "inflation":    [0.3, 1.5, 1.9, 1.4, 0.7, 2.9, 9.2, 6.4, 2.6, 2.3],
+      "publicDebt":   [83, 82, 80, 78, 90, 88, 84, 82, 82, 83]
+    }
+  },
+  "footerSources": [
+    { "name": "INS",           "url": "https://insse.ro",               "desc": "National statistics" },
+    { "name": "Eurostat",      "url": "https://ec.europa.eu/eurostat",  "desc": "European data" },
+    { "name": "BNR",           "url": "https://www.bnr.ro",             "desc": "National Bank" },
+    { "name": "Romania.travel","url": "https://romania.travel",         "desc": "Tourism" },
+    { "name": "IEP",           "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance", "url": "https://finance.yahoo.com",      "desc": "Brent (live)" }
+  ]
+}

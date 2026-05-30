@@ -17,6 +17,18 @@ import cz from '@data/cz.json';
 import gr from '@data/gr.json';
 import dk from '@data/dk.json';
 import fi from '@data/fi.json';
+import ee from '@data/ee.json';
+import lv from '@data/lv.json';
+import lt from '@data/lt.json';
+import hu from '@data/hu.json';
+import sk from '@data/sk.json';
+import si from '@data/si.json';
+import hr from '@data/hr.json';
+import ro from '@data/ro.json';
+import bg from '@data/bg.json';
+import lu from '@data/lu.json';
+import mt from '@data/mt.json';
+import cy from '@data/cy.json';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
@@ -36,11 +48,23 @@ const countries = [
   { ...gr, slug: 'greece',      blurb: 'EU\'s greatest recovery story · 207% → 142% debt · 36M tourists · brain drain slowing',   highlights: { unemp: 9.5, gdp: '+2.1%', tax: '€830 min' } },
   { ...dk, slug: 'denmark',     blurb: 'Highest GDP/capita in EU · world wind-power leader · #2 happiest globally',                highlights: { unemp: 5.5, gdp: '+2.5%', tax: 'CCNL' } },
   { ...fi, slug: 'finland',     blurb: 'Happiest country in the world (7y in a row) · cheap electricity · post-Russia transition', highlights: { unemp: 7.5, gdp: '+1.0%', tax: 'CCNL' } },
+  { ...ee, slug: 'estonia',     blurb: 'EU\'s digital-government pioneer · lowest public debt in EU · long 2022–24 recession recovering',  highlights: { unemp: 7.5, gdp: '+2.0%', tax: 'e-Residency' } },
+  { ...lv, slug: 'latvia',      blurb: 'Shrinking population · Riga Art Nouveau capital · cheap Latgale, expensive capital',                highlights: { unemp: 6.5, gdp: '+2.2%', tax: '€740 min' } },
+  { ...lt, slug: 'lithuania',   blurb: 'Largest & fastest-growing Baltic · #2 EU fintech hub · highest NATO defence spending',              highlights: { unemp: 7.0, gdp: '+2.8%', tax: '€1,038 min' } },
+  { ...hu, slug: 'hungary',     blurb: 'CEE auto powerhouse (Audi, BMW, BYD) · cheapest electricity in EU · 17% inflation 2023',            highlights: { unemp: 4.5, gdp: '+2.0%', tax: 'HUF' } },
+  { ...sk, slug: 'slovakia',    blurb: 'World\'s biggest per-capita car producer · stark east–west divide · 55% nuclear power',             highlights: { unemp: 5.5, gdp: '+2.0%', tax: '€816 min' } },
+  { ...si, slug: 'slovenia',    blurb: 'Wealthiest ex-Yugoslav state · Alpine + Adriatic mix · highest life expectancy in CEE',              highlights: { unemp: 3.8, gdp: '+2.3%', tax: '€1,254 min' } },
+  { ...hr, slug: 'croatia',     blurb: 'EU\'s newest euro/Schengen member (2023) · tourism = 20% of GDP · debt 87% → 58% in 5 years',       highlights: { unemp: 5.5, gdp: '+3.0%', tax: '€970 min' } },
+  { ...ro, slug: 'romania',     blurb: 'Largest IT sector in EU (% GDP) · Bucharest booming · 4M-strong diaspora · 7% deficit',             highlights: { unemp: 5.5, gdp: '+2.8%', tax: 'RON' } },
+  { ...bg, slug: 'bulgaria',    blurb: 'Cheapest fuel in EU · poorest member · lowest public debt · adopts euro Jan 2026',                  highlights: { unemp: 4.5, gdp: '+2.5%', tax: '€550 min' } },
+  { ...lu, slug: 'luxembourg',  blurb: 'Highest GDP/capita in EU · €2,704 min wage · finance hub · free public transport · 47% foreign',    highlights: { unemp: 5.8, gdp: '+2.0%', tax: '€2,704 min' } },
+  { ...mt, slug: 'malta',       blurb: 'Fastest-growing EU economy · cheapest diesel · English-speaking · iGaming + fintech hub',           highlights: { unemp: 3.0, gdp: '+4.0%', tax: '€961 min' } },
+  { ...cy, slug: 'cyprus',      blurb: 'Mediterranean island · post-2013 recovery (115% → 65% debt) · divided since 1974 · warmest in EU',  highlights: { unemp: 5.5, gdp: '+3.0%', tax: '€1,000 min' } },
 ];
 ---
 <BaseLayout
-  title="EU Stats — Compare 5 European countries for living, moving & investing"
-  description="Side-by-side statistics for Portugal, Spain, France, Germany and Italy. Live data on fuel prices, housing, wages, unemployment, GDP, tourism and more — sourced from Eurostat, ECB, INSEE, INE, ISTAT and Destatis."
+  title="EU Stats — Compare all 27 European countries for living, moving & investing"
+  description="Side-by-side statistics for all 27 EU member states. Live data on fuel prices, housing, wages, unemployment, GDP, tourism and more — sourced from Eurostat, ECB and every national statistics office."
   current="home"
 >
   <main class="main">
@@ -50,7 +74,7 @@ const countries = [
         Europe <em>by the Numbers</em>
       </h1>
       <p class="hero-lead">
-        Side-by-side data for 5 European countries — for anyone thinking of moving, investing,
+        Side-by-side data for all 27 EU member states — for anyone thinking of moving, investing,
         or just curious how their country compares. Updated weekly from official sources.
       </p>
       <div class="hero-meta">
@@ -227,6 +251,18 @@ const countries = [
   .country-card[data-country="gr"]{--accent-mid:#0D5EAF}
   .country-card[data-country="dk"]{--accent-mid:#C8102E}
   .country-card[data-country="fi"]{--accent-mid:#003580}
+  .country-card[data-country="ee"]{--accent-mid:#0072CE}
+  .country-card[data-country="lv"]{--accent-mid:#9E3039}
+  .country-card[data-country="lt"]{--accent-mid:#006A44}
+  .country-card[data-country="hu"]{--accent-mid:#477050}
+  .country-card[data-country="sk"]{--accent-mid:#0B4EA2}
+  .country-card[data-country="si"]{--accent-mid:#0F4DA8}
+  .country-card[data-country="hr"]{--accent-mid:#171796}
+  .country-card[data-country="ro"]{--accent-mid:#002B7F}
+  .country-card[data-country="bg"]{--accent-mid:#00966E}
+  .country-card[data-country="lu"]{--accent-mid:#00A1DE}
+  .country-card[data-country="mt"]{--accent-mid:#C01C28}
+  .country-card[data-country="cy"]{--accent-mid:#C8862B}
 
   .cc-header{display:flex;align-items:flex-start;gap:1rem;margin-bottom:1rem}
   .cc-flag{font-size:2.4rem;line-height:1}

@@ -1,0 +1,150 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
+import data from '@data/bg.json';
+
+const h = data.history;
+const flagColor = '#00966E';
+---
+<CountryLayout country="bg" title={data.meta.title} flag={data.meta.flag} subtitle={data.meta.subtitle} description={data.meta.description} tickerItems={data.tickerItems} sections={data.sections} liveBadge="📌 Static data · loading…">
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="info" icon="⛽">
+      Bulgaria has the <strong>cheapest petrol in the EU</strong> — lower excise plus a strong
+      Russian-refined diesel legacy. Kozloduy nuclear (35% of power) plus domestic coal keep
+      electricity prices low. The Lev is euro-pegged; the country adopts the euro in January 2026.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Benzin 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'dn', text: '↓ Cheapest in EU' }} source="EU Oil Bulletin · May 2026" variant="green" />
+      <MetricCard label="⛽ Dizel" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.13" unit="€/kWh" badge={{ kind: 'dn', text: '↓ Among EU\'s cheapest' }} source="EWRC · Q1 2026" variant="green" />
+      <MetricCard label="☢️ Nuclear share" value="35" unit="%" sub="Kozloduy NPP · new units planned" source="NEK · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Region" tag="9 metrics · click a region">
+    <InteractiveMap regions={data.map.regions} metrics={data.map.metrics} metricButtons={data.map.buttons} geojsonUrl={data.map.geojsonUrl} projection={data.map.projection} featureIdResolver={data.map.featureIdResolver} viewBox={data.map.viewBox} strokeOnSelect={data.map.strokeOnSelect} unit={data.map.regionUnit} country="bg" />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="NSI · Q4 2025">
+    <Notice variant="warn" icon="🏠">
+      Sofia housing prices <strong>doubled since 2017</strong> — IT salaries plus low supply. Black
+      Sea coast (Varna, Burgas) attracts foreign buyers. NW Bulgaria — the EU's poorest region —
+      has homes for under €600/m².
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · Sofia" value="1,700" unit="€/m²" badge={{ kind: 'up', text: '↑ 2× since 2017' }} source="NSI · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Varna" value="1,200" unit="€/m²" badge={{ kind: 'up', text: '↑ Coast premium' }} source="imot.bg · 2025" />
+      <MetricCard label="🛒 Buy · NW Bulgaria" value="600" unit="€/m²" badge={{ kind: 'dn', text: '↓ Among EU\'s cheapest' }} source="imot.bg · 2025" />
+      <MetricCard label="🔑 Rent · Sofia (T2)" value="500" unit="€/mo" badge={{ kind: 'up', text: '↑ Rising' }} source="imot.bg · Q1 2026" variant="blue" />
+      <MetricCard label="🔑 Rent · regional (T2)" value="280" unit="€/mo" source="imot.bg · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="NSI / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" source="NSI · 2025" variant="gold" />
+      <MetricCard label="💶 Average net salary" value={data.stats.avgNetSalary.value} unit="€/mo" source="NSI · 2025" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€/mo" badge={{ kind: 'up', text: '↓ Lowest in EU' }} source="Government · 2026" variant="red" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" valueId="bg-unemp" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source={data.stats.unemployment.source} variant="green" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" valueId="bg-youth-unemp" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="NSI / BNB · 2025–2026">
+    <Notice variant="info" icon="📊">
+      Bulgaria is the EU's <strong>poorest member by GDP per capita</strong> (€14,500), but also
+      one of the <strong>least indebted</strong> (24% public debt). Currency-board peg ends in
+      January 2026 when the country joins the euro. Major IT outsourcing hub in Sofia.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Small economy', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: 'Lowest in EU', kind: 'bad' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'bg-gdp', badge: { text: '↑ Above avg', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'bg-inflation', badge: { text: '↑ Above avg', kind: 'ok' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Among EU lowest', kind: 'good' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget deficit', badge: { text: '→ Within rules', kind: 'good' } },
+    ]} />
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="info" icon="📈">
+      Bulgaria's debt has stayed remarkably low — peaking at 27% in 2016 and falling further to
+      24%. Unemployment more than halved since 2016 (7.6% → 4.5%). Inflation hit
+      <strong>13% in 2022</strong>, then normalised.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="bg-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[{key:'bg',label:'Bulgaria',color:flagColor,data:h.gdp},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.gdp,dashed:true}]} />
+      <TimeChart id="bg-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[{key:'bg',label:'Bulgaria',color:flagColor,data:h.unemployment},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.unemployment,dashed:true}]} />
+      <TimeChart id="bg-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[{key:'bg',label:'Bulgaria',color:flagColor,data:h.inflation},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.inflation,dashed:true}]} />
+      <TimeChart id="bg-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[{key:'bg',label:'Bulgaria',color:flagColor,data:h.publicDebt},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.publicDebt,dashed:true}]} />
+    </div>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="Bulgaria Travel · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="9" unit="M" badge={{ kind: 'dn', text: '↑ Record high' }} source="NSI · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="5" unit="B €" source="Bulgaria Travel · 2024" variant="gold" />
+      <MetricCard label="🏖 Sunny Beach" value="Top draw" sub="Cheap Black Sea package holidays" badge={{ kind: 'ok', text: '✓ Budget market' }} source="MoT · 2024" />
+      <MetricCard label="⛷ Bansko" value="Ski hub" sub="Cheapest Alpine-quality skiing in EU" source="MoT · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'up', text: '↑ Lowest in EU' }} source="Eurostat · 2024" variant="red" />
+      <MetricCard label="💰 Health expenditure" value="7.0" unit="% GDP" source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="4.1" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🩺 Coverage" value="100" unit="%" sub="NHIF social insurance" badge={{ kind: 'ok', text: '✓ Universal' }} source="NHIF · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="26" sub="26th safest globally" badge={{ kind: 'ne', text: '→ Stable' }} source="IEP · 2024" />
+      <MetricCard label="🚔 Homicide rate" value="1.0" unit="/100k" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🚗 Road fatalities" value="510" sub="2024" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="NSI · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="NSI / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Fastest-shrinking nation worldwide" badge={{ kind: 'dn', text: '↓ Falling fast' }} source="NSI · 2026" variant="red" />
+      <MetricCard label="🎓 University graduates" value="33" unit="%" sub="25–34 cohort" badge={{ kind: 'up', text: '↑ Below EU avg' }} source="Eurostat · 2024" />
+      <MetricCard label="👶 Birth rate" value="1.55" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="NSI · 2024" />
+      <MetricCard label="💶 Euro adoption" value="Jan 2026" sub="27th member to adopt" badge={{ kind: 'ok', text: '✓ ERM-II since 2020' }} source="EU Council · 2025" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Bulgaria vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Bulgaria" rows={[
+      { indicator: 'GDP per capita',     country: '€14,500', eu: '€34,900', rank: 'bad',  note: 'Lowest in EU' },
+      { indicator: 'GDP growth 2026',    country: '+2.5%',   eu: '+1.5%',   rank: 'good', note: 'Above avg' },
+      { indicator: 'Unemployment',       country: '4.5%',    eu: '6.0%',    rank: 'good', note: 'Below avg' },
+      { indicator: 'Youth unemployment', country: '18.0%',   eu: '15.4%',   rank: 'bad',  note: 'Above avg' },
+      { indicator: 'Inflation 2026',     country: '3.5%',    eu: '2.6%',    rank: 'ok',   note: 'Slightly above' },
+      { indicator: 'Public debt',        country: '24% GDP', eu: '83% GDP', rank: 'good', note: 'Among EU\'s lowest' },
+      { indicator: 'Min. wage',          country: '€550',    eu: '~€1,100', rank: 'bad',  note: 'Lowest in EU' },
+      { indicator: 'Petrol price',       country: '€1.53/L', eu: '€1.82/L', rank: 'good', note: 'Cheapest in EU' },
+      { indicator: 'Life expectancy',    country: '75.0 yrs', eu: '81.2 yrs', rank: 'bad', note: 'Lowest in EU' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="bg" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (<li><a href={s.url}>{s.name}</a> — {s.desc}</li>))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇧🇬 Bulgaria · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">NSI · BNB · Eurostat</span>
+  </Fragment>
+</CountryLayout>

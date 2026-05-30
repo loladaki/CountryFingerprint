@@ -1,0 +1,150 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
+import data from '@data/hr.json';
+
+const h = data.history;
+const flagColor = '#171796';
+---
+<CountryLayout country="hr" title={data.meta.title} flag={data.meta.flag} subtitle={data.meta.subtitle} description={data.meta.description} tickerItems={data.tickerItems} sections={data.sections} liveBadge="📌 Static data · loading…">
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="info" icon="⛽">
+      Croatian fuel is <strong>cheaper than the EU average</strong> thanks to lower excise on
+      petrol. The country exports surplus hydroelectricity and has its own oil and gas via the
+      INA group plus the Krk LNG terminal.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Benzin 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Dizel" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.16" unit="€/kWh" sub="Among EU's cheapest household tariffs" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="HEP · Q1 2026" variant="green" />
+      <MetricCard label="💧 Hydro share" value="50" unit="%" sub="Plus 17% wind · 6% solar" source="HOPS · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Region" tag="9 metrics · click a region">
+    <InteractiveMap regions={data.map.regions} metrics={data.map.metrics} metricButtons={data.map.buttons} geojsonUrl={data.map.geojsonUrl} projection={data.map.projection} featureIdResolver={data.map.featureIdResolver} viewBox={data.map.viewBox} strokeOnSelect={data.map.strokeOnSelect} unit={data.map.regionUnit} country="hr" />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="DZS · Q4 2025">
+    <Notice variant="warn" icon="🏠">
+      Coastal Croatia (Split, Dubrovnik) has become <strong>extremely expensive</strong> on the
+      Adriatic — driven by EU buyers and Airbnb. Zagreb prices rose ~70% since the 2020 earthquake.
+      Inland Slavonia is among the cheapest housing in the EU.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · Zagreb" value="2,800" unit="€/m²" badge={{ kind: 'up', text: '↑ +8% vs 2024' }} source="DZS · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Dubrovnik" value="6,000" unit="€/m²" badge={{ kind: 'up', text: '↑ Most expensive' }} source="Crozilla · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Split" value="3,500" unit="€/m²" badge={{ kind: 'up', text: '↑ Booming' }} source="njuškalo · 2025" />
+      <MetricCard label="🔑 Rent · Zagreb (T2)" value="700" unit="€/mo" badge={{ kind: 'up', text: '↑ Tight supply' }} source="njuškalo · Q1 2026" variant="blue" />
+      <MetricCard label="🔑 Rent · coast (T2)" value="850" unit="€/mo" sub="Off-season — summer 4–5×" source="njuškalo · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="DZS / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" source="DZS · 2025" variant="gold" />
+      <MetricCard label="💶 Average net salary" value={data.stats.avgNetSalary.value} unit="€/mo" source="DZS · 2025" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€/mo" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Government · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" valueId="hr-unemp" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source={data.stats.unemployment.source} variant="green" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" valueId="hr-youth-unemp" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="DZS / HNB · 2025–2026">
+    <Notice variant="info" icon="📊">
+      Croatia joined the <strong>euro and Schengen on the same day in 2023</strong> — a major
+      milestone. Tourism alone is ~20% of GDP. Public debt has fallen from 87% (2020) to 58%, one
+      of the EU's biggest recoveries.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Tourism-driven', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: 'Below avg', kind: 'bad' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'hr-gdp', badge: { text: '↑ Well above avg', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'hr-inflation', badge: { text: '↑ Above avg', kind: 'ok' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Below avg', kind: 'good' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget deficit', badge: { text: '→ Within rules', kind: 'good' } },
+    ]} />
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="info" icon="📈">
+      Croatia's 2020 GDP fell <strong>-8.6%</strong> (worst-hit by Covid in CEE due to tourism
+      dependence) and rebounded by an EU-leading <strong>+13.8% in 2021</strong>. Public debt fell
+      from 87% to 58% in five years — a remarkable turnaround.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="hr-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[{key:'hr',label:'Croatia',color:flagColor,data:h.gdp},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.gdp,dashed:true}]} />
+      <TimeChart id="hr-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[{key:'hr',label:'Croatia',color:flagColor,data:h.unemployment},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.unemployment,dashed:true}]} />
+      <TimeChart id="hr-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[{key:'hr',label:'Croatia',color:flagColor,data:h.inflation},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.inflation,dashed:true}]} />
+      <TimeChart id="hr-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[{key:'hr',label:'Croatia',color:flagColor,data:h.publicDebt},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.publicDebt,dashed:true}]} />
+    </div>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="Croatia.hr · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="20" unit="M" badge={{ kind: 'dn', text: '↑ Record high' }} source="DZS · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="15" unit="B €" badge={{ kind: 'up', text: '↑ ~20% of GDP' }} source="Croatia.hr · 2024" variant="gold" />
+      <MetricCard label="🏖 Coast" value="6,000 km" sub="1,200+ islands" badge={{ kind: 'ok', text: '✓ Adriatic gem' }} source="Croatia.hr · 2024" />
+      <MetricCard label="🏛 Dubrovnik" value="UNESCO" sub="King's Landing for GoT fans" badge={{ kind: 'up', text: '↑ Overtourism' }} source="UNESCO" variant="red" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="Eurostat · 2024" />
+      <MetricCard label="💰 Health expenditure" value="7.5" unit="% GDP" source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="3.5" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🩺 Coverage" value="100" unit="%" sub="HZZO single-payer" badge={{ kind: 'ok', text: '✓ Universal' }} source="HZZO · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="14" sub="14th safest globally" badge={{ kind: 'dn', text: '↑ Top-15' }} source="IEP · 2024" variant="green" />
+      <MetricCard label="🚔 Homicide rate" value="0.7" unit="/100k" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🚗 Road fatalities" value="290" sub="2024" badge={{ kind: 'ne', text: '→ Stable' }} source="DZS · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="DZS / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Shrinking — emigration since EU accession" badge={{ kind: 'dn', text: '↓ Falling' }} source="DZS · 2026" variant="red" />
+      <MetricCard label="🎓 University graduates" value="37" unit="%" sub="25–34 cohort" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2024" />
+      <MetricCard label="👶 Birth rate" value="1.45" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="DZS · 2024" />
+      <MetricCard label="🇪🇺 EU/Schengen/Euro" value="3/3" sub="All three joined by 2023" badge={{ kind: 'ok', text: '✓ Fully integrated' }} source="EU · 2023" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Croatia vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Croatia" rows={[
+      { indicator: 'GDP per capita',     country: '€20,000', eu: '€34,900', rank: 'bad',  note: 'Below avg (-43%)' },
+      { indicator: 'GDP growth 2026',    country: '+3.0%',   eu: '+1.5%',   rank: 'good', note: 'Well above avg' },
+      { indicator: 'Unemployment',       country: '5.5%',    eu: '6.0%',    rank: 'good', note: 'Below avg' },
+      { indicator: 'Youth unemployment', country: '18.0%',   eu: '15.4%',   rank: 'bad',  note: 'Above avg' },
+      { indicator: 'Inflation 2026',     country: '3.5%',    eu: '2.6%',    rank: 'bad',  note: 'Above avg' },
+      { indicator: 'Public debt',        country: '58% GDP', eu: '83% GDP', rank: 'good', note: 'Below avg' },
+      { indicator: 'Min. wage',          country: '€970',    eu: '~€1,100', rank: 'ok',   note: 'Slightly below' },
+      { indicator: 'Petrol price',       country: '€1.70/L', eu: '€1.82/L', rank: 'good', note: 'Below avg' },
+      { indicator: 'Life expectancy',    country: '78.5 yrs', eu: '81.2 yrs', rank: 'bad', note: 'Below avg' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="hr" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (<li><a href={s.url}>{s.name}</a> — {s.desc}</li>))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇭🇷 Croatia · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">DZS · HNB · Eurostat</span>
+  </Fragment>
+</CountryLayout>

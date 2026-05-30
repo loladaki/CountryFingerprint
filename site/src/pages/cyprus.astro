@@ -1,0 +1,150 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
+import data from '@data/cy.json';
+
+const h = data.history;
+const flagColor = '#C8862B';
+---
+<CountryLayout country="cy" title={data.meta.title} flag={data.meta.flag} subtitle={data.meta.subtitle} description={data.meta.description} tickerItems={data.tickerItems} sections={data.sections} liveBadge="📌 Static data · loading…">
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="info" icon="⛽">
+      Cypriot petrol is <strong>among the EU's cheapest</strong> — diesel is closer to average.
+      The island has no domestic gas or oil yet (Aphrodite field development pending) and runs on
+      imported heavy fuel oil; renewables are growing fast from a low base.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Petrol 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diesel" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.28" unit="€/kWh" sub="Heavy fuel oil dependent · pricier than EU avg" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="CERA · Q1 2026" />
+      <MetricCard label="☀️ Solar share" value="20" unit="%" sub="Rising fast · cheapest in EU per kW" source="TSOC · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Country Overview" tag="single region · click for details">
+    <InteractiveMap regions={data.map.regions} metrics={data.map.metrics} metricButtons={data.map.buttons} geojsonUrl={data.map.geojsonUrl} projection={data.map.projection} featureIdResolver={data.map.featureIdResolver} viewBox={data.map.viewBox} strokeOnSelect={data.map.strokeOnSelect} unit={data.map.regionUnit} country="cy" />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="CYSTAT · Q4 2025">
+    <Notice variant="warn" icon="🏠">
+      Cypriot housing has <strong>climbed sharply since 2017</strong>, driven by foreign demand —
+      Limassol attracts Russian, Israeli and Lebanese buyers, while Paphos and Larnaca pull in
+      British retirees. Citizenship-by-investment ran 2013–2020 and pushed prices further.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · Limassol" value="3,500" unit="€/m²" badge={{ kind: 'up', text: '↑ Most expensive' }} source="CYSTAT · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · national avg" value="2,500" unit="€/m²" badge={{ kind: 'up', text: '↑ +6% vs 2024' }} source="CYSTAT · 2025" />
+      <MetricCard label="🛒 Buy · Paphos" value="2,800" unit="€/m²" sub="Heavy expat market" source="bazaraki.com · 2025" />
+      <MetricCard label="🔑 Rent · Limassol (T2)" value="1,400" unit="€/mo" badge={{ kind: 'up', text: '↑ Highest in CY' }} source="bazaraki.com · Q1 2026" variant="blue" />
+      <MetricCard label="🔑 Rent · Nicosia (T2)" value="950" unit="€/mo" source="bazaraki.com · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="CYSTAT / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" source="CYSTAT · 2025" variant="gold" />
+      <MetricCard label="💶 Average net salary" value={data.stats.avgNetSalary.value} unit="€/mo" source="CYSTAT · 2025" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€/mo" sub="National minimum since 2023" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Government · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" valueId="cy-unemp" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source={data.stats.unemployment.source} variant="green" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" valueId="cy-youth-unemp" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="CYSTAT / Eurostat · 2025–2026">
+    <Notice variant="info" icon="📊">
+      Cyprus has staged a <strong>remarkable post-2013 recovery</strong> — public debt fell from
+      115% to 65% of GDP. Tourism, shipping (largest EU flag of convenience) and professional
+      services drive growth. Sanctions hit the Russian-money channel hard from 2022 onward.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Small economy', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: 'Near avg', kind: 'ok' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'cy-gdp', badge: { text: '↑ Well above avg', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'cy-inflation', badge: { text: '↓ Below avg', kind: 'good' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Below avg', kind: 'good' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget surplus', badge: { text: '↑ Surplus', kind: 'good' } },
+    ]} />
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="info" icon="📈">
+      The debt chart tells Cyprus's story: <strong>115% in 2020 → 65% in 2025</strong>, one of the
+      EU's biggest deleveragings. Unemployment more than halved from 13% (2016) to 5.5%.
+      Inflation peaked at 8.1% in 2022 and is back below EU average.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="cy-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[{key:'cy',label:'Cyprus',color:flagColor,data:h.gdp},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.gdp,dashed:true}]} />
+      <TimeChart id="cy-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[{key:'cy',label:'Cyprus',color:flagColor,data:h.unemployment},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.unemployment,dashed:true}]} />
+      <TimeChart id="cy-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[{key:'cy',label:'Cyprus',color:flagColor,data:h.inflation},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.inflation,dashed:true}]} />
+      <TimeChart id="cy-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[{key:'cy',label:'Cyprus',color:flagColor,data:h.publicDebt},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.publicDebt,dashed:true}]} />
+    </div>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="Visit Cyprus · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="4" unit="M" badge={{ kind: 'dn', text: '↑ ~4× population' }} source="CYSTAT · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="3" unit="B €" badge={{ kind: 'up', text: '↑ ~10% of GDP' }} source="Visit Cyprus · 2024" variant="gold" />
+      <MetricCard label="🏖 Coastline" value="650 km" sub="Mediterranean beaches year-round" badge={{ kind: 'ok', text: '✓ Warmest in EU' }} source="Visit Cyprus" />
+      <MetricCard label="🇬🇧 UK market" value="35" unit="%" sub="Biggest source · plus Israel/Greece" source="DeputyMin · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="green" />
+      <MetricCard label="💰 Health expenditure" value="7.0" unit="% GDP" source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="3.5" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🩺 GESY coverage" value="100" unit="%" sub="Since 2019 — replaced the old fragmented system" badge={{ kind: 'ok', text: '✓ Universal' }} source="HIO · 2024" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="55" sub="Divided-island legacy" badge={{ kind: 'ne', text: '→ Stable' }} source="IEP · 2024" />
+      <MetricCard label="🚔 Homicide rate" value="1.1" unit="/100k" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🚗 Road fatalities" value="50" sub="2024" badge={{ kind: 'ne', text: '→ Stable' }} source="CYSTAT · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="CYSTAT / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Government-controlled south only" source="CYSTAT · 2026" />
+      <MetricCard label="🗣 Languages" value="2 official" sub="Greek + Turkish · English near-universal" badge={{ kind: 'ok', text: '✓ English-friendly' }} source="Government" variant="green" />
+      <MetricCard label="🎓 University graduates" value="59" unit="%" sub="25–34 cohort · highest in EU" badge={{ kind: 'dn', text: '↑ #1 in EU' }} source="Eurostat · 2024" variant="green" />
+      <MetricCard label="🌍 Divided island" value="Since 1974" sub="Northern third under Turkish control" badge={{ kind: 'ne', text: '→ Unresolved' }} source="UN · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Cyprus vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Cyprus" rows={[
+      { indicator: 'GDP per capita',     country: '€31,000', eu: '€34,900', rank: 'ok',   note: 'Near avg' },
+      { indicator: 'GDP growth 2026',    country: '+3.0%',   eu: '+1.5%',   rank: 'good', note: 'Well above avg' },
+      { indicator: 'Unemployment',       country: '5.5%',    eu: '6.0%',    rank: 'good', note: 'Below avg' },
+      { indicator: 'Youth unemployment', country: '17.0%',   eu: '15.4%',   rank: 'ok',   note: 'Slightly above' },
+      { indicator: 'Inflation 2026',     country: '2.0%',    eu: '2.6%',    rank: 'good', note: 'Below avg' },
+      { indicator: 'Public debt',        country: '65% GDP', eu: '83% GDP', rank: 'good', note: 'Big deleveraging' },
+      { indicator: 'Min. wage',          country: '€1,000',  eu: '~€1,100', rank: 'ok',   note: 'Near avg' },
+      { indicator: 'Petrol price',       country: '€1.59/L', eu: '€1.82/L', rank: 'good', note: 'Below avg' },
+      { indicator: 'Life expectancy',    country: '81.7 yrs', eu: '81.2 yrs', rank: 'good', note: 'Slightly above' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="cy" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (<li><a href={s.url}>{s.name}</a> — {s.desc}</li>))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇨🇾 Cyprus · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">CYSTAT · Central Bank of Cyprus · Eurostat</span>
+  </Fragment>
+</CountryLayout>

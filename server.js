@@ -67,6 +67,18 @@ const FB_STATS = {
   gr: { unemp: 9.5,  youth_unemp: 22.5, gdp: 2.1, inflation: 2.8, min_wage:  830 },
   dk: { unemp: 5.5,  youth_unemp: 11.0, gdp: 2.5, inflation: 1.8, min_wage: null /* Collective agreements only */ },
   fi: { unemp: 7.5,  youth_unemp: 17.5, gdp: 1.0, inflation: 1.5, min_wage: null /* Collective agreements only */ },
+  ee: { unemp: 7.5,  youth_unemp: 18.0, gdp: 2.0, inflation: 4.0, min_wage: 886 },
+  lv: { unemp: 6.5,  youth_unemp: 15.0, gdp: 2.2, inflation: 3.0, min_wage: 740 },
+  lt: { unemp: 7.0,  youth_unemp: 14.0, gdp: 2.8, inflation: 3.2, min_wage: 1038 },
+  hu: { unemp: 4.5,  youth_unemp: 13.0, gdp: 2.0, inflation: 4.5, min_wage: 720 },
+  sk: { unemp: 5.5,  youth_unemp: 19.0, gdp: 2.0, inflation: 4.0, min_wage: 816 },
+  si: { unemp: 3.8,  youth_unemp: 11.0, gdp: 2.3, inflation: 3.0, min_wage: 1254 },
+  hr: { unemp: 5.5,  youth_unemp: 18.0, gdp: 3.0, inflation: 3.5, min_wage: 970 },
+  ro: { unemp: 5.5,  youth_unemp: 21.0, gdp: 2.8, inflation: 5.0, min_wage: 820 },
+  bg: { unemp: 4.5,  youth_unemp: 18.0, gdp: 2.5, inflation: 3.5, min_wage: 550 },
+  lu: { unemp: 5.8,  youth_unemp: 18.0, gdp: 2.0, inflation: 2.5, min_wage: 2704 },
+  mt: { unemp: 3.0,  youth_unemp:  8.0, gdp: 4.0, inflation: 2.5, min_wage: 961 },
+  cy: { unemp: 5.5,  youth_unemp: 17.0, gdp: 3.0, inflation: 2.0, min_wage: 1000 },
 };
 
 // ── HTTP fetch com redirects ──────────────────
@@ -364,11 +376,11 @@ async function fetchEurostatStats() {
   console.log('[Eurostat] A buscar dados...');
 
   const [unemp, youthUnemp, gdp, infl, minWage] = await Promise.allSettled([
-    fetchEurostatJSON('une_rt_m',    { s_adj: 'SA', age: 'TOTAL',  sex: 'T', unit: 'PC_ACT', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE','PL','CZ','EL','DK','FI'], lastTimePeriod: 3 }),
-    fetchEurostatJSON('une_rt_m',    { s_adj: 'SA', age: 'Y15-24', sex: 'T', unit: 'PC_ACT', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE','PL','CZ','EL','DK','FI'], lastTimePeriod: 3 }),
-    fetchEurostatJSON('namq_10_gdp', { unit: 'CLV_PCH_A', na_item: 'B1GQ', s_adj: 'SCA', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE','PL','CZ','EL','DK','FI'], lastTimePeriod: 2 }),
-    fetchEurostatJSON('prc_hicp_manr', { unit: 'RCH_A', coicop: 'CP00', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE','PL','CZ','EL','DK','FI'], lastTimePeriod: 3 }),
-    fetchEurostatJSON('earn_mw_cur', { currency: 'EUR', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE','PL','CZ','EL','DK','FI'], lastTimePeriod: 2 }),
+    fetchEurostatJSON('une_rt_m',    { s_adj: 'SA', age: 'TOTAL',  sex: 'T', unit: 'PC_ACT', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE','PL','CZ','EL','DK','FI','EE','LV','LT','HU','SK','SI','HR','RO','BG','LU','MT','CY'], lastTimePeriod: 3 }),
+    fetchEurostatJSON('une_rt_m',    { s_adj: 'SA', age: 'Y15-24', sex: 'T', unit: 'PC_ACT', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE','PL','CZ','EL','DK','FI','EE','LV','LT','HU','SK','SI','HR','RO','BG','LU','MT','CY'], lastTimePeriod: 3 }),
+    fetchEurostatJSON('namq_10_gdp', { unit: 'CLV_PCH_A', na_item: 'B1GQ', s_adj: 'SCA', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE','PL','CZ','EL','DK','FI','EE','LV','LT','HU','SK','SI','HR','RO','BG','LU','MT','CY'], lastTimePeriod: 2 }),
+    fetchEurostatJSON('prc_hicp_manr', { unit: 'RCH_A', coicop: 'CP00', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE','PL','CZ','EL','DK','FI','EE','LV','LT','HU','SK','SI','HR','RO','BG','LU','MT','CY'], lastTimePeriod: 3 }),
+    fetchEurostatJSON('earn_mw_cur', { currency: 'EUR', geo: ['PT','ES','FR','DE','IT','NL','IE','BE','AT','SE','PL','CZ','EL','DK','FI','EE','LV','LT','HU','SK','SI','HR','RO','BG','LU','MT','CY'], lastTimePeriod: 2 }),
   ]);
 
   const ok  = r => r.status === 'fulfilled' ? r.value : null;
@@ -432,6 +444,18 @@ async function fetchEurostatStats() {
     gr: { unemp: ext(unD,'EL',FB_STATS.gr.unemp), youth_unemp: ext(yuD,'EL',FB_STATS.gr.youth_unemp), gdp: ext(gdpD,'EL',FB_STATS.gr.gdp), inflation: ext(inflD,'EL',FB_STATS.gr.inflation), min_wage: ext(wageD,'EL',FB_STATS.gr.min_wage) },
     dk: { unemp: ext(unD,'DK',FB_STATS.dk.unemp), youth_unemp: ext(yuD,'DK',FB_STATS.dk.youth_unemp), gdp: ext(gdpD,'DK',FB_STATS.dk.gdp), inflation: ext(inflD,'DK',FB_STATS.dk.inflation), min_wage: ext(wageD,'DK',FB_STATS.dk.min_wage) },
     fi: { unemp: ext(unD,'FI',FB_STATS.fi.unemp), youth_unemp: ext(yuD,'FI',FB_STATS.fi.youth_unemp), gdp: ext(gdpD,'FI',FB_STATS.fi.gdp), inflation: ext(inflD,'FI',FB_STATS.fi.inflation), min_wage: ext(wageD,'FI',FB_STATS.fi.min_wage) },
+    ee: { unemp: ext(unD,'EE',FB_STATS.ee.unemp), youth_unemp: ext(yuD,'EE',FB_STATS.ee.youth_unemp), gdp: ext(gdpD,'EE',FB_STATS.ee.gdp), inflation: ext(inflD,'EE',FB_STATS.ee.inflation), min_wage: ext(wageD,'EE',FB_STATS.ee.min_wage) },
+    lv: { unemp: ext(unD,'LV',FB_STATS.lv.unemp), youth_unemp: ext(yuD,'LV',FB_STATS.lv.youth_unemp), gdp: ext(gdpD,'LV',FB_STATS.lv.gdp), inflation: ext(inflD,'LV',FB_STATS.lv.inflation), min_wage: ext(wageD,'LV',FB_STATS.lv.min_wage) },
+    lt: { unemp: ext(unD,'LT',FB_STATS.lt.unemp), youth_unemp: ext(yuD,'LT',FB_STATS.lt.youth_unemp), gdp: ext(gdpD,'LT',FB_STATS.lt.gdp), inflation: ext(inflD,'LT',FB_STATS.lt.inflation), min_wage: ext(wageD,'LT',FB_STATS.lt.min_wage) },
+    hu: { unemp: ext(unD,'HU',FB_STATS.hu.unemp), youth_unemp: ext(yuD,'HU',FB_STATS.hu.youth_unemp), gdp: ext(gdpD,'HU',FB_STATS.hu.gdp), inflation: ext(inflD,'HU',FB_STATS.hu.inflation), min_wage: ext(wageD,'HU',FB_STATS.hu.min_wage) },
+    sk: { unemp: ext(unD,'SK',FB_STATS.sk.unemp), youth_unemp: ext(yuD,'SK',FB_STATS.sk.youth_unemp), gdp: ext(gdpD,'SK',FB_STATS.sk.gdp), inflation: ext(inflD,'SK',FB_STATS.sk.inflation), min_wage: ext(wageD,'SK',FB_STATS.sk.min_wage) },
+    si: { unemp: ext(unD,'SI',FB_STATS.si.unemp), youth_unemp: ext(yuD,'SI',FB_STATS.si.youth_unemp), gdp: ext(gdpD,'SI',FB_STATS.si.gdp), inflation: ext(inflD,'SI',FB_STATS.si.inflation), min_wage: ext(wageD,'SI',FB_STATS.si.min_wage) },
+    hr: { unemp: ext(unD,'HR',FB_STATS.hr.unemp), youth_unemp: ext(yuD,'HR',FB_STATS.hr.youth_unemp), gdp: ext(gdpD,'HR',FB_STATS.hr.gdp), inflation: ext(inflD,'HR',FB_STATS.hr.inflation), min_wage: ext(wageD,'HR',FB_STATS.hr.min_wage) },
+    ro: { unemp: ext(unD,'RO',FB_STATS.ro.unemp), youth_unemp: ext(yuD,'RO',FB_STATS.ro.youth_unemp), gdp: ext(gdpD,'RO',FB_STATS.ro.gdp), inflation: ext(inflD,'RO',FB_STATS.ro.inflation), min_wage: ext(wageD,'RO',FB_STATS.ro.min_wage) },
+    bg: { unemp: ext(unD,'BG',FB_STATS.bg.unemp), youth_unemp: ext(yuD,'BG',FB_STATS.bg.youth_unemp), gdp: ext(gdpD,'BG',FB_STATS.bg.gdp), inflation: ext(inflD,'BG',FB_STATS.bg.inflation), min_wage: ext(wageD,'BG',FB_STATS.bg.min_wage) },
+    lu: { unemp: ext(unD,'LU',FB_STATS.lu.unemp), youth_unemp: ext(yuD,'LU',FB_STATS.lu.youth_unemp), gdp: ext(gdpD,'LU',FB_STATS.lu.gdp), inflation: ext(inflD,'LU',FB_STATS.lu.inflation), min_wage: ext(wageD,'LU',FB_STATS.lu.min_wage) },
+    mt: { unemp: ext(unD,'MT',FB_STATS.mt.unemp), youth_unemp: ext(yuD,'MT',FB_STATS.mt.youth_unemp), gdp: ext(gdpD,'MT',FB_STATS.mt.gdp), inflation: ext(inflD,'MT',FB_STATS.mt.inflation), min_wage: ext(wageD,'MT',FB_STATS.mt.min_wage) },
+    cy: { unemp: ext(unD,'CY',FB_STATS.cy.unemp), youth_unemp: ext(yuD,'CY',FB_STATS.cy.youth_unemp), gdp: ext(gdpD,'CY',FB_STATS.cy.gdp), inflation: ext(inflD,'CY',FB_STATS.cy.inflation), min_wage: ext(wageD,'CY',FB_STATS.cy.min_wage) },
     fonte: 'eurostat',
     data:  new Date().toISOString(),
   };
@@ -470,6 +494,18 @@ function parseWeeklyTable(text) {
       if (cols[0] === 'Greece')   result.gr = { petrol: n(cols[1]), diesel: n(cols[2]) };
       if (cols[0] === 'Denmark')  result.dk = { petrol: n(cols[1]), diesel: n(cols[2]) };
       if (cols[0] === 'Finland')  result.fi = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Estonia')    result.ee = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Latvia')     result.lv = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Lithuania')  result.lt = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Hungary')    result.hu = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Slovakia')   result.sk = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Slovenia')   result.si = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Croatia')    result.hr = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Romania')    result.ro = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Bulgaria')   result.bg = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Luxembourg') result.lu = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Malta')      result.mt = { petrol: n(cols[1]), diesel: n(cols[2]) };
+      if (cols[0] === 'Cyprus')     result.cy = { petrol: n(cols[1]), diesel: n(cols[2]) };
     }
   }
   if (!result.pt?.petrol) throw new Error('Portugal não encontrado na tabela');
@@ -523,6 +559,30 @@ async function fetchCombustiveis() {
       dk_gasoleo:    parsed.dk ? mkFuel(parsed.dk.diesel, 2.181) : { atual: 2.181, serie: [] },
       fi_gasolina95: parsed.fi ? mkFuel(parsed.fi.petrol, 2.025) : { atual: 2.025, serie: [] },
       fi_gasoleo:    parsed.fi ? mkFuel(parsed.fi.diesel, 2.140) : { atual: 2.140, serie: [] },
+      ee_gasolina95: parsed.ee ? mkFuel(parsed.ee.petrol, 1.812) : { atual: 1.812, serie: [] },
+      ee_gasoleo:    parsed.ee ? mkFuel(parsed.ee.diesel, 1.802) : { atual: 1.802, serie: [] },
+      lv_gasolina95: parsed.lv ? mkFuel(parsed.lv.petrol, 1.879) : { atual: 1.879, serie: [] },
+      lv_gasoleo:    parsed.lv ? mkFuel(parsed.lv.diesel, 1.892) : { atual: 1.892, serie: [] },
+      lt_gasolina95: parsed.lt ? mkFuel(parsed.lt.petrol, 1.824) : { atual: 1.824, serie: [] },
+      lt_gasoleo:    parsed.lt ? mkFuel(parsed.lt.diesel, 1.926) : { atual: 1.926, serie: [] },
+      hu_gasolina95: parsed.hu ? mkFuel(parsed.hu.petrol, 1.685) : { atual: 1.685, serie: [] },
+      hu_gasoleo:    parsed.hu ? mkFuel(parsed.hu.diesel, 1.754) : { atual: 1.754, serie: [] },
+      sk_gasolina95: parsed.sk ? mkFuel(parsed.sk.petrol, 1.801) : { atual: 1.801, serie: [] },
+      sk_gasoleo:    parsed.sk ? mkFuel(parsed.sk.diesel, 1.718) : { atual: 1.718, serie: [] },
+      si_gasolina95: parsed.si ? mkFuel(parsed.si.petrol, 1.699) : { atual: 1.699, serie: [] },
+      si_gasoleo:    parsed.si ? mkFuel(parsed.si.diesel, 1.751) : { atual: 1.751, serie: [] },
+      hr_gasolina95: parsed.hr ? mkFuel(parsed.hr.petrol, 1.700) : { atual: 1.700, serie: [] },
+      hr_gasoleo:    parsed.hr ? mkFuel(parsed.hr.diesel, 1.785) : { atual: 1.785, serie: [] },
+      ro_gasolina95: parsed.ro ? mkFuel(parsed.ro.petrol, 1.785) : { atual: 1.785, serie: [] },
+      ro_gasoleo:    parsed.ro ? mkFuel(parsed.ro.diesel, 1.820) : { atual: 1.820, serie: [] },
+      bg_gasolina95: parsed.bg ? mkFuel(parsed.bg.petrol, 1.530) : { atual: 1.530, serie: [] },
+      bg_gasoleo:    parsed.bg ? mkFuel(parsed.bg.diesel, 1.706) : { atual: 1.706, serie: [] },
+      lu_gasolina95: parsed.lu ? mkFuel(parsed.lu.petrol, 1.814) : { atual: 1.814, serie: [] },
+      lu_gasoleo:    parsed.lu ? mkFuel(parsed.lu.diesel, 1.840) : { atual: 1.840, serie: [] },
+      mt_gasolina95: parsed.mt ? mkFuel(parsed.mt.petrol, 1.340) : { atual: 1.340, serie: [] },
+      mt_gasoleo:    parsed.mt ? mkFuel(parsed.mt.diesel, 1.210) : { atual: 1.210, serie: [] },
+      cy_gasolina95: parsed.cy ? mkFuel(parsed.cy.petrol, 1.591) : { atual: 1.591, serie: [] },
+      cy_gasoleo:    parsed.cy ? mkFuel(parsed.cy.diesel, 1.803) : { atual: 1.803, serie: [] },
       de_gasoleo:    parsed.de ? mkFuel(parsed.de.diesel, 1.680) : { atual: 1.680, serie: [] },
       fonte: 'eu_oil_bulletin', data: new Date().toISOString(),
     };

@@ -1,0 +1,121 @@
+{
+  "meta": {
+    "code": "hu",
+    "name": "Hungary",
+    "flag": "🇭🇺",
+    "title": "Hungary by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 8 NUTS2 regions (uses HUF)",
+    "description": "Hungary dashboard — fuel, housing, wages, unemployment, GDP, tourism. A CEE auto-manufacturing hub that endured the EU's worst recent inflation. Official KSH / MNB / Eurostat sources."
+  },
+  "tickerItems": [
+    { "icon": "⛽", "label": "Benzin 95", "value": "1.685 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Dízel",     "value": "1.754 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",    "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage 2026", "value": "HUF 290k (~€720)" },
+    { "icon": "🏠", "label": "Housing",  "value": "€2,800/m² (Budapest)" },
+    { "icon": "📉", "label": "Unemployment", "value": "4.5%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "16M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+2.0%", "id": "tick-gdp" }
+  ],
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Trends" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+  "fuelFallback": {
+    "gasolina95": { "atual": 1.685, "anterior": 1.680, "variacao": 0.005 },
+    "gasolina98": { "atual": 1.785, "anterior": 1.780, "variacao": 0.005 },
+    "gasoleo":    { "atual": 1.754, "anterior": 1.760, "variacao": -0.006 },
+    "gpl":        { "atual": 0.780, "anterior": 0.780, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_2.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
+    "regionUnit": "region",
+    "strokeOnSelect": "#477050",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [19.5, 47.1], "scale": 6000, "translate": [275, 310] },
+    "buttons": [
+      { "key": "salary", "label": "💶 Salary" },
+      { "key": "housing", "label": "🛒 Buy €/m²" },
+      { "key": "rent", "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population", "label": "👥 Population" },
+      { "key": "crime", "label": "🚨 Crime" },
+      { "key": "temperature", "label": "🌡 Temperature" },
+      { "key": "doctors", "label": "💊 Doctors" },
+      { "key": "gdp", "label": "📊 GDP pc" }
+    ],
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#e9f0eb", "#477050"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",           "format": "currencyPerM2",  "colors": ["#fdecec", "#CD2A3E"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",   "format": "currencyPerMo",  "colors": ["#e9f0eb", "#477050"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#e9f0eb", "#477050"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e9f0eb", "#477050"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#e9f0eb", "#477050"] }
+    },
+    "regions": {
+      "HU11": { "name": "Budapest",            "salary": 1350, "housing": 2800, "rent": 750, "unemployment": 2.8, "population": 1700000, "crime": 35.0, "temperature": 11.5, "doctors": 6.5, "gdp": 34000 },
+      "HU12": { "name": "Pest",                "salary": 1050, "housing": 1900, "rent": 520, "unemployment": 3.5, "population": 1320000, "crime": 24.0, "temperature": 11.0, "doctors": 2.8, "gdp": 16000 },
+      "HU21": { "name": "Közép-Dunántúl",      "salary": 1000, "housing": 1300, "rent": 420, "unemployment": 3.8, "population": 1040000, "crime": 20.0, "temperature": 11.0, "doctors": 2.6, "gdp": 17500 },
+      "HU22": { "name": "Nyugat-Dunántúl",     "salary": 1050, "housing": 1500, "rent": 460, "unemployment": 3.2, "population": 990000,  "crime": 19.0, "temperature": 11.0, "doctors": 3.0, "gdp": 19500 },
+      "HU23": { "name": "Dél-Dunántúl",        "salary": 920,  "housing": 1100, "rent": 380, "unemployment": 5.5, "population": 870000,  "crime": 22.0, "temperature": 11.5, "doctors": 3.2, "gdp": 13500 },
+      "HU31": { "name": "Észak-Magyarország",  "salary": 900,  "housing": 950,  "rent": 340, "unemployment": 6.5, "population": 1130000, "crime": 24.0, "temperature": 10.5, "doctors": 3.0, "gdp": 12500 },
+      "HU32": { "name": "Észak-Alföld",        "salary": 900,  "housing": 1050, "rent": 350, "unemployment": 6.0, "population": 1420000, "crime": 23.0, "temperature": 11.0, "doctors": 3.4, "gdp": 13000 },
+      "HU33": { "name": "Dél-Alföld",          "salary": 920,  "housing": 1100, "rent": 360, "unemployment": 4.8, "population": 1230000, "crime": 21.0, "temperature": 11.5, "doctors": 3.2, "gdp": 13500 }
+    }
+  },
+  "stats": {
+    "unemployment":  { "value": 4.5, "asOf": "Apr 2026", "source": "Eurostat / KSH" },
+    "youthUnemp":    { "value": 13.0 },
+    "minWage":       { "value": 720, "asOf": "Jan 2026", "source": "Government · 2026", "note": "HUF ~290,800/mo" },
+    "avgGrossSalary":{ "value": 1500 },
+    "avgNetSalary":  { "value": 1000 },
+    "gdp":           { "value": 2.0 },
+    "gdpTotalEuro":  { "value": "200B" },
+    "gdpPerCapita":  { "value": "19,500" },
+    "inflation":     { "value": 4.5 },
+    "publicDebt":    { "value": 74 },
+    "budgetBalance": { "value": -4.5 },
+    "ecbRate":       { "value": 2.25, "note": "Hungary uses MNB rate (currently ~6.5%)" },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 76.2 },
+    "tourists":      { "value": "16M" },
+    "tourismRevenue":{ "value": "8B €", "note": "Budapest spas + Lake Balaton" },
+    "happinessRank": { "value": 56 },
+    "population":    { "value": "9.6M" }
+  },
+  "history": {
+    "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "gdp":          [2.2, 4.3, 5.4, 4.9, -4.5, 7.1, 4.6, -0.9, 0.5, 2.0],
+    "unemployment": [5.1, 4.2, 3.7, 3.4, 4.3, 4.1, 3.6, 4.1, 4.5, 4.5],
+    "inflation":    [0.4, 2.4, 2.9, 3.4, 3.4, 5.1, 15.3, 17.0, 3.7, 4.5],
+    "publicDebt":   [75, 72, 69, 65, 79, 77, 74, 73, 74, 74],
+    "euAvg": {
+      "gdp":          [2.0, 2.7, 2.0, 1.6, -5.6, 5.9, 3.4, 0.4, 0.8, 1.5],
+      "unemployment": [8.6, 7.6, 6.8, 6.7, 7.1, 7.0, 6.2, 6.1, 6.0, 6.0],
+      "inflation":    [0.3, 1.5, 1.9, 1.4, 0.7, 2.9, 9.2, 6.4, 2.6, 2.3],
+      "publicDebt":   [83, 82, 80, 78, 90, 88, 84, 82, 82, 83]
+    }
+  },
+  "footerSources": [
+    { "name": "KSH",           "url": "https://www.ksh.hu",             "desc": "National statistics" },
+    { "name": "Eurostat",      "url": "https://ec.europa.eu/eurostat",  "desc": "European data" },
+    { "name": "MNB",           "url": "https://www.mnb.hu",             "desc": "National Bank" },
+    { "name": "VisitHungary",  "url": "https://visithungary.com",       "desc": "Tourism" },
+    { "name": "IEP",           "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance", "url": "https://finance.yahoo.com",      "desc": "Brent (live)" }
+  ]
+}

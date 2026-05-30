@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "code": "ee",
+    "name": "Estonia",
+    "flag": "🇪🇪",
+    "title": "Estonia by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 5 NUTS3 regions",
+    "description": "Estonia dashboard — fuel, housing, wages, unemployment, GDP, tourism. The EU's digital-government pioneer with the lowest public debt. Official Statistikaamet / Eesti Pank / Eurostat sources."
+  },
+  "tickerItems": [
+    { "icon": "⛽", "label": "Bensiin 95", "value": "1.812 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Diisel",     "value": "1.802 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",     "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage 2026", "value": "€886" },
+    { "icon": "🏠", "label": "Housing",   "value": "€3,000/m² (Tallinn)" },
+    { "icon": "📉", "label": "Unemployment", "value": "7.5%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "1.5M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+2.0%", "id": "tick-gdp" }
+  ],
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Trends" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+  "fuelFallback": {
+    "gasolina95": { "atual": 1.812, "anterior": 1.808, "variacao": 0.004 },
+    "gasolina98": { "atual": 1.912, "anterior": 1.908, "variacao": 0.004 },
+    "gasoleo":    { "atual": 1.802, "anterior": 1.810, "variacao": -0.008 },
+    "gpl":        { "atual": 0.850, "anterior": 0.850, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_3.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
+    "regionUnit": "region",
+    "strokeOnSelect": "#0072CE",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [25.5, 58.7], "scale": 5200, "translate": [275, 310] },
+    "buttons": [
+      { "key": "salary", "label": "💶 Salary" },
+      { "key": "housing", "label": "🛒 Buy €/m²" },
+      { "key": "rent", "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population", "label": "👥 Population" },
+      { "key": "crime", "label": "🚨 Crime" },
+      { "key": "temperature", "label": "🌡 Temperature" },
+      { "key": "doctors", "label": "💊 Doctors" },
+      { "key": "gdp", "label": "📊 GDP pc" }
+    ],
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#e6f0fa", "#0072CE"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",           "format": "currencyPerM2",  "colors": ["#fdecec", "#a51c30"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",   "format": "currencyPerMo",  "colors": ["#e6f0fa", "#0072CE"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#e6f0fa", "#0072CE"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e6f0fa", "#0072CE"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#e6f0fa", "#0072CE"] }
+    },
+    "regions": {
+      "EE001": { "name": "Põhja-Eesti (Tallinn)",  "salary": 1900, "housing": 3000, "rent": 850, "unemployment": 6.0, "population": 630000, "crime": 32.0, "temperature": 6.0, "doctors": 4.5, "gdp": 38000 },
+      "EE004": { "name": "Lääne-Eesti (West)",     "salary": 1350, "housing": 1600, "rent": 500, "unemployment": 8.0, "population": 150000, "crime": 22.0, "temperature": 6.5, "doctors": 3.2, "gdp": 21000 },
+      "EE008": { "name": "Lõuna-Eesti (Tartu)",    "salary": 1450, "housing": 1900, "rent": 550, "unemployment": 7.5, "population": 320000, "crime": 24.0, "temperature": 6.0, "doctors": 4.0, "gdp": 22000 },
+      "EE009": { "name": "Kesk-Eesti (Central)",   "salary": 1350, "housing": 1300, "rent": 450, "unemployment": 8.5, "population": 120000, "crime": 20.0, "temperature": 5.8, "doctors": 3.0, "gdp": 19000 },
+      "EE00A": { "name": "Kirde-Eesti (Narva)",    "salary": 1300, "housing": 900,  "rent": 380, "unemployment": 11.5,"population": 130000, "crime": 30.0, "temperature": 6.0, "doctors": 3.4, "gdp": 16500 }
+    }
+  },
+  "stats": {
+    "unemployment":  { "value": 7.5, "asOf": "Apr 2026", "source": "Eurostat / Statistikaamet" },
+    "youthUnemp":    { "value": 18.0 },
+    "minWage":       { "value": 886, "asOf": "Jan 2026", "source": "Government · 2026" },
+    "avgGrossSalary":{ "value": 2050 },
+    "avgNetSalary":  { "value": 1620 },
+    "gdp":           { "value": 2.0 },
+    "gdpTotalEuro":  { "value": "38B" },
+    "gdpPerCapita":  { "value": "27,500" },
+    "inflation":     { "value": 4.0 },
+    "publicDebt":    { "value": 24 },
+    "budgetBalance": { "value": -3.8 },
+    "ecbRate":       { "value": 2.25 },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 78.9 },
+    "tourists":      { "value": "1.5M" },
+    "tourismRevenue":{ "value": "1.8B €", "note": "Finns + cruise + Tallinn old town" },
+    "happinessRank": { "value": 31 },
+    "population":    { "value": "1.37M" }
+  },
+  "history": {
+    "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "gdp":          [3.5, 5.8, 4.1, 4.0, -1.0, 7.2, -0.5, -3.0, -0.5, 2.0],
+    "unemployment": [6.8, 5.8, 5.4, 4.5, 6.8, 6.2, 5.6, 6.4, 7.6, 7.5],
+    "inflation":    [0.8, 3.7, 3.4, 2.3, -0.6, 4.5, 19.4, 9.1, 3.5, 4.0],
+    "publicDebt":   [10, 9, 8, 9, 19, 18, 19, 20, 24, 24],
+    "euAvg": {
+      "gdp":          [2.0, 2.7, 2.0, 1.6, -5.6, 5.9, 3.4, 0.4, 0.8, 1.5],
+      "unemployment": [8.6, 7.6, 6.8, 6.7, 7.1, 7.0, 6.2, 6.1, 6.0, 6.0],
+      "inflation":    [0.3, 1.5, 1.9, 1.4, 0.7, 2.9, 9.2, 6.4, 2.6, 2.3],
+      "publicDebt":   [83, 82, 80, 78, 90, 88, 84, 82, 82, 83]
+    }
+  },
+  "footerSources": [
+    { "name": "Statistikaamet", "url": "https://www.stat.ee",            "desc": "National statistics" },
+    { "name": "Eurostat",       "url": "https://ec.europa.eu/eurostat",  "desc": "European data" },
+    { "name": "Eesti Pank",     "url": "https://www.eestipank.ee",       "desc": "Central bank" },
+    { "name": "Visit Estonia",  "url": "https://www.visitestonia.com",   "desc": "Tourism" },
+    { "name": "IEP",            "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance",  "url": "https://finance.yahoo.com",      "desc": "Brent (live)" }
+  ]
+}

@@ -1,0 +1,150 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
+import data from '@data/si.json';
+
+const h = data.history;
+const flagColor = '#0F4DA8';
+---
+<CountryLayout country="si" title={data.meta.title} flag={data.meta.flag} subtitle={data.meta.subtitle} description={data.meta.description} tickerItems={data.tickerItems} sections={data.sections} liveBadge="📌 Static data · loading…">
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="info" icon="⛽">
+      Slovenian fuel is <strong>cheaper than the EU average</strong> — the government caps motorway
+      prices via regulation. Electricity is a roughly even mix of nuclear (Krško), hydro and
+      growing solar.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Bencin 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Dizel" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.20" unit="€/kWh" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · Q1 2026" />
+      <MetricCard label="☢️ Nuclear share" value="36" unit="%" sub="Krško NPP · second reactor planned" source="GEN energija · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Region" tag="9 metrics · click a region">
+    <InteractiveMap regions={data.map.regions} metrics={data.map.metrics} metricButtons={data.map.buttons} geojsonUrl={data.map.geojsonUrl} projection={data.map.projection} featureIdResolver={data.map.featureIdResolver} viewBox={data.map.viewBox} strokeOnSelect={data.map.strokeOnSelect} unit={data.map.regionUnit} country="si" />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="SURS · Q4 2025">
+    <Notice variant="warn" icon="🏠">
+      Slovenian housing prices nearly <strong>doubled since 2016</strong> — among the EU's
+      fastest growth. Ljubljana and the coast (Koper, Piran) are the hottest markets. Eastern
+      Slovenia remains affordable.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · Ljubljana" value="3,800" unit="€/m²" badge={{ kind: 'up', text: '↑ 2× since 2016' }} source="GURS · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · national avg" value="2,500" unit="€/m²" badge={{ kind: 'up', text: '↑ +7% vs 2024' }} source="SURS · 2025" />
+      <MetricCard label="🛒 Buy · East" value="1,900" unit="€/m²" source="nepremicnine.net · 2025" />
+      <MetricCard label="🔑 Rent · Ljubljana (T2)" value="850" unit="€/mo" badge={{ kind: 'up', text: '↑ Tight supply' }} source="nepremicnine.net · Q1 2026" variant="blue" />
+      <MetricCard label="🔑 Rent · regional (T2)" value="550" unit="€/mo" source="nepremicnine.net · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="SURS / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" source="SURS · 2025" variant="gold" />
+      <MetricCard label="💶 Average net salary" value={data.stats.avgNetSalary.value} unit="€/mo" source="SURS · 2025" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€/mo" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Government · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" valueId="si-unemp" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source={data.stats.unemployment.source} variant="green" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" valueId="si-youth-unemp" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · Q1 2026" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="SURS / Banka Slovenije · 2025–2026">
+    <Notice variant="info" icon="📊">
+      Slovenia is the <strong>wealthiest of the ex-Yugoslav states</strong> and one of CEE's most
+      developed economies. Strong industrial base (Krka, Gorenje, Renault Novo Mesto). High
+      female labour-force participation (~73%).
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Small but rich', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: 'Below avg', kind: 'ok' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'si-gdp', badge: { text: '↑ Above avg', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'si-inflation', badge: { text: '→ Near avg', kind: 'ok' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Below avg', kind: 'good' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget deficit', badge: { text: '→ Within rules', kind: 'good' } },
+    ]} />
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="info" icon="📈">
+      Slovenia's unemployment fell from <strong>8% in 2016 to under 4%</strong>. The 2021 rebound
+      was the strongest in CEE (+8.2%). Debt peaked at 79% in 2020 (Covid) and is now back below
+      70%.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="si-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[{key:'si',label:'Slovenia',color:flagColor,data:h.gdp},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.gdp,dashed:true}]} />
+      <TimeChart id="si-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[{key:'si',label:'Slovenia',color:flagColor,data:h.unemployment},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.unemployment,dashed:true}]} />
+      <TimeChart id="si-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[{key:'si',label:'Slovenia',color:flagColor,data:h.inflation},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.inflation,dashed:true}]} />
+      <TimeChart id="si-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[{key:'si',label:'Slovenia',color:flagColor,data:h.publicDebt},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.publicDebt,dashed:true}]} />
+    </div>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="I Feel Slovenia · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="6" unit="M" badge={{ kind: 'dn', text: '↑ Record high' }} source="SURS · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="3.5" unit="B €" badge={{ kind: 'dn', text: '↑ ~5% of GDP' }} source="I Feel Slovenia · 2024" variant="gold" />
+      <MetricCard label="🏔 Lake Bled" value="Iconic" sub="Plus Julian Alps + Postojna caves" badge={{ kind: 'ok', text: '✓ Bucket-list' }} source="Slovenia.info · 2024" />
+      <MetricCard label="🏖 Coast" value="46 km" sub="Piran, Koper · short Adriatic stretch" source="SURS · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'dn', text: '↑ Near EU avg' }} source="Eurostat · 2024" variant="green" />
+      <MetricCard label="💰 Health expenditure" value="9.0" unit="% GDP" source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="3.3" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🩺 Coverage" value="100" unit="%" sub="ZZZS social insurance" badge={{ kind: 'ok', text: '✓ Universal' }} source="ZZZS · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="9" sub="9th safest globally" badge={{ kind: 'dn', text: '↑ Top-10' }} source="IEP · 2024" variant="green" />
+      <MetricCard label="🚔 Homicide rate" value="0.6" unit="/100k" badge={{ kind: 'dn', text: '↓ Among EU\'s lowest' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🚗 Road fatalities" value="95" sub="2024" badge={{ kind: 'dn', text: '↓ Falling' }} source="SURS · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="SURS / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Stable" source="SURS · 2026" />
+      <MetricCard label="🎓 University graduates" value="46" unit="%" sub="25–34 cohort" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="green" />
+      <MetricCard label="👶 Birth rate" value="1.55" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="SURS · 2024" />
+      <MetricCard label="👩‍💼 Female labour" value="73" unit="%" sub="One of EU's highest" badge={{ kind: 'ok', text: '✓ Top-tier' }} source="Eurostat · 2024" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Slovenia vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Slovenia" rows={[
+      { indicator: 'GDP per capita',     country: '€28,500', eu: '€34,900', rank: 'ok',   note: 'Catching up' },
+      { indicator: 'GDP growth 2026',    country: '+2.3%',   eu: '+1.5%',   rank: 'good', note: 'Above avg' },
+      { indicator: 'Unemployment',       country: '3.8%',    eu: '6.0%',    rank: 'good', note: 'Well below avg' },
+      { indicator: 'Youth unemployment', country: '11.0%',   eu: '15.4%',   rank: 'good', note: 'Well below avg' },
+      { indicator: 'Inflation 2026',     country: '3.0%',    eu: '2.6%',    rank: 'ok',   note: 'Near avg' },
+      { indicator: 'Public debt',        country: '67% GDP', eu: '83% GDP', rank: 'good', note: 'Below avg' },
+      { indicator: 'Min. wage',          country: '€1,254',  eu: '~€1,100', rank: 'good', note: 'Above avg' },
+      { indicator: 'Petrol price',       country: '€1.70/L', eu: '€1.82/L', rank: 'good', note: 'Below avg' },
+      { indicator: 'Life expectancy',    country: '81.3 yrs', eu: '81.2 yrs', rank: 'good', note: 'Near EU avg' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="si" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (<li><a href={s.url}>{s.name}</a> — {s.desc}</li>))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇸🇮 Slovenia · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">SURS · Banka Slovenije · Eurostat</span>
+  </Fragment>
+</CountryLayout>

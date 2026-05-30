@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "code": "bg",
+    "name": "Bulgaria",
+    "flag": "🇧🇬",
+    "title": "Bulgaria by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 6 NUTS2 regions",
+    "description": "Bulgaria dashboard — fuel, housing, wages, unemployment, GDP, tourism. The EU's cheapest fuel and lowest debt, joining the euro in 2026. Official NSI / BNB / Eurostat sources."
+  },
+  "tickerItems": [
+    { "icon": "⛽", "label": "Benzin 95", "value": "1.530 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Dizel",     "value": "1.706 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",    "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage 2026", "value": "€550" },
+    { "icon": "🏠", "label": "Housing",  "value": "€1,700/m² (Sofia)" },
+    { "icon": "📉", "label": "Unemployment", "value": "4.5%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "9M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+2.5%", "id": "tick-gdp" }
+  ],
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Trends" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+  "fuelFallback": {
+    "gasolina95": { "atual": 1.530, "anterior": 1.526, "variacao": 0.004 },
+    "gasolina98": { "atual": 1.630, "anterior": 1.626, "variacao": 0.004 },
+    "gasoleo":    { "atual": 1.706, "anterior": 1.713, "variacao": -0.007 },
+    "gpl":        { "atual": 0.720, "anterior": 0.720, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_2.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
+    "regionUnit": "region",
+    "strokeOnSelect": "#00966E",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [25.3, 42.7], "scale": 5200, "translate": [275, 310] },
+    "buttons": [
+      { "key": "salary", "label": "💶 Salary" },
+      { "key": "housing", "label": "🛒 Buy €/m²" },
+      { "key": "rent", "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population", "label": "👥 Population" },
+      { "key": "crime", "label": "🚨 Crime" },
+      { "key": "temperature", "label": "🌡 Temperature" },
+      { "key": "doctors", "label": "💊 Doctors" },
+      { "key": "gdp", "label": "📊 GDP pc" }
+    ],
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#e6f4ef", "#00966E"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",           "format": "currencyPerM2",  "colors": ["#fdecec", "#D62612"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",   "format": "currencyPerMo",  "colors": ["#e6f4ef", "#00966E"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#e6f4ef", "#00966E"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e6f4ef", "#00966E"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#e6f4ef", "#00966E"] }
+    },
+    "regions": {
+      "BG41": { "name": "Yugozapaden (Sofia)",       "salary": 1050, "housing": 1700, "rent": 500, "unemployment": 2.8, "population": 2090000, "crime": 24.0, "temperature": 10.5, "doctors": 5.5, "gdp": 25000 },
+      "BG42": { "name": "Yuzhen tsentralen (Plovdiv)","salary": 780, "housing": 1100, "rent": 350, "unemployment": 4.5, "population": 1380000, "crime": 16.0, "temperature": 12.5, "doctors": 4.0, "gdp": 11500 },
+      "BG33": { "name": "Severoiztochen (Varna)",    "salary": 800,  "housing": 1200, "rent": 380, "unemployment": 5.0, "population": 920000,  "crime": 18.0, "temperature": 12.0, "doctors": 4.2, "gdp": 12000 },
+      "BG34": { "name": "Yugoiztochen (Burgas)",     "salary": 800,  "housing": 1150, "rent": 380, "unemployment": 5.0, "population": 1020000, "crime": 17.0, "temperature": 13.0, "doctors": 3.6, "gdp": 12500 },
+      "BG32": { "name": "Severen tsentralen",        "salary": 720,  "housing": 750,  "rent": 280, "unemployment": 6.0, "population": 760000,  "crime": 14.0, "temperature": 11.5, "doctors": 3.4, "gdp": 9500 },
+      "BG31": { "name": "Severozapaden (poorest EU)","salary": 700,  "housing": 600,  "rent": 250, "unemployment": 7.5, "population": 720000,  "crime": 13.0, "temperature": 11.5, "doctors": 3.2, "gdp": 8500 }
+    }
+  },
+  "stats": {
+    "unemployment":  { "value": 4.5, "asOf": "Apr 2026", "source": "Eurostat / NSI" },
+    "youthUnemp":    { "value": 18.0 },
+    "minWage":       { "value": 550, "asOf": "Jan 2026", "source": "Government · 2026", "note": "Lowest in the EU" },
+    "avgGrossSalary":{ "value": 1100 },
+    "avgNetSalary":  { "value": 850 },
+    "gdp":           { "value": 2.5 },
+    "gdpTotalEuro":  { "value": "100B" },
+    "gdpPerCapita":  { "value": "14,500", "note": "Lowest in the EU" },
+    "inflation":     { "value": 3.5 },
+    "publicDebt":    { "value": 24, "note": "Among EU's lowest" },
+    "budgetBalance": { "value": -3.0 },
+    "ecbRate":       { "value": 2.25, "note": "Lev pegged to euro · euro adoption Jan 2026" },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 75.0, "note": "Among EU's lowest" },
+    "tourists":      { "value": "9M" },
+    "tourismRevenue":{ "value": "5B €", "note": "Black Sea (Sunny Beach) + ski (Bansko)" },
+    "happinessRank": { "value": 81 },
+    "population":    { "value": "6.4M", "note": "Fastest-shrinking in the world" }
+  },
+  "history": {
+    "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "gdp":          [3.0, 2.8, 2.7, 4.0, -4.0, 7.7, 3.9, 1.8, 2.3, 2.5],
+    "unemployment": [7.6, 6.2, 5.2, 4.2, 5.1, 5.3, 4.3, 4.3, 4.5, 4.5],
+    "inflation":    [-1.3, 1.2, 2.6, 2.5, 1.2, 2.8, 13.0, 8.6, 2.6, 3.5],
+    "publicDebt":   [27, 24, 22, 20, 25, 24, 23, 23, 24, 24],
+    "euAvg": {
+      "gdp":          [2.0, 2.7, 2.0, 1.6, -5.6, 5.9, 3.4, 0.4, 0.8, 1.5],
+      "unemployment": [8.6, 7.6, 6.8, 6.7, 7.1, 7.0, 6.2, 6.1, 6.0, 6.0],
+      "inflation":    [0.3, 1.5, 1.9, 1.4, 0.7, 2.9, 9.2, 6.4, 2.6, 2.3],
+      "publicDebt":   [83, 82, 80, 78, 90, 88, 84, 82, 82, 83]
+    }
+  },
+  "footerSources": [
+    { "name": "NSI",           "url": "https://www.nsi.bg",             "desc": "National statistics" },
+    { "name": "Eurostat",      "url": "https://ec.europa.eu/eurostat",  "desc": "European data" },
+    { "name": "BNB",           "url": "https://www.bnb.bg",             "desc": "National Bank" },
+    { "name": "Bulgaria Travel","url": "https://bulgariatravel.org",    "desc": "Tourism" },
+    { "name": "IEP",           "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance", "url": "https://finance.yahoo.com",      "desc": "Brent (live)" }
+  ]
+}

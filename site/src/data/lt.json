@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "code": "lt",
+    "name": "Lithuania",
+    "flag": "🇱🇹",
+    "title": "Lithuania by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 2 NUTS2 regions",
+    "description": "Lithuania dashboard — fuel, housing, wages, unemployment, GDP, tourism. The largest and fastest-growing Baltic economy and a rising fintech hub. Official VDS / Lietuvos bankas / Eurostat sources."
+  },
+  "tickerItems": [
+    { "icon": "⛽", "label": "Benzinas 95", "value": "1.824 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Dyzelinas",   "value": "1.926 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",      "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage 2026", "value": "€1,038" },
+    { "icon": "🏠", "label": "Housing",    "value": "€2,400/m² (Vilnius)" },
+    { "icon": "📉", "label": "Unemployment", "value": "7.0%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "2.8M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+2.8%", "id": "tick-gdp" }
+  ],
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Trends" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+  "fuelFallback": {
+    "gasolina95": { "atual": 1.824, "anterior": 1.818, "variacao": 0.006 },
+    "gasolina98": { "atual": 1.924, "anterior": 1.918, "variacao": 0.006 },
+    "gasoleo":    { "atual": 1.926, "anterior": 1.934, "variacao": -0.008 },
+    "gpl":        { "atual": 0.870, "anterior": 0.870, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_2.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
+    "regionUnit": "region",
+    "strokeOnSelect": "#006A44",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [23.9, 55.3], "scale": 5200, "translate": [275, 310] },
+    "buttons": [
+      { "key": "salary", "label": "💶 Salary" },
+      { "key": "housing", "label": "🛒 Buy €/m²" },
+      { "key": "rent", "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population", "label": "👥 Population" },
+      { "key": "crime", "label": "🚨 Crime" },
+      { "key": "temperature", "label": "🌡 Temperature" },
+      { "key": "doctors", "label": "💊 Doctors" },
+      { "key": "gdp", "label": "📊 GDP pc" }
+    ],
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#e6f4ec", "#006A44"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",           "format": "currencyPerM2",  "colors": ["#fdecec", "#C1272D"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",   "format": "currencyPerMo",  "colors": ["#e6f4ec", "#006A44"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#e6f4ec", "#006A44"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e6f4ec", "#006A44"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#e6f4ec", "#006A44"] }
+    },
+    "regions": {
+      "LT01": { "name": "Sostinės regionas (Vilnius)",            "salary": 1550, "housing": 2400, "rent": 750, "unemployment": 5.5, "population": 850000,  "crime": 28.0, "temperature": 7.0, "doctors": 5.5, "gdp": 38000 },
+      "LT02": { "name": "Vidurio ir vakarų Lietuva (rest)",       "salary": 1200, "housing": 1300, "rent": 480, "unemployment": 8.0, "population": 2010000, "crime": 22.0, "temperature": 7.2, "doctors": 3.6, "gdp": 19500 }
+    }
+  },
+  "stats": {
+    "unemployment":  { "value": 7.0, "asOf": "Apr 2026", "source": "Eurostat / VDS" },
+    "youthUnemp":    { "value": 14.0 },
+    "minWage":       { "value": 1038, "asOf": "Jan 2026", "source": "Government · 2026" },
+    "avgGrossSalary":{ "value": 2050 },
+    "avgNetSalary":  { "value": 1320 },
+    "gdp":           { "value": 2.8 },
+    "gdpTotalEuro":  { "value": "78B" },
+    "gdpPerCapita":  { "value": "25,500" },
+    "inflation":     { "value": 3.2 },
+    "publicDebt":    { "value": 38 },
+    "budgetBalance": { "value": -2.8 },
+    "ecbRate":       { "value": 2.25 },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 76.0 },
+    "tourists":      { "value": "2.8M" },
+    "tourismRevenue":{ "value": "1.6B €", "note": "Vilnius + Curonian Spit + Kaunas" },
+    "happinessRank": { "value": 19 },
+    "population":    { "value": "2.86M" }
+  },
+  "history": {
+    "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "gdp":          [2.5, 4.3, 4.0, 4.6, 0.0, 6.3, 2.4, -0.3, 2.5, 2.8],
+    "unemployment": [7.9, 7.1, 6.2, 6.3, 8.5, 7.1, 6.0, 6.9, 7.1, 7.0],
+    "inflation":    [0.7, 3.7, 2.5, 2.2, 1.1, 4.6, 18.9, 8.7, 0.9, 3.2],
+    "publicDebt":   [40, 39, 34, 36, 47, 44, 38, 38, 38, 38],
+    "euAvg": {
+      "gdp":          [2.0, 2.7, 2.0, 1.6, -5.6, 5.9, 3.4, 0.4, 0.8, 1.5],
+      "unemployment": [8.6, 7.6, 6.8, 6.7, 7.1, 7.0, 6.2, 6.1, 6.0, 6.0],
+      "inflation":    [0.3, 1.5, 1.9, 1.4, 0.7, 2.9, 9.2, 6.4, 2.6, 2.3],
+      "publicDebt":   [83, 82, 80, 78, 90, 88, 84, 82, 82, 83]
+    }
+  },
+  "footerSources": [
+    { "name": "VDS",              "url": "https://www.stat.gov.lt",        "desc": "National statistics" },
+    { "name": "Eurostat",         "url": "https://ec.europa.eu/eurostat",  "desc": "European data" },
+    { "name": "Lietuvos bankas",  "url": "https://www.lb.lt",              "desc": "Central bank" },
+    { "name": "Lithuania Travel", "url": "https://www.lithuania.travel",   "desc": "Tourism" },
+    { "name": "IEP",              "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance",    "url": "https://finance.yahoo.com",      "desc": "Brent (live)" }
+  ]
+}

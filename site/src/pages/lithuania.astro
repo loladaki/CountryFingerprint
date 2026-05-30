@@ -1,0 +1,149 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
+import data from '@data/lt.json';
+
+const h = data.history;
+const flagColor = '#006A44';
+---
+<CountryLayout country="lt" title={data.meta.title} flag={data.meta.flag} subtitle={data.meta.subtitle} description={data.meta.description} tickerItems={data.tickerItems} sections={data.sections} liveBadge="📌 Static data · loading…">
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="info" icon="⛽">
+      Lithuanian diesel runs <strong>above the EU average</strong>. The country is fully Baltic-grid
+      synced since 2025, with a fast-growing wind sector and the Klaipėda LNG terminal that
+      replaced Russian gas in 2022.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Benzinas 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Dyzelinas" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.20" unit="€/kWh" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · Q1 2026" />
+      <MetricCard label="💨 Wind share" value="35" unit="%" sub="Rising fast — offshore plans" badge={{ kind: 'ok', text: '✓ Energy-independent' }} source="Litgrid · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Region" tag="9 metrics · click a region">
+    <InteractiveMap regions={data.map.regions} metrics={data.map.metrics} metricButtons={data.map.buttons} geojsonUrl={data.map.geojsonUrl} projection={data.map.projection} featureIdResolver={data.map.featureIdResolver} viewBox={data.map.viewBox} strokeOnSelect={data.map.strokeOnSelect} unit={data.map.regionUnit} country="lt" />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="VDS · Q4 2025">
+    <Notice variant="warn" icon="🏠">
+      Vilnius is by far the country's hottest market — prices doubled since 2017 thanks to fintech
+      jobs and limited supply. Outside the capital region, housing remains affordable.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · Vilnius" value="2,400" unit="€/m²" badge={{ kind: 'up', text: '↑ +7% vs 2024' }} source="VDS · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Kaunas" value="1,800" unit="€/m²" badge={{ kind: 'up', text: '↑ Rising' }} source="aruodas.lt · 2025" />
+      <MetricCard label="🛒 Buy · national avg" value="1,500" unit="€/m²" badge={{ kind: 'up', text: '↑ +5% vs 2024' }} source="VDS · 2025" />
+      <MetricCard label="🔑 Rent · Vilnius (T2)" value="750" unit="€/mo" badge={{ kind: 'up', text: '↑ Highest in LT' }} source="aruodas.lt · Q1 2026" variant="blue" />
+      <MetricCard label="🔑 Rent · regional (T2)" value="450" unit="€/mo" source="aruodas.lt · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="VDS / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" source="VDS · 2025" variant="gold" />
+      <MetricCard label="💶 Average net salary" value={data.stats.avgNetSalary.value} unit="€/mo" source="VDS · 2025" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€/mo" badge={{ kind: 'dn', text: '↑ Rising fast' }} source="Government · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" valueId="lt-unemp" badge={{ kind: 'up', text: '↑ Above EU avg' }} source={data.stats.unemployment.source} />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" valueId="lt-youth-unemp" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="VDS / Lietuvos bankas · 2025–2026">
+    <Notice variant="info" icon="📊">
+      Lithuania is the <strong>largest and fastest-growing Baltic economy</strong>. Vilnius rivals
+      London and Berlin as a <strong>fintech licence hub</strong>, while the laser industry supplies
+      most of the world's scientific lasers. Public debt stays below 40%.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Largest Baltic', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: 'Below avg', kind: 'bad' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'lt-gdp', badge: { text: '↑ Above avg', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'lt-inflation', badge: { text: '→ Near avg', kind: 'ok' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Below avg', kind: 'good' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget deficit', badge: { text: '→ Within rules', kind: 'good' } },
+    ]} />
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="info" icon="📈">
+      Lithuania's inflation peaked at <strong>19% in 2022</strong> — among the EU's worst. GDP has
+      grown faster than the EU average in every year except 2023. Unemployment has been on a
+      structural decline since 2016.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="lt-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[{key:'lt',label:'Lithuania',color:flagColor,data:h.gdp},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.gdp,dashed:true}]} />
+      <TimeChart id="lt-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[{key:'lt',label:'Lithuania',color:flagColor,data:h.unemployment},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.unemployment,dashed:true}]} />
+      <TimeChart id="lt-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[{key:'lt',label:'Lithuania',color:flagColor,data:h.inflation},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.inflation,dashed:true}]} />
+      <TimeChart id="lt-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[{key:'lt',label:'Lithuania',color:flagColor,data:h.publicDebt},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.publicDebt,dashed:true}]} />
+    </div>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="Lithuania Travel · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="2.8" unit="M" badge={{ kind: 'ne', text: '→ Recovering' }} source="VDS · 2024" />
+      <MetricCard label="💶 Tourism revenue" value="1.6" unit="B €" source="Lithuania Travel · 2024" variant="gold" />
+      <MetricCard label="🏰 Vilnius old town" value="UNESCO" sub="One of Europe's largest medieval cities" badge={{ kind: 'ok', text: '✓ Heritage site' }} source="UNESCO" />
+      <MetricCard label="🏖 Curonian Spit" value="UNESCO" sub="Sand dunes shared with Russia" badge={{ kind: 'ok', text: '✓ Heritage site' }} source="UNESCO" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'up', text: '↑ Below EU avg' }} source="Eurostat · 2024" variant="red" />
+      <MetricCard label="💰 Health expenditure" value="7.5" unit="% GDP" source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="4.6" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🩺 Coverage" value="100" unit="%" sub="Statutory health insurance" badge={{ kind: 'ok', text: '✓ Universal' }} source="VLK · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="42" sub="NATO frontline · Suwałki Gap" badge={{ kind: 'ne', text: '→ Border tension' }} source="IEP · 2024" />
+      <MetricCard label="🚔 Homicide rate" value="2.5" unit="/100k" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🛡 Defence spending" value="3.5" unit="% GDP" sub="Highest in NATO Europe" badge={{ kind: 'up', text: '↑ Rising' }} source="NATO · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="VDS / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Recovering after years of decline" source="VDS · 2026" />
+      <MetricCard label="🎓 University graduates" value="50" unit="%" sub="25–34 cohort · highest in EU" badge={{ kind: 'dn', text: '↑ Highest in EU' }} source="Eurostat · 2024" variant="green" />
+      <MetricCard label="👶 Birth rate" value="1.30" badge={{ kind: 'up', text: '↑ Below EU avg' }} source="VDS · 2024" />
+      <MetricCard label="💼 Fintech" value="270+" sub="Licensed fintech firms" badge={{ kind: 'ok', text: '✓ #2 in EU' }} source="Invest Lithuania · 2024" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Lithuania vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Lithuania" rows={[
+      { indicator: 'GDP per capita',     country: '€25,500', eu: '€34,900', rank: 'ok',   note: 'Catching up' },
+      { indicator: 'GDP growth 2026',    country: '+2.8%',   eu: '+1.5%',   rank: 'good', note: 'Well above avg' },
+      { indicator: 'Unemployment',       country: '7.0%',    eu: '6.0%',    rank: 'ok',   note: 'Slightly above' },
+      { indicator: 'Youth unemployment', country: '14.0%',   eu: '15.4%',   rank: 'good', note: 'Below avg' },
+      { indicator: 'Inflation 2026',     country: '3.2%',    eu: '2.6%',    rank: 'ok',   note: 'Slightly above' },
+      { indicator: 'Public debt',        country: '38% GDP', eu: '83% GDP', rank: 'good', note: 'Well below avg' },
+      { indicator: 'Min. wage',          country: '€1,038',  eu: '~€1,100', rank: 'ok',   note: 'Near avg' },
+      { indicator: 'Petrol price',       country: '€1.82/L', eu: '€1.82/L', rank: 'good', note: 'EU avg' },
+      { indicator: 'Life expectancy',    country: '76.0 yrs', eu: '81.2 yrs', rank: 'bad', note: 'Below avg' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="lt" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (<li><a href={s.url}>{s.name}</a> — {s.desc}</li>))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇱🇹 Lithuania · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">VDS · Lietuvos bankas · Eurostat</span>
+  </Fragment>
+</CountryLayout>

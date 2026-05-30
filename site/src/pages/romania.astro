@@ -1,0 +1,150 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
+import data from '@data/ro.json';
+
+const h = data.history;
+const flagColor = '#002B7F';
+---
+<CountryLayout country="ro" title={data.meta.title} flag={data.meta.flag} subtitle={data.meta.subtitle} description={data.meta.description} tickerItems={data.tickerItems} sections={data.sections} liveBadge="📌 Static data · loading…">
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="info" icon="⛽">
+      Romania is <strong>energy-rich</strong> — domestic oil (OMV Petrom), Black Sea gas (Neptun
+      Deep starting 2027), Cernavodă nuclear, and major hydro. Fuel sits near the EU average; the
+      problem is volatile retail prices and weak grid investment.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Benzină 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Motorină" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.21" unit="€/kWh" sub="Subsidy cap since 2022" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="ANRE · Q1 2026" />
+      <MetricCard label="☢️ Nuclear share" value="20" unit="%" sub="Cernavodă · 2 reactors planned" source="Nuclearelectrica · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Region" tag="9 metrics · click a region">
+    <InteractiveMap regions={data.map.regions} metrics={data.map.metrics} metricButtons={data.map.buttons} geojsonUrl={data.map.geojsonUrl} projection={data.map.projection} featureIdResolver={data.map.featureIdResolver} viewBox={data.map.viewBox} strokeOnSelect={data.map.strokeOnSelect} unit={data.map.regionUnit} country="ro" />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="INS · Q4 2025">
+    <Notice variant="warn" icon="🏠">
+      Bucharest and Cluj-Napoca are <strong>among CEE's hottest markets</strong> — Cluj rents now
+      rival Bucharest thanks to its IT and academic concentration. Rural east (Moldova) and
+      Oltenia remain among the cheapest housing in the EU.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · Bucharest" value="2,000" unit="€/m²" badge={{ kind: 'up', text: '↑ +6% vs 2024' }} source="INS · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · Cluj-Napoca" value="2,400" unit="€/m²" badge={{ kind: 'up', text: '↑ Highest in RO' }} source="imobiliare.ro · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · rural" value="700" unit="€/m²" badge={{ kind: 'dn', text: '↓ Cheapest in EU' }} source="imobiliare.ro · 2025" />
+      <MetricCard label="🔑 Rent · Bucharest (T2)" value="550" unit="€/mo" badge={{ kind: 'up', text: '↑ Rising' }} source="imobiliare.ro · Q1 2026" variant="blue" />
+      <MetricCard label="🔑 Rent · Cluj (T2)" value="600" unit="€/mo" sub="Pricier than the capital" source="imobiliare.ro · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="INS / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" sub="RON 6,500/mo" source="INS · 2025" variant="gold" />
+      <MetricCard label="💶 Average net salary" value={data.stats.avgNetSalary.value} unit="€/mo" sub="Bucharest IT ~€2,500+" source="INS · 2025" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€/mo" sub="RON 4,050/mo" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Government · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" valueId="ro-unemp" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source={data.stats.unemployment.source} variant="green" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" valueId="ro-youth-unemp" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="INS / BNR · 2025–2026">
+    <Notice variant="info" icon="📊">
+      Romania has the EU's <strong>biggest IT sector by share of GDP</strong> (~7%), with global
+      hubs in Bucharest, Cluj and Timișoara. The flip side: a 7% budget deficit triggered the
+      EU's <strong>excessive-deficit procedure</strong>, and ~4M Romanians live abroad.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Largest CEE', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: 'Well below avg', kind: 'bad' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'ro-gdp', badge: { text: '↑ Above avg', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'ro-inflation', badge: { text: '↑ Highest in EU', kind: 'bad' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Below avg', kind: 'good' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget deficit', badge: { text: '↑ EDP procedure', kind: 'bad' } },
+    ]} />
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="info" icon="📈">
+      Romania's <strong>+8.2% growth in 2017</strong> was among the EU's strongest. Unemployment
+      has stayed remarkably stable around 5%. Inflation peaked at <strong>12% in 2022</strong>
+      and remains stubbornly above EU average.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="ro-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[{key:'ro',label:'Romania',color:flagColor,data:h.gdp},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.gdp,dashed:true}]} />
+      <TimeChart id="ro-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[{key:'ro',label:'Romania',color:flagColor,data:h.unemployment},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.unemployment,dashed:true}]} />
+      <TimeChart id="ro-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[{key:'ro',label:'Romania',color:flagColor,data:h.inflation},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.inflation,dashed:true}]} />
+      <TimeChart id="ro-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[{key:'ro',label:'Romania',color:flagColor,data:h.publicDebt},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.publicDebt,dashed:true}]} />
+    </div>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="Romania.travel · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="2.5" unit="M" sub="Foreign · domestic much bigger" source="INS · 2024" />
+      <MetricCard label="💶 Tourism revenue" value="5" unit="B €" source="Romania.travel · 2024" variant="gold" />
+      <MetricCard label="🏰 Transylvania" value="Iconic" sub="Bran castle · Sibiu · Sighișoara UNESCO" badge={{ kind: 'ok', text: '✓ Heritage' }} source="Romania.travel" />
+      <MetricCard label="🏖 Black Sea" value="245 km" sub="Mamaia · Constanța · Vama Veche" source="INS · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'up', text: '↑ Below EU avg' }} source="Eurostat · 2024" variant="red" />
+      <MetricCard label="💰 Health expenditure" value="6.0" unit="% GDP" badge={{ kind: 'dn', text: '↓ Lowest in EU' }} source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="3.4" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🩺 Coverage" value="100" unit="%" sub="CNAS social insurance" badge={{ kind: 'ok', text: '✓ Universal' }} source="CNAS · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="29" sub="29th safest globally" badge={{ kind: 'ne', text: '→ Stable' }} source="IEP · 2024" />
+      <MetricCard label="🚔 Homicide rate" value="1.2" unit="/100k" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🚗 Road fatalities" value="1,750" sub="2024 · highest per-capita in EU" badge={{ kind: 'up', text: '↑ Highest in EU' }} source="INS · 2024" variant="red" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="INS / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Stable · large diaspora (~4M abroad)" source="INS · 2026" />
+      <MetricCard label="🎓 University graduates" value="25" unit="%" sub="25–34 cohort" badge={{ kind: 'up', text: '↑ Lowest in EU' }} source="Eurostat · 2024" variant="red" />
+      <MetricCard label="👶 Birth rate" value="1.71" badge={{ kind: 'dn', text: '↑ Among EU\'s highest' }} source="INS · 2024" variant="green" />
+      <MetricCard label="💻 IT sector" value="~7" unit="% GDP" sub="Bucharest · Cluj · Timișoara" badge={{ kind: 'ok', text: '✓ Largest in EU' }} source="ANIS · 2024" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Romania vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Romania" rows={[
+      { indicator: 'GDP per capita',     country: '€16,500', eu: '€34,900', rank: 'bad',  note: 'Well below (-53%)' },
+      { indicator: 'GDP growth 2026',    country: '+2.8%',   eu: '+1.5%',   rank: 'good', note: 'Well above avg' },
+      { indicator: 'Unemployment',       country: '5.5%',    eu: '6.0%',    rank: 'good', note: 'Below avg' },
+      { indicator: 'Youth unemployment', country: '21.0%',   eu: '15.4%',   rank: 'bad',  note: 'Well above avg' },
+      { indicator: 'Inflation 2026',     country: '5.0%',    eu: '2.6%',    rank: 'bad',  note: 'Among EU\'s highest' },
+      { indicator: 'Public debt',        country: '52% GDP', eu: '83% GDP', rank: 'good', note: 'Below avg' },
+      { indicator: 'Min. wage',          country: '€820',    eu: '~€1,100', rank: 'bad',  note: 'Below avg' },
+      { indicator: 'Petrol price',       country: '€1.79/L', eu: '€1.82/L', rank: 'good', note: 'Near avg' },
+      { indicator: 'Life expectancy',    country: '76.0 yrs', eu: '81.2 yrs', rank: 'bad', note: 'Below avg' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="ro" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (<li><a href={s.url}>{s.name}</a> — {s.desc}</li>))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇷🇴 Romania · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">INS · BNR · Eurostat</span>
+  </Fragment>
+</CountryLayout>

@@ -1,0 +1,151 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
+import data from '@data/mt.json';
+
+const h = data.history;
+const flagColor = '#C01C28';
+---
+<CountryLayout country="mt" title={data.meta.title} flag={data.meta.flag} subtitle={data.meta.subtitle} description={data.meta.description} tickerItems={data.tickerItems} sections={data.sections} liveBadge="📌 Static data · loading…">
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="Enemed · price-fixed monthly">
+    <Notice variant="info" icon="⛽">
+      Malta has the <strong>cheapest fuel in the EU</strong> — the government heavily subsidises
+      both petrol and diesel through Enemed, with prices fixed monthly regardless of Brent.
+      Electricity is also subsidised. Maltese households pay among Europe's lowest energy bills.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Petrol 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'dn', text: '↓ Subsidised · fixed' }} source="Enemed · May 2026" variant="green" />
+      <MetricCard label="⛽ Diesel" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'dn', text: '↓ Cheapest in EU' }} source="Enemed · May 2026" variant="green" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.13" unit="€/kWh" sub="Subsidised tariff" badge={{ kind: 'dn', text: '↓ Among EU\'s cheapest' }} source="ARMS · Q1 2026" variant="green" />
+      <MetricCard label="☀️ Solar share" value="14" unit="%" sub="Plus interconnector to Sicily" source="Regulator for Energy · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Island" tag="2 islands · click to compare">
+    <InteractiveMap regions={data.map.regions} metrics={data.map.metrics} metricButtons={data.map.buttons} geojsonUrl={data.map.geojsonUrl} projection={data.map.projection} featureIdResolver={data.map.featureIdResolver} viewBox={data.map.viewBox} strokeOnSelect={data.map.strokeOnSelect} unit={data.map.regionUnit} country="mt" />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="NSO · Q4 2025">
+    <Notice variant="warn" icon="🏠">
+      Malta's housing has <strong>more than doubled</strong> since 2014 — driven by iGaming, fintech
+      and citizenship-by-investment. Sliema, St Julian's and Valletta are among the most expensive
+      addresses south of London. Gozo is cheaper but rising.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · Sliema/St Julian's" value="5,000" unit="€/m²" badge={{ kind: 'up', text: '↑ Premium' }} source="NSO · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · national avg" value="3,500" unit="€/m²" badge={{ kind: 'up', text: '↑ 2× since 2014' }} source="NSO · 2025" />
+      <MetricCard label="🛒 Buy · Gozo" value="2,800" unit="€/m²" sub="Slower-paced sister island" source="Frank Salt · 2025" />
+      <MetricCard label="🔑 Rent · Sliema (T2)" value="1,400" unit="€/mo" badge={{ kind: 'up', text: '↑ Foreign demand' }} source="Frank Salt · Q1 2026" variant="blue" />
+      <MetricCard label="🔑 Rent · regional (T2)" value="900" unit="€/mo" source="Frank Salt · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="NSO / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" source="NSO · 2025" variant="gold" />
+      <MetricCard label="💶 Average net salary" value={data.stats.avgNetSalary.value} unit="€/mo" source="NSO · 2025" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€/mo" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Government · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" valueId="mt-unemp" badge={{ kind: 'dn', text: '↓ Among EU\'s lowest' }} source={data.stats.unemployment.source} variant="green" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" valueId="mt-youth-unemp" badge={{ kind: 'dn', text: '↓ Among EU\'s lowest' }} source="Eurostat · Q1 2026" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="NSO / Eurostat · 2025–2026">
+    <Notice variant="info" icon="📊">
+      Malta is the EU's <strong>fastest-growing economy</strong> — averaging ~7% annual growth since
+      2014. iGaming alone is ~12% of GDP, plus fintech, English-language schools and citizenship
+      programmes. The flip side: ~25% of residents are foreign workers, and infrastructure is
+      strained.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Tiny but growing', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: 'Near avg', kind: 'ok' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'mt-gdp', badge: { text: '↑ Fastest in EU', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'mt-inflation', badge: { text: '→ Near avg', kind: 'good' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Below avg', kind: 'good' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget deficit', badge: { text: '→ Manageable', kind: 'ok' } },
+    ]} />
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="info" icon="📈">
+      Malta's GDP grew by <strong>+11% in 2017</strong> and <strong>+12% in 2021</strong> — among
+      Europe's fastest recoveries. Unemployment has stayed under 5% throughout. Public debt rose
+      with Covid but remains well below EU average.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="mt-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[{key:'mt',label:'Malta',color:flagColor,data:h.gdp},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.gdp,dashed:true}]} />
+      <TimeChart id="mt-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[{key:'mt',label:'Malta',color:flagColor,data:h.unemployment},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.unemployment,dashed:true}]} />
+      <TimeChart id="mt-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[{key:'mt',label:'Malta',color:flagColor,data:h.inflation},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.inflation,dashed:true}]} />
+      <TimeChart id="mt-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[{key:'mt',label:'Malta',color:flagColor,data:h.publicDebt},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.publicDebt,dashed:true}]} />
+    </div>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="Visit Malta · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="3" unit="M" badge={{ kind: 'dn', text: '↑ ~6× population' }} source="NSO · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="2.5" unit="B €" badge={{ kind: 'up', text: '↑ ~12% of GDP' }} source="Visit Malta · 2024" variant="gold" />
+      <MetricCard label="🏛 Valletta" value="UNESCO" sub="Knights of St John capital" badge={{ kind: 'ok', text: '✓ Heritage site' }} source="UNESCO" />
+      <MetricCard label="🇬🇧 English schools" value="80+" sub="Major European EFL hub" source="EAQUALS · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'dn', text: '↑ Among EU\'s highest' }} source="Eurostat · 2024" variant="green" />
+      <MetricCard label="💰 Health expenditure" value="9.0" unit="% GDP" source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="3.0" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🩺 Coverage" value="100" unit="%" sub="Tax-funded national service" badge={{ kind: 'ok', text: '✓ Universal' }} source="Government · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="22" sub="22nd safest globally" badge={{ kind: 'dn', text: '↑ Top-25' }} source="IEP · 2024" variant="green" />
+      <MetricCard label="🚔 Homicide rate" value="0.5" unit="/100k" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🚗 Road fatalities" value="20" sub="2024" badge={{ kind: 'dn', text: '↓ Among EU\'s lowest' }} source="NSO · 2024" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="NSO / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="EU's densest country" badge={{ kind: 'up', text: '↑ Rising fast' }} source="NSO · 2026" />
+      <MetricCard label="🇬🇧 Official languages" value="2" sub="Maltese + English" badge={{ kind: 'ok', text: '✓ English-speaking' }} source="Government" variant="green" />
+      <MetricCard label="🎓 University graduates" value="35" unit="%" sub="25–34 cohort" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2024" />
+      <MetricCard label="🌍 Foreign-born" value="25" unit="%" sub="iGaming workforce + retirees" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="NSO · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Malta vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Malta" rows={[
+      { indicator: 'GDP per capita',     country: '€33,000', eu: '€34,900', rank: 'ok',   note: 'Near avg' },
+      { indicator: 'GDP growth 2026',    country: '+4.0%',   eu: '+1.5%',   rank: 'good', note: 'Fastest in EU' },
+      { indicator: 'Unemployment',       country: '3.0%',    eu: '6.0%',    rank: 'good', note: 'Half of EU avg' },
+      { indicator: 'Youth unemployment', country: '8.0%',    eu: '15.4%',   rank: 'good', note: 'Among EU\'s lowest' },
+      { indicator: 'Inflation 2026',     country: '2.5%',    eu: '2.6%',    rank: 'good', note: 'Near avg' },
+      { indicator: 'Public debt',        country: '50% GDP', eu: '83% GDP', rank: 'good', note: 'Below avg' },
+      { indicator: 'Min. wage',          country: '€961',    eu: '~€1,100', rank: 'ok',   note: 'Slightly below' },
+      { indicator: 'Petrol price',       country: '€1.34/L', eu: '€1.82/L', rank: 'good', note: 'Subsidised' },
+      { indicator: 'Life expectancy',    country: '83.4 yrs', eu: '81.2 yrs', rank: 'good', note: 'Above avg' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="mt" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (<li><a href={s.url}>{s.name}</a> — {s.desc}</li>))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇲🇹 Malta · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">NSO · Central Bank of Malta · Eurostat</span>
+  </Fragment>
+</CountryLayout>

@@ -1,0 +1,114 @@
+{
+  "meta": {
+    "code": "lu",
+    "name": "Luxembourg",
+    "flag": "🇱🇺",
+    "title": "Luxembourg by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · trilingual EU founding state",
+    "description": "Luxembourg dashboard — fuel, housing, wages, unemployment, GDP, tourism. The EU's richest country by GDP per capita, a finance hub with the highest minimum wage and free public transport. Official STATEC / Eurostat sources."
+  },
+  "tickerItems": [
+    { "icon": "⛽", "label": "Essence 95", "value": "1.814 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Diesel",     "value": "1.840 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",     "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage 2026", "value": "€2,704 (highest in EU)" },
+    { "icon": "🏠", "label": "Housing",   "value": "€8,500/m²" },
+    { "icon": "📉", "label": "Unemployment", "value": "5.8%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "1.2M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+2.0%", "id": "tick-gdp" }
+  ],
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Trends" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+  "fuelFallback": {
+    "gasolina95": { "atual": 1.814, "anterior": 1.810, "variacao": 0.004 },
+    "gasolina98": { "atual": 1.914, "anterior": 1.910, "variacao": 0.004 },
+    "gasoleo":    { "atual": 1.840, "anterior": 1.847, "variacao": -0.007 },
+    "gpl":        { "atual": 0.760, "anterior": 0.760, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_2.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
+    "regionUnit": "region",
+    "strokeOnSelect": "#00A1DE",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [6.13, 49.78], "scale": 22000, "translate": [275, 310] },
+    "buttons": [
+      { "key": "salary", "label": "💶 Salary" },
+      { "key": "housing", "label": "🛒 Buy €/m²" },
+      { "key": "rent", "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population", "label": "👥 Population" },
+      { "key": "crime", "label": "🚨 Crime" },
+      { "key": "temperature", "label": "🌡 Temperature" },
+      { "key": "doctors", "label": "💊 Doctors" },
+      { "key": "gdp", "label": "📊 GDP pc" }
+    ],
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#e6f5fb", "#00A1DE"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",           "format": "currencyPerM2",  "colors": ["#fdecec", "#ED2939"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",   "format": "currencyPerMo",  "colors": ["#e6f5fb", "#00A1DE"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#e6f5fb", "#00A1DE"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e6f5fb", "#00A1DE"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#e6f5fb", "#00A1DE"] }
+    },
+    "regions": {
+      "LU00": { "name": "Luxembourg", "salary": 3500, "housing": 8500, "rent": 1900, "unemployment": 5.8, "population": 670000, "crime": 28.0, "temperature": 9.5, "doctors": 3.0, "gdp": 115000 }
+    }
+  },
+  "stats": {
+    "unemployment":  { "value": 5.8, "asOf": "Apr 2026", "source": "Eurostat / STATEC" },
+    "youthUnemp":    { "value": 18.0 },
+    "minWage":       { "value": 2704, "asOf": "Jan 2026", "source": "Government · 2026", "note": "Highest in the EU" },
+    "avgGrossSalary":{ "value": 5000 },
+    "avgNetSalary":  { "value": 3500 },
+    "gdp":           { "value": 2.0 },
+    "gdpTotalEuro":  { "value": "85B" },
+    "gdpPerCapita":  { "value": "115,000", "note": "Highest in EU — inflated by cross-border workers" },
+    "inflation":     { "value": 2.5 },
+    "publicDebt":    { "value": 27, "note": "Among EU's lowest" },
+    "budgetBalance": { "value": -1.0 },
+    "ecbRate":       { "value": 2.25 },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 82.8 },
+    "tourists":      { "value": "1.2M" },
+    "tourismRevenue":{ "value": "0.6B €", "note": "Business + EU institutions + Ardennes" },
+    "happinessRank": { "value": 8 },
+    "population":    { "value": "670k", "note": "~47% foreign nationals · 200k daily commuters" }
+  },
+  "history": {
+    "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "gdp":          [5.0, 1.8, 2.0, 3.3, -0.9, 7.2, 1.4, -1.1, 1.0, 2.0],
+    "unemployment": [6.3, 5.5, 5.4, 5.4, 6.4, 5.7, 4.6, 5.2, 5.8, 5.8],
+    "inflation":    [0.0, 2.1, 2.0, 1.6, 0.0, 3.5, 8.2, 2.9, 2.3, 2.5],
+    "publicDebt":   [21, 23, 21, 22, 25, 25, 25, 26, 27, 27],
+    "euAvg": {
+      "gdp":          [2.0, 2.7, 2.0, 1.6, -5.6, 5.9, 3.4, 0.4, 0.8, 1.5],
+      "unemployment": [8.6, 7.6, 6.8, 6.7, 7.1, 7.0, 6.2, 6.1, 6.0, 6.0],
+      "inflation":    [0.3, 1.5, 1.9, 1.4, 0.7, 2.9, 9.2, 6.4, 2.6, 2.3],
+      "publicDebt":   [83, 82, 80, 78, 90, 88, 84, 82, 82, 83]
+    }
+  },
+  "footerSources": [
+    { "name": "STATEC",        "url": "https://statistiques.public.lu",  "desc": "National statistics" },
+    { "name": "Eurostat",      "url": "https://ec.europa.eu/eurostat",   "desc": "European data" },
+    { "name": "BCL",           "url": "https://www.bcl.lu",              "desc": "Central bank" },
+    { "name": "Visit Luxembourg","url": "https://www.visitluxembourg.com", "desc": "Tourism" },
+    { "name": "IEP",           "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance", "url": "https://finance.yahoo.com",       "desc": "Brent (live)" }
+  ]
+}

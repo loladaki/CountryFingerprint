@@ -1,0 +1,149 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
+import data from '@data/sk.json';
+
+const h = data.history;
+const flagColor = '#0B4EA2';
+---
+<CountryLayout country="sk" title={data.meta.title} flag={data.meta.flag} subtitle={data.meta.subtitle} description={data.meta.description} tickerItems={data.tickerItems} sections={data.sections} liveBadge="📌 Static data · loading…">
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="info" icon="⛽">
+      Slovak diesel is <strong>below the EU average</strong>, driven by trucks crossing the country
+      east–west. Slovakia generates over half its electricity from nuclear (Mochovce + Bohunice)
+      and remains heavily exposed to Russian gas imports.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Benzín 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diesel" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.18" unit="€/kWh" sub="Regulated household rate" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="ÚRSO · Q1 2026" />
+      <MetricCard label="☢️ Nuclear share" value="55" unit="%" sub="Mochovce + Bohunice" badge={{ kind: 'ok', text: '✓ Largest EU share' }} source="Slovenské elektrárne · 2025" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Region" tag="9 metrics · click a region">
+    <InteractiveMap regions={data.map.regions} metrics={data.map.metrics} metricButtons={data.map.buttons} geojsonUrl={data.map.geojsonUrl} projection={data.map.projection} featureIdResolver={data.map.featureIdResolver} viewBox={data.map.viewBox} strokeOnSelect={data.map.strokeOnSelect} unit={data.map.regionUnit} country="sk" />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="ŠÚSR · Q4 2025">
+    <Notice variant="warn" icon="🏠">
+      Bratislava housing is now <strong>pricier than Vienna</strong> per square metre — a
+      consequence of high local wages and tight planning. Eastern Slovakia remains among the
+      EU's most affordable.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · Bratislava" value="3,500" unit="€/m²" badge={{ kind: 'up', text: '↑ +6% vs 2024' }} source="ŠÚSR · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · national avg" value="1,800" unit="€/m²" badge={{ kind: 'up', text: '↑ +5% vs 2024' }} source="ŠÚSR · 2025" />
+      <MetricCard label="🛒 Buy · East" value="1,200" unit="€/m²" badge={{ kind: 'dn', text: '↓ Affordable' }} source="nehnutelnosti.sk · 2025" />
+      <MetricCard label="🔑 Rent · Bratislava (T2)" value="850" unit="€/mo" badge={{ kind: 'up', text: '↑ Highest in SK' }} source="nehnutelnosti.sk · Q1 2026" variant="blue" />
+      <MetricCard label="🔑 Rent · regional (T2)" value="450" unit="€/mo" source="nehnutelnosti.sk · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="ŠÚSR / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" source="ŠÚSR · 2025" variant="gold" />
+      <MetricCard label="💶 Average net salary" value={data.stats.avgNetSalary.value} unit="€/mo" source="ŠÚSR · 2025" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€/mo" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Government · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" valueId="sk-unemp" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source={data.stats.unemployment.source} variant="green" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" valueId="sk-youth-unemp" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="ŠÚSR / NBS · 2025–2026">
+    <Notice variant="info" icon="📊">
+      Slovakia is the <strong>world's biggest per-capita car producer</strong> — VW, KIA, PSA, JLR
+      and Volvo all assemble here. The flip side: a stark east–west divide and high exposure to
+      the European auto cycle. Inflation hit 12% in 2022.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Mid-sized EU', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: 'Below avg', kind: 'bad' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'sk-gdp', badge: { text: '↑ Above avg', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'sk-inflation', badge: { text: '↑ Above avg', kind: 'bad' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Below avg', kind: 'ok' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget deficit', badge: { text: '↑ Above limit', kind: 'bad' } },
+    ]} />
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="info" icon="📈">
+      Unemployment has steadily fallen from <strong>9.7% in 2016</strong> to 5.5% today.
+      Inflation peaked at 12% in 2022 and 11% in 2023 — among the EU's worst. Public debt has
+      slowly climbed back toward 60%.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="sk-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[{key:'sk',label:'Slovakia',color:flagColor,data:h.gdp},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.gdp,dashed:true}]} />
+      <TimeChart id="sk-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[{key:'sk',label:'Slovakia',color:flagColor,data:h.unemployment},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.unemployment,dashed:true}]} />
+      <TimeChart id="sk-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[{key:'sk',label:'Slovakia',color:flagColor,data:h.inflation},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.inflation,dashed:true}]} />
+      <TimeChart id="sk-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[{key:'sk',label:'Slovakia',color:flagColor,data:h.publicDebt},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.publicDebt,dashed:true}]} />
+    </div>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="Slovakia.travel · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="6" unit="M" badge={{ kind: 'ne', text: '→ Recovering' }} source="ŠÚSR · 2024" />
+      <MetricCard label="💶 Tourism revenue" value="3" unit="B €" source="Slovakia.travel · 2024" variant="gold" />
+      <MetricCard label="🏔 High Tatras" value="Top draw" sub="Skiing + hiking · UNESCO biosphere" badge={{ kind: 'ok', text: '✓ Alpine in CEE' }} source="Slovakia.travel · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="Eurostat · 2024" />
+      <MetricCard label="💰 Health expenditure" value="7.5" unit="% GDP" source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="3.7" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🩺 Coverage" value="100" unit="%" sub="Multi-payer compulsory" badge={{ kind: 'ok', text: '✓ Universal' }} source="UDZS · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="23" sub="23rd safest globally" badge={{ kind: 'dn', text: '↑ Top-25' }} source="IEP · 2024" variant="green" />
+      <MetricCard label="🚔 Homicide rate" value="1.1" unit="/100k" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🚗 Road fatalities" value="220" sub="2024" badge={{ kind: 'ne', text: '→ Falling' }} source="ŠÚSR · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="ŠÚSR / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Slowly shrinking" source="ŠÚSR · 2026" />
+      <MetricCard label="🎓 University graduates" value="40" unit="%" sub="25–34 cohort" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2024" />
+      <MetricCard label="👶 Birth rate" value="1.55" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="ŠÚSR · 2024" />
+      <MetricCard label="🏠 Home ownership" value="91" unit="%" sub="Among EU's highest" badge={{ kind: 'ok', text: '✓ Very high' }} source="Eurostat · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Slovakia vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Slovakia" rows={[
+      { indicator: 'GDP per capita',     country: '€21,000', eu: '€34,900', rank: 'bad',  note: 'Below avg (-40%)' },
+      { indicator: 'GDP growth 2026',    country: '+2.0%',   eu: '+1.5%',   rank: 'good', note: 'Above avg' },
+      { indicator: 'Unemployment',       country: '5.5%',    eu: '6.0%',    rank: 'good', note: 'Below avg' },
+      { indicator: 'Youth unemployment', country: '19.0%',   eu: '15.4%',   rank: 'bad',  note: 'Above avg' },
+      { indicator: 'Inflation 2026',     country: '4.0%',    eu: '2.6%',    rank: 'bad',  note: 'Above avg' },
+      { indicator: 'Public debt',        country: '58% GDP', eu: '83% GDP', rank: 'good', note: 'Below avg' },
+      { indicator: 'Min. wage',          country: '€816',    eu: '~€1,100', rank: 'bad',  note: 'Below avg' },
+      { indicator: 'Petrol price',       country: '€1.80/L', eu: '€1.82/L', rank: 'good', note: 'Near avg' },
+      { indicator: 'Life expectancy',    country: '77.8 yrs', eu: '81.2 yrs', rank: 'bad', note: 'Below avg' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="sk" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (<li><a href={s.url}>{s.name}</a> — {s.desc}</li>))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇸🇰 Slovakia · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">ŠÚSR · NBS · Eurostat</span>
+  </Fragment>
+</CountryLayout>

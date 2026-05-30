@@ -1,0 +1,148 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
+import data from '@data/lv.json';
+
+const h = data.history;
+const flagColor = '#9E3039';
+---
+<CountryLayout country="lv" title={data.meta.title} flag={data.meta.flag} subtitle={data.meta.subtitle} description={data.meta.description} tickerItems={data.tickerItems} sections={data.sections} liveBadge="📌 Static data · loading…">
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="info" icon="⛽">
+      Latvia's diesel sits <strong>slightly above the EU average</strong>. The country runs largely
+      on hydro and biomass, but disconnected from the Russian grid in 2025 and faces volatile
+      Baltic electricity prices.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Benzīns 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Dīzelis" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.21" unit="€/kWh" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · Q1 2026" />
+      <MetricCard label="💧 Hydro share" value="40" unit="%" sub="Daugava river cascade" badge={{ kind: 'ok', text: '✓ Decoupled from Russia 2025' }} source="AS Latvenergo · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Region" tag="9 metrics · click a region">
+    <InteractiveMap regions={data.map.regions} metrics={data.map.metrics} metricButtons={data.map.buttons} geojsonUrl={data.map.geojsonUrl} projection={data.map.projection} featureIdResolver={data.map.featureIdResolver} viewBox={data.map.viewBox} strokeOnSelect={data.map.strokeOnSelect} unit={data.map.regionUnit} country="lv" />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="CSP · Q4 2025">
+    <Notice variant="warn" icon="🏠">
+      Latvian housing is <strong>among Europe's most affordable</strong> — but the gap between Rīga
+      and Latgale (east) is enormous. Latgale homes can be bought for under €600/m².
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · Rīga" value="1,800" unit="€/m²" badge={{ kind: 'up', text: '↑ +5% vs 2024' }} source="CSP · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · national avg" value="1,200" unit="€/m²" badge={{ kind: 'up', text: '↑ +4% vs 2024' }} source="CSP · 2025" />
+      <MetricCard label="🛒 Buy · Latgale" value="600" unit="€/m²" badge={{ kind: 'dn', text: '↓ Cheapest in EU' }} source="ss.lv · 2025" />
+      <MetricCard label="🔑 Rent · Rīga (T2)" value="600" unit="€/mo" badge={{ kind: 'up', text: '↑ Rising fast' }} source="ss.lv · Q1 2026" variant="blue" />
+      <MetricCard label="🔑 Rent · regional (T2)" value="350" unit="€/mo" source="ss.lv · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="CSP / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" source="CSP · 2025" variant="gold" />
+      <MetricCard label="💶 Average net salary" value={data.stats.avgNetSalary.value} unit="€/mo" source="CSP · 2025" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€/mo" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Government · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" valueId="lv-unemp" badge={{ kind: 'up', text: '↑ Slightly above EU avg' }} source={data.stats.unemployment.source} />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" valueId="lv-youth-unemp" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="CSP / Latvijas Banka · 2025–2026">
+    <Notice variant="info" icon="📊">
+      Latvia faces structural <strong>depopulation</strong> — emigration after EU accession plus
+      low births. Inflation peaked at <strong>17% in 2022</strong>, third-highest in the EU. Public
+      debt remains moderate at 45%.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Small economy', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: 'Below avg', kind: 'bad' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'lv-gdp', badge: { text: '↑ Above avg', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'lv-inflation', badge: { text: '→ Near avg', kind: 'good' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Below avg', kind: 'good' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget deficit', badge: { text: '→ Within rules', kind: 'good' } },
+    ]} />
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="info" icon="📈">
+      The inflation chart shows Latvia's <strong>17% spike in 2022</strong>, one of the EU's worst.
+      Unemployment has structurally fallen since 2016 (from 9.6% to 6.5%). Debt held below 50%
+      throughout the period.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="lv-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[{key:'lv',label:'Latvia',color:flagColor,data:h.gdp},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.gdp,dashed:true}]} />
+      <TimeChart id="lv-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[{key:'lv',label:'Latvia',color:flagColor,data:h.unemployment},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.unemployment,dashed:true}]} />
+      <TimeChart id="lv-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[{key:'lv',label:'Latvia',color:flagColor,data:h.inflation},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.inflation,dashed:true}]} />
+      <TimeChart id="lv-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[{key:'lv',label:'Latvia',color:flagColor,data:h.publicDebt},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.publicDebt,dashed:true}]} />
+    </div>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="Latvia Travel · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="2" unit="M" badge={{ kind: 'ne', text: '→ Recovering' }} source="CSP · 2024" />
+      <MetricCard label="💶 Tourism revenue" value="1.2" unit="B €" source="Latvia Travel · 2024" variant="gold" />
+      <MetricCard label="🏰 Rīga old town" value="UNESCO" sub="Art Nouveau capital of Europe" badge={{ kind: 'ok', text: '✓ Heritage site' }} source="UNESCO" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'up', text: '↑ Among EU\'s lowest' }} source="Eurostat · 2024" variant="red" />
+      <MetricCard label="💰 Health expenditure" value="6.5" unit="% GDP" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="3.4" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🩺 Coverage" value="100" unit="%" sub="Tax-funded" badge={{ kind: 'ok', text: '✓ Universal' }} source="NVD · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="36" sub="NATO frontline state" badge={{ kind: 'ne', text: '→ Border tension' }} source="IEP · 2024" />
+      <MetricCard label="🚔 Homicide rate" value="3.0" unit="/100k" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🛡 Defence spending" value="3.2" unit="% GDP" sub="Among NATO's highest" badge={{ kind: 'up', text: '↑ Rising' }} source="NATO · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="CSP / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Shrinking — emigration + low births" badge={{ kind: 'dn', text: '↓ Falling' }} source="CSP · 2026" variant="red" />
+      <MetricCard label="🗣 Russian speakers" value="~25" unit="%" sub="Concentrated in Rīga + Latgale" badge={{ kind: 'ne', text: '→ Integration focus' }} source="CSP · 2024" />
+      <MetricCard label="🎓 University graduates" value="44" unit="%" sub="25–34 cohort · women dominate" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="green" />
+      <MetricCard label="👶 Birth rate" value="1.30" badge={{ kind: 'up', text: '↑ Below EU avg' }} source="CSP · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Latvia vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Latvia" rows={[
+      { indicator: 'GDP per capita',     country: '€22,500', eu: '€34,900', rank: 'bad',  note: 'Below avg (-36%)' },
+      { indicator: 'GDP growth 2026',    country: '+2.2%',   eu: '+1.5%',   rank: 'good', note: 'Above avg' },
+      { indicator: 'Unemployment',       country: '6.5%',    eu: '6.0%',    rank: 'ok',   note: 'Near avg' },
+      { indicator: 'Youth unemployment', country: '15.0%',   eu: '15.4%',   rank: 'good', note: 'Near avg' },
+      { indicator: 'Inflation 2026',     country: '3.0%',    eu: '2.6%',    rank: 'ok',   note: 'Near avg' },
+      { indicator: 'Public debt',        country: '45% GDP', eu: '83% GDP', rank: 'good', note: 'Well below avg' },
+      { indicator: 'Min. wage',          country: '€740',    eu: '~€1,100', rank: 'bad',  note: 'Below avg' },
+      { indicator: 'Petrol price',       country: '€1.88/L', eu: '€1.82/L', rank: 'ok',   note: 'Near avg' },
+      { indicator: 'Life expectancy',    country: '75.7 yrs', eu: '81.2 yrs', rank: 'bad', note: 'Among EU\'s lowest' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="lv" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (<li><a href={s.url}>{s.name}</a> — {s.desc}</li>))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇱🇻 Latvia · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">CSP · Latvijas Banka · Eurostat</span>
+  </Fragment>
+</CountryLayout>

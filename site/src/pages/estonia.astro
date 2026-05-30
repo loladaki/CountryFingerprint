@@ -1,0 +1,149 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
+import data from '@data/ee.json';
+
+const h = data.history;
+const flagColor = '#0072CE';
+---
+<CountryLayout country="ee" title={data.meta.title} flag={data.meta.flag} subtitle={data.meta.subtitle} description={data.meta.description} tickerItems={data.tickerItems} sections={data.sections} liveBadge="📌 Static data · loading…">
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="info" icon="⛽">
+      Estonia's fuel sits <strong>just below the EU average</strong>. The country historically ran
+      on heavily-polluting <strong>oil shale</strong>, but is now shifting fast to wind and biomass.
+      Electricity is volatile — Estonia disconnected from the Russian grid in 2025.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Bensiin 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diisel" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.19" unit="€/kWh" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="Eurostat · Q1 2026" />
+      <MetricCard label="🪨 Oil shale" value="Phasing out" sub="Was ~70% of power · grid now Baltic-synced" badge={{ kind: 'ok', text: '✓ Decoupled from Russia 2025' }} source="Elering · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Interactive Map by Region" tag="9 metrics · click a region">
+    <InteractiveMap regions={data.map.regions} metrics={data.map.metrics} metricButtons={data.map.buttons} geojsonUrl={data.map.geojsonUrl} projection={data.map.projection} featureIdResolver={data.map.featureIdResolver} viewBox={data.map.viewBox} strokeOnSelect={data.map.strokeOnSelect} unit={data.map.regionUnit} country="ee" />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="Statistikaamet · Q4 2025">
+    <Notice variant="warn" icon="🏠">
+      Tallinn concentrates the market — prices nearly <strong>doubled since 2017</strong>. The
+      Russian-speaking northeast (Narva) has some of the cheapest housing in the EU, but also the
+      weakest jobs.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · Tallinn" value="3,000" unit="€/m²" badge={{ kind: 'up', text: '↑ +5% vs 2024' }} source="Statistikaamet · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · national avg" value="2,000" unit="€/m²" badge={{ kind: 'up', text: '↑ +4% vs 2024' }} source="Statistikaamet · 2025" />
+      <MetricCard label="🛒 Buy · Narva" value="900" unit="€/m²" badge={{ kind: 'ne', text: '→ Among EU\'s cheapest' }} source="kv.ee · 2025" />
+      <MetricCard label="🔑 Rent · Tallinn (T2)" value="850" unit="€/mo" badge={{ kind: 'up', text: '↑ Highest in EE' }} source="kv.ee · Q1 2026" variant="blue" />
+      <MetricCard label="🔑 Rent · Tartu (T2)" value="600" unit="€/mo" badge={{ kind: 'up', text: '↑ Student demand' }} source="kv.ee · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="Statistikaamet / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" source="Statistikaamet · 2025" variant="gold" />
+      <MetricCard label="💶 Average net salary" value={data.stats.avgNetSalary.value} unit="€/mo" source="Statistikaamet · 2025" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€/mo" badge={{ kind: 'dn', text: '↑ Rising' }} source="Government · 2026" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" valueId="ee-unemp" badge={{ kind: 'up', text: '↑ Above EU avg' }} source={data.stats.unemployment.source} variant="red" />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" valueId="ee-youth-unemp" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="Statistikaamet / Eesti Pank · 2025–2026">
+    <Notice variant="info" icon="📊">
+      Estonia is the EU's <strong>digital-government pioneer</strong> (e-Residency, X-Road, online
+      voting) and runs the <strong>lowest public debt in the Union</strong> (24%). The flip side: a
+      long 2022–24 recession after Russian trade collapsed and inflation hit ~19%.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Small economy', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: 'Below avg', kind: 'bad' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'ee-gdp', badge: { text: '↑ Recovering', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'ee-inflation', badge: { text: '↑ Above avg', kind: 'bad' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Lowest in EU', kind: 'good' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget deficit', badge: { text: '→ Defence-driven', kind: 'ok' } },
+    ]} />
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="info" icon="📈">
+      The charts show Estonia's <strong>three-year recession</strong> (2022–24, the deepest in the
+      EU) and the <strong>19% inflation spike of 2022</strong> — the highest in the bloc. Debt stays
+      remarkably flat near the EU floor.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="ee-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[{key:'ee',label:'Estonia',color:flagColor,data:h.gdp},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.gdp,dashed:true}]} />
+      <TimeChart id="ee-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[{key:'ee',label:'Estonia',color:flagColor,data:h.unemployment},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.unemployment,dashed:true}]} />
+      <TimeChart id="ee-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[{key:'ee',label:'Estonia',color:flagColor,data:h.inflation},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.inflation,dashed:true}]} />
+      <TimeChart id="ee-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[{key:'ee',label:'Estonia',color:flagColor,data:h.publicDebt},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.publicDebt,dashed:true}]} />
+    </div>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="Visit Estonia · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="1.5" unit="M" badge={{ kind: 'ne', text: '→ Finns + cruise' }} source="Statistikaamet · 2024" variant="green" />
+      <MetricCard label="💶 Tourism revenue" value="1.8" unit="B €" source="Visit Estonia · 2024" variant="gold" />
+      <MetricCard label="🏰 Tallinn old town" value="UNESCO" sub="Best-preserved medieval city in N. Europe" badge={{ kind: 'ok', text: '✓ Heritage site' }} source="UNESCO" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="Eurostat · 2024" />
+      <MetricCard label="💰 Health expenditure" value="7.0" unit="% GDP" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="3.5" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🩺 e-Health" value="99" unit="%" sub="Digital prescriptions + records" badge={{ kind: 'ok', text: '✓ World-leading' }} source="e-Estonia · 2024" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="31" sub="Safe, but NATO frontline" badge={{ kind: 'ne', text: '→ Border tension' }} source="IEP · 2024" />
+      <MetricCard label="🚔 Homicide rate" value="2.0" unit="/100k" badge={{ kind: 'ne', text: '→ Above EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🛡 Defence spending" value="3.4" unit="% GDP" sub="Among NATO's highest" badge={{ kind: 'up', text: '↑ Rising' }} source="NATO · 2025" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="Statistikaamet / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="Stable via Ukrainian inflow" source="Statistikaamet · 2026" />
+      <MetricCard label="🗣 Russian speakers" value="~24" unit="%" sub="Concentrated in the northeast" badge={{ kind: 'ne', text: '→ Integration focus' }} source="Statistikaamet · 2024" />
+      <MetricCard label="🎓 University graduates" value="43" unit="%" sub="25–34 cohort" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="green" />
+      <MetricCard label="📶 Digital society" value="#1" sub="99% of services online" badge={{ kind: 'ok', text: '✓ EU leader' }} source="e-Estonia · 2024" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Estonia vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Estonia" rows={[
+      { indicator: 'GDP per capita',     country: '€27,500', eu: '€34,900', rank: 'ok',   note: 'Catching up' },
+      { indicator: 'GDP growth 2026',    country: '+2.0%',   eu: '+1.5%',   rank: 'good', note: 'Recovering' },
+      { indicator: 'Unemployment',       country: '7.5%',    eu: '6.0%',    rank: 'bad',  note: 'Above avg' },
+      { indicator: 'Youth unemployment', country: '18.0%',   eu: '15.4%',   rank: 'bad',  note: 'Above avg' },
+      { indicator: 'Inflation 2026',     country: '4.0%',    eu: '2.6%',    rank: 'bad',  note: 'Sticky' },
+      { indicator: 'Public debt',        country: '24% GDP', eu: '83% GDP', rank: 'good', note: 'Lowest in EU' },
+      { indicator: 'Min. wage',          country: '€886',    eu: '~€1,100', rank: 'bad',  note: 'Below avg' },
+      { indicator: 'Petrol price',       country: '€1.81/L', eu: '€1.82/L', rank: 'good', note: 'Near avg' },
+      { indicator: 'Life expectancy',    country: '78.9 yrs', eu: '81.2 yrs', rank: 'bad', note: 'Below avg' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="ee" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (<li><a href={s.url}>{s.name}</a> — {s.desc}</li>))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇪🇪 Estonia · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">Statistikaamet · Eesti Pank · Eurostat</span>
+  </Fragment>
+</CountryLayout>

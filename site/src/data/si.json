@@ -1,0 +1,115 @@
+{
+  "meta": {
+    "code": "si",
+    "name": "Slovenia",
+    "flag": "🇸🇮",
+    "title": "Slovenia by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 2 NUTS2 regions",
+    "description": "Slovenia dashboard — fuel, housing, wages, unemployment, GDP, tourism. The wealthiest and longest-lived ex-Yugoslav state, alpine and euro since 2007. Official SURS / Banka Slovenije / Eurostat sources."
+  },
+  "tickerItems": [
+    { "icon": "⛽", "label": "Bencin 95", "value": "1.699 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Dizel",     "value": "1.751 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",    "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage 2026", "value": "€1,254" },
+    { "icon": "🏠", "label": "Housing",  "value": "€3,800/m² (Ljubljana)" },
+    { "icon": "📉", "label": "Unemployment", "value": "3.8%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "6M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+2.3%", "id": "tick-gdp" }
+  ],
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Trends" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+  "fuelFallback": {
+    "gasolina95": { "atual": 1.699, "anterior": 1.695, "variacao": 0.004 },
+    "gasolina98": { "atual": 1.799, "anterior": 1.795, "variacao": 0.004 },
+    "gasoleo":    { "atual": 1.751, "anterior": 1.758, "variacao": -0.007 },
+    "gpl":        { "atual": 0.820, "anterior": 0.820, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_2.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
+    "regionUnit": "region",
+    "strokeOnSelect": "#0F4DA8",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [14.8, 46.1], "scale": 11000, "translate": [275, 310] },
+    "buttons": [
+      { "key": "salary", "label": "💶 Salary" },
+      { "key": "housing", "label": "🛒 Buy €/m²" },
+      { "key": "rent", "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population", "label": "👥 Population" },
+      { "key": "crime", "label": "🚨 Crime" },
+      { "key": "temperature", "label": "🌡 Temperature" },
+      { "key": "doctors", "label": "💊 Doctors" },
+      { "key": "gdp", "label": "📊 GDP pc" }
+    ],
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#e6eef7", "#0F4DA8"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",           "format": "currencyPerM2",  "colors": ["#fdecec", "#E03C31"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",   "format": "currencyPerMo",  "colors": ["#e6eef7", "#0F4DA8"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#e6eef7", "#0F4DA8"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#e6eef7", "#0F4DA8"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#e6eef7", "#0F4DA8"] }
+    },
+    "regions": {
+      "SI04": { "name": "Zahodna Slovenija (Ljubljana, West)", "salary": 1650, "housing": 3800, "rent": 850, "unemployment": 3.2, "population": 1030000, "crime": 24.0, "temperature": 11.0, "doctors": 3.5, "gdp": 35000 },
+      "SI03": { "name": "Vzhodna Slovenija (East)",            "salary": 1380, "housing": 1900, "rent": 550, "unemployment": 4.5, "population": 1090000, "crime": 18.0, "temperature": 10.5, "doctors": 2.8, "gdp": 22000 }
+    }
+  },
+  "stats": {
+    "unemployment":  { "value": 3.8, "asOf": "Apr 2026", "source": "Eurostat / SURS" },
+    "youthUnemp":    { "value": 11.0 },
+    "minWage":       { "value": 1254, "asOf": "Jan 2026", "source": "Government · 2026" },
+    "avgGrossSalary":{ "value": 2200 },
+    "avgNetSalary":  { "value": 1500 },
+    "gdp":           { "value": 2.3 },
+    "gdpTotalEuro":  { "value": "68B" },
+    "gdpPerCapita":  { "value": "28,500" },
+    "inflation":     { "value": 3.0 },
+    "publicDebt":    { "value": 67 },
+    "budgetBalance": { "value": -3.0 },
+    "ecbRate":       { "value": 2.25 },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 81.3, "note": "Highest in CEE" },
+    "tourists":      { "value": "6M" },
+    "tourismRevenue":{ "value": "3.5B €", "note": "Lake Bled + Julian Alps + Adriatic" },
+    "happinessRank": { "value": 21 },
+    "population":    { "value": "2.12M" }
+  },
+  "history": {
+    "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "gdp":          [3.2, 4.8, 4.5, 3.5, -4.2, 8.2, 2.5, 1.6, 1.5, 2.3],
+    "unemployment": [8.0, 6.6, 5.1, 4.5, 5.0, 4.8, 4.0, 3.7, 3.8, 3.8],
+    "inflation":    [-0.2, 1.6, 1.9, 1.7, -0.3, 2.0, 9.3, 7.2, 2.0, 3.0],
+    "publicDebt":   [78, 74, 70, 65, 79, 74, 72, 69, 67, 67],
+    "euAvg": {
+      "gdp":          [2.0, 2.7, 2.0, 1.6, -5.6, 5.9, 3.4, 0.4, 0.8, 1.5],
+      "unemployment": [8.6, 7.6, 6.8, 6.7, 7.1, 7.0, 6.2, 6.1, 6.0, 6.0],
+      "inflation":    [0.3, 1.5, 1.9, 1.4, 0.7, 2.9, 9.2, 6.4, 2.6, 2.3],
+      "publicDebt":   [83, 82, 80, 78, 90, 88, 84, 82, 82, 83]
+    }
+  },
+  "footerSources": [
+    { "name": "SURS",            "url": "https://www.stat.si",            "desc": "National statistics" },
+    { "name": "Eurostat",        "url": "https://ec.europa.eu/eurostat",  "desc": "European data" },
+    { "name": "Banka Slovenije", "url": "https://www.bsi.si",             "desc": "Central bank" },
+    { "name": "I Feel Slovenia", "url": "https://www.slovenia.info",      "desc": "Tourism" },
+    { "name": "IEP",             "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance",   "url": "https://finance.yahoo.com",      "desc": "Brent (live)" }
+  ]
+}

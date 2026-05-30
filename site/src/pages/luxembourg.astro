@@ -1,0 +1,150 @@
+---
+import CountryLayout from '@layouts/CountryLayout.astro';
+import Section from '@components/Section.astro';
+import Notice from '@components/Notice.astro';
+import Cards from '@components/Cards.astro';
+import MetricCard from '@components/MetricCard.astro';
+import KPIRow from '@components/KPIRow.astro';
+import InteractiveMap from '@components/InteractiveMap.astro';
+import ComparisonTable from '@components/ComparisonTable.astro';
+import LiveDataLoader from '@components/LiveDataLoader.astro';
+import TimeChart from '@components/TimeChart.astro';
+import data from '@data/lu.json';
+
+const h = data.history;
+const flagColor = '#00A1DE';
+---
+<CountryLayout country="lu" title={data.meta.title} flag={data.meta.flag} subtitle={data.meta.subtitle} description={data.meta.description} tickerItems={data.tickerItems} sections={data.sections} liveBadge="📌 Static data · loading…">
+  <Section id="combustiveis" title="Energy &amp; Fuel" tag="EU Oil Bulletin · weekly">
+    <Notice variant="info" icon="⛽">
+      Luxembourg's fuel sits <strong>just below the EU average</strong> — the famous "tank
+      tourism" from Belgium, France and Germany is no longer the bargain it once was. Public
+      transport is <strong>free for everyone</strong> since 2020 — a world first.
+    </Notice>
+    <Cards>
+      <MetricCard label="⛽ Essence 95" value={data.fuelFallback.gasolina95.atual} unit="€/L" valueId="val-g95" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="EU Oil Bulletin · May 2026" variant="gold" />
+      <MetricCard label="⛽ Diesel" value={data.fuelFallback.gasoleo.atual} unit="€/L" valueId="val-gsl" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="EU Oil Bulletin · May 2026" variant="red" />
+      <MetricCard label="🛢 Brent Crude" value="—" unit="$/bbl" valueId="val-brent" badge={{ kind: 'ne', text: '→ Live data' }} source="Yahoo Finance · live" />
+      <MetricCard label="⚡ Electricity" value="0.22" unit="€/kWh" badge={{ kind: 'ne', text: '→ Near EU avg' }} source="ILR · Q1 2026" />
+      <MetricCard label="🚆 Public transport" value="Free" sub="Trains, trams and buses · 2020 world-first" badge={{ kind: 'ok', text: '✓ Free since 2020' }} source="Government" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="mapa" title="Country Overview" tag="single region · click for details">
+    <InteractiveMap regions={data.map.regions} metrics={data.map.metrics} metricButtons={data.map.buttons} geojsonUrl={data.map.geojsonUrl} projection={data.map.projection} featureIdResolver={data.map.featureIdResolver} viewBox={data.map.viewBox} strokeOnSelect={data.map.strokeOnSelect} unit={data.map.regionUnit} country="lu" />
+  </Section>
+
+  <Section id="habitacao" title="Housing — Buy &amp; Rent" tag="STATEC · Q4 2025">
+    <Notice variant="alert" icon="🏠">
+      Luxembourg has the <strong>most expensive housing in Europe</strong>. Sale prices fell ~10%
+      from the 2022 peak but remain crushing for locals — a median apartment in the capital costs
+      ~€1M. Most workers commute from cheaper Belgium, France or Germany.
+    </Notice>
+    <Cards>
+      <MetricCard label="🛒 Buy · Luxembourg City" value="9,500" unit="€/m²" badge={{ kind: 'up', text: '↑ Most expensive in EU' }} source="STATEC · 2025" variant="red" />
+      <MetricCard label="🛒 Buy · national avg" value="8,500" unit="€/m²" badge={{ kind: 'dn', text: '↓ -10% from 2022 peak' }} source="STATEC · 2025" />
+      <MetricCard label="🛒 Buy · suburbs" value="6,500" unit="€/m²" sub="Still cheaper than the capital" source="atHome · 2025" />
+      <MetricCard label="🔑 Rent · capital (T2)" value="1,900" unit="€/mo" badge={{ kind: 'up', text: '↑ Highest in EU' }} source="atHome · Q1 2026" variant="blue" />
+      <MetricCard label="🌍 Cross-border" value="200k" sub="Daily commuters from BE/FR/DE" badge={{ kind: 'ok', text: '✓ ~45% of jobs' }} source="STATEC · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="rendimentos" title="Income &amp; Work" tag="STATEC / Eurostat · 2025–2026">
+    <Cards>
+      <MetricCard label="💶 Average gross salary" value={data.stats.avgGrossSalary.value} unit="€/mo" badge={{ kind: 'dn', text: '↑ Highest in EU' }} source="STATEC · 2025" variant="green" />
+      <MetricCard label="💶 Average net salary" value={data.stats.avgNetSalary.value} unit="€/mo" source="STATEC · 2025" />
+      <MetricCard label="📋 Minimum wage 2026" value={data.stats.minWage.value} unit="€/mo" badge={{ kind: 'dn', text: '↑ Highest in EU' }} source="Government · 2026" variant="green" />
+      <MetricCard label="📉 Unemployment" value={data.stats.unemployment.value} unit="%" valueId="lu-unemp" badge={{ kind: 'ne', text: '→ Near EU avg' }} source={data.stats.unemployment.source} />
+      <MetricCard label="👶 Youth unemployment" value={data.stats.youthUnemp.value} unit="%" valueId="lu-youth-unemp" badge={{ kind: 'up', text: '↑ Above EU avg' }} source="Eurostat · Q1 2026" />
+    </Cards>
+  </Section>
+
+  <Section id="economia" title="Economy" tag="STATEC / BCL · 2025–2026">
+    <Notice variant="info" icon="📊">
+      Luxembourg is the EU's <strong>wealthiest country by GDP per capita</strong> (€115k) — though
+      the figure is inflated by cross-border workers whose output counts here but consumption
+      doesn't. <strong>Finance</strong> accounts for ~25% of GDP, with the EU's largest investment
+      fund hub.
+    </Notice>
+    <KPIRow items={[
+      { value: data.stats.gdpTotalEuro.value, label: 'GDP 2025 (€)', badge: { text: 'Tiny economy', kind: 'info' } },
+      { value: data.stats.gdpPerCapita.value, label: 'GDP per capita', badge: { text: 'Highest in EU', kind: 'good' } },
+      { value: '+' + data.stats.gdp.value + '%', label: 'GDP growth 2026', valueId: 'lu-gdp', badge: { text: '↑ Above avg', kind: 'good' } },
+      { value: data.stats.inflation.value + '%', label: 'Inflation 2026', valueId: 'lu-inflation', badge: { text: '→ Near avg', kind: 'good' } },
+      { value: data.stats.publicDebt.value + '%', label: 'Public debt / GDP', badge: { text: '↓ Among EU lowest', kind: 'good' } },
+      { value: data.stats.budgetBalance.value + '%', label: 'Budget deficit', badge: { text: '→ Strong fiscal', kind: 'good' } },
+    ]} />
+  </Section>
+
+  <Section id="evolucao" title="Trends Over Time" tag="2016–2025 · Eurostat">
+    <Notice variant="info" icon="📈">
+      Luxembourg's economy is volatile — small and finance-heavy. The 2023 -1.1% recession came
+      from rate hikes hitting the fund industry. Unemployment has held near 5–6% throughout.
+      Public debt stays under 30% — a remarkable feat.
+    </Notice>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem">
+      <TimeChart id="lu-evo-gdp" title="GDP growth (%)" years={h.years} unit="%" series={[{key:'lu',label:'Luxembourg',color:flagColor,data:h.gdp},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.gdp,dashed:true}]} />
+      <TimeChart id="lu-evo-unemp" title="Unemployment rate (%)" years={h.years} unit="%" series={[{key:'lu',label:'Luxembourg',color:flagColor,data:h.unemployment},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.unemployment,dashed:true}]} />
+      <TimeChart id="lu-evo-infl" title="Inflation (HICP %)" years={h.years} unit="%" series={[{key:'lu',label:'Luxembourg',color:flagColor,data:h.inflation},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.inflation,dashed:true}]} />
+      <TimeChart id="lu-evo-debt" title="Public debt (% GDP)" years={h.years} unit="%" series={[{key:'lu',label:'Luxembourg',color:flagColor,data:h.publicDebt},{key:'eu',label:'EU avg',color:'#888',data:h.euAvg.publicDebt,dashed:true}]} />
+    </div>
+  </Section>
+
+  <Section id="turismo" title="Tourism" tag="Visit Luxembourg · 2024">
+    <Cards>
+      <MetricCard label="🌍 Arrivals 2024" value="1.2" unit="M" sub="Business + city breaks + EU institutions" source="STATEC · 2024" />
+      <MetricCard label="💶 Tourism revenue" value="0.6" unit="B €" source="Visit Luxembourg · 2024" variant="gold" />
+      <MetricCard label="🌲 Ardennes" value="Hidden gem" sub="Hiking, castles · plus Vianden" badge={{ kind: 'ok', text: '✓ Underrated' }} source="Visit Luxembourg · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="saude" title="Healthcare" tag="Eurostat · 2024">
+    <Cards>
+      <MetricCard label="🎂 Life expectancy" value={data.stats.lifeExpectancy.value} unit="yrs" badge={{ kind: 'dn', text: '↑ Above EU avg' }} source="Eurostat · 2024" variant="green" />
+      <MetricCard label="💰 Health expenditure" value="6.0" unit="% GDP" sub="Low share, very high per-capita spend" source="OECD · 2023" />
+      <MetricCard label="👨‍⚕️ Doctors / 1000" value="3.0" badge={{ kind: 'ne', text: '→ Below EU avg' }} source="Eurostat · 2023" />
+      <MetricCard label="🩺 Coverage" value="100" unit="%" sub="CNS social insurance" badge={{ kind: 'ok', text: '✓ Universal' }} source="CNS · 2024" />
+    </Cards>
+  </Section>
+
+  <Section id="seguranca" title="Safety" tag="IEP · 2024">
+    <Cards>
+      <MetricCard label="🌍 Global Peace Rank" value="8" sub="8th safest globally" badge={{ kind: 'dn', text: '↑ Top-10' }} source="IEP · 2024" variant="green" />
+      <MetricCard label="🚔 Homicide rate" value="0.7" unit="/100k" badge={{ kind: 'dn', text: '↓ Below EU avg' }} source="Eurostat · 2023" variant="green" />
+      <MetricCard label="🚗 Road fatalities" value="30" sub="2024" badge={{ kind: 'dn', text: '↓ Among EU\'s lowest' }} source="STATEC · 2024" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="social" title="Society" tag="STATEC / Eurostat · 2024–2025">
+    <Cards>
+      <MetricCard label="👥 Population" value={data.stats.population.value} sub="~47% foreign nationals" source="STATEC · 2026" />
+      <MetricCard label="🗣 Languages" value="3 official" sub="Luxembourgish, French, German · plus English" badge={{ kind: 'ok', text: '✓ Multilingual' }} source="STATEC · 2024" variant="green" />
+      <MetricCard label="🎓 University graduates" value="56" unit="%" sub="25–34 cohort · among EU's highest" badge={{ kind: 'dn', text: '↑ Top-tier' }} source="Eurostat · 2024" variant="green" />
+      <MetricCard label="🚆 Free transit" value="Since 2020" sub="Trains, trams, buses nationwide" badge={{ kind: 'ok', text: '✓ World-first' }} source="Government" variant="green" />
+    </Cards>
+  </Section>
+
+  <Section id="europa" title="Luxembourg vs Europe" tag="Eurostat · 2025–2026">
+    <ComparisonTable countryLabel="Luxembourg" rows={[
+      { indicator: 'GDP per capita',     country: '€115,000', eu: '€34,900', rank: 'good', note: 'Highest in EU' },
+      { indicator: 'GDP growth 2026',    country: '+2.0%',   eu: '+1.5%',   rank: 'good', note: 'Above avg' },
+      { indicator: 'Unemployment',       country: '5.8%',    eu: '6.0%',    rank: 'good', note: 'Near avg' },
+      { indicator: 'Youth unemployment', country: '18.0%',   eu: '15.4%',   rank: 'bad',  note: 'Above avg' },
+      { indicator: 'Inflation 2026',     country: '2.5%',    eu: '2.6%',    rank: 'good', note: 'Near avg' },
+      { indicator: 'Public debt',        country: '27% GDP', eu: '83% GDP', rank: 'good', note: 'Among EU\'s lowest' },
+      { indicator: 'Min. wage',          country: '€2,704',  eu: '~€1,100', rank: 'good', note: 'Highest in EU' },
+      { indicator: 'Petrol price',       country: '€1.81/L', eu: '€1.82/L', rank: 'good', note: 'Near avg' },
+      { indicator: 'Life expectancy',    country: '82.8 yrs', eu: '81.2 yrs', rank: 'good', note: 'Above avg' },
+    ]} />
+  </Section>
+
+  <LiveDataLoader country="lu" />
+
+  <Fragment slot="footer-sources">
+    {data.footerSources.map((s) => (<li><a href={s.url}>{s.name}</a> — {s.desc}</li>))}
+  </Fragment>
+  <Fragment slot="footer-badge">
+    🇱🇺 Luxembourg · Live API<br />
+    <span style="opacity:.5;font-size:.7rem;margin-top:.4rem;display:block">STATEC · BCL · Eurostat</span>
+  </Fragment>
+</CountryLayout>

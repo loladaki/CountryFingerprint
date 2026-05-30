@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "code": "lv",
+    "name": "Latvia",
+    "flag": "🇱🇻",
+    "title": "Latvia by the Numbers",
+    "subtitle": "Economic, social and territorial indicators · 6 NUTS3 regions",
+    "description": "Latvia dashboard — fuel, housing, wages, unemployment, GDP, tourism. A Baltic euro economy facing depopulation and an east-west income divide. Official CSP / Latvijas Banka / Eurostat sources."
+  },
+  "tickerItems": [
+    { "icon": "⛽", "label": "Benzīns 95", "value": "1.879 €/L", "id": "tick-g95" },
+    { "icon": "⛽", "label": "Dīzelis",    "value": "1.892 €/L", "id": "tick-gsl" },
+    { "icon": "🛢", "label": "Brent",     "value": "—",          "id": "tick-brent" },
+    { "icon": "💶", "label": "Min wage 2026", "value": "€740" },
+    { "icon": "🏠", "label": "Housing",   "value": "€1,800/m² (Rīga)" },
+    { "icon": "📉", "label": "Unemployment", "value": "6.5%", "id": "tick-unemp" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "2M" },
+    { "icon": "🌍", "label": "GDP growth", "value": "+2.2%", "id": "tick-gdp" }
+  ],
+  "sections": [
+    { "id": "combustiveis", "label": "⛽ Energy" },
+    { "id": "mapa",         "label": "🗺 Map" },
+    { "id": "habitacao",    "label": "🏠 Housing" },
+    { "id": "rendimentos",  "label": "💶 Income" },
+    { "id": "economia",     "label": "📊 Economy" },
+    { "id": "evolucao",     "label": "📈 Trends" },
+    { "id": "turismo",      "label": "✈ Tourism" },
+    { "id": "saude",        "label": "🏥 Health" },
+    { "id": "seguranca",    "label": "🛡 Safety" },
+    { "id": "social",       "label": "👨‍👩‍👧 Society" },
+    { "id": "europa",       "label": "🇪🇺 vs Europe" }
+  ],
+  "fuelFallback": {
+    "gasolina95": { "atual": 1.879, "anterior": 1.872, "variacao": 0.007 },
+    "gasolina98": { "atual": 1.979, "anterior": 1.972, "variacao": 0.007 },
+    "gasoleo":    { "atual": 1.892, "anterior": 1.900, "variacao": -0.008 },
+    "gpl":        { "atual": 0.880, "anterior": 0.880, "variacao": 0.000 },
+    "brent":      { "preco": 100.21 }
+  },
+  "map": {
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_3.json",
+    "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
+    "regionUnit": "region",
+    "strokeOnSelect": "#9E3039",
+    "viewBox": "0 0 550 620",
+    "projection": { "center": [24.8, 56.9], "scale": 5200, "translate": [275, 310] },
+    "buttons": [
+      { "key": "salary", "label": "💶 Salary" },
+      { "key": "housing", "label": "🛒 Buy €/m²" },
+      { "key": "rent", "label": "🔑 Rent €/mo" },
+      { "key": "unemployment", "label": "📉 Unemployment" },
+      { "key": "population", "label": "👥 Population" },
+      { "key": "crime", "label": "🚨 Crime" },
+      { "key": "temperature", "label": "🌡 Temperature" },
+      { "key": "doctors", "label": "💊 Doctors" },
+      { "key": "gdp", "label": "📊 GDP pc" }
+    ],
+    "metrics": {
+      "salary":       { "label": "Average net salary (€/mo)",            "dpKey": "💶 Average net salary",  "format": "currency",       "colors": ["#f5e6e8", "#9E3039"] },
+      "housing":      { "label": "Median purchase price (€/m², to buy)", "dpKey": "🛒 Buy price",           "format": "currencyPerM2",  "colors": ["#fdecec", "#a51c30"] },
+      "rent":         { "label": "Median monthly rent (€/mo, ~T2)",      "dpKey": "🔑 Monthly rent (T2)",   "format": "currencyPerMo",  "colors": ["#f5e6e8", "#9E3039"] },
+      "unemployment": { "label": "Unemployment rate (%)",                "dpKey": "📉 Unemployment",        "format": "percent",         "colors": ["#fdecec", "#7a3520"] },
+      "population":   { "label": "Resident population",                  "dpKey": "👥 Population",          "format": "population",      "colors": ["#f5e6e8", "#9E3039"] },
+      "crime":        { "label": "Crime rate (‰)",                       "dpKey": "🚨 Crime rate",          "format": "permille",        "colors": ["#fff8e0", "#7a4a00"] },
+      "temperature":  { "label": "Annual avg. temperature (°C)",         "dpKey": "🌡 Avg. temperature",    "format": "degrees",         "colors": ["#f5e6e8", "#9E3039"] },
+      "doctors":      { "label": "Doctors per 1,000 pop.",               "dpKey": "💊 Doctors /1,000 pop.", "format": "doctors",         "colors": ["#e6f4ec", "#1a6b40"] },
+      "gdp":          { "label": "GDP per capita (€/yr)",                "dpKey": "📊 GDP per capita",      "format": "currency",        "colors": ["#f5e6e8", "#9E3039"] }
+    },
+    "regions": {
+      "LV006": { "name": "Rīga (capital)",     "salary": 1450, "housing": 1800, "rent": 600, "unemployment": 5.5, "population": 605000, "crime": 30.0, "temperature": 6.8, "doctors": 4.5, "gdp": 31000 },
+      "LV007": { "name": "Pierīga (Riga area)","salary": 1250, "housing": 1500, "rent": 480, "unemployment": 5.8, "population": 380000, "crime": 22.0, "temperature": 6.8, "doctors": 3.2, "gdp": 19000 },
+      "LV003": { "name": "Kurzeme (West)",     "salary": 1150, "housing": 900,  "rent": 380, "unemployment": 7.0, "population": 240000, "crime": 20.0, "temperature": 7.0, "doctors": 3.0, "gdp": 17000 },
+      "LV008": { "name": "Vidzeme (North)",    "salary": 1100, "housing": 750,  "rent": 340, "unemployment": 7.5, "population": 190000, "crime": 17.0, "temperature": 6.3, "doctors": 2.8, "gdp": 15000 },
+      "LV009": { "name": "Zemgale (Centre)",   "salary": 1150, "housing": 850,  "rent": 360, "unemployment": 7.2, "population": 230000, "crime": 19.0, "temperature": 6.8, "doctors": 2.9, "gdp": 15500 },
+      "LV005": { "name": "Latgale (East)",     "salary": 1050, "housing": 600,  "rent": 280, "unemployment": 10.5,"population": 250000, "crime": 23.0, "temperature": 6.5, "doctors": 3.0, "gdp": 12000 }
+    }
+  },
+  "stats": {
+    "unemployment":  { "value": 6.5, "asOf": "Apr 2026", "source": "Eurostat / CSP" },
+    "youthUnemp":    { "value": 15.0 },
+    "minWage":       { "value": 740, "asOf": "Jan 2026", "source": "Government · 2026" },
+    "avgGrossSalary":{ "value": 1700 },
+    "avgNetSalary":  { "value": 1260 },
+    "gdp":           { "value": 2.2 },
+    "gdpTotalEuro":  { "value": "42B" },
+    "gdpPerCapita":  { "value": "22,500" },
+    "inflation":     { "value": 3.0 },
+    "publicDebt":    { "value": 45 },
+    "budgetBalance": { "value": -3.0 },
+    "ecbRate":       { "value": 2.25 },
+    "euribor12m":    { "value": 2.222 },
+    "lifeExpectancy":{ "value": 75.7, "note": "Among EU's lowest" },
+    "tourists":      { "value": "2M" },
+    "tourismRevenue":{ "value": "1.2B €", "note": "Rīga old town + Jūrmala spa coast" },
+    "happinessRank": { "value": 36 },
+    "population":    { "value": "1.88M", "note": "Shrinking — emigration + low births" }
+  },
+  "history": {
+    "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
+    "gdp":          [2.4, 3.3, 4.0, 2.5, -3.5, 6.7, 3.0, -0.3, 0.5, 2.2],
+    "unemployment": [9.6, 8.7, 7.4, 6.3, 8.1, 7.6, 6.9, 6.5, 6.8, 6.5],
+    "inflation":    [0.1, 2.9, 2.6, 2.7, 0.1, 3.2, 17.2, 9.1, 1.3, 3.0],
+    "publicDebt":   [40, 39, 37, 37, 43, 44, 41, 43, 47, 45],
+    "euAvg": {
+      "gdp":          [2.0, 2.7, 2.0, 1.6, -5.6, 5.9, 3.4, 0.4, 0.8, 1.5],
+      "unemployment": [8.6, 7.6, 6.8, 6.7, 7.1, 7.0, 6.2, 6.1, 6.0, 6.0],
+      "inflation":    [0.3, 1.5, 1.9, 1.4, 0.7, 2.9, 9.2, 6.4, 2.6, 2.3],
+      "publicDebt":   [83, 82, 80, 78, 90, 88, 84, 82, 82, 83]
+    }
+  },
+  "footerSources": [
+    { "name": "CSP",            "url": "https://www.csp.gov.lv",         "desc": "National statistics" },
+    { "name": "Eurostat",       "url": "https://ec.europa.eu/eurostat",  "desc": "European data" },
+    { "name": "Latvijas Banka", "url": "https://www.bank.lv",            "desc": "Central bank" },
+    { "name": "Latvia Travel",  "url": "https://www.latvia.travel",      "desc": "Tourism" },
+    { "name": "IEP",            "url": "https://www.visionofhumanity.org", "desc": "Global Peace Index" },
+    { "name": "Yahoo Finance",  "url": "https://finance.yahoo.com",      "desc": "Brent (live)" }
+  ]
+}

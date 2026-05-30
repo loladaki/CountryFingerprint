@@ -11,7 +11,7 @@
  *   <Eubar current="pt" />     // marks Portugal as active
  *   <Eubar current="home" />   // home page
  */
-type CountryKey = 'home' | 'pt' | 'es' | 'fr' | 'de' | 'it' | 'nl' | 'ie' | 'be' | 'at' | 'se' | 'pl' | 'cz' | 'gr' | 'dk' | 'fi';
+type CountryKey = 'home' | 'pt' | 'es' | 'fr' | 'de' | 'it' | 'nl' | 'ie' | 'be' | 'at' | 'se' | 'pl' | 'cz' | 'gr' | 'dk' | 'fi' | 'ee' | 'lv' | 'lt' | 'hu' | 'sk' | 'si' | 'hr' | 'ro' | 'bg' | 'lu' | 'mt' | 'cy';
 interface Props { current: CountryKey }
 const { current } = Astro.props as Props;
 
@@ -25,6 +25,9 @@ const SOUTHERN: CountryEntry[] = [
   { key: 'es', name: 'Spain',    slug: 'spain',    flag: '🇪🇸' },
   { key: 'it', name: 'Italy',    slug: 'italy',    flag: '🇮🇹' },
   { key: 'gr', name: 'Greece',   slug: 'greece',   flag: '🇬🇷' },
+  { key: 'hr', name: 'Croatia',  slug: 'croatia',  flag: '🇭🇷' },
+  { key: 'mt', name: 'Malta',    slug: 'malta',    flag: '🇲🇹' },
+  { key: 'cy', name: 'Cyprus',   slug: 'cyprus',   flag: '🇨🇾' },
 ];
 const WESTERN: CountryEntry[] = [
   { key: 'fr', name: 'France',      slug: 'france',      flag: '🇫🇷' },
@@ -33,26 +36,35 @@ const WESTERN: CountryEntry[] = [
   { key: 'be', name: 'Belgium',     slug: 'belgium',     flag: '🇧🇪' },
   { key: 'at', name: 'Austria',     slug: 'austria',     flag: '🇦🇹' },
   { key: 'ie', name: 'Ireland',     slug: 'ireland',     flag: '🇮🇪' },
+  { key: 'lu', name: 'Luxembourg',  slug: 'luxembourg',  flag: '🇱🇺' },
 ];
 const CENTRAL_EASTERN: CountryEntry[] = [
-  { key: 'pl', name: 'Poland',   slug: 'poland',  flag: '🇵🇱' },
-  { key: 'cz', name: 'Czechia',  slug: 'czechia', flag: '🇨🇿' },
+  { key: 'pl', name: 'Poland',   slug: 'poland',   flag: '🇵🇱' },
+  { key: 'cz', name: 'Czechia',  slug: 'czechia',  flag: '🇨🇿' },
+  { key: 'sk', name: 'Slovakia', slug: 'slovakia', flag: '🇸🇰' },
+  { key: 'si', name: 'Slovenia', slug: 'slovenia', flag: '🇸🇮' },
+  { key: 'hu', name: 'Hungary',  slug: 'hungary',  flag: '🇭🇺' },
+  { key: 'ro', name: 'Romania',  slug: 'romania',  flag: '🇷🇴' },
+  { key: 'bg', name: 'Bulgaria', slug: 'bulgaria', flag: '🇧🇬' },
 ];
-const NORDIC: CountryEntry[] = [
-  { key: 'se', name: 'Sweden',   slug: 'sweden',  flag: '🇸🇪' },
-  { key: 'dk', name: 'Denmark',  slug: 'denmark', flag: '🇩🇰' },
-  { key: 'fi', name: 'Finland',  slug: 'finland', flag: '🇫🇮' },
+const NORDIC_BALTIC: CountryEntry[] = [
+  { key: 'se', name: 'Sweden',    slug: 'sweden',    flag: '🇸🇪' },
+  { key: 'dk', name: 'Denmark',   slug: 'denmark',   flag: '🇩🇰' },
+  { key: 'fi', name: 'Finland',   slug: 'finland',   flag: '🇫🇮' },
+  { key: 'ee', name: 'Estonia',   slug: 'estonia',   flag: '🇪🇪' },
+  { key: 'lv', name: 'Latvia',    slug: 'latvia',    flag: '🇱🇻' },
+  { key: 'lt', name: 'Lithuania', slug: 'lithuania', flag: '🇱🇹' },
 ];
 
 const REGIONS = [
-  { label: 'Southern Europe',     items: SOUTHERN        },
-  { label: 'Western Europe',      items: WESTERN         },
-  { label: 'Central & Eastern',   items: CENTRAL_EASTERN },
-  { label: 'Northern Europe',     items: NORDIC          },
+  { label: 'Southern Europe',       items: SOUTHERN        },
+  { label: 'Western Europe',        items: WESTERN         },
+  { label: 'Central & Eastern',     items: CENTRAL_EASTERN },
+  { label: 'Northern & Baltic',     items: NORDIC_BALTIC   },
 ];
 
 // Find the currently-selected country (or null on home)
-const allCountries = [...SOUTHERN, ...WESTERN, ...CENTRAL_EASTERN, ...NORDIC];
+const allCountries = [...SOUTHERN, ...WESTERN, ...CENTRAL_EASTERN, ...NORDIC_BALTIC];
 const activeCountry = allCountries.find((c) => c.key === current) ?? null;
 ---
 <div class="eubar">
