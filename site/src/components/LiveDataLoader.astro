@@ -88,21 +88,24 @@ const { country, apiBase = 'https://countryfingerprint.onrender.com' } = Astro.p
         const j = await r.json();
         if (!j.ok) throw new Error('not ok');
 
+        // Format helpers — keep one decimal place so values like 4 render as
+        // "4.0%" (matches the static fallback tickers, which use the same form).
+        const fmtPct  = (n) => (typeof n === 'number' ? n.toFixed(1) + '%' : '—');
+        const fmtSgn  = (n) => (typeof n === 'number' ? (n >= 0 ? '+' : '') + n.toFixed(1) + '%' : '—');
+        const fmtRate = (n) => (typeof n === 'number' ? n.toFixed(3) + '%' : '—');
+
         const c = j.eurostat?.[country];
         if (c?.unemp?.value != null) {
-          const v = c.unemp.value;
-          setAll([`${country}-unemp`, 'tick-unemp', 'tick-unempb'], v + '%');
+          setAll([`${country}-unemp`, 'tick-unemp', 'tick-unempb'], fmtPct(c.unemp.value));
         }
-        if (c?.youth_unemp?.value != null) set(`${country}-youth-unemp`, c.youth_unemp.value + '%');
+        if (c?.youth_unemp?.value != null) set(`${country}-youth-unemp`, fmtPct(c.youth_unemp.value));
         if (c?.gdp?.value != null) {
-          const v = c.gdp.value;
-          const txt = (v >= 0 ? '+' : '') + v + '%';
-          setAll([`${country}-gdp`, 'tick-gdp', 'tick-gdpb'], txt);
+          setAll([`${country}-gdp`, 'tick-gdp', 'tick-gdpb'], fmtSgn(c.gdp.value));
         }
-        if (c?.inflation?.value != null) set(`${country}-inflation`, c.inflation.value + '%');
+        if (c?.inflation?.value != null) set(`${country}-inflation`, fmtPct(c.inflation.value));
 
-        if (j.ecb?.rate != null) set(`${country}-ecb-rate`, j.ecb.rate + '%');
-        if (j.euribor?.rate != null) set(`${country}-euribor`, j.euribor.rate + '%');
+        if (j.ecb?.rate != null) set(`${country}-ecb-rate`, fmtPct(j.ecb.rate));
+        if (j.euribor?.rate != null) set(`${country}-euribor`, fmtRate(j.euribor.rate));
 
         statsOK = true;
       } catch (e) {

@@ -13,7 +13,7 @@
     { "icon": "🛢", "label": "Brent",      "value": "—",          "id": "tick-brent" },
     { "icon": "💶", "label": "Min wage",   "value": "Collective (no statutory)" },
     { "icon": "🏠", "label": "Housing",    "value": "€2,800/m²" },
-    { "icon": "📉", "label": "Unemployment", "value": "7.5%", "id": "tick-unemp" },
+    { "icon": "📉", "label": "Unemployment", "value": "10.7%", "id": "tick-unemp" },
     { "icon": "✈",  "label": "Tourists 2024", "value": "9M" },
     { "icon": "🌍", "label": "GDP growth", "value": "+1.0%", "id": "tick-gdp" }
   ],
@@ -75,7 +75,7 @@
     }
   },
   "stats": {
-    "unemployment":  { "value": 7.5, "asOf": "Apr 2026", "source": "Eurostat / Tilastokeskus" },
+    "unemployment":  { "value": 10.7, "asOf": "Apr 2026", "source": "Eurostat / Tilastokeskus" },
     "youthUnemp":    { "value": 17.5 },
     "minWage":       { "value": null, "note": "No statutory minimum — collective agreements (Työehtosopimukset) cover ~90% of workers" },
     "avgGrossSalary":{ "value": 3700 },
@@ -83,10 +83,10 @@
     "gdp":           { "value": 1.0 },
     "gdpTotalEuro":  { "value": "270B" },
     "gdpPerCapita":  { "value": "48,200" },
-    "inflation":     { "value": 1.5 },
+    "inflation":     { "value": 1.7 },
     "publicDebt":    { "value": 78 },
     "budgetBalance": { "value": -3.5 },
-    "ecbRate":       { "value": 2.25 },
+    "ecbRate":       { "value": 2 },
     "euribor12m":    { "value": 2.222 },
     "lifeExpectancy":{ "value": 82.0 },
     "tourists":      { "value": "9M" },
@@ -98,8 +98,8 @@
   "history": {
     "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025],
     "gdp":          [2.5, 3.2, 1.6, 1.2, -2.4, 2.8, 1.3, -1.2, 0.4, 1.0],
-    "unemployment": [8.8, 8.6, 7.4, 6.7, 7.8, 7.7, 6.8, 7.2, 7.8, 7.5],
-    "inflation":    [0.4, 0.8, 1.2, 1.1, 0.4, 2.1, 7.2, 4.3, 1.0, 1.5],
+    "unemployment": [8.8, 8.6, 7.4, 6.7, 7.8, 7.7, 6.8, 7.2, 7.8, 10.7],
+    "inflation":    [0.4, 0.8, 1.2, 1.1, 0.4, 2.1, 7.2, 4.3, 1.0, 1.7],
     "publicDebt":   [63, 61, 59, 64, 75, 73, 73, 75, 77, 78],
     "euAvg": {
       "gdp":          [2.0, 2.7, 2.0, 1.6, -5.6, 5.9, 3.4, 0.4, 0.8, 1.5],

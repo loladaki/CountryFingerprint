@@ -33,33 +33,33 @@ import cy from '@data/cy.json';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const countries = [
-  { ...pt, slug: 'portugal',    blurb: 'Lowest cost of living in W. Europe · safest big country in EU · rising tourism',           highlights: { unemp: 5.8, gdp: '+2.4%', tax: 'IRS Jovem' } },
-  { ...es, slug: 'spain',       blurb: 'Fastest-growing big-EU economy · 94M tourists · 30 paid leave days · housing crisis',      highlights: { unemp: 10.3, gdp: '+2.9%', tax: 'Beckham law' } },
-  { ...fr, slug: 'france',      blurb: 'Highest fertility rate in EU · 35h workweek · best healthcare · costly fuel/taxes',        highlights: { unemp: 7.9, gdp: '+0.7%', tax: '€1,802 SMIC' } },
-  { ...de, slug: 'germany',     blurb: 'Largest EU economy · €2,222 min wage · top university system · sluggish growth',           highlights: { unemp: 4.0, gdp: '+0.3%', tax: '€12.82/hr' } },
-  { ...it, slug: 'italy',       blurb: '5th most-visited globally · highest life expectancy · no statutory min wage',              highlights: { unemp: 5.2, gdp: '+0.6%', tax: 'CCNL' } },
-  { ...nl, slug: 'netherlands', blurb: '5th largest EU economy · part-time capital · severe housing crisis · highest fuel',       highlights: { unemp: 3.9, gdp: '+1.8%', tax: '€2,070 min' } },
-  { ...ie, slug: 'ireland',     blurb: 'Multinational hub · highest GDP/capita (inflated) · severe Dublin housing crisis',         highlights: { unemp: 4.5, gdp: '+4.5%', tax: '15% CT' } },
-  { ...be, slug: 'belgium',     blurb: 'EU capital · highest tax wedge in OECD (53%) · 3 languages · strong public services',     highlights: { unemp: 5.5, gdp: '+1.2%', tax: '€2,070 min' } },
-  { ...at, slug: 'austria',     blurb: 'Vienna = world\'s most-liveable city · hydro-powered grid · dual apprenticeship',         highlights: { unemp: 5.0, gdp: '+0.8%', tax: 'CCNL' } },
-  { ...se, slug: 'sweden',      blurb: '5th biggest EU economy · 80% clean electricity · 480 days parental leave · gang concerns', highlights: { unemp: 8.0, gdp: '+1.6%', tax: 'CCNL' } },
-  { ...pl, slug: 'poland',      blurb: 'Largest CEE economy · fastest big-EU growth · cheapest fuel · housing still affordable',  highlights: { unemp: 2.8, gdp: '+3.3%', tax: 'NBP rate' } },
-  { ...cz, slug: 'czechia',     blurb: 'Most industrialised EU economy · lowest unemployment · Prague rivals Madrid in housing',   highlights: { unemp: 2.5, gdp: '+2.4%', tax: 'CZK' } },
-  { ...gr, slug: 'greece',      blurb: 'EU\'s greatest recovery story · 207% → 142% debt · 36M tourists · brain drain slowing',   highlights: { unemp: 9.5, gdp: '+2.1%', tax: '€830 min' } },
-  { ...dk, slug: 'denmark',     blurb: 'Highest GDP/capita in EU · world wind-power leader · #2 happiest globally',                highlights: { unemp: 5.5, gdp: '+2.5%', tax: 'CCNL' } },
-  { ...fi, slug: 'finland',     blurb: 'Happiest country in the world (7y in a row) · cheap electricity · post-Russia transition', highlights: { unemp: 7.5, gdp: '+1.0%', tax: 'CCNL' } },
-  { ...ee, slug: 'estonia',     blurb: 'EU\'s digital-government pioneer · lowest public debt in EU · long 2022–24 recession recovering',  highlights: { unemp: 7.5, gdp: '+2.0%', tax: 'e-Residency' } },
-  { ...lv, slug: 'latvia',      blurb: 'Shrinking population · Riga Art Nouveau capital · cheap Latgale, expensive capital',                highlights: { unemp: 6.5, gdp: '+2.2%', tax: '€740 min' } },
-  { ...lt, slug: 'lithuania',   blurb: 'Largest & fastest-growing Baltic · #2 EU fintech hub · highest NATO defence spending',              highlights: { unemp: 7.0, gdp: '+2.8%', tax: '€1,038 min' } },
-  { ...hu, slug: 'hungary',     blurb: 'CEE auto powerhouse (Audi, BMW, BYD) · cheapest electricity in EU · 17% inflation 2023',            highlights: { unemp: 4.5, gdp: '+2.0%', tax: 'HUF' } },
-  { ...sk, slug: 'slovakia',    blurb: 'World\'s biggest per-capita car producer · stark east–west divide · 55% nuclear power',             highlights: { unemp: 5.5, gdp: '+2.0%', tax: '€816 min' } },
-  { ...si, slug: 'slovenia',    blurb: 'Wealthiest ex-Yugoslav state · Alpine + Adriatic mix · highest life expectancy in CEE',              highlights: { unemp: 3.8, gdp: '+2.3%', tax: '€1,254 min' } },
-  { ...hr, slug: 'croatia',     blurb: 'EU\'s newest euro/Schengen member (2023) · tourism = 20% of GDP · debt 87% → 58% in 5 years',       highlights: { unemp: 5.5, gdp: '+3.0%', tax: '€970 min' } },
-  { ...ro, slug: 'romania',     blurb: 'Largest IT sector in EU (% GDP) · Bucharest booming · 4M-strong diaspora · 7% deficit',             highlights: { unemp: 5.5, gdp: '+2.8%', tax: 'RON' } },
-  { ...bg, slug: 'bulgaria',    blurb: 'Cheapest fuel in EU · poorest member · lowest public debt · adopts euro Jan 2026',                  highlights: { unemp: 4.5, gdp: '+2.5%', tax: '€550 min' } },
-  { ...lu, slug: 'luxembourg',  blurb: 'Highest GDP/capita in EU · €2,704 min wage · finance hub · free public transport · 47% foreign',    highlights: { unemp: 5.8, gdp: '+2.0%', tax: '€2,704 min' } },
-  { ...mt, slug: 'malta',       blurb: 'Fastest-growing EU economy · cheapest diesel · English-speaking · iGaming + fintech hub',           highlights: { unemp: 3.0, gdp: '+4.0%', tax: '€961 min' } },
-  { ...cy, slug: 'cyprus',      blurb: 'Mediterranean island · post-2013 recovery (115% → 65% debt) · divided since 1974 · warmest in EU',  highlights: { unemp: 5.5, gdp: '+3.0%', tax: '€1,000 min' } },
+  { ...pt, slug: 'portugal',    blurb: 'Lowest cost of living in W. Europe · safest big country in EU · rising tourism' },
+  { ...es, slug: 'spain',       blurb: 'Fastest-growing big-EU economy · 94M tourists · 30 paid leave days · housing crisis' },
+  { ...fr, slug: 'france',      blurb: 'Highest fertility rate in EU · 35h workweek · best healthcare · costly fuel/taxes' },
+  { ...de, slug: 'germany',     blurb: 'Largest EU economy · €2,343 min wage · top university system · sluggish growth' },
+  { ...it, slug: 'italy',       blurb: '5th most-visited globally · highest life expectancy · no statutory min wage' },
+  { ...nl, slug: 'netherlands', blurb: '5th largest EU economy · part-time capital · severe housing crisis · highest fuel' },
+  { ...ie, slug: 'ireland',     blurb: 'Multinational hub · highest GDP/capita (inflated) · severe Dublin housing crisis' },
+  { ...be, slug: 'belgium',     blurb: 'EU capital · highest tax wedge in OECD (53%) · 3 languages · strong public services' },
+  { ...at, slug: 'austria',     blurb: 'Vienna = world\'s most-liveable city · hydro-powered grid · dual apprenticeship' },
+  { ...se, slug: 'sweden',      blurb: '5th biggest EU economy · 80% clean electricity · 480 days parental leave · gang concerns' },
+  { ...pl, slug: 'poland',      blurb: 'Largest CEE economy · fastest big-EU growth · cheapest fuel · housing still affordable' },
+  { ...cz, slug: 'czechia',     blurb: 'Most industrialised EU economy · lowest unemployment · Prague rivals Madrid in housing' },
+  { ...gr, slug: 'greece',      blurb: 'EU\'s greatest recovery story · 207% → 142% debt · 36M tourists · brain drain slowing' },
+  { ...dk, slug: 'denmark',     blurb: 'Highest GDP/capita in EU · world wind-power leader · #2 happiest globally' },
+  { ...fi, slug: 'finland',     blurb: 'Happiest country in the world (7y in a row) · cheap electricity · post-Russia transition' },
+  { ...ee, slug: 'estonia',     blurb: 'EU\'s digital-government pioneer · lowest public debt in EU · long 2022–24 recession recovering' },
+  { ...lv, slug: 'latvia',      blurb: 'Shrinking population · Riga Art Nouveau capital · cheap Latgale, expensive capital' },
+  { ...lt, slug: 'lithuania',   blurb: 'Largest & fastest-growing Baltic · #2 EU fintech hub · highest NATO defence spending' },
+  { ...hu, slug: 'hungary',     blurb: 'CEE auto powerhouse (Audi, BMW, BYD) · cheapest electricity in EU · 17% inflation 2023' },
+  { ...sk, slug: 'slovakia',    blurb: 'World\'s biggest per-capita car producer · stark east–west divide · 55% nuclear power' },
+  { ...si, slug: 'slovenia',    blurb: 'Wealthiest ex-Yugoslav state · Alpine + Adriatic mix · highest life expectancy in CEE' },
+  { ...hr, slug: 'croatia',     blurb: 'EU\'s newest euro/Schengen member (2023) · tourism = 20% of GDP · debt 87% → 58% in 5 years' },
+  { ...ro, slug: 'romania',     blurb: 'Largest IT sector in EU (% GDP) · Bucharest booming · 4M-strong diaspora · 7% deficit' },
+  { ...bg, slug: 'bulgaria',    blurb: 'Cheapest fuel in EU · poorest member · lowest public debt · adopts euro Jan 2026' },
+  { ...lu, slug: 'luxembourg',  blurb: 'Highest GDP/capita in EU · €2,704 min wage · finance hub · free public transport · 47% foreign' },
+  { ...mt, slug: 'malta',       blurb: 'Fastest-growing EU economy · cheapest diesel · English-speaking · iGaming + fintech hub' },
+  { ...cy, slug: 'cyprus',      blurb: 'Mediterranean island · post-2013 recovery (115% → 65% debt) · divided since 1974 · warmest in EU' },
 ];
 
 // ── Group countries by region (same taxonomy as the Eubar dropdown) ───
@@ -152,11 +152,11 @@ const rankings = [
                   <span class="cc-lbl">Gasoline /L</span>
                 </div>
                 <div class="cc-metric">
-                  <span class="cc-val">{c.highlights.unemp}%</span>
+                  <span class="cc-val">{c.stats.unemployment.value.toFixed(1)}%</span>
                   <span class="cc-lbl">Unemployment</span>
                 </div>
                 <div class="cc-metric">
-                  <span class="cc-val">{c.highlights.gdp}</span>
+                  <span class="cc-val">{(c.stats.gdp.value >= 0 ? '+' : '') + c.stats.gdp.value.toFixed(1)}%</span>
                   <span class="cc-lbl">GDP 2026</span>
                 </div>
                 <div class="cc-metric">
