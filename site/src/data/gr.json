@@ -14,7 +14,7 @@
     { "icon": "💶", "label": "Min wage 2026", "value": "€1,027" },
     { "icon": "🏠", "label": "Housing",  "value": "€1,800/m²" },
     { "icon": "📉", "label": "Unemployment", "value": "9.5%", "id": "tick-unemp" },
-    { "icon": "✈",  "label": "Tourists 2024", "value": "36M" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "27M" },
     { "icon": "🌍", "label": "GDP growth", "value": "+2.1%", "id": "tick-gdp" }
   ],
   "sections": [
@@ -97,7 +97,7 @@
     "ecbRate":       { "value": 2 },
     "euribor12m":    { "value": 2.222 },
     "lifeExpectancy":{ "value": 81.9 },
-    "tourists":      { "value": "36M", "asOf": "2024", "note": "Record · tripled in a decade" },
+    "tourists":      { "value": "27M", "raw": 27376639, "year": 2024, "source": "Eurostat tour_occ_arnat (foreign, all accommodation)", "asOf": "2024", "note": "Record · tripled in a decade" },
     "tourismRevenue":{ "value": "22B €", "note": "~10% of GDP" },
     "population":    { "value": "10.4M" }
   },

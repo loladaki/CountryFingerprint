@@ -14,7 +14,7 @@
     { "icon": "💶", "label": "Min wage 2026", "value": "PLN 4,666 (~€1,139)" },
     { "icon": "🏠", "label": "Housing",   "value": "€1,800/m²" },
     { "icon": "📉", "label": "Unemployment", "value": "2.8%", "id": "tick-unemp" },
-    { "icon": "✈",  "label": "Tourists 2024", "value": "24M" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "7.9M" },
     { "icon": "🌍", "label": "GDP growth", "value": "+3.3%", "id": "tick-gdp" }
   ],
   "sections": [
@@ -101,7 +101,7 @@
     "ecbRate":       { "value": 2, "note": "Poland uses NBP rate (currently ~5.75%) — ECB shown for EU context" },
     "euribor12m":    { "value": 2.222 },
     "lifeExpectancy":{ "value": 78.5 },
-    "tourists":      { "value": "24M" },
+    "tourists":      { "value": "7.9M", "raw": 7875518, "year": 2024, "source": "Eurostat tour_occ_arnat (foreign, all accommodation)" },
     "tourismRevenue":{ "value": "15B €" },
     "population":    { "value": "37.6M" }
   },

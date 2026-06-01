@@ -15,7 +15,7 @@
     { "icon": "💶", "label": "Min wage", "value": "Collective (no statutory)" },
     { "icon": "🏠", "label": "Housing",  "value": "4,200 €/m²" },
     { "icon": "📉", "label": "Unemployment", "value": "8.5%", "id": "tick-unemp" },
-    { "icon": "✈",  "label": "Tourists 2024", "value": "8M" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "8.4M" },
     { "icon": "🌍", "label": "GDP growth", "value": "+1.6%", "id": "tick-gdp" }
   ],
 
@@ -100,7 +100,7 @@
     "ecbRate":       { "value": 2, "note": "Sweden uses Riksbank rate (not ECB) — currently ~3.0%" },
     "euribor12m":    { "value": 2.222, "note": "Sweden uses STIBOR; this is shown for EU context" },
     "lifeExpectancy":{ "value": 83.8 },
-    "tourists":      { "value": "8M" },
+    "tourists":      { "value": "8.4M", "raw": 8432588, "year": 2024, "source": "Eurostat tour_occ_arnat (foreign, all accommodation)" },
     "tourismRevenue":{ "value": "12B €" },
     "renewablesShare":{"value": 68, "note": "Hydro + wind lead; nuclear ~30%" },
     "population":    { "value": "10.6M" }

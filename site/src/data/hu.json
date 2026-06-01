@@ -14,7 +14,7 @@
     { "icon": "💶", "label": "Min wage 2026", "value": "HUF 290k (~€838)" },
     { "icon": "🏠", "label": "Housing",  "value": "€2,800/m² (Budapest)" },
     { "icon": "📉", "label": "Unemployment", "value": "4.5%", "id": "tick-unemp" },
-    { "icon": "✈",  "label": "Tourists 2024", "value": "16M" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "6.1M" },
     { "icon": "🌍", "label": "GDP growth", "value": "+2.0%", "id": "tick-gdp" }
   ],
   "sections": [
@@ -92,7 +92,7 @@
     "ecbRate":       { "value": 2, "note": "Hungary uses MNB rate (currently ~6.5%)" },
     "euribor12m":    { "value": 2.222 },
     "lifeExpectancy":{ "value": 76.8 },
-    "tourists":      { "value": "16M" },
+    "tourists":      { "value": "6.1M", "raw": 6113954, "year": 2024, "source": "Eurostat tour_occ_arnat (foreign, all accommodation)" },
     "tourismRevenue":{ "value": "8B €", "note": "Budapest spas + Lake Balaton" },
     "happinessRank": { "value": 56 },
     "population":    { "value": "9.6M" }

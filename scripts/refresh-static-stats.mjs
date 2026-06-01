@@ -86,26 +86,11 @@ const leRaw = await fetchEurostatJSON('demo_mlexpec', {
 });
 const lifeExp = extractLatestPerGeo(leRaw);
 
-console.log('Fetching hlth_rs_prsrg (practising physicians)…');
-let physicians;
-try {
-  const docRaw = await fetchEurostatJSON('hlth_rs_prsrg', {
-    isco08: 'OC22', unit: 'P_HTHAB', geo: GEO_LIST,
-  });
-  physicians = extractLatestPerGeo(docRaw);
-} catch (e) {
-  console.warn(`  ! hlth_rs_prsrg failed (${e.message}). Trying alternative dataset…`);
-  // Alternative: hlth_rs_prs1 (older naming)
-  try {
-    const docRaw = await fetchEurostatJSON('hlth_rs_prs1', {
-      isco08: 'OC22', unit: 'P_HTHAB', geo: GEO_LIST,
-    });
-    physicians = extractLatestPerGeo(docRaw);
-  } catch (e2) {
-    console.warn(`  ! Also failed (${e2.message}). Skipping doctors.`);
-    physicians = null;
-  }
-}
+console.log('Fetching tour_occ_arnat (foreign tourist arrivals at accommodation)…');
+const tourRaw = await fetchEurostatJSON('tour_occ_arnat', {
+  c_resid: 'FOR', unit: 'NR', nace_r2: 'I551-I553', geo: GEO_LIST,
+});
+const tourists = extractLatestPerGeo(tourRaw);
 
 // ── Apply to JSONs ──────────────────────────────────────────────────────
 console.log('\n── Applying refreshed values ─────────────────────');
@@ -131,15 +116,36 @@ for (const code of EU27) {
     }
   }
 
-  // Doctors (per 1000 = per 100k / 100)
-  if (physicians) {
-    const ph = physicians[eurostatCode];
-    if (ph) {
-      const newVal = Number((ph.value / 100).toFixed(1));
-      // The doctors value lives only in map.regions[*].doctors (a per-region
-      // number). For the national headline we don't yet have a stats field,
-      // so we'll just log it for now.
-      changes.push(`doctors (national avg) = ${newVal}/1k (${ph.year})`);
+  // Foreign tourist arrivals at accommodation establishments
+  const tr = tourists[eurostatCode];
+  if (tr) {
+    // Format as "X.XM" so the ticker and ranking can both consume it
+    const millions = tr.value / 1_000_000;
+    const newDisplay = millions >= 10
+      ? `${millions.toFixed(0)}M`
+      : `${millions.toFixed(1)}M`;
+    // Also store the raw count so the rankings can sort numerically
+    const rawVal = Math.round(tr.value);
+
+    // Update stats.tourists.value (display string)
+    const reStr = /("tourists"\s*:\s*\{\s*"value"\s*:\s*)"[^"]+"/;
+    if (reStr.test(text)) {
+      const old = text.match(reStr)[0];
+      if (!old.includes(`"${newDisplay}"`)) {
+        text = text.replace(reStr, `$1"${newDisplay}"`);
+        changes.push(`tourists "${old.match(/"[^"]+"$/)[0]}" → "${newDisplay}" (${tr.year}, Eurostat)`);
+      }
+    }
+    // Inject a numeric "raw" alongside, so home-page rankings work
+    if (!/"tourists"\s*:\s*\{[^}]*"raw"/.test(text)) {
+      text = text.replace(
+        /("tourists"\s*:\s*\{\s*"value"\s*:\s*"[^"]+")/,
+        `$1, "raw": ${rawVal}, "year": ${tr.year}, "source": "Eurostat tour_occ_arnat (foreign, all accommodation)"`
+      );
+    } else {
+      // Refresh raw if already present
+      text = text.replace(/("tourists"[^}]*"raw"\s*:\s*)\d+/, `$1${rawVal}`);
+      text = text.replace(/("tourists"[^}]*"year"\s*:\s*)\d+/, `$1${tr.year}`);
     }
   }
 

@@ -14,7 +14,7 @@
     { "icon": "💶", "label": "Min wage 2026", "value": "€915" },
     { "icon": "🏠", "label": "Housing",  "value": "€3,500/m² (Bratislava)" },
     { "icon": "📉", "label": "Unemployment", "value": "5.5%", "id": "tick-unemp" },
-    { "icon": "✈",  "label": "Tourists 2024", "value": "6M" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "2.1M" },
     { "icon": "🌍", "label": "GDP growth", "value": "+2.0%", "id": "tick-gdp" }
   ],
   "sections": [
@@ -88,7 +88,7 @@
     "ecbRate":       { "value": 2 },
     "euribor12m":    { "value": 2.222 },
     "lifeExpectancy":{ "value": 78.4 },
-    "tourists":      { "value": "6M" },
+    "tourists":      { "value": "2.1M", "raw": 2100161, "year": 2024, "source": "Eurostat tour_occ_arnat (foreign, all accommodation)" },
     "tourismRevenue":{ "value": "3B €", "note": "High Tatras + Bratislava + spas" },
     "happinessRank": { "value": 45 },
     "population":    { "value": "5.4M" }

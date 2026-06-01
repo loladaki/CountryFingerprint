@@ -93,6 +93,12 @@ for (const code of EU27) {
     } else if (isMinWageTicker(t) && typeof d.stats.minWage?.value === 'number') {
       // Skip null-min-wage countries (CCNL/collective bargaining only)
       apply(t.value, rewriteMinWageValue(t.value, d.stats.minWage.value), 'min-wage');
+    } else if (
+      // Tourists row — icon ✈ or label contains "tourists"
+      (t.icon === '✈' || /tourists/i.test(t.label || '')) &&
+      typeof d.stats.tourists?.value === 'string'
+    ) {
+      apply(t.value, d.stats.tourists.value, 'tourists');
     }
   }
 

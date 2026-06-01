@@ -91,6 +91,7 @@ const rankings = [
   { title: '🎂 Longest life expectancy',  items: top((c) => c.stats.lifeExpectancy?.value, 'desc'),unit: 'yrs' },
   { title: '📊 Lowest public debt',       items: top((c) => c.stats.publicDebt?.value, 'asc'),     unit: '% GDP' },
   { title: '⛽ Cheapest petrol 95',       items: top((c) => c.fuelFallback?.gasolina95?.atual, 'asc'), unit: '€/L' },
+  { title: '✈ Most foreign visitors',     items: top((c) => c.stats.tourists?.raw ? c.stats.tourists.raw / 1e6 : null, 'desc'), unit: 'M', note: 'Foreign arrivals at registered accommodation — Eurostat tour_occ_arnat 2024' },
 ];
 ---
 <BaseLayout

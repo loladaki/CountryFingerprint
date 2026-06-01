@@ -14,7 +14,7 @@
     { "icon": "💶", "label": "Min wage 2026", "value": "€1,088" },
     { "icon": "🏠", "label": "Housing",  "value": "€2,500/m²" },
     { "icon": "📉", "label": "Unemployment", "value": "5.5%", "id": "tick-unemp" },
-    { "icon": "✈",  "label": "Tourists 2024", "value": "4M" },
+    { "icon": "✈",  "label": "Tourists 2024", "value": "3.0M" },
     { "icon": "🌍", "label": "GDP growth", "value": "+3.0%", "id": "tick-gdp" }
   ],
   "sections": [
@@ -85,7 +85,7 @@
     "ecbRate":       { "value": 2 },
     "euribor12m":    { "value": 2.222 },
     "lifeExpectancy":{ "value": 83.5 },
-    "tourists":      { "value": "4M", "note": "~4× the population" },
+    "tourists":      { "value": "3.0M", "raw": 3030161, "year": 2024, "source": "Eurostat tour_occ_arnat (foreign, all accommodation)", "note": "~4× the population" },
     "tourismRevenue":{ "value": "3B €", "note": "Beaches, year-round sun, British market" },
     "happinessRank": { "value": 49 },
     "population":    { "value": "920k", "note": "Government-controlled south · island divided since 1974" }
