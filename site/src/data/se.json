@@ -99,7 +99,7 @@
     "budgetBalance": { "value": -0.5 },
     "ecbRate":       { "value": 2, "note": "Sweden uses Riksbank rate (not ECB) — currently ~3.0%" },
     "euribor12m":    { "value": 2.222, "note": "Sweden uses STIBOR; this is shown for EU context" },
-    "lifeExpectancy":{ "value": 83.1 },
+    "lifeExpectancy":{ "value": 83.8 },
     "tourists":      { "value": "8M" },
     "tourismRevenue":{ "value": "12B €" },
     "renewablesShare":{"value": 68, "note": "Hydro + wind lead; nuclear ~30%" },

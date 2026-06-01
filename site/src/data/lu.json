@@ -84,7 +84,7 @@
     "budgetBalance": { "value": -1.0 },
     "ecbRate":       { "value": 2 },
     "euribor12m":    { "value": 2.222 },
-    "lifeExpectancy":{ "value": 82.8 },
+    "lifeExpectancy":{ "value": 83.2 },
     "tourists":      { "value": "1.2M" },
     "tourismRevenue":{ "value": "0.6B €", "note": "Business + EU institutions + Ardennes" },
     "happinessRank": { "value": 8 },

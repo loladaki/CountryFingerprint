@@ -106,7 +106,7 @@
     "budgetBalance": { "value": -5.5 },
     "ecbRate":       { "value": 2 },
     "euribor12m":    { "value": 2.222 },
-    "lifeExpectancy":{ "value": 82.5 },
+    "lifeExpectancy":{ "value": 83 },
     "tourists":      { "value": "100M", "asOf": "2024", "note": "Most-visited country worldwide" },
     "tourismRevenue":{ "value": "70B €" },
     "housingIdx":    { "value": 127.1 },

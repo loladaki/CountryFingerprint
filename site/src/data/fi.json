@@ -88,7 +88,7 @@
     "budgetBalance": { "value": -3.5 },
     "ecbRate":       { "value": 2 },
     "euribor12m":    { "value": 2.222 },
-    "lifeExpectancy":{ "value": 82.0 },
+    "lifeExpectancy":{ "value": 82.2 },
     "tourists":      { "value": "9M" },
     "tourismRevenue":{ "value": "5B €", "note": "Lapland + saunas + Nordic nature" },
     "renewablesShare":{"value": 55, "note": "Hydro + bio + nuclear + wind" },

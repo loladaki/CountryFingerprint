@@ -87,7 +87,7 @@
     "budgetBalance": { "value": -4.8 },
     "ecbRate":       { "value": 2 },
     "euribor12m":    { "value": 2.222 },
-    "lifeExpectancy":{ "value": 77.8 },
+    "lifeExpectancy":{ "value": 78.4 },
     "tourists":      { "value": "6M" },
     "tourismRevenue":{ "value": "3B €", "note": "High Tatras + Bratislava + spas" },
     "happinessRank": { "value": 45 },

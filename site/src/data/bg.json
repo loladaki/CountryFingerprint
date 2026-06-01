@@ -89,7 +89,7 @@
     "budgetBalance": { "value": -3.0 },
     "ecbRate":       { "value": 2, "note": "Lev pegged to euro · euro adoption Jan 2026" },
     "euribor12m":    { "value": 2.222 },
-    "lifeExpectancy":{ "value": 75.0, "note": "Among EU's lowest" },
+    "lifeExpectancy":{ "value": 75.8, "note": "Among EU's lowest" },
     "tourists":      { "value": "9M" },
     "tourismRevenue":{ "value": "5B €", "note": "Black Sea (Sunny Beach) + ski (Bansko)" },
     "happinessRank": { "value": 81 },

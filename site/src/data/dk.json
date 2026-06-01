@@ -88,7 +88,7 @@
     "budgetBalance": { "value": 1.5 },
     "ecbRate":       { "value": 2, "note": "DKK pegged to EUR; Nationalbanken follows ECB closely" },
     "euribor12m":    { "value": 2.222 },
-    "lifeExpectancy":{ "value": 81.7 },
+    "lifeExpectancy":{ "value": 82 },
     "tourists":      { "value": "13M" },
     "tourismRevenue":{ "value": "10B €" },
     "renewablesShare":{"value": 67, "note": "World leader in wind power" },

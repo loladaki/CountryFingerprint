@@ -85,7 +85,7 @@
     "budgetBalance": { "value": -3.5 },
     "ecbRate":       { "value": 2 },
     "euribor12m":    { "value": 2.222 },
-    "lifeExpectancy":{ "value": 83.4, "note": "Among EU's highest" },
+    "lifeExpectancy":{ "value": 83, "note": "Among EU's highest" },
     "tourists":      { "value": "3M", "note": "~6× the population" },
     "tourismRevenue":{ "value": "2.5B €", "note": "Sun, sea, English-language schools" },
     "happinessRank": { "value": 35 },

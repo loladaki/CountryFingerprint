@@ -91,7 +91,7 @@
     "budgetBalance": { "value": -4.5 },
     "ecbRate":       { "value": 2, "note": "Hungary uses MNB rate (currently ~6.5%)" },
     "euribor12m":    { "value": 2.222 },
-    "lifeExpectancy":{ "value": 76.2 },
+    "lifeExpectancy":{ "value": 76.8 },
     "tourists":      { "value": "16M" },
     "tourismRevenue":{ "value": "8B €", "note": "Budapest spas + Lake Balaton" },
     "happinessRank": { "value": 56 },

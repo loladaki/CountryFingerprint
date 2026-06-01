@@ -112,7 +112,7 @@
     "budgetBalance": { "value": 1.3,  "asOf": "2025", "note": "Surplus" },
     "ecbRate":       { "value": 2, "asOf": "Apr 2026" },
     "euribor12m":    { "value": 2.222 },
-    "lifeExpectancy":{ "value": 81.5, "asOf": "2023" },
+    "lifeExpectancy":{ "value": 82.5, "asOf": "2023" },
     "tourists":      { "value": "31.6M", "asOf": "2024", "note": "Record high" },
     "tourismRevenue":{ "value": "26B €", "asOf": "2024", "note": "~12.5% of GDP" },
     "renewablesShare":{"value": 71, "asOf": "2025", "note": "Hydro + wind + solar lead" },
