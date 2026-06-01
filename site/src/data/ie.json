@@ -42,7 +42,7 @@
   },
 
   "map": {
-    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_3.json",
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/03M/nutsrg_3.json",
     "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
     "regionUnit": "NUTS3 region",
     "strokeOnSelect": "#169B62",

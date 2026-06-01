@@ -38,7 +38,7 @@
     "brent":      { "preco": 100.21 }
   },
   "map": {
-    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/20M/nutsrg_2.json",
+    "geojsonUrl": "https://cdn.jsdelivr.net/gh/eurostat/Nuts2json@master/pub/v2/2021/4326/03M/nutsrg_2.json",
     "featureIdResolver": "(f) => String(f.properties?.id ?? f.id ?? '')",
     "regionUnit": "region",
     "strokeOnSelect": "#C8862B",

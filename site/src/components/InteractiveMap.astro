@@ -38,8 +38,8 @@ interface Props {
   strokeOnSelect?: string;
   /** Singular noun for the prompt ("Click a {unit} on the map") */
   unit?: string;
-  /** Country tag prefixed to data labels (PT, ES, FR, DE, IT) */
-  country: 'pt' | 'es' | 'fr' | 'de' | 'it';
+  /** Country tag prefixed to data labels */
+  country: 'pt' | 'es' | 'fr' | 'de' | 'it' | 'nl' | 'ie' | 'be' | 'at' | 'se' | 'pl' | 'cz' | 'gr' | 'dk' | 'fi' | 'ee' | 'lv' | 'lt' | 'hu' | 'sk' | 'si' | 'hr' | 'ro' | 'bg' | 'lu' | 'mt' | 'cy';
 }
 
 const {
@@ -71,10 +71,11 @@ const {
   .dp-row:first-of-type{border-top:none}
   .dp-key{color:var(--muted)}
   .dp-v{font-family:var(--font-m);font-weight:500;color:var(--text)}
-  #map-svg{width:100%;height:auto;cursor:pointer}
-  #map-svg path{transition:opacity .12s,stroke-width .12s}
-  #map-svg path:hover{opacity:.82;stroke-width:2.5}
-  .map-tip{position:fixed;background:var(--accent);color:#fff;padding:.5rem .9rem;border-radius:8px;font-size:.8rem;pointer-events:none;z-index:999;display:none;max-width:200px}
+  #map-svg{width:100%;height:auto;cursor:pointer;display:block}
+  #map-svg .region{transition:opacity .15s,stroke-width .15s,filter .15s;filter:drop-shadow(0 1px 1px rgba(0,0,0,.06))}
+  #map-svg .region:hover{opacity:.88;stroke-width:1.6;filter:drop-shadow(0 2px 3px rgba(0,0,0,.14))}
+  #map-svg .region-noData{fill:#eceae6;stroke:#d6d2cb;stroke-width:.5;filter:none}
+  .map-tip{position:fixed;background:var(--accent);color:#fff;padding:.5rem .9rem;border-radius:8px;font-size:.8rem;pointer-events:none;z-index:999;display:none;max-width:200px;box-shadow:0 4px 12px rgba(0,0,0,.18)}
   .map-tip .tip-val{font-family:var(--font-m);color:var(--gold);font-size:.9rem;display:block;margin-top:.1rem}
 </style>
 
@@ -138,11 +139,26 @@ const {
 
     const svgEl = d3.select('#map-svg');
     const tip   = document.getElementById('map-tip');
-    const proj  = d3.geoMercator()
-      .center(projection.center)
-      .scale(projection.scale)
-      .translate(projection.translate);
+    // Parse the viewBox (e.g. "0 0 550 620") so fitExtent always picks
+    // padding relative to the actual canvas — no more manually tuning
+    // scale/center per country.
+    const viewBoxAttr = svgEl.attr('viewBox') || '0 0 550 620';
+    const [, , vbW, vbH] = viewBoxAttr.split(/\s+/).map(Number);
+    const PAD = 18;            // canvas-edge breathing room
+
+    const proj  = d3.geoMercator();
     const pathFn = d3.geoPath().projection(proj);
+
+    // Manual projection settings stay available as a fallback (or for
+    // countries that opt in via `autoFit: false`) but the default is
+    // auto-fit.
+    const useAutoFit = projection.autoFit !== false;
+    if (!useAutoFit && projection.center) {
+      proj
+        .center(projection.center)
+        .scale(projection.scale || 4000)
+        .translate(projection.translate || [vbW / 2, vbH / 2]);
+    }
 
     function getColor(id) {
       const data = REGIONS[id];
@@ -180,9 +196,9 @@ const {
 
     function renderRegion(id) {
       const data = REGIONS[id]; if (!data) return;
-      svgEl.selectAll('path')
-        .attr('stroke-width', (p) => p.id === id ? 2.5 : 0.6)
-        .attr('stroke',       (p) => p.id === id ? strokeOnSelect : '#fff');
+      svgEl.selectAll('path.region')
+        .attr('stroke-width', (p) => p.id === id ? 2.4 : 0.9)
+        .attr('stroke',       (p) => p.id === id ? strokeOnSelect : '#ffffff');
       const panel = document.getElementById('district-panel');
       if (!panel) return;
       const rows = Object.keys(METRICS).map((key) => {
@@ -207,9 +223,21 @@ const {
         .map((f) => ({ ...f, id: resolveId(f) }))
         .filter((f) => REGIONS[f.id]);
 
+      // Auto-fit: make the country fill the canvas with PAD padding,
+      // regardless of size (LU, MT, CY, etc. were getting lost before)
+      if (useAutoFit && features.length) {
+        const fc = { type: 'FeatureCollection', features };
+        proj.fitExtent([[PAD, PAD], [vbW - PAD, vbH - PAD]], fc);
+      }
+
       svgEl.selectAll('path').data(features).join('path')
-        .attr('d', pathFn).attr('stroke', '#fff').attr('stroke-width', 0.6)
-        .attr('fill', (d) => getColor(d.id)).style('cursor', 'pointer')
+        .attr('class', 'region')
+        .attr('d', pathFn)
+        .attr('stroke', '#ffffff')
+        .attr('stroke-width', 0.9)
+        .attr('stroke-linejoin', 'round')
+        .attr('fill', (d) => getColor(d.id))
+        .style('cursor', 'pointer')
         .on('mousemove', (event, d) => {
           const data = REGIONS[d.id]; if (!data) return;
           const m  = METRICS[activeMetric];
